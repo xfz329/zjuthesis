@@ -8,12 +8,16 @@
 
 \section{脉搏波时域特征研究现状}
 \section{用脉搏波检测子痫的优势}
-\section{研究内容与目标}
+\section{研究目标与内容}
+\subsection{研究目标}
+\subsection{研究内容}
+
 
 \chapter{生理学基础}
 \section{引言}
 \section{子痫前期的生理学基础}
 \section{光电容积脉搏波的生理学基础}
+\section{小结}
 
 
 \chapter{新型脉搏波特征参数及特征集的构建}
@@ -22,7 +26,7 @@
 \section{脉搏波波形检测及纠错}
 \section{时域特征参数设计与特征集构建}
 \subsection{角度、幅值、长度等}
-
+\section{小结}
 
 \chapter{基于数据特征集的模型构建}
 \section{引言}
@@ -30,12 +34,13 @@
 \section{数据来源}
 \section{构建方法分析}
 \section{模型构建}
-
+\section{小结}
 
 \chapter{模型评估}
 \section{引言}
 \section{评估方式与标准}
 \section{具体模型表现对比}
+\section{小结}
 
 \chapter{低耦合、高拓展的软件综合分析系统的设计与实现}
 \section{背景分析}
@@ -68,6 +73,7 @@
 \section{实现展示与测试}
 界面
 输入输出
+\section{小结}
 
 \chapter{总结与展望}
 \section{研究工作总结}
@@ -81,51 +87,29 @@
 \section{下一阶段工作展望}
 
 
+测试
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\chapter{关于本模板}
-本模板根据浙江大学研究生院编写的《浙江大学研究生学位论文编写规则》~\cite{zjugradthesisrules}，
+本模板根据浙江大学研究生院编写的《浙江大学研究生学位论文编写规则》~\cite{zjugradthesisrules,zjuthesis,tikz}，
 在原有的 zjuthesis 模板~\cite{zjuthesis}基础上开发而来。
 
 本模板的本科生版本\cite{zjuthesisrules}得到了浙江大学本科生院老师的支持与审核，
-已经在本科生院网上公示。
-但当前的研究生版本并未经过研究生院老师的审核，
-同学们使用时要注意对照模板与要求，
-切不可盲目使用。
 
-作者本人并未编写过浙江大学研究生毕业论文，
-所以不清楚具体要求。
-如果有热心同学愿意帮忙，
-可以替我联系相关老师，我会配合审核并修改代码。
+\begin{equation}
+    \sqrt { \frac { 1 + \sqrt { 5 } } { 2 } + 2 } - \frac { 1 + \sqrt { 5 } } { 2 } = \frac { e ^ { - \frac { 2 \pi } { 5 } } } { 1 + \frac { e ^ { - 2 \pi } } { 1 + \frac { e ^ { - 4 \pi } } { 1 + \frac { e ^ { - 6 \pi } } { 1 + \cdots } } } }
+\end{equation}
 
-啦啦啦啦，感谢作者
+\begin{equation}FSS=\left[k_{1}, k_{2}, \ldots \ldots, k_{n-1}\right]\end{equation}
 
-\section{Overleaf 使用注意事项}
 
-如果你在Overleaf上编译本模板，请注意如下事项：
 
-\begin{itemize}
-    \item 删除根目录的 ``.latexmkrc'' 文件，否则编译失败且不报任何错误
-    \item 字体有版权所以本模板不能附带字体，请务必手动上传字体文件，并在各个专业模板下手动指定字体。
-        具体方法参照 GitHub 主页的说明。
-    \item 当前的Overleaf默认使用TexLive 2017进行编译，但一些伪粗体复制乱码的问题需要TexLive 2019版本来解决。
-        所以各位同学可以在Overleaf上编写论文时务必切换到TexLive 2019或更新版本来编译，以免产生查重相关问题。
-        具体说明参照 GitHub 主页。
-\end{itemize}
+% \begin{itemize}
+%     \item 删除根目录的 ``.latexmkrc'' 文件，否则编译失败且不报任何错误
+%     \item 字体有版权所以本模板不能附带字体，请务必手动上传字体文件，并在各个专业模板下手动指定字体。
+%         具体方法参照 GitHub 主页的说明。
+%     \item 当前的Overleaf默认使用TexLive 2017进行编译，但一些伪粗体复制乱码的问题需要TexLive 2019版本来解决。
+%         所以各位同学可以在Overleaf上编写论文时务必切换到TexLive 2019或更新版本来编译，以免产生查重相关问题。
+%         具体说明参照 GitHub 主页。
+% \end{itemize}
 
 
 \section{节标题}
@@ -164,7 +148,7 @@
     A=\overbrace{(a+b+c)+\underbrace{i(d+e+f)}_{\text{虚数}}}^{\text{复数}}
 \end{equation}
 
-\chapter{另一章}
+% \chapter{另一章}
 
 
 \begin{figure}[htbp]
