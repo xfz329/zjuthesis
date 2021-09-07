@@ -119,33 +119,58 @@
 \subsection{微循环容积脉搏波血流模型}
 
 \subsection{光电容积脉搏波采集原理}
-物理光学中，将光通过某种透明介质后被吸收的比例定义为光的吸收度$A$，即\autoref{equ:LBL}：
+物理光学中，将光通过某种透明介质后被吸收的比例定义为光的吸收度$A$，即：
 \begin{equation}
     \label{equ:LBL}
     A=\lg\frac{I_{0}}{I_{T}}
 \end{equation}
-其中，$I_{0}$与$I_{T}$分别是入射光强度与透射光强度。而朗伯-比尔定律（Lambert-Beer's law）指出，光的吸收度与入射光的强度无关，在光程上每等厚层介质吸收相同比例值的光，即\autoref{equ:LBL2}：
+
+其中，$I_{0}$与$I_{T}$分别是入射光强度与透射光强度。而朗伯-比尔定律（Lambert-Beer's law）指出，光的吸收度与入射光的强度无关，在光程上每等厚层介质吸收相同比例值的光，即：
 \begin{equation}
     \label{equ:LBL2}
     A=C \cdot \varepsilon \cdot V
 \end{equation}
+
 其中，$V$是透明介质的体积，$C$是透明介质的浓度，$\varepsilon$则是吸收系数，一般与透明介质的性质、入射光波长及温度等因素相关。
 
-如图所示，在透射式的光电检测中考虑到人体指端各组织对入射光的均有吸收，以波长为$\lambda$的单色光垂直照射指端，则最终指端透射光强度为\autoref{equ:AF1}：
+如图所示，在透射式的光电检测中考虑到人体指端各组织对入射光的均有吸收，若忽略由于散射、反射等因素造成的衰减，以波长为$\lambda$的单色光垂直照射指端，则最终指端透射光强度为：
 \begin{equation}
     \label{equ:AF1}
     I=I_{0}e^{-C_{t}\varepsilon _{t}V_{t}}e^{-C_{v}\varepsilon _{v}V_{v}} e^{-C_{a}\varepsilon _{a}V_{a}} 
 \end{equation}
-其中，下标$t$、$v$、$a$分别代表皮肤肌肉组织、静脉血液、动脉血液等成分。 学者们已经证实皮肤肌肉组织、静脉血液等组织对光的吸收是恒定不变的，同时若忽略由于散射、反射等因素造成的衰减，
-则波长为$\lambda$的单色光垂直照射指端动脉血液，通过动脉血液的透光强度最终为\autoref{equ:AF2}：
+
+其中，下标$t$、$v$、$a$分别代表皮肤肌肉组织、静脉血液、动脉血液等成分。学者们已经证实皮肤肌肉组织、静脉血液等组织对光的吸收是恒定不变的。因此，可对\autoref{equ:AF1}进行精简，以表示通过动脉血液的透光强度：
 \begin{equation}
     \label{equ:AF2}
     I=I_{0}e^{-C_{a}\varepsilon _{a}V_{a}} 
 \end{equation}
 
+当动脉血液的容积因心脏搏动而发生变化$\Delta V_{a}$时，透光强度也将随之变动,将其记为$\Delta I$,则\autoref{equ:AF2}可改写为：
+\begin{equation}
+    \label{equ:AF3}
+    I+\Delta I=I_{0}e^{-C_{a}\varepsilon _{a}(V_{a}+\Delta V_{a})} 
+\end{equation}
 
+将\autoref{equ:AF2}与\autoref{equ:AF3}相除，可得：
+\begin{equation}
+    \label{equ:AF4}
+    \frac{I+\Delta I}{I}=\frac{I_{0}e^{-C_{a}\varepsilon _{a}(V_{a}+\Delta V_{a})}}{I_{0}e^{-C_{a}\varepsilon _{a}V_{a}}}=e^{-C_{a}\varepsilon _{a}\Delta V_{a}} 
+\end{equation}
 
+对\autoref{equ:AF4}两边同时取对数，并根据数学近似关系，若$x\rightarrow 0$,则$\ln(1+x)\approx x$,可得：
+\begin{equation}
+    \label{equ:AF5}
+    \frac{\Delta I}{I}=-C_{a}\varepsilon _{a}\Delta V_{a}
+\end{equation}
 
+将\autoref{equ:AF2}代入\autoref{equ:AF4}，稍作整理可得：
+\begin{equation}
+    \label{equ:AF5}
+    \frac{\Delta V_{a}}{V_{a}}=\frac{1}{\ln(I/I_{0})}\frac{\Delta I}{I}
+\end{equation}
+
+即与个体相关性强的动脉血总的光吸收系数$\varepsilon _{a}$、动脉血浓度$C_{a}$等变量最终与指端血液容积变化率均无关，而后者与该容积透射的光强变化率$\Delta I/I$成正比例关系。PPG信号检测正是依此原理，通过光电转换
+硬件电路检测光信号并从光强变化率中获取指端血液容积变化率的信息。
 \section{小结}
 
 
