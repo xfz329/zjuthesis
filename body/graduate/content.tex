@@ -119,21 +119,31 @@
 \subsection{微循环容积脉搏波血流模型}
 
 \subsection{光电容积脉搏波采集原理}
-依据物理光学中光的吸收定律即朗伯-比尔定律（Lambert-Beer's law），光被透明介质吸收的比例与入射光的强度无关，在光程上每等厚层介质吸收相同比例值的光，即\autoref{equ:LBL}：
+物理光学中，将光通过某种透明介质后被吸收的比例定义为光的吸收度$A$，即\autoref{equ:LBL}：
 \begin{equation}
     \label{equ:LBL}
-    A=\lg\frac{I_{O}}{I_{T}}=\varepsilon \cdot C\cdot V
+    A=\lg\frac{I_{0}}{I_{T}}
 \end{equation}
-其中，$A$为该透明介质下光的吸收度,$I_{O}$与$I_{T}$分别是入射光强度与透射光强度；$V$是透明介质的体积，$C$是透明介质的浓度，$\varepsilon$则是吸收系数，一般与透明介质的性质、入射光波长及温度等因素相关。
-
-$\varepsilon$
-考虑到人体指端各组织对入射光的吸收，则最终指端透射光强度为
+其中，$I_{0}$与$I_{T}$分别是入射光强度与透射光强度。而朗伯-比尔定律（Lambert-Beer's law）指出，光的吸收度与入射光的强度无关，在光程上每等厚层介质吸收相同比例值的光，即\autoref{equ:LBL2}：
 \begin{equation}
-    \label{equ:LBL}
-    \varepsilon=\lg\frac{I_{O}}{I_{T}}
+    \label{equ:LBL2}
+    A=C \cdot \varepsilon \cdot V
+\end{equation}
+其中，$V$是透明介质的体积，$C$是透明介质的浓度，$\varepsilon$则是吸收系数，一般与透明介质的性质、入射光波长及温度等因素相关。
+
+如图所示，在透射式的光电检测中考虑到人体指端各组织对入射光的均有吸收，以波长为$\lambda$的单色光垂直照射指端，则最终指端透射光强度为\autoref{equ:AF1}：
+\begin{equation}
+    \label{equ:AF1}
+    I=I_{0}e^{-C_{t}\varepsilon _{t}V_{t}}e^{-C_{v}\varepsilon _{v}V_{v}} e^{-C_{a}\varepsilon _{a}V_{a}} 
+\end{equation}
+其中，下标$t$、$v$、$a$分别代表皮肤肌肉组织、静脉血液、动脉血液等成分。 学者们已经证实皮肤肌肉组织、静脉血液等组织对光的吸收是恒定不变的，同时若忽略由于散射、反射等因素造成的衰减，
+则波长为$\lambda$的单色光垂直照射指端动脉血液，通过动脉血液的透光强度最终为\autoref{equ:AF2}：
+\begin{equation}
+    \label{equ:AF2}
+    I=I_{0}e^{-C_{a}\varepsilon _{a}V_{a}} 
 \end{equation}
 
-而在图中，
+
 
 
 \section{小结}
@@ -208,29 +218,6 @@ $\varepsilon$
 \section{下一阶段工作展望}
 
 
-\begin{equation}FSS=\left[k_{1}, k_{2}, \ldots \ldots, k_{n-1}\right]\end{equation}
-
-
-\par 如\autoref{tab:sample}所示，这是一张自动调节列宽的表格。
-
-\begin{table}[htbp]
-    \caption{\label{tab:sample}自动调节列宽的表格}
-    \begin{tabularx}{\linewidth}{c|X<{\centering}}
-        \hline
-        第一列 & 第二列 \\ \hline
-        xxx & xxx \\ \hline
-        xxx & xxx \\ \hline
-        xxx & xxx \\ \hline
-    \end{tabularx}
-\end{table}
-
 % \begin{algorithm}
 
 % \end{algorithm}
-\par 如\autoref{equ:sample}，这是一个公式
-
-\begin{equation}
-    \label{equ:sample}
-    A=\overbrace{(a+b+c)+\underbrace{i(d+e+f)}_{\text{虚数}}}^{\text{复数}}
-\end{equation}
-
