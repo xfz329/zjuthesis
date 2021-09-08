@@ -119,7 +119,28 @@
 \subsection{微循环容积脉搏波血流模型}
 
 \subsection{光电容积脉搏波采集原理}
-物理光学中，将光通过某种透明介质后被吸收的比例定义为光的吸收度$A$，即：
+光电容积脉搏波描记法（Photoplethysmography,PPG）最早于1938年由Hertzman等人提出，利用光电转换方法检测组织中血液容积变化的一种技术。由于采集测量过程无创、无痛、迅速、便捷等特性，PPG技术已经在临床
+普及，成为各种监护设备必备的监测参数之一\cite{ldl,lhc}。
+
+PPG检测可依据光的接收方式分为透射式与反射式两种\cite{THOCBPM}，透射式PPG采集原理是使用一定波长光源照射在人体组织表面，由于皮肤、血液、肌肉等各组织的吸收，一部分光发生漫反射，
+一部分投过组织被传感器接收，其中光源与传感器对称分布;反射式工作原理与透射式基本相同，区别在于传感器被放置光源同侧接收漫反射回来的光\cite{THOCBPM,mmt}，如\autoref{fig:led}所示。
+透射式PPG检测一般多用于人体耳垂、指端等部位，反射式PPG一般多用于手腕、
+胸部等其他表层血管发达区域\cite{THOCBPM}。一般认为，透射式检测更方便指示心率的时间关系，而反射式则对于血管容积变化的检测更有优势\cite{mmt}。
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=.7\linewidth]{ch2/led}
+    \caption{\label{fig:led}PPG检测的两种方式}
+\end{figure}
+
+当心脏收缩时外周血容量最多，光吸收量也最大，故检测到的光强度最小；而在心脏舒张时则恰恰相反，外周血容最小，光的吸收量最小，检测到的光强度最大\cite{lhc,cwl}。
+由于人体指端区域毛细血管组织发达等优点，因此在光电容积脉搏波的临床中成为了检测位置的首选。\autoref{fig:ppgab}展示了人体指端各组织对光的吸收情况。
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=.7\linewidth]{ch2/ppgab}
+    \caption{\label{fig:ppgab}PPG信号的光吸收示意图}
+\end{figure}
+
+具体而言，物理光学中，将光通过某种透明介质后被吸收的比例定义为光的吸收度$A$，即：
 \begin{equation}
     \label{equ:LBL}
     A=\lg\frac{I_{0}}{I_{T}}
@@ -133,19 +154,20 @@
 
 其中，$V$是透明介质的体积，$C$是透明介质的浓度，$\varepsilon$则是吸收系数，一般与透明介质的性质、入射光波长及温度等因素相关。
 
-如图所示，在透射式的光电检测中考虑到人体指端各组织对入射光的均有吸收，若忽略由于散射、反射等因素造成的衰减，以波长为$\lambda$的单色光垂直照射指端，则最终指端透射光强度为：
+在透射式的光电检测中考虑到人体指端各组织对入射光的均有吸收，若忽略由于散射、反射等因素造成的衰减，以波长为$\lambda$的单色光垂直照射指端，则最终指端透射光强度为\cite{4122392}：
 \begin{equation}
     \label{equ:AF1}
     I=I_{0}e^{-C_{t}\varepsilon _{t}V_{t}}e^{-C_{v}\varepsilon _{v}V_{v}} e^{-C_{a}\varepsilon _{a}V_{a}} 
 \end{equation}
 
-其中，下标$t$、$v$、$a$分别代表皮肤肌肉组织、静脉血液、动脉血液等成分。学者们已经证实皮肤肌肉组织、静脉血液等组织对光的吸收是恒定不变的。因此，可对\autoref{equ:AF1}进行精简，以表示通过动脉血液的透光强度：
+其中，下标$t$、$v$、$a$分别代表皮肤肌肉组织、静脉血液、动脉血液等成分。学者们已经证实皮肤肌肉组织、静脉血液等组织对光的吸收是恒定不变的\cite{1980Spectrophotometric,4122392}。
+因此，可对\autoref{equ:AF1}进行精简，以表示通过动脉血液的透光强度\cite{PPGYY}：
 \begin{equation}
     \label{equ:AF2}
     I=I_{0}e^{-C_{a}\varepsilon _{a}V_{a}} 
 \end{equation}
 
-当动脉血液的容积因心脏搏动而发生变化$\Delta V_{a}$时，透光强度也将随之变动,将其记为$\Delta I$,则\autoref{equ:AF2}可改写为：
+当动脉血液的容积因心脏搏动而发生极小的变化$\Delta V_{a}$时，透光强度也将随之变动,将其记为$\Delta I$,则\autoref{equ:AF2}可改写为：
 \begin{equation}
     \label{equ:AF3}
     I+\Delta I=I_{0}e^{-C_{a}\varepsilon _{a}(V_{a}+\Delta V_{a})} 
@@ -157,19 +179,20 @@
     \frac{I+\Delta I}{I}=\frac{I_{0}e^{-C_{a}\varepsilon _{a}(V_{a}+\Delta V_{a})}}{I_{0}e^{-C_{a}\varepsilon _{a}V_{a}}}=e^{-C_{a}\varepsilon _{a}\Delta V_{a}} 
 \end{equation}
 
-对\autoref{equ:AF4}两边同时取对数，并根据数学近似关系，若$x\rightarrow 0$,则$\ln(1+x)\approx x$,可得：
+进一步，对\autoref{equ:AF4}两边同时取对数，并根据数学近似关系，若$x\rightarrow 0$,则$\ln(1+x)\approx x$,可得：
 \begin{equation}
     \label{equ:AF5}
     \frac{\Delta I}{I}=-C_{a}\varepsilon _{a}\Delta V_{a}
 \end{equation}
 
-将\autoref{equ:AF2}代入\autoref{equ:AF4}，稍作整理可得：
+将\autoref{equ:AF2}代入\autoref{equ:AF5}，稍作整理可得：
 \begin{equation}
-    \label{equ:AF5}
+    \label{equ:AF6}
     \frac{\Delta V_{a}}{V_{a}}=\frac{1}{\ln(I/I_{0})}\frac{\Delta I}{I}
 \end{equation}
 
-即与个体相关性强的动脉血总的光吸收系数$\varepsilon _{a}$、动脉血浓度$C_{a}$等变量最终与指端血液容积变化率均无关，而后者与该容积透射的光强变化率$\Delta I/I$成正比例关系。PPG信号检测正是依此原理，通过光电转换
+即与个体相关性强的动脉血总的光吸收系数$\varepsilon _{a}$、动脉血浓度$C_{a}$等变量最终均与指端血液容积变化率无关，而后者与该容积透射的光强变化率$\Delta I/I$成正比例关系
+\cite{1980Spectrophotometric,4122392,PPGYY}。PPG信号检测正是依此原理，通过光电转换
 硬件电路检测光信号并从光强变化率中获取指端血液容积变化率的信息。
 \section{小结}
 
