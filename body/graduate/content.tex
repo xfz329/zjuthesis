@@ -236,6 +236,28 @@ Feng Jiang等人基于光电容积脉搏波提出了一种新型形态学特征�
 使用黑箱方法，不追求任何细节，仅通过输入输出信息来研究推导心血管系统模型，具有建立模型过程简单同时不破坏系统任何原有结构等优势。本节后续将分别从两大类模型中各选取一种经典模型进行介绍。
 \subsubsection{双弹性腔模型}
 \subsubsection{现代参数模型}
+由于脉搏波信号具有较强的随机性，且其时变特性符合平稳随机信号的定义，因此，我们可以采用平稳随机信号的线性模型对脉搏波进行建模分析\cite{TJXHCL,PPGYY}。在此基础上，脉搏波信号$X(n)$可以看作是某一线性系统在
+白噪声$W(n)$的激励下而得到的响应。只要确定了白噪声的相关参数，我们便可以将对平稳随机信号PPG的研究转换成对随机信号的线性系统的研究，典型的随机信号参数模型如所示。
+
+根据系统传递函数形式的不同，可以将平稳随机信号的线性参数模型分为滑动平均（moving average，MA）模型，自回归（autoregressive，AR）模型及自回归滑动平均模型（autoregressive moving average）模型等三种。其中，
+ARMA模型是AR模型与MA模型的组合，表示脉搏波信号$X(n)$是由自身若干过去值$X(n-k)$与激励时的白噪声$W(n)$及若干白噪声过去值$W(n-k)$线性组合产生的，即：
+\begin{equation}
+    \label{equ:ARMA}
+    X(n)=-\sum_{k=1}^{p}a_{k}X(n-k)+\sum_{k=0}^{q}b_{k}W(n-k)
+\end{equation}
+对\autoref{equ:ARMA}进行$z$变换，则可得到ARMA模型的传递函数为：
+\begin{equation}
+    \label{equ:ARMAH}
+    H(Z)=\frac{X(Z)}{W(Z)}=\frac{\sum_{k=0}^{q}b_{k}Z^{-k}}{1+\sum_{k=1}^{p}a_{k}Z^{-k}}=\frac{B(Z)}{A(Z)}
+\end{equation}
+可知，ARMA模型既有零点，也有极点，是零极点模型，一般记作$ARMA(p,q)$，其中$p$与$q$分别是AR模型与MA模型的阶次。
+对\autoref{equ:ARMA}进行傅里叶变换，可进一步得到ARMA模型的功率谱估计为\cite{TJXHCL}：
+\begin{equation}
+    \label{equ:ARMAP}
+    \hat{P}_{ARMA}(e^{j\omega} )=
+    \delta _{\omega}^2\left |  \frac{\sum_{k=0}^{p}\hat{b}_{k}e^{-j\omega}}{\sum_{k=0}^{q}\hat{a}_{k}e^{-j\omega}}\right |^2
+    =\delta _{\omega}^2\left |  \frac{\hat{B(e^{j\omega} )}}{\hat{A}(e^{j\omega} )}\right |^2
+\end{equation}
 
 \subsection{微循环容积脉搏波血流模型}
 
