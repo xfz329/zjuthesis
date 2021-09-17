@@ -116,8 +116,12 @@ travillous trophoblast，enEVT），iEVT负责浸润子宫1母体全身炎症反
 
 \section{子痫前期的研究现状}
 现代医学对子痫前期的认知经历了漫长的探索\cite{BJOG2016}。
+\subsection{参数}
+\subsection{设备}
+\subsection{分析技术}
 \subsection{发展史}
 \subsection{风险因子}
+庄彩霞等人\cite{Zhuang2019}对中国境内的98 000余例分娩孕妇进行了分析，得出了中国人群子痫前期的主要独立风险因子包括：慢性高血压疾病、既往子痫前期病史、$BMI≥28kg/m^2$、肾脏疾病、多胎妊娠、心脏病、$BMI 24~28kg/m^2$等。
 \subsection{血压}
 \subsection{生化指标}
 生化指标（biomarker）
@@ -133,8 +137,25 @@ travillous trophoblast，enEVT），iEVT负责浸润子宫1母体全身炎症反
 \subsubsection{1}
 
 \subsection{人工智能技术}
-今年来，由于计算机领域人工智能技术的高速发展，以及现代化设备的普遍使用，
+近年来，由于计算机领域人工智能技术的高速发展，以及现代化设备的普遍使用，
 相关研究者也开始尝试在子痫前期的识别、判断乃至预测等研究内容上引入人工智能技术。
+
+2021年，Rong Guo等人\cite{Guo2021}构建了C4.5决策树(decision tree, DT)、自适应增强(adaptive boost, AdaBoost)及多层感知机（multilayer perceptron，MLP）三种分类器，利用集成学习投票决策，
+从众多胎盘$mRNA$表达基因样本中筛选出了识别子痫前期的最佳生化指标，成功地将原始48个指标降维至13个，同时将分类识别准确性从开始的$79\%$提高至$82.2\%$。
+
+Surama Biswas等人
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{ch1/ai}
+    \caption{\label{fig:ai}部分对子痫前期的机器学习研究}
+\end{figure}
+
+
+\subsection{设备技术}
+（一）血管回声跟踪技术（echo tracking，ET）
+张秀丽等人\cite{Zhang2014}利用超声技术对孕妇颈动脉弹性进行了检测，研究发现子痫前期孕妇颈总动脉内膜厚度无显著性差异，但反应血管弹性的指标会有一定程度的改变，具体表现为僵硬系数、压力应变弹性系数及脉搏波传播速度升高和顺应性系数降低，
+对包括子痫前期在内的孕高症的防治具有一定程度的指导意义。
+
 
 \subsection{存在的不足与分析}
 综合上述分析，对子痫前期的早期识别与检测可从按以下思路开展深入探索与研究。
@@ -142,7 +163,10 @@ travillous trophoblast，enEVT），iEVT负责浸润子宫1母体全身炎症反
 
 
 \section{脉搏波在子痫前期领域研究现状}
-
+DM Carty等人对脉搏波增强指数（augmentation index，AIx）进行了研究，
+Kathleen Tomsin等人\cite{Tomsin2012}对脉搏波传输时间参数（pulse transit time, PTT）进行了研究，结果显示除肝静脉和胸主动脉外，子痫前期的早期（n=12）及晚期患者(n=14)的PTT较正常孕妇(n=16)数值更低。
+Feng Jiang等人基于光电容积脉搏波提出了一种新型形态学特征分层面积比（hierarchical area ratio，HAR）参数。
+2018年，Ying Feng等人提出
 
 
 \section{脉搏波时域特征研究现状}
@@ -211,7 +235,7 @@ travillous trophoblast，enEVT），iEVT负责浸润子宫1母体全身炎症反
 血流弹性、阻力等生理变量分为生理参数模型与非生理参数模型两大类。\cite{PPGYY}生理参数模型关注心血管系统中的所有细节，模型中的各个参数变量均有较好的解释，也能与实际生理病理现象有较好的对应；而非生理参数则是
 使用黑箱方法，不追求任何细节，仅通过输入输出信息来研究推导心血管系统模型，具有建立模型过程简单同时不破坏系统任何原有结构等优势。本节后续将分别从两大类模型中各选取一种经典模型进行介绍。
 \subsubsection{双弹性腔模型}
-\subsubsection{自回归平均移动模型}
+\subsubsection{现代参数模型}
 
 \subsection{微循环容积脉搏波血流模型}
 
@@ -303,9 +327,7 @@ PPG检测可依据光的接收方式分为透射式与反射式两种\cite{THOCB
 \section{小结}
 
 
-\chapter{脉搏波特征点检测算法}
-
-\chapter{及特征参数集的构建}
+\chapter{脉搏波特征点检测及特征参数集的构建}
 \section{引言}
 \section{信号预处理}
 \section{脉搏波波形检测及纠错}
@@ -313,16 +335,12 @@ PPG检测可依据光的接收方式分为透射式与反射式两种\cite{THOCB
 \subsection{角度、幅值、长度等}
 \section{小结}
 
-\chapter{基于数据特征集的模型构建}
+\chapter{基于数据特征集的模型构建及评估}
 \section{引言}
 
 \section{数据来源}
 \section{构建方法分析}
 \section{模型构建}
-\section{小结}
-
-\chapter{模型评估}
-\section{引言}
 \section{评估方式与标准}
 \section{具体模型表现对比}
 \section{小结}
