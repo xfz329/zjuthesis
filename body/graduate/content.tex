@@ -18,12 +18,12 @@
 据世界卫生组织统计，子痫前期在孕妇中发病率高达5\%-10\%，是除体内大出血外孕妇死亡的第二大危险因素\cite{LCT2006}，每年可导致全球范围内约76 000名孕妇死亡,并进一步导致约500 000
 名胎儿/婴儿的死亡\cite{DAM2015,LCT2006}（如\autoref{fig:dhd}所示）。为推广普及人们对危及母婴生命安全的子痫前期的认知，同时教育女性了解她们当前及长期的健康风险，
 全球孕妇保健组织自2017年起将每年的5月22日确定为世界子痫日（world preeclampsia day）（如\autoref{fig:wpd}所示）。
-\begin{figure}[htb]
+\begin{figure}[h]
     \centering
     \includegraphics[width=.7\linewidth]{ch1/dhd}
     \caption{\label{fig:dhd}因妊娠期高血压疾病死亡孕妇的国家分布比例}
 \end{figure}
-\begin{figure}[htb]
+\begin{figure}[h]
     \centering
     \includegraphics[width=.7\linewidth]{ch1/wpd}
     \caption{\label{fig:wpd}2021年世界子痫日主题：Preeclampsia: Beyond Pregnancy}
@@ -235,6 +235,8 @@ PLGF是由绒毛状细胞滋养层膜细胞滋养层合成，是一种糖基化�
 \subsection{分析及检测设备}
 一、标准医疗设备
 
+目前临床所使用的PE筛查检测设备主要以检测生化标志物为主，国内外医疗器械公司研发推出了一系列软硬件综合分析系统。但整体而言，国内医疗器械设备公司研发起步晚，检测指标较国外设备数目少。
+
 1. 德国勃拉姆斯公司的产前检测设备
 
 勃拉姆斯公司(B·R·A·H·M·S GmbH)一直致力于对各种生物标志物检测的研究中，其公司产品KRYPTOR GOLD与KRYPTOR compact PLUS\cite{B·R·A·H·M·S2021}可完成对AFP、Free $\beta$hCG、$\beta$hCG、PAPP-A、PlGF、
@@ -254,13 +256,27 @@ sFlt-1、uE3等在内的多种生物标志物的检测，
 \end{figure}
 2.美国珀金埃尔默公司的产前检测设备
 
+珀金埃尔默公司(PerkinElmer)提供全面的筛查和诊断解决方案组合，推进早期临床检测在成医疗领域的应用。该公司针对PE在内的多种孕期综合并发症提出了完整的检测方案，其AutoDELFIA系列、
+VICTOR2系列及DELFIA Xpress系列的多款免疫荧光分析仪平台\cite{perkinelmer2021}均可完成对AFP、Free $\beta$hCG、$\beta$hCG、PAPP-A、PlGF、
+sFlt-1、uE3等在内的PE生物标志物检测标定，如\autoref{fig:PerkinElmer}所示。此外，该公司位硬件检测设备配套研发了LifeCycle软件分析系统，实现了从样品接收-检验检测-风险评估-化验报告的全自动工作流程。
+\begin{figure}[h]
+    \centering
+    \subfigure[VICTOR2 D荧光检测仪]{
+    \includegraphics[width=5.5cm]{ch1/Victor-2D-72ppi}
+    }
+    \quad
+    \subfigure[DELFIA® Xpress免疫分析仪平台]{
+    \includegraphics[width=5.5cm]{ch1/dx}
+    }
+    \caption{\label{fig:PerkinElmer}珀金埃尔默公司的两款检测设备}
+\end{figure}
 
 3. 中国宁波奥丞生物科技有限公司的荧光检测设备
 
 作为新兴的中国医疗器械设备公司，奥丞专注于从疾病早期发现、诊断、预防到监测，力求通过提供可靠、快速与便捷的体外诊断产品为诊疗提供精准的检测结果。
-目前，奥丞公司的多款化学荧光免疫平台产品均支持对PE生物标记物PLGF、sFlt-1等指标的检测\cite{aucheer2021}。此外，奥丞还根据实际临床需求，
+目前，奥丞公司的多款化学荧光免疫平台产品均支持对PE生物标记物PLGF、sFlt-1等两种指标的检测\cite{aucheer2021}。此外，奥丞还根据实际临床需求，
 提供了微小型床边诊断设备与大型实验室标定两种类型的设备，如\autoref{fig:aucheer}所示。
-\begin{figure}[htbp]
+\begin{figure}[h]
     \centering
     \subfigure[微流控荧光免疫定量检测系统 iSort300]{
     \includegraphics[width=5.5cm]{ch1/isort300}
@@ -275,12 +291,14 @@ sFlt-1、uE3等在内的多种生物标志物的检测，
 
 二、微型智能设备
 
-2019年，Iuliana Marin等人\cite{Marin2019}通过一款智能腕部血压检测穿戴设备对孕妇的血压数据进行了监测，同时综合考虑孕妇的年龄、体重等风险因素，通过维特比动态规划算法（Viterbi algorithm），判断决策孕妇子痫前期的患病可能。Iuliana Marin团队
+随着移动智能医疗和可穿戴式设备的发展，通过微型智能设备实现对PE相关指标的实时、动态、多场景检测也逐渐成为了新的研究热点。但整体而言，基于智能设备的PE检测设备仍处于研发阶段，能真正实现多场景检测的成熟的PE分析系统尚未出现。
+2019年，Iuliana Marin等人\cite{Marin2019,Marin2020}通过一款智能腕部血压检测穿戴设备对孕妇的血压数据进行了监测，同时综合考虑孕妇的年龄、体重等风险因素，通过维特比动态规划算法（Viterbi algorithm），判断决策孕妇子痫前期的患病可能,该系统原理框架图如所示。Iuliana Marin团队
 通过对105名试验人员进行了测试，结果显示，最终的生成模型可以达到总体准确率80\%，敏感性为92.5\%，特异性为72\%。
-一、血管回声跟踪技术（echo tracking，ET）
-
-张秀丽等人\cite{Zhang2014}利用超声技术对孕妇颈动脉弹性进行了检测，研究发现子痫前期孕妇颈总动脉内膜厚度无显著性差异，但反应血管弹性的指标会有一定程度的改变，具体表现为僵硬系数、压力应变弹性系数及脉搏波传播速度升高和顺应性系数降低，
-对包括子痫前期在内的孕高症的防治具有一定程度的指导意义。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{ch1/mobile}
+    \caption{\label{fig:mobile}基于智能穿戴设备的血压检测系统框架图}
+\end{figure}
 
 \subsection{分析技术}
 近年来，由于现代化设备的普遍使用致使医学检查过程各项数据激增，同时计算机领域人工智能技术的不断创新发展，相关研究者也开始尝试在子痫前期的识别、判断乃至预测等研究内容上引入人工智能技术。
