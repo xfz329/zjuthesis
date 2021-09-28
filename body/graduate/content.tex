@@ -189,7 +189,7 @@
     \right.  
 \end{equation}
 其中，$P(H|x)$为观测值x属于$H$的后验概率，选出从观测值x所有类别中选出后验概率最大的，即为观测值所属类别。上述筛选过程中孕妇的生理、生化检测结果统称为生物标志物（biomarker），生理参数主要包括血压、子宫动脉搏动指数等，生化参数
-则种类繁多、新参数层出不穷，这里选取血清妊娠血浆蛋白A与血清胎盘成长因子为代表进行介绍。
+（biomarker）则种类繁多、新参数层出不穷\cite{Rene2008,Zhong2015}，这里选取血清妊娠相关蛋白A（Pregnancy associated plasma protein A，PAPP-A）与血清胎盘成长因子（placental growth factor，PLGF）为代表进行介绍。
 
 1. 血压
 
@@ -204,22 +204,37 @@ Leona C.Y. Poon\cite{Poon2008}等人对5590名单胎孕妇的一项研究表明�
 Stamilio等人\cite{Stamilio2000}发现，孕妇第一次产前检查时出现MAP>90毫米汞柱与其PE患病的可能相关性显著。
 
 2. 子宫动脉搏动指数
-在孕妇妊娠20-24周时，若子宫动脉多普勒血流检测发现UPTI上升或出现子宫动脉舒张早期切迹等印象。
-$H_{0}^2$
 
-生化指标（biomarker）
+UTPI是国际妇产科联盟与妇产科超声学会所推荐的对PE进行筛查的参数之一\cite{FIGO,Sotiriadis2019}。\autoref{fig:utpi}展示了一例孕早期经腹多普勒超声检查子宫动脉的结果\cite{Sotiriadis2019}。
+UTPI本质上也是一种血液动力学参数,其基本定义与MAP类似，是子宫动脉收缩期峰值流量$A$减去舒张末期流量$B$除以平均流量$M$\cite{Cnossen2008}：
+\begin{equation}
+    \label{equ:utpi}
+    UTPI=\frac{A-B}{M}
+\end{equation}
+同时，常与UTPI一起检测的还有子宫动阻力动指数（Resistance index，RI）、子宫动脉（peak systolic to late diastolic ratio，S/D R）及切迹等参数\cite{Cnossen2008}。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{ch1/utpi}
+    \caption{\label{fig:utpi}孕早期经腹多普勒超声检查子宫动脉}
+\end{figure}
+Jeltsje S. Cnossen等人\cite{Cnossen2008}此前众多学者研究的回顾表明，在孕妇妊娠$11^{+0}-13^{+6}$周时，若子宫动脉多普勒血流检测发现UTPI上升或出现子宫动脉舒张早期切迹等印象，则该孕妇PE患病的可能将增加\cite{OAG9,Plasencia2008}。
 
-3. 胎盘生长因子
+3.血清妊娠相关蛋白A
 
-4. 妊娠相关血浆蛋白A
+PAPP-A是由细胞滋养层分泌的一种金属蛋白胰岛素生长因子结合蛋白，在胎盘的生长发育中起着重要的作用。PE已被证明与低水平的PAPP-A循环有关\cite{FIGO}。但相关临床研究表明，仅使用PAPP-A单指标无法准确预测PE\cite{Smith2002}。
+因此，PAPP-A常与其他检测参数一起配合使用\cite{Poon2009,Tan2018}。 
 
+4. 胎盘生长因子
 
+PLGF是由绒毛状细胞滋养层膜细胞滋养层合成，是一种糖基化二聚糖蛋白，具有血管生成合血管修复的功能。临床研究显示，PLGF的血管生成功能在妊娠过程中会发挥很大作用，PLGF水平或其抑制受体水平的变化可能与PE的发生有关\cite{Levine2004,Ahmad2004}。
+同时，临床证据表明，在孕早期患有PE的孕妇其PLGF的浓度较正常妊娠孕妇更低\cite{Chau2017}。
+2019年，Duhig等人\cite{Duhig2019}对1019名疑似PE的孕妇进行了追踪实验，在整个实验期间一直持续性的进行PLGF水平检测。结果显示，针对实验组（n=573），PE诊断时间的中位数为4.1天，而对照组（n=446）这一数值仅为1.9天，证明PLGF可以有效的缩短PE确诊的时间。
+2015年，Zhong等人\cite{Zhong2015}对多项血清生化指标在PE预测方面的性能进行了比较，结果显示，PLGF的综合性能优于其他诸如胎盘蛋白13（Plancenta protein 13，PP13）、PAPP-A
+等其他血清生化指标。鉴于此，\textbf{FIGO组织特别将胎盘生长因子推荐为PE检测首选生化指标}\cite{FIGO}。
 
-
-
-
-\subsection{检测设备}
+\subsection{分析及检测设备}
 一、血管回声跟踪技术（echo tracking，ET）
+
 张秀丽等人\cite{Zhang2014}利用超声技术对孕妇颈动脉弹性进行了检测，研究发现子痫前期孕妇颈总动脉内膜厚度无显著性差异，但反应血管弹性的指标会有一定程度的改变，具体表现为僵硬系数、压力应变弹性系数及脉搏波传播速度升高和顺应性系数降低，
 对包括子痫前期在内的孕高症的防治具有一定程度的指导意义。
 
@@ -598,17 +613,6 @@ B为潮波（重搏前波），C为重搏波波谷，D为重搏波波峰，E为�
 \caption{\label{fig:ppg}脉搏波波形图}
 \end{figure}
 脉搏波一般可在指尖、桡动脉等浅表动脉处测得。由于脉搏波的动力是心脏的搏动，传播时又受动脉的血管弹性、管壁厚度，管道张力等特性的影响，因此它可以反映人体心血管系统的健康状况。
-\section{脉搏波时域特征研究现状}
-1. AIx
-
-2. PWV
-
-3. PSI
-
-4. ADR
-
-5. PTT
-
 
 \section{小结}
 
@@ -626,6 +630,17 @@ B为潮波（重搏前波），C为重搏波波谷，D为重搏波波峰，E为�
 \section{引言}
 \section{信号预处理}
 \section{脉搏波波形检测及纠错}
+\section{脉搏波时域特征研究现状}
+1. AIx
+
+2. PWV
+
+3. PSI
+
+4. ADR
+
+5. PTT
+
 \section{时域特征参数设计与特征集构建}
 \subsection{角度、幅值、长度等}
 \section{小结}
