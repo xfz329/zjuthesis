@@ -13,3 +13,7 @@
 \appto{\@floatboxreset}{\special{pdf:code q}}
 \preto{\@endfloatbox}{\special{pdf:code Q}}
 \makeatother
+
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
