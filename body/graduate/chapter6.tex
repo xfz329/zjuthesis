@@ -128,11 +128,31 @@ Java的抽象与继承特性，综合使用抽象类、接口等设计解决开�
 可以返回包含多个实例的集合，即同时返回多个复核标准同时对初筛结果进行检测。
 
 上述设计可以有效提高脉搏波波形检测的准确性，并且可以按需求灵活定制筛选标准、调整检波精度。与此同时，根据实际需要和检波效果等因素，检测算法的Detector、Checker及Keeper等部分均可自行改动、调整、优化，且不影响主程序中的代码执行，从而实现了
-检波算法的各环节的高内聚性及算法与系统整体的低耦合性。
+检波算法的各环节的高内聚性及算法与系统整体之间的低耦合性。
 
 四、信号特征算法设计
 
-* 对特征集构建拓展——方便随时研发新的特征参数进入特征集
+基于脉搏波的波形检测算法无疑是客户端软件的核心功能之一，且是客户端软件中改动变化最频繁、最容易因代码的更迭而发生增删修改的部分。降低特征算法的更迭对客户端软件的整体影响，是对特征算法整体设计的基本要求。本研究中，对特征算法
+的整体设计如\autoref{fig:feature}所示。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{ch6/feature}
+    \caption{\label{fig:feature}特征计算的算法流程图}
+\end{figure}
+
+与前小节的设计类似，$AbstractFeature.class$是个抽象父类，规定了所有特征应有的一般属性，包括特征名及其缩写$Name$，特征所代表的含义$Describition$等描述信息。而在$AbstractFeature.class$的子类$SpesificFeatureX.class$中才根据具体设计思想等完成对
+该特征的计算过程$calculate()$。值得注意的是，在\autoref{fig:feature}中，$AbstractFeature.class$额外定了两个属性$Order$与$Prefixes$。
+这是因为某些特定的特征在计算时，可能需要一定的先导条件，即需要预先计算好一定的先导特征。因此，每个特征在初始化时，按照先导条件从无到有、从少到多、从简单到复杂的原则，给每个具体实现子类$SpesificFeatureX.class$设置好其计算顺序
+$Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子类$SpesificFeatureX.class$的$Order$遍历，即可保证所有特征均按指定顺序全部计算完毕。
+
+而上述先导设置过程，可以在$SpesificFeatureX.class$定义时设定，但为了保持更多的调整灵活性。最终在实现时软件系统时额外定义了$FeatureFactory.class$，用以集中完成并封装所有需进行计算的特征子类的初始化工作。而在主程序中调用$FeatureFactory.class$
+的$GetAllFeatures()$方法时，其返回值将是包含所有特征子类的列表，并特征子类的$Order$值决定了该子类在返回列表里的排列顺序，即真正的执行顺序。若软件系统需要增加某一新型特征算法，只需设计新的$SpesificFeature.class$，实现其具体的计算过程，
+随后在$FeatureFactory.class$设置好对应$Order$与所需的$Prefixes$等在内的初始化工作，即可在不影响主程序的情况下，完成了功能拓展。
+
+此外\autoref{fig:feature}也给出了特定脉搏波波形所有特征的具体计算流程。首先，客户端需完成数据预处理工作，获取所有待计算的脉搏波完整波形。其次，通过实例化$FeatureFactory.class$并调用$GetAllFeatures()$方法以获取所有待计算的特征集合。
+随后，针对特征集合里面的每个$SpesificFeatureX.class$特征，分别调用其$calculate()$方法完成计算。由于计算完成，特定波形的具体特征值仍然保持在$SpesificFeatureX.class$中，故最后，需要将结果保持至该波形对应的具体$Pulse.class$实例中，
+即执行最后的$pulseX.Store(feature)$操作。另外，不难发现，$FeatureFactory.class$的实例化过程会随着待检波形的更迭而不断进行，最终会导致Java虚拟机反复重复创建。为减少该冗余操作，最后客户端使用了设计模式中的Singlon单例模式对$FeatureFactory.class$
+进行了再次设计，即只可以创建一个$FeatureFactory.class$的实例，此后所有调用$FeatureFactory.class$的创建方法只会返回第一次调用时创建的实例。
 
 五、数据导出与数据上传设计
 
