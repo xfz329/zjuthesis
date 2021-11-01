@@ -165,22 +165,23 @@ $Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子�
 
 扩展标记语言(Extensible Markup Language，XML) \cite{xml,Li2016}与JavaScript对象标记法（JavaScript Object Notation，JSON）\cite{json,Crockford2006}是两种服务器端流行的数据交换格式。两者均可按照实际需求灵活定制存储规则，对较为复杂的数据结构
 支持性好、拓展性强。但由于XML是基于标签描述数据的，在描述数组类型数据时，引入了大量冗余信息。而JSON则对数组类数据有着更好的支持，有着更快的读写速度与更高的存储效率\cite{Nurseitov2009}。因此，软件分析系统最终使用JSON作为数据交换格式，
-而在具体实现时使用了中国阿里巴巴公司的开源JSON解析库fastjson\cite{fastjson}进行编码。最后的导出数据如\autoref{fig:json}所示，除基本数据特征外，与数据相关的文件信息及孕妇人口统计学信息也被保存至JSON文件。
+而在具体实现时使用了中国阿里巴巴公司的开源JSON解析库fastjson\cite{fastjson}进行编码。最后的导出数据如\autoref{lst:json}所示，除基本数据特征外，与数据相关的文件信息及孕妇人口统计学信息也被保存至JSON文件。
 \lstinputlisting[caption={导出数据示意},label=lst:json,style=myJava]{code/ch6/out.json}
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.6\linewidth]{ch6/json}
-    \caption{\label{fig:json}导出数据示意}
-\end{figure}
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=.6\linewidth]{ch6/json}
+%     \caption{\label{fig:json}导出数据示意}
+% \end{figure}
 
 六、多平台支持
 
-由于Java的设计特性，上述功能在实现后可直接在不同PC操作系统及而Android手机操作系统下顺利运行。综合考虑软件实际的应用前景后，软件分析系统对Windows平台及Andoird平台进行了适配开发。但由于Android系统自身的维护更新，
-部分PC端的可用的Java库可能不被Android端支持。因此，软件系统的相应功能需要针对性调整，使用Android系统支持的库，如\autoref{tab:platform}所示。由于此过程中较少涉及算法模式的设计，故正文对具体开发实现过程不再赘述。
+综合考虑软件实际的使用场合与应用前景，本研究最终选择了对Windows PC平台及Andoird移动平台进行了适配开发。由于Java的天然的跨平台特性，前文提及的多项软件设计在实现后可直接在PC端与移动端顺利运行。另一方面，Android系统独立于Java社区，主要由美国Google公司
+负责维护及更新，因此经常会出现某些Java组件在PC端与Android端的生命周期不一致的现象，并直接导致部分PC端可用的Java组件在新版本的Android系统下不被支持。因此，软件系统的特定功能需要针对具体操作系统平台选取恰当的组件完成功能开发。图\autoref{tab:platform}
+展示了PC端与Android移动端相同软件功能在具体实现组件上的差异。由于此过程中较少涉及算法模式的设计，故正文对具体开发实现过程不再赘述。
 \begin{table}[htbp]
     \centering
     \fontsize{10}{6}
-    \caption{\label{tab:platform}Windows与Andoird平台下功能开发模块对比}
+    \caption{\label{tab:platform}Windows与Andoird平台下部分软件功能使用的开发组件对比}
     \begin{tabularx}{\linewidth}{X<{\centering}X<{\centering}X<{\centering}}
         \toprule \textbf{功能特征}&\textbf{Windows}&\textbf{Android}\\
         \midrule 
