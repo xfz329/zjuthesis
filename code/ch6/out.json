@@ -1,0 +1,29 @@
+{
+    "Version Num": "0.12",
+    "File Name": "cx_wavePLETH_2018040210.csv",
+    "Person Name": "cx",
+    "Sample Time": "2018040210",
+    "PE State": 0,
+    "PPG Records": {
+      "Pulses": [
+        {
+          "Features": [
+            {
+              "Index": 0,
+              "Abbr": "STDZ",
+              "Values": [
+                0.694,
+                308.314,
+                0.834,
+                168.028
+              ]
+            },
+            …
+          ],
+          …
+        },
+        …
+      ],
+    },
+  }
+  

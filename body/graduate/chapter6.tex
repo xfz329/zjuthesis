@@ -159,30 +159,69 @@ $Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子�
 
 五、数据导出
 
-当客户端完成对生理信号的分析后，如何将分析处理结果进行保存是客户端软件最后需要解决的问题。
+当客户端完成对生理信号的分析后，如何将分析处理结果进行保存是客户端软件最后需要解决的问题。导出的数据是以检测的PPG波形为基础，包含该波形所有形态特征。而在本研究中，多种新设计的特征参数往往是以向量的形式出现，因此最后导出的结果将会大量出现波形——
+特征——向量（pulse-feature-vector）这种二级树状结构。此外信号特征算法出现引入了新的信号特征、对已有特征值数值的保存形式进行更改等更迭将会直接引起数据存储格式的变化。而常见的基于列表式的cvs、txt等对这种树状数据格式的支持较差，
+需要借助新的数据储存格式来实现。
 
-
-
+扩展标记语言(Extensible Markup Language，XML) \cite{xml,Li2016}与JavaScript对象标记法（JavaScript Object Notation，JSON）\cite{json,Crockford2006}是两种服务器端流行的数据交换格式。两者均可按照实际需求灵活定制存储规则，对较为复杂的数据结构
+支持性好、拓展性强。但由于XML是基于标签描述数据的，在描述数组类型数据时，引入了大量冗余信息。而JSON则对数组类数据有着更好的支持，有着更快的读写速度与更高的存储效率\cite{Nurseitov2009}。因此，软件分析系统最终使用JSON作为数据交换格式，
+而在具体实现时使用了中国阿里巴巴公司的开源JSON解析库fastjson\cite{fastjson}进行编码。最后的导出数据如\autoref{fig:json}所示，除基本数据特征外，与数据相关的文件信息及孕妇人口统计学信息也被保存至JSON文件。
+\lstinputlisting[caption={导出数据示意},label=lst:json,style=myJava]{code/ch6/out.json}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{ch6/json}
+    \caption{\label{fig:json}导出数据示意}
+\end{figure}
 
 六、多平台支持
 
-至PC本地文件及上传至服务器
-保存至PC本地文件及上传至服务器供后续模块调用是客户端软件最后需要解决的问题。
+由于Java的设计特性，上述功能在实现后可直接在不同PC操作系统及而Android手机操作系统下顺利运行。综合考虑软件实际的应用前景后，软件分析系统对Windows平台及Andoird平台进行了适配开发。但由于Android系统自身的维护更新，
+部分PC端的可用的Java库可能不被Android端支持。因此，软件系统的相应功能需要针对性调整，使用Android系统支持的库，如\autoref{tab:platform}所示。由于此过程中较少涉及算法模式的设计，故正文对具体开发实现过程不再赘述。
+\begin{table}[htbp]
+    \centering
+    \fontsize{10}{6}
+    \caption{\label{tab:platform}Windows与Andoird平台下功能开发模块对比}
+    \begin{tabularx}{\linewidth}{X<{\centering}X<{\centering}X<{\centering}}
+        \toprule \textbf{功能特征}&\textbf{Windows}&\textbf{Android}\\
+        \midrule 
+        数据上传&HttpClient\cite{HttpClient}&Retrofit\cite{Retrofit}\\
+        数据图表显示&JFreeChart\cite{JFreeChart}&MPAndroidChart\cite{MPAndroidChart}\\
+        \bottomrule
+    \end{tabularx}
+\end{table}
 
 七、UI界面
+
+1. PC界面
+
+\autoref{fig:pc_ui}展示了软件分析系统在PC上运行效果。可通过文件菜单选择对原始数据的打开及经分析后特征数据的导出。编辑菜单可以完成数据的预处理、分析等功能。帮助菜单则给出软件开发单位、软件版本号等信息。软件
+的主界面展示了打开数据文件的波形图，可以通过鼠标完成拖动、缩放等功能。对波形的波峰波谷等特征点的分析也在图中有所标示。右键菜单同时还提供了修改绘图颜色字体属性，支持选中当前波形直接复制至文件及连接打印机打印等功能。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.8\linewidth]{ch6/pc_ui}
+    \caption{\label{fig:pc_ui}PC软件运行界面}
+\end{figure}
+
+2. Android界面
+
+\autoref{fig:aui}展示了软件分析系统在Android上运行效果。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{ch6/android_ui}
+    \caption{\label{fig:aui}Android软件运行界面}
+\end{figure}
+
+\subsection{数据存储模块}
+一、数据库设计
+
+二、模型存储设计
+
+三、模型调用设计
 
 \subsection{模型训练模块}
 一、数据获取
 
 二、模型训练
-
-\subsection{数据存储模块}
-一、数据库设计
-
-
-二、模型存储设计
-
-三、模型调用设计
 
 \section{系统验证与测试}
 界面
