@@ -9,7 +9,7 @@ PPG信号重博波特征不明显等问题。这些问题可能与具体硬件�
 由于重博波特征不明显无法经由软件算法人工恢复，故本章节暂不对任何重博、切迹进行计算处理，后续也无任何与之相关的PPG信号特征参数。本章涉及的信号分析流程如\autoref{fig:process}所示。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\linewidth]{ch4/sampleSignal}
+    \includegraphics[width=0.9\linewidth]{ch4/samplesignal}
     \caption{\label{fig:samplesignal}一名被试实采PPG信号（片段）}
 \end{figure}
 \begin{figure}[htbp]
@@ -19,10 +19,38 @@ PPG信号重博波特征不明显等问题。这些问题可能与具体硬件�
 \end{figure}
 
 \subsection{信号滤波}
+通常而言，数字滤波是生理信号处理的必不可少的过程，此前的诸多学者也在滤波处理领域提出了多种不同的滤波算法。但对本研究而言，由于临床标准监护仪导出所得的PPG信号质量高、干扰噪声较少，因此，本小节中仅使用了较为简单的5点滑动平均滤波器对其进行了处理，
+\begin{equation}
+    \label{equ:filter}
+    y(n)=\frac{y(n-2)+y(n-1)+y(n)+y(n+1)+y(n+2)}{5}
+\end{equation}
+经滑动滤波前后的PPG信号对比图如\autoref{fig:filter}所示。信噪比（signal-noise rate，SNR）与均方误差（root mean square error，RMSE）是最常用的评估滤波效果的两个指标，若以$X$表示原始信号，$Y$表示滤波后信号，则有
+\begin{equation}
+    \label{equ:snr}
+    SNR=10\log_{10}\frac{\sum_{i=1}^{n}{(X_i-\mathop{X} \limits^-})^2}{\sum_{i=1}^{n}{(X_i-Y_i})^2}
+\end{equation}
+\begin{equation}
+    \label{equ:rmse}
+    RMSE=\sqrt{\frac{\sum_{i=1}^{n}{(X_i-Y_i})^2}{n}}
+\end{equation}
+对\autoref{fig:filter}信号段进行检测，可得$SNR=33.19$，$RMSE=6.27$。此时，PPG信号波形特征已比较清晰，可以满足后续分析需求。
+\begin{figure}[htbp]
+    \centering
+    \subfigure[原始PPG信号]{
+    \includegraphics[width=6cm]{ch4/before}
+    }
+    \quad
+    \subfigure[平滑滤波后PPG信号]{
+    \includegraphics[width=6cm]{ch4/after}
+    }
+    \caption{\label{fig:filter}平滑滤波前后PPG信号对比}
+\end{figure}
 
 \subsection{波形检测}
 脉搏波波形的正确检测是后续所有特征计算的基础，波形检测的准确性及抗干扰能力显得尤为重要。传统的波形检测一般都是对波形进行一次性检测，然后再人工判别检测的准确性。本小节则改进了这一流程，充分利用“宽进严出”的筛选原则，
-利用PPG波峰的局部最大值原理进行初筛，随后，对按照多种标准对初筛结果进行复核确认，最终按照预设的策略有选择的得到最终波形检测结果，这一过程如\autoref{fig:detect}所示。
+利用PPG波峰的局部最大值原理进行波形初筛，随后特创新性地引入了PPG波形检测结果的多标准复核与决策确认机制。由于本研究中采集得到的PPG信号不存在运动伪差干扰，采集得到的所有有效PPG波形信号应具有高度相似性，且有效PPG信号与干扰信号、畸变信号在
+形态特征、统计特征方面均存在较大差异，存在合理设计相应算法实现自动区分的可行性。因此，本研究设计了系列的PPG波形共性标准，所有初筛“可疑波形”经特定标准复核后均会得到基于该标准的一个输出判定结果。检测算法的决策模块负责对多个标准的复核结果进行
+最终决策，将“可疑波形”判断识别为正确波形或错检干扰段。上述复合检测过程如\autoref{fig:detect}所示。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\linewidth]{ch4/detect}
@@ -31,27 +59,93 @@ PPG信号重博波特征不明显等问题。这些问题可能与具体硬件�
 
 一、波形检测
 
-波峰与波谷是脉搏波的最基本特征点，也是检测波形其他特征点的基础。顾名思义，波峰是特定PPG波形内的最大值，在其左邻域内PPG幅值单调递增，右邻域内PPG幅值单调递减。
+波峰与波谷是脉搏波的最基本特征点，也是检测波形其他特征点的基础。顾名思义，波峰是特定PPG波形内的最大值，在其左邻域内PPG幅值单调递增，右邻域内PPG幅值单调递减，则显然波峰与波谷必然是原始数据中的局部极大值与局部极小值点。
+只要搜索原始信号得到局部极大值与极小值，再使两者之间满足一定的坐标间隔（即脉搏波相应的间期规则），即可对得到的波峰与波谷点进行初步确认，这一过程如\autoref{alg:detect}所示。
 
-检测分别波峰，波谷 再按规则进行时间组装对应
+\begin{breakablealgorithm}
+    \caption{PPG信号检测特征点检测}
+    \label{alg:detect}
+    \begin{algorithmic}[1] %每行显示行号
+        \Require 待检原始数据数组$Points$，数组大小$n$，原始采样率$samplerate$
+        \Ensure 包含起始点及峰值点坐标的所有初筛合格的波形
+        \Function {Detect}{$Points, samplerate$}
+            \State 初始化$pulse$
+            \If {$left < right$}
+                \State $middle \gets (left + right) / 2$
+                \State $result \gets result +$ \Call{MergerSort}{$Array, left, middle$}
+                \State $result \gets result +$ \Call{MergerSort}{$Array, middle, right$}
+                \State $result \gets result +$ \Call{Merger}{$Array,left,middle,right$}
+            \EndIf
+            \State \Return{$pulse$}
+        \EndFunction
+    \end{algorithmic}
+\end{breakablealgorithm}
 
-2
+\uline{纯文字版}
+
+波峰与波谷是脉搏波的最基本特征点，也是检测波形其他特征点的基础。顾名思义，波峰是特定PPG波形内的最大值，在其左邻域内PPG幅值单调递增，右邻域内PPG幅值单调递减，则显然波峰与波谷必然是原始数据中的局部极大值与局部极小值点。
+故对PPG波形特征点定位可按以下步骤进行。
+
+1. 波峰波谷定位
+
+计算并遍历原始信号的一阶导数$X^{'}$，若出现$X_i^{'}\ge 0$且$X_{i+1}^{'}\le 0$，则说明出现了极大值。此时，定义时长一大一小的两个搜索窗，分别以当前数据点为窗中心，向前后双向检测并返回窗内最大值的位置。
+若两个搜索窗的返回结果一致，则说明返回值就是一个波峰点。结合正常波形的形态特点，本研究将搜索窗时长分别设置为0.1s与0.3s。前者可以直接剔除掉时间跨度过小的局部极值，后者可以保证重博峰点不会被误检为整个波峰。
+为防止同一波峰被多次检测，只有与上一成功检测的波峰位置点不同返回值才会被加入波峰缓存数组$Peaks$中。
+
+在实际检测时，常会出现一阶导数在某邻域内多次出现过零点，导致多个极大极小值连续出现。1 时长 2 对称 3 缓存而由于研究采用了中心对称搜索窗，实际当第一个过零点出现时，这一邻域内的所有极值点均已被检索过。此外，为提高进一步搜索窗返回窗内最大值位置的效率，
+上一次搜索的返回值会被缓存，由于窗口单向时移滑动的特点，
+
+对波谷的定位可参考上述波峰定位过程稍加修改后在一遍遍历中一同完成。类似地，波谷位置也被保存至缓存数组$Troughs$中。
+
+2. 完整波形确认
+
+只要搜索原始信号得到局部极大值与极小值，再使两者之间满足一定的坐标间隔（即脉搏波相应的间期规则），即可对得到的波峰与波谷点进行初步确认，这一过程如\autoref{alg:detect}所示。
+
 
 二、异常信号处理
 
-对正常PPG波形，上述检测算法可以实现较好的检测效果，但对干扰信号的检测能力不足，使得具有且仅具有PPG波形一般特征的“疑似波峰”得到确认并保留，
+对正常PPG波形，上述检测算法可以实现较好的检测效果，但对干扰信号的检测能力不足、对畸变信号的识别判断能力有限。在前期调试时，上述检测算法极易对类似\autoref{fig:samplesignal}中的无效数据段信号进行识别与错误检测。
+因此，波形检测算法引入了二次评估与最终决策机制以减少此类错检发生的概率。
 
 1.评估标准
 
-\Rnum{1}.能量
+从被试采集得到的脉搏波信号，其有效PPG波形应具有一定的相似性，在形态特征与统计特征上应高度贴近。基于此信息，本研究设计了多个使得具有且仅具有PPG波形一般特征的初筛“可疑波峰”可以通过的评估标准，
+用以识别区分PPG波形与干扰畸变信号。设脉搏波的相对幅值$A$是采样时间$t$的函数，将其表示为$A(t)$。
 
-\Rnum{2}.方差
+\Rnum{1}.能量与功率标准
 
-\Rnum{3}.时间
+参考信号与系统中对时间信号能量的定义\cite{Alan2019}，则单个PPG信号的能量可表示为
+\begin{equation}
+    \label{equ:ppge}
+    E=\sum_{t=t_{start}}^{t_{end}}|A(t)|^2
+\end{equation}
+同理可得该PPG波形在其持续时间内的平均功率为
+\begin{equation}
+    \label{equ:ppgp}
+    P=\frac{E}{t_{end}-t_{start}}=\frac{\sum_{t=t_{start}}^{t_{end}}|A(t)|^2}{t_{end}-t_{start}}
+\end{equation}
+能量标准基于PPG波形在原始采集数值上（包含PPG信号中AD成份）的相似性。所有初筛波形功率求其均值，可得筛选波形的平均功率$P_{mean}$。本研究规定通过能量标准复核的波形其功率必须在$P_{mean}$的一定倍数区间内$[0.5P_{mean},1.5P_{mean}]$。
 
-\Rnum{4}.其他
+\Rnum{2}.方差与标准差标准
 
+若原始PPG信号中AD成份波动较大（如基线严重漂移），会使部分波形功率数值偏离上述正常$P_{mean}$合理倍数区间，导致这部分波形被能量与功率标准错误识别为干扰。因此，本研究引入了方差与标准差标准以重点关注PPG波形AC成份的相似性。
+若将特定PPG波形持续时间内所有采样点均值定义为$\mathop{A} \limits^-$，则该波形的标准差可表示为
+\begin{equation}
+    \label{equ:ppgstd}
+    S=\sqrt{\frac{\sum_{i=1}{n}{(A_i-\mathop{A} \limits^-})^2}{n}}=\sqrt{\frac{\sum_{i=1}^n{A_i}^2}{n}-{\mathop{A} \limits^-}^2}
+\end{equation}
+类似地，可以计算所有初筛波形的标准差均值为$S_{mean}$。本研究规定通过标准差复核的波形其标准差必须在$S_{mean}$的一定倍数区间内$[0.5S_{mean},1.5S_{mean}]$。
 
+\Rnum{3}.时间关系标准
+
+此外，由于波形检测算法中已经设定了最小间期与最大间期分别为111与222。若参照心率定义一分钟中内有效脉搏波的数量为脉率(Pulse Rate，PR)。那么，原则上若待检波形的PR
+
+则理论上无法检测。 在实际检测过程中可视具体信号对相应时间参数进行调整。
+
+\Rnum{4}.其他标准
+
+目前为空，本研究目前在检测算法的复核阶段未使用任何其他标准。但由于不同人群、不同采集设备、不同采集环境下采集得到的PPG信号可能形态上千差万别，同时干扰信号也往往不尽相同。上述时间、能量、方差等标准仍有不足以甄别区分有效信号与无效干扰的可能。
+故在此特保留其他标准占位，供后续研究视情况开发设计新标准从而进行功能性拓展。
 
 2.决策过程
 
