@@ -84,8 +84,28 @@ B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和�
       \end{tabularx}%
 \end{table}%  
 \subsection{数据导出}
-由于GE公司并没有公开B650数据通讯协议，研究无法获得各项生理参数的原始数据信息。经与技术支持沟通，最后B650监护仪可将血氧脉搏波数据以时间——脉搏波相对幅值键值对以CVS的文件格式导出，如\autoref{lst:csv}所示。最终导出的PPG信号采样率为100$Hz$。
-\lstinputlisting[caption={导出PPG数据示意},label=lst:csv,style=myJava]{code/ch3/out.csv}
+由于GE公司并没有公开B650数据通讯协议，研究无法获得各项生理参数的原始数据信息。经与技术支持沟通，最后B650监护仪可将血氧脉搏波数据以时间——脉搏波相对幅值键值对以CVS的文件格式导出，如\autoref{tab:exporteddata}所示。
+其中最终导出的PPG信号采样率为100$Hz$。
+\begin{table}[htbp]
+      \centering
+      \caption{\label{tab:exporteddata}原始导出PPG数据示意}
+      \begin{tabularx}{\linewidth}{X<{\centering}X<{\centering}X<{\centering}}
+            % \toprule
+            \rowcolor{gray!10}
+            \textbf{Time,}&\textbf{Pleth(\%),}&\textbf{Event,}\\
+            % \midrule
+            \rowcolor{gray!10}0402.10:05:47.665178075,&-27,&,\\
+            \rowcolor{gray!10}0402.10:05:47.675065560,&-51,&,\\
+            \rowcolor{gray!10}0402.10:05:47.684953045,&-82,&,\\
+            \rowcolor{gray!10}0402.10:05:47.694840530,&-116,&,\\
+            \rowcolor{gray!10}0402.10:05:47.704728015,&-148,&,\\
+            \rowcolor{gray!10}0402.10:05:47.714615500,&-176,&,\\
+            \rowcolor{gray!10}0402.10:05:47.724502985,&-199,&,\\
+            \rowcolor{gray!10}0402.10:05:47.734390470,&-220,&,\\
+            \rowcolor{gray!10}…&…&…\\
+            % \bottomrule
+      \end{tabularx}
+\end{table}
 \subsection{数据复核}
 本研究共采集了81例孕妇的PPG数据段，其中实验组有44例患有PE的孕妇数据，对照组有37条正常妊娠孕妇数据。经复核校验，有x例数据因为采集时间过短、信号质量过低等原因被剔除。
 最终，有x例有效PPG数据进入下一阶段的分析研究，其中实验组x例，对照组x例。
