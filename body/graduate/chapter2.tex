@@ -18,8 +18,7 @@
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\linewidth]{ch2/ppg1}
-    \caption{\label{fig:ppgd}主动脉-手臂复合动脉系统示意图及其对桡动脉-指动脉处动脉脉搏波的影响。两个相关部位，一个在肾动脉的高度，另一个在髂分叉附近，产生了跟踪原发动脉的相关脉冲（灰色）
-    左心室射血（黑色\cite{THOCBPM}}
+    \caption[主动脉-手臂复合动脉系统示意图]{\label{fig:ppgd}主动脉-手臂复合动脉系统及其对桡动脉-指动脉处动脉脉搏波的影响。两个相关部位，一个在肾动脉的高度，另一个在髂分叉附近，产生了跟踪原发动脉的相关脉冲（灰色）左心室射血（黑色\cite{THOCBPM}}
 \end{figure}
 
 综上可知，脉搏波蕴含着丰富的血液动力学信息，可以通过脉搏波的形态、强度、速率、节律等特征反映心脏的功能与状态，也可以反映出各级动脉及分支中血管壁弹性、血管阻力、血液黏度等信息。
@@ -220,26 +219,13 @@ PPG检测可依据光的接收方式分为透射式与反射式两种\cite{THOCB
 一部分投过组织被传感器接收，其中光源与传感器对称分布;反射式工作原理与透射式基本相同，区别在于传感器被放置光源同侧接收漫反射回来的光\cite{THOCBPM,mmt}，如\autoref{fig:led}所示。
 透射式PPG检测一般多用于人体耳垂、指端等部位，反射式PPG一般多用于手腕、
 胸部等其他表层血管发达区域\cite{THOCBPM}。一般认为，透射式检测更方便指示心率的时间关系，而反射式则对于血管容积变化的检测更有优势\cite{mmt}。
-\begin{figure}[htb]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=.7\linewidth]{ch2/led}
     \caption{\label{fig:led}PPG检测的两种方式}
 \end{figure}
 
 当心脏收缩时外周血容量最多，光吸收量也最大，故检测到的光强度最小；而在心脏舒张时则恰恰相反，外周血容最小，光的吸收量最小，检测到的光强度最大\cite{lhc,cwl}。
-人体耳垂、手指及脚趾等毛细血管组织发达处均可稳定采集PPG信号，同一位置左右边采集的波形高度相似，不同位置的波形略有差异\cite{Allen2000,Allen2007},如\autoref{fig:contrast}所示。
-综合考虑信号质量及测量实际操作过程，指端成为了临床PPG检测位置的首选\cite{cwl}。\autoref{fig:ppgab}展示了人体指端各组织对检测光的吸收情况。
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.6\linewidth]{ch2/contrast}
-    \caption{\label{fig:contrast}人体双侧多部位PPG信号对比}
-\end{figure}
-\begin{figure}[htb]
-    \centering
-    \includegraphics[width=.7\linewidth]{ch2/ppgab}
-    \caption{\label{fig:ppgab}PPG信号的光吸收示意图}
-\end{figure}
-
 具体而言，物理光学中，将光通过某种透明介质后被吸收的比例定义为光的吸收度$A$，即：
 \begin{equation}
     \label{equ:LBL}
@@ -260,7 +246,12 @@ PPG检测可依据光的接收方式分为透射式与反射式两种\cite{THOCB
     I=I_{0}e^{-C_{t}\varepsilon _{t}V_{t}}e^{-C_{v}\varepsilon _{v}V_{v}} e^{-C_{a}\varepsilon _{a}V_{a}} 
 \end{equation}
 
-其中，下标$t$、$v$、$a$分别代表皮肤肌肉组织、静脉血液、动脉血液等成分。学者们已经证实皮肤肌肉组织、静脉血液等组织对光的吸收是恒定不变的\cite{1980Spectrophotometric,4122392}。
+其中，下标$t$、$v$、$a$分别代表皮肤肌肉组织、静脉血液、动脉血液等成分。学者们已经证实皮肤肌肉组织、静脉血液等组织对光的吸收是恒定不变的\cite{1980Spectrophotometric,4122392}，如\autoref{fig:absorb}所示。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.7\linewidth]{ch2/absorb}
+    \caption{\label{fig:absorb}PPG信号的光吸收示意图}
+\end{figure}
 因此，可对\autoref{equ:AF1}进行精简，以表示通过动脉血液的透光强度\cite{PPGYY}：
 \begin{equation}
     \label{equ:AF2}
@@ -293,6 +284,14 @@ PPG检测可依据光的接收方式分为透射式与反射式两种\cite{THOCB
 
 即与个体相关性强的动脉血总的光吸收系数$\varepsilon _{a}$、动脉血浓度$C_{a}$等变量最终均与指端血液容积变化率无关，而后者与该容积透射的光强变化率$\Delta I/I$成正比例关系，从而排除了个体差异等因素的影响
 \cite{1980Spectrophotometric,4122392,PPGYY}。PPG信号检测正是依此原理，通过光电转换硬件电路检测光信号并从光强变化率中获取指端血液容积变化率的信息。
+
+人体耳垂、手指及脚趾等毛细血管组织发达处均可稳定采集PPG信号，同一位置左右边采集的波形高度相似，不同位置的波形略有差异\cite{Allen2000,Allen2007},如\autoref{fig:contrast}所示。
+综合考虑信号质量及测量实际操作过程，指端成为了临床PPG检测位置的首选\cite{cwl}。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.7\linewidth]{ch2/contrast}
+    \caption{\label{fig:contrast}人体双侧多部位PPG信号对比}
+\end{figure}
 \section{光电容积脉搏波的一般特征}
 \subsection{时频特征}
 在自回归滑动平均模型小节已经提及，PPG信号是平稳随机信号的一种。PPG也和其他人体电信号类似，有着医学信号的一般特点\cite{Ma2015,Qiu2012,Naraharisetti2011,Miao2020}。
