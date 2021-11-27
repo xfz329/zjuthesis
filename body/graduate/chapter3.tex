@@ -110,8 +110,9 @@ B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和�
 本研究共采集了81例孕妇的PPG数据段，其中实验组有44例患有PE的孕妇数据，对照组有37条正常妊娠孕妇数据。经复核校验，有x例数据因为采集时间过短、信号质量过低等原因被剔除。
 最终，有x例有效PPG数据进入下一阶段的分析研究，其中实验组x例，对照组x例。
 
-\section{人口统计学特征分析}
-\subsection{基本分析方法}
+\section{常用变量分析方法与性能度量方法}
+本研究中需多次衡量变量之间的关系性、评估分类器分类效果及性能对比。本小节将对上述过程中涉及的研究方法及工具指标进行介绍。
+\subsection{变量分析方法}
 一、相关性分析
 
 相关性分析是指对两个具备相关性的变量元素进行分析，衡量两个变量因素的相关密切程度\cite{Zhang2019}。相关性的元素之间需要存在一定的联系或者概率才可以进行相关性分析。一般可以通过散点图即可直接观察变量之间的联系，如\autoref{fig:relation}所示。
@@ -137,12 +138,53 @@ B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和�
 
 在本研究中，由于年龄、血压、心率等待检参数样本量较小、具体分布未知，因此，对这些变量的分析均采用了非参数检验。
 
-三、混淆矩阵
+\subsection{性能度量方法}
+一、混淆矩阵
 
-四、ROC曲线与AUC
+混淆矩阵（confusion matrix）是评估分类器分类效果优劣的常用工具\cite{Zhou2016,Aurélien2018}。其总体思路就是分别统计A类别实例被划分成B类别实例的数目。理论上混淆矩阵的行列没有上限，而在实际应用中，二分类任务的混淆矩阵是最常见的。
+此时，将样例依据其真实所属类别与分类器预测类别进行组合可得到四种结果：真阳性（true positive，TP）、假阳性（false positive，FP）、真阴性（true negative，TN）及假阴性（false negative，TN）,如\autoref{tab:cm}所示。此时显然有
+$TP+FP+TN+FN=\text{样例总数}$。
+\begin{table}[htbp]
+      \centering
+      \caption{\label{tab:cm}二分类任务的混淆矩阵}
+      \begin{tabular}{ccc}
+      \toprule
+      \multicolumn{1}{c}{\multirow{2}[4]{*}{\textbf{真实情况}}} & \multicolumn{2}{c}{\textbf{预测结果}} \\
+            \cmidrule{2-3}          & 阳性（1） & 阴性（0） \\
+      \midrule
+      阳性（1） & 真阳性（TP） & 假阴性（FN） \\
+      阴性（0） & 假阳性（FP） & 真阴性（TN） \\
+      \bottomrule
+      \end{tabular}%
+\end{table}%
+
+为量化分类器的具体性能，人们在混淆矩阵的基础上衍生定义了一系列数字指标，包括召回率（recall，亦称查全率）、精准率(precison，亦称查准率)、准确率（accuracy）、灵敏性(sensitivity，亦称真阳性率)及特异性(specificity，亦称真阴性率)，
+如\autoref{equ:measures}所示。其中，查全率与查准率是应用的最广泛的两个指标\cite{Zhou2016,Aurélien2018}。一般而言，查全率与查准率是对相互矛盾的度量指标，一个指标性能的提高意味着另一个指标性能的下降。通常只有在简单分类任务中，
+才能同时获得较高的查准率与查全率。这称为精度-召回率权衡。为评估查全率与查准率均不相等的分类器性能，人们进一步定义了$F_1\text{分数}$，如\autoref{equ:f1}所示。$F_1\text{分数}$是召回率与精准率的谐波均值。
+召回率与精准率相近的分类器易获得更高的$F_1\text{分数}$。
+\begin{equation}
+      \label{equ:measures}
+      \left \{
+      \begin{aligned}
+            Recall      &=\frac{TP}{TP+FN}            \\
+            Precison    &=\frac{TP}{TP+FP}          \\
+            Accuracy    &=\frac{TP+TN}{TP+FP+TN+FN} \\
+            Sensitivity &=\frac{TP}{TP+FN}       \\
+            Specificity &=\frac{TN}{FP+TN}       \\
+      \end{aligned}
+      \right.
+\end{equation}
+\begin{equation}
+      \label{equ:f1}
+      F_1=\frac{2}{\frac{1}{Precison}+\frac{1}{Recall}}=\frac{2\cdot Precison\cdot Recall}{Precison+Recall}=\frac{TP}{TP+\frac{FN+FP}{2}}
+\end{equation}
+
+在评估分类器性能时需要根据场景，从\autoref{equ:measures}与\autoref{equ:f1}中灵活选取恰当的评价指标。
+
+二、ROC曲线与AUC
 
 
-\subsection{人口统计学特征}
+\section{人口统计学特征分析}
 
 \section{小结}
 本章对实验数据进行了详细的说明，从实验具体流程、到具体采集设备等在内对采集方案进行了详细的说明。此外，本章也同时对被试孕妇的人口统计学特征进行了研究分析，结果表明，被试人群中，排除了等因素的干扰，
