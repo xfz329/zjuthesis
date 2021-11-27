@@ -158,19 +158,19 @@ $TP+FP+TN+FN=\text{样例总数}$。
       \end{tabular}%
 \end{table}%
 
-为量化分类器的具体性能，人们在混淆矩阵的基础上衍生定义了一系列数字指标，包括召回率（recall，亦称查全率）、精准率(precison，亦称查准率)、准确率（accuracy）、灵敏性(sensitivity，亦称真阳性率)及特异性(specificity，亦称真阴性率)，
-如\autoref{equ:measures}所示。其中，查全率与查准率是应用的最广泛的两个指标\cite{Zhou2016,Aurélien2018}。一般而言，查全率与查准率是对相互矛盾的度量指标，一个指标性能的提高意味着另一个指标性能的下降。通常只有在简单分类任务中，
+为量化分类器的具体性能，人们在混淆矩阵的基础上衍生定义了一系列数字指标，包括查全率（recall）、查准率(precison)、准确率（accuracy)及特异性(specificity)，如\autoref{equ:measures}所示。其中，查全率亦称召回率、
+灵敏性(sensitivity）或真阳性率（true positive rate，TPR），查准率亦称精准率，特异性亦称真阴性率。查全率与查准率是应用的最广泛的两个指标\cite{Zhou2016,Aurélien2018}。一般而言，查全率与查准率是对相互矛盾的度量指标，
+一个指标性能的提高意味着另一个指标性能的下降。通常只有在简单分类任务中，
 才能同时获得较高的查准率与查全率。这称为精度-召回率权衡。为评估查全率与查准率均不相等的分类器性能，人们进一步定义了$F_1\text{分数}$，如\autoref{equ:f1}所示。$F_1\text{分数}$是召回率与精准率的谐波均值。
 召回率与精准率相近的分类器易获得更高的$F_1\text{分数}$。
 \begin{equation}
       \label{equ:measures}
       \left \{
       \begin{aligned}
-            Recall      &=\frac{TP}{TP+FN}            \\
+            Recall      &=\frac{TP}{TP+FN}         \\
             Precison    &=\frac{TP}{TP+FP}          \\
             Accuracy    &=\frac{TP+TN}{TP+FP+TN+FN} \\
-            Sensitivity &=\frac{TP}{TP+FN}       \\
-            Specificity &=\frac{TN}{FP+TN}       \\
+            Specificity &=\frac{TN}{TN+FP}       \\
       \end{aligned}
       \right.
 \end{equation}
@@ -181,8 +181,27 @@ $TP+FP+TN+FN=\text{样例总数}$。
 
 在评估分类器性能时需要根据场景，从\autoref{equ:measures}与\autoref{equ:f1}中灵活选取恰当的评价指标。
 
-二、ROC曲线与AUC
+二、ROC曲线、AUC与约登指数
 
+受试者工作特征（Receiver Operating Characteristic，ROC）曲线是另一种常用于二分类问题的分析工具。ROC绘制的是真阳性率和假阳性率（false positive rate，FPR）之间的变化关系，其中
+\begin{equation}
+      \label{equ:fpr}
+      FPR=\frac{TN}{TN+FP}=1-Specificity
+\end{equation}
+因此，ROC曲线也被称为灵敏度与1-特异性曲线。绘制曲线时，以分类器的预测结果对样例进行升序排列，依次将样本作为阳性进行预测，计算对应的TPR与FPR后，可得一坐标点$({FPR}_i,{TPR}_i)$，最后将所有坐标点连线即可，如所示。
+其中，虚线表示纯随机分类器的ROC曲线，理想性能的分类器应无限逼近左上角（即$\text{坐标点}(0,1)$）。
+
+在衡量多个分类器性能优劣时，常将分类器对应的ROC曲线下面积作为判据，即为AUC（Area Under Curve）。纯随机分类器ROC的AUC数值为0.5，而理想分类器ROC的AUC数值为1，如所示。
+
+此外，约登指数（Youden Index）也是用来评价分类器效果的一个指标。若在评估分类器性能时，给予将分类器假阴性和假阳性以相同权重，即可应用约登指数
+\begin{equation}
+      \label{equ:yi}
+      \begin{aligned}
+            YI&=Sensitivity-(1-Specificity)\\
+            &=Sensitivity+Specificity-1
+      \end{aligned}
+\end{equation}
+一般认为，当YI取值最大时，此时对应的分类阈值为最佳阈值\cite{cwl}。
 
 \section{人口统计学特征分析}
 
