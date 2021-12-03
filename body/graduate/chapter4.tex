@@ -148,7 +148,7 @@ PPG信号重博波特征不明显等问题。这些问题可能与具体硬件�
 
 4.基线偏移标准
 
-基线偏移最值标准是对PPG波形的起点与终点幅值差异程度的衡量，若两者的差值过大基线漂移严重，则说明该波形很可能处于一段干扰中，如\autoref{fig:samplesignal}中约37s-45s期间的信号。
+基线偏移最值标准是对PPG波形的起点与终点幅值差异程度的衡量。若两者的差值过大说明基线漂移严重，而这往往意味着波形处于一段较强的干扰中，具有较大的信号畸变可能，如\autoref{fig:samplesignal}中约37s-45s期间的信号。
 若规定PPG波形起点与终点中幅值的较大的为$A_G$，较小值为$A_L$，同时规定波峰幅值为$A_P$，则基线偏移程度可用以下公式衡量
 \begin{equation}
     \label{equ:baselinestd}
@@ -487,12 +487,18 @@ ADR
 
 K值
 
-K值是罗志昌等人提出的一个基于脉搏波面积变化的形态学无量纲参数\cite{Luo1988,PPGYY}，如所示。其具体定义为
+K值是罗志昌等人提出的一个基于脉搏波面积变化的形态学特征量\cite{Luo1988,PPGYY}，如\autoref{fig:k}所示。其具体定义为
 \begin{equation}
     \label{equ:ppgk}
     K=\frac{P_m-P_d}{P_s-P_d}
 \end{equation}
-其中，$P_m=\frac{1}{T}\int_{0}^{T}P(t)dt$为一个心动周期内脉搏压力$P(t)$的平均值，$P_s$与$P_d$分别为收缩压与舒张压。罗志昌等人的研究表明，K值依赖与脉搏波的波形动态变化，同时能够在很大程度上反应血管外周阻力与血管壁硬化程度等生理因素的变化。
+其中，$P_m=\frac{1}{T}\int_{0}^{T}P(t)dt$为一个心动周期内脉搏压力$P(t)$的平均值，$P_s$与$P_d$分别为收缩压与舒张压，因此，K值也是一个无量纲参数。罗志昌等人的研究表明，K值依赖于脉搏波的波形动态变化，
+同时能够在很大程度上反应血管外周阻力与血管壁硬化程度等生理因素的变化。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{ch4/k}
+    \caption{\label{fig:k}K值的提取}
+\end{figure}
 
 
 4. 通用无量纲参数与高阶统计量
@@ -537,7 +543,7 @@ K值是罗志昌等人提出的一个基于脉搏波面积变化的形态学无�
 SPV与PPV
 
 人体的呼吸作用会导致胸腔内血压出现变化，使得血容量不同的人群在脉搏波的幅值存在一定的差异性。动脉压变异性（arterial pressure variation，APV）分析则是评估人体体液状况的常见方法，
-其中，收缩压变异性（Systolic pressure variation，SPV)与脉压变异性(pulse pressure variation，PPV)是两个常见的参数指标\cite{GE2021,Michard1999,Perel1987,Michard2005}。其具体定义如下\cite{GE2021}:
+其中，收缩压变异性（Systolic pressure variation，SPV)与脉压变异性(pulse pressure variation，PPV)是两个常见的参数指标\cite{GE2021,Michard1999,Perel1987,Michard2005}，如\autoref{fig:spv}所示。其具体定义如下\cite{GE2021}:
 \begin{equation}
     \label{equ:spv}
     SPV=SBP_{max}-SBP_{min}
@@ -547,6 +553,11 @@ SPV与PPV
     PPV=\frac{PP_{max}-PP_{min}}{\frac{PP_{max}+PP_{min}}{2}}\cdot 100\%=\frac{PP_{max}-PP_{min}}{PP_{max}+PP_{min}}\cdot 200\%
 \end{equation}
 其中，$SBP_{max}$与$SBP_{min}$分别代表时间窗内收缩压的最大值和最小值；$PP_{max}$与$PP_{min}$代表时间窗内脉压最大值和最小值；时间窗的宽度与步进值均为5s，即每5s完成一次两个参数的计算工作。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{ch4/spv}
+    \caption{\label{fig:spv}SPV与PPV示意}
+\end{figure}
 
 通常而言，APV是基于有创血压的数据进行相关分析工作的，但本研究在借鉴其相关参数思路的和临床设备设计标准的基础上，也将SPV与PPV应用到无创的PPG分析过程中来。
 
@@ -576,3 +587,5 @@ SPV与PPV
 
 \subsection{PPG时域描述特征集构建}
 \section{小结}
+本章主要对脉搏波信号的预处理过程与参数描述进行了详细了的说明。预处理方面，本研究重点介绍了经改进的模块化脉搏波的定位算法，该算法可以有效识别干扰段，提高检测精度。随后对信号滤波、重搏波检测、基线漂移、插值及标准化过程进行了介绍。
+脉搏波的描述方面，首先介绍了脉搏波描述的意义，其次从基于波形与基于时间窗等两大类，分别介绍了常见的脉搏波时域参数与本研究提出的新型描述参数，并在两者的基础上构建了脉搏波的一般时域特征描述集合，为后续数据分析部分打下坚实的基础。
