@@ -484,7 +484,9 @@ PSI
 3. 面积类特征参数
 
 面积类参数计算依赖与脉搏波波形与基线所形成的面积，其计算主要通过按时间方向对PPG波形曲线积分完成。王梦婷在其研究中指出\cite{mmt}，PPG上升支主要受心脏射血量与血压脉动影响，下降支主要受外周阻力影响。其中，上升支随心脏射血量增加愈益陡峭，射血时间越短，
-其形态图像越向左上方凸出；而当外周阻力增加时，会导致动脉血管壁弹性下降，下降支波形向上方凸出。描述该过程中的常见面积类参数如\autoref{fig:areafeature}及\autoref{tab:areafeature}所示。
+其形态图像越向左上方凸出；而当外周阻力增加时，会导致动脉血管壁弹性下降，下降支波形向上方凸出。本研究中使用了描述该过程中的上升支面积、下降支面积、
+全周期面积、上升支面积比、下降支面积比、全周期面积比及（下降支）面积差值比（Area Difference Ratio，ADR）\cite{Feng2018}等参数。
+以上参数的具体定义参见\autoref{fig:areafeature}及\autoref{tab:areafeature}。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{ch4/areafeature}
@@ -498,9 +500,9 @@ PSI
     \toprule
     \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
     \midrule
-    上升支面积 &       &  $S_r=\int_{T_S}^{T_P}P(t)dt$\\
-    下降支面积 &       &  $S_f=\int_{T_P}^{T_E}P(t)dt$\\
-    全周期面积 &       &  $S_t=\int_{T_S}^{T_E}P(t)dt$\\
+    上升支面积      &           &  $S_r=\int_{T_S}^{T_P}P(t)dt$\\
+    下降支面积      &           &  $S_f=\int_{T_P}^{T_E}P(t)dt$\\
+    全周期面积      &           &  $S_t=\int_{T_S}^{T_E}P(t)dt$\\
     上升支面积比    &           &   $R_r=\frac{S_r}{S_{\triangle OPS}}$    \\
     下降支面积比    &           &   $R_f=\frac{S_f}{S_{\triangle OPE}}$    \\
     全周期面积比    &           &   $R_t=\frac{S_t}{S_{\triangle SPE}}$    \\
@@ -509,8 +511,7 @@ PSI
     \end{tabularx}
 \end{table}
 
-
-值得一提地是，ADR\cite{Feng2018}
+值得一提的是，Feng等人已经将ADR应用于子痫前期的研究中，其研究结果显示患有PE的孕妇与正常孕妇在PPG信号的ADR参数上具有显著差异（0.752 VS 0.723，P<0.01）\cite{Feng2018}。
 
 此外，罗志昌等人提出了另一种基于脉搏波面积变化的形态学特征量K值\cite{Luo1988,PPGYY}，如\autoref{fig:k}所示。其具体定义为
 \begin{equation}
