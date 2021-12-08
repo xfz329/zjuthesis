@@ -25,7 +25,7 @@ PPG信号重博波特征不明显等问题。这些问题可能与具体硬件�
     \label{equ:filter}
     Y(n)=\frac{X(n-2)+X(n-1)+X(n)+X(n+1)+X(n+2)}{5}
 \end{equation}
-经滑动滤波前后的PPG信号对比图如\autoref{fig:filter}所示。信噪比（signal-noise rate，SNR）与均方误差（root mean square error，RMSE）是最常用的评估滤波效果的两个指标，
+经滑动滤波前后的PPG信号对比如\autoref{fig:filter}所示。信噪比（signal-noise rate，SNR）与均方误差（root mean square error，RMSE）是最常用的评估滤波效果的两个指标，
 \begin{equation}
     \label{equ:snr}
     SNR=10\log_{10}\frac{\sum_{i=1}^{n}{(X_i-\mathop{X} \limits^-})^2}{\sum_{i=1}^{n}{(X_i-Y_i})^2}
@@ -203,6 +203,9 @@ PPG信号重博波特征不明显等问题。这些问题可能与具体硬件�
     H(x)=c_{\arg \max\limits_{j} \sum_{i=1}^T{w_ih_i^j(x)}}
 \end{equation}
 其中，$w_i\ge0$，$\sum_{i=1}^T{w_i=1}$。
+
+\autoref{equ:mvoting}至\autoref{equ:wvoting}并没有限制单个学习器输出值类型，而常见的学习器输出值$h_i^j(x)$有类标记与类概率两大类。而基于这两类输出值进行的投票也相应被称为硬投票与软投票，类标记与类概率的特点可总结概括为\autoref{tab:vote}所示。
+需要注意的是，硬投票可能会导致最终的分类结果由多数概率值较低的学习器决定，而非少数概率更高、更有分类把握的学习器。因此，在条件允许的情况下，应尽可能使用软投票机制进行决策。
 \begin{table}[htbp]
     \centering
     \caption{\label{tab:vote}类标记与类概率特点对比}
@@ -217,9 +220,6 @@ PPG信号重博波特征不明显等问题。这些问题可能与具体硬件�
         \Xhline{1pt}
     \end{tabularx}
 \end{table}
-
-\autoref{equ:mvoting}至\autoref{equ:wvoting}并没有限制单个学习器输出值类型，而常见的学习器输出值$h_i^j(x)$有类标记与类概率两大类。而基于这两类输出值进行的投票也相应被称为硬投票与软投票，类标记与类概率的特点可总结概括为\autoref{tab:vote}所示。
-需要注意的是，硬投票可能会导致最终的分类结果由多数概率值较低的学习器决定，而非少数概率更高、更有分类把握的学习器。因此，在条件允许的情况下，应尽可能使用软投票机制进行决策。
 
 由于本研究尚未对上述PPG波形评估器的类概率进行相关研究，因而选择将各评估器的输出暂时直接限定为类别标记输出为0或1，最终基于硬投票策略进行初筛波形的类型判别。
 
@@ -500,9 +500,9 @@ PSI
     \toprule
     \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
     \midrule
-    上升支面积      &           &  $S_r=\int_{T_S}^{T_P}P(t)dt$\\
-    下降支面积      &           &  $S_f=\int_{T_P}^{T_E}P(t)dt$\\
-    全周期面积      &           &  $S_t=\int_{T_S}^{T_E}P(t)dt$\\
+    上升支面积      &  从波形起点至峰值点对波形曲线积分所得面积值         &  $S_r=\int_{T_S}^{T_P}P(t)dt$\\
+    下降支面积      &  从波形峰值点至终点对波形曲线积分所得面积值         &  $S_f=\int_{T_P}^{T_E}P(t)dt$\\
+    全周期面积      &  脉搏波波形在一个完整周期内的积分所得面积值         &  $S_t=\int_{T_S}^{T_E}P(t)dt$\\
     上升支面积比    &           &   $R_r=\frac{S_r}{S_{\triangle OPS}}$    \\
     下降支面积比    &           &   $R_f=\frac{S_f}{S_{\triangle OPE}}$    \\
     全周期面积比    &           &   $R_t=\frac{S_t}{S_{\triangle SPE}}$    \\
@@ -511,15 +511,22 @@ PSI
     \end{tabularx}
 \end{table}
 
-值得一提的是，Feng等人已经将ADR应用于子痫前期的研究中，其研究结果显示患有PE的孕妇与正常孕妇在PPG信号的ADR参数上具有显著差异（0.752 VS 0.723，P<0.01）\cite{Feng2018}。
+值得一提的是，Feng等人已经将ADR应用于子痫前期的研究中，其研究结果显示患有PE的孕妇与正常孕妇在PPG信号的ADR参数上具有统计意义上的显著差异（0.752 VS 0.723，P<0.01）\cite{Feng2018}。但从\autoref{tab:areafeature}中的参数定义不难发现，
+ADR与下降支面积比完全线形相关，因此，本研究后续分析仅使用了两者中的下降支面积比参数。
 
-此外，罗志昌等人提出了另一种基于脉搏波面积变化的形态学特征量K值\cite{Luo1988,PPGYY}，如\autoref{fig:k}所示。其具体定义为
+早在上个世纪八十年代，罗志昌等人就提出了一种基于脉搏波面积变化的形态学特征无量纲参数K值\cite{Luo1988,PPGYY}，其具体定义为
 \begin{equation}
     \label{equ:ppgk}
     K=\frac{P_m-P_d}{P_s-P_d}
 \end{equation}
-其中，$P_m=\frac{1}{T}\int_{0}^{T}P(t)dt$为一个心动周期内脉搏压力$P(t)$的平均值，$P_s$与$P_d$分别为收缩压与舒张压，因此，K值也是一个无量纲参数。罗志昌等人的研究表明，K值依赖于脉搏波的波形动态变化，
-同时能够在很大程度上反应血管外周阻力与血管壁硬化程度等生理因素的变化。
+其中，$P_m=\frac{1}{T}\int_{0}^{T}P(t)dt$为一个心动周期内脉搏压力$P(t)$的平均值，$P_s$与$P_d$分别为收缩压与舒张压。罗志昌等人的研究表明，K值依赖于脉搏波的波形动态变化，
+同时能够在很大程度上反应血管外周阻力与血管壁硬化程度等生理因素的变化，在临床中得到了普遍应用。考察\autoref{tab:areafeature}中全周期面积比与K值的定义，同时结合相关数学知识，不难
+推导得到
+\begin{equation}
+    \label{equ:kandart}
+    R_t=\frac{S_t}{S_{\triangle SPE}}=\frac{\int_{0}^{T}P(t)dt}{\frac{1}{2}P_sT}=\frac{2\cdot P_mT}{P_sT}=2\cdot K
+\end{equation}
+这说明全周期面积比与K值之间也完全线形相关，因此，在本研究的后续分析中仅使用了两者中的全周期面积比参数。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{ch4/k}
@@ -679,7 +686,7 @@ TODO
 对进行统一命名。
 \begin{table}[htbp]
     \centering
-    \caption{\label{tab:111}}
+    \caption{\label{tab:allfeatures}}
     \begin{tabularx}{\linewidth}{X<{\centering}X<{\centering}}
         \toprule
         \textbf{1}&\textbf{2}\\

@@ -156,11 +156,7 @@ $TP+FP+TN+FN=\text{样例总数}$。
       \end{tabular}%
 \end{table}%
 
-为量化分类器的具体性能，人们在混淆矩阵的基础上衍生定义了一系列数字指标，包括查全率（recall）、查准率(precison)、准确率（accuracy)及特异性(specificity)，如\autoref{equ:measures}所示。其中，查全率亦称召回率、
-灵敏性(sensitivity）或真阳性率（true positive rate，TPR），查准率亦称精准率，特异性亦称真阴性率。查全率与查准率是应用的最广泛的两个指标\cite{Zhou2016,Aurélien2018}。一般而言，查全率与查准率是对相互矛盾的度量指标，
-一个指标性能的提高意味着另一个指标性能的下降。通常只有在简单分类任务中，
-才能同时获得较高的查准率与查全率。这称为精度-召回率权衡。为评估查全率与查准率均不相等的分类器性能，人们进一步定义了$F_1\text{分数}$，如\autoref{equ:f1}所示。$F_1\text{分数}$是召回率与精准率的谐波均值。
-召回率与精准率相近的分类器易获得更高的$F_1\text{分数}$。
+为量化分类器的具体性能，人们在混淆矩阵的基础上衍生定义了一系列数字指标，包括查全率（recall）、查准率(precison)、准确率（accuracy)及特异性(specificity)等，如\autoref{equ:measures}所示。
 \begin{equation}
       \label{equ:measures}
       \left \{
@@ -172,10 +168,14 @@ $TP+FP+TN+FN=\text{样例总数}$。
       \end{aligned}
       \right.
 \end{equation}
+其中，查全率亦称召回率、灵敏性(sensitivity）或真阳性率（true positive rate，TPR），查准率亦称精准率，特异性亦称真阴性率。查全率与查准率是应用的最广泛的两个指标\cite{Zhou2016,Aurélien2018}。
+一般而言，查全率与查准率是对相互矛盾的度量指标，一个指标性能的提高意味着另一个指标性能的下降。通常只有在简单分类任务中，
+才能同时获得较高的查准率与查全率。这称为精度-召回率权衡。为评估查全率与查准率均不相等的分类器性能，人们进一步定义了$F_1\text{分数}$，如\autoref{equ:f1}所示。
 \begin{equation}
       \label{equ:f1}
       F_1=\frac{2}{\frac{1}{Precison}+\frac{1}{Recall}}=\frac{2\cdot Precison\cdot Recall}{Precison+Recall}=\frac{TP}{TP+\frac{FN+FP}{2}}
 \end{equation}
+$F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准率相近的分类器易获得更高的$F_1\text{分数}$。
 
 在评估分类器性能时需要根据场景，从\autoref{equ:measures}与\autoref{equ:f1}中灵活选取恰当的评价指标。
 
@@ -187,7 +187,7 @@ $TP+FP+TN+FN=\text{样例总数}$。
       FPR=\frac{TN}{TN+FP}=1-Specificity
 \end{equation}
 因此，ROC曲线也被称为灵敏度与1-特异性曲线。绘制曲线时，以分类器的预测结果对样例进行升序排列，依次将样本作为阳性进行预测，计算对应的TPR与FPR后，可得一坐标点$({FPR}_i,{TPR}_i)$，最后将所有坐标点连线即可，如所示。
-其中，虚线表示纯随机分类器的ROC曲线，理想性能的分类器应无限逼近左上角（即$\text{坐标点}(0,1)$）。
+其中，虚线表示纯随机分类器的ROC曲线，理想性能的分类器应无限逼近左上角，即坐标点$(0,1)$。
 
 在衡量多个分类器性能优劣时，常将分类器对应的ROC曲线下面积作为判据，即为AUC（Area Under Curve）。纯随机分类器ROC的AUC数值为0.5，而理想分类器ROC的AUC数值为1，如所示。
 
