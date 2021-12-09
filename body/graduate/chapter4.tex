@@ -619,13 +619,84 @@ TODO
     ，其中，下降支按一定比例缩放至目标区间内，上升支水平反向按同一比例反向进行了缩放。}
 \end{figure}
 
-不失一般性，我们可以将下降支的单向路径的起点坐标与终点坐标分别设置为S$(0,1)$与E$(1,0)$。对于该路径上任意一点P，可以用原点O坐标$(0,0)$与路径始末点坐标S、E为基本参照点，以及基本参照点的衍生参照点
-进行对该点进行描述，这一过程如\autoref{fig:point}所示。
+不失一般性，我们可以将下降支的单向路径的起点坐标与终点坐标分别设置为S$(0,1)$与E$(1,0)$。对于该路径上任意一点P，可以用原点O坐标$(0,0)$与路径始末点坐标S、E等为基本参照点，以及P在X轴、Y轴的投射点$P_x$、$P_y$等衍生参照点
+进行对该点进行描述，如\autoref{fig:point}所示。此时对P点进行描述可参考使用\autoref{tab:pointsdesc}中的参数指标。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{ch4/point}
     \caption{\label{fig:point}单向路径上点的描述}
 \end{figure}
+\begin{center}
+    \fontsize{10}{4}
+    % Plan A
+    \setlength\LTleft{0pt}
+    \setlength\LTright{0pt}
+	% \begin{longtable}{@{\extracolsep{\fill}}|c|c|c|c|c|}
+    % Plan B
+    % 列宽总计16cm,各列按需分配长度,p{x-0.43cm}<{\centering}即可
+    % \begin{longtable}{p{1.6cm}<{\centering}p{4.1cm}<{\centering}p{2.1cm}<{\centering}p{4.1cm}<{\centering}p{2.1cm}<{\centering}}
+    \begin{longtable}{p{1.57cm}<{\centering}p{4.07cm}<{\centering}p{2.07cm}<{\centering}p{4.07cm}<{\centering}p{2.07cm}<{\centering}}
+		\caption{单向路径上任意一点的描述指标一览}\\
+		\label{tab:pointsdesc}\\
+		\hline
+        \multirow{2}[2]{*}{\textbf{参数类型}} & \multicolumn{2}{c}{\textbf{原始数值表达}} & \multicolumn{2}{c}{\textbf{标准化表达}} \\
+            & \multicolumn{1}{c}{物理意义} & \multicolumn{1}{c}{表达式或公式} & \multicolumn{1}{c}{物理意义} & \multicolumn{1}{c}{表达式或公式} \\
+        \hline
+        \endfirsthead
+        \caption[]{(续)}\\
+        \hline
+        \multirow{2}[2]{*}{\textbf{参数类型}} & \multicolumn{2}{c}{\textbf{原始数值表达}} & \multicolumn{2}{c}{\textbf{标准化表达}} \\
+            & \multicolumn{1}{c}{物理意义} & \multicolumn{1}{c}{表达式或公式} & \multicolumn{1}{c}{物理意义} & \multicolumn{1}{c}{表达式或公式} \\
+        \hline
+        \endhead 
+        \hline
+        \endfoot
+        \multirow{3}[1]{*}{线段}    & Y轴方向下降高度 &   $SP_y$    &  Y轴方向下降比例     & $\frac{SP_y}{OS}$ \\
+                                & P点高度      &     $OP_y$  &    P点高度与波峰比值   & $\frac{OP_y}{OS}$ \\
+                                &       &       &       &  \\
+        \multirow{4}[0]{*}{曲线长度} &       &       &       &  \\
+            &       &       &       &  \\
+            &       &       &       &  \\
+            &       &       &       &  \\
+        \multirow{4}[0]{*}{斜率} &       &       &       &  \\
+            &       &       &       &  \\
+            &       &       &       &  \\
+            &       &       &       &  \\
+        \multirow{4}[0]{*}{角度} &       &       &       &  \\
+            &       &       &       &  \\
+            &       &       &       &  \\
+            &       &       &       &  \\
+        \multirow{4}[1]{*}{面积} &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+	\end{longtable}
+\end{center}
 
 二、新型脉搏波时域特征
 
@@ -701,19 +772,34 @@ TODO
 TODO
 
 \subsection{PPG时域描述特征集构建}
-对进行统一命名。
-\begin{table}[htbp]
-    \centering
-    \caption{\label{tab:allfeatures}}
-    \begin{tabularx}{\linewidth}{X<{\centering}X<{\centering}}
-        \toprule
-        \textbf{1}&\textbf{2}\\
-        \midrule
-        &       \\
-        &       \\
-        \bottomrule
-    \end{tabularx}
-\end{table}
+本小节对本研究实际采用的多种PPG时域描述特征进行汇总，对各参数符号及前置计算条件也进行了统一说明，如\autoref{tab:allfeatures}所示。
+\begin{center}
+    \fontsize{10}{4}
+	\begin{longtable}{p{3cm}<{\centering}p{1cm}<{\centering}p{2cm}<{\centering}p{6cm}<{\centering}p{1cm}<{\centering}}
+		\caption{本研究使用的所有PPG时域指标一览}\\
+		\label{tab:allfeatures}\\
+		\hline
+            \textbf{研究者}&\textbf{时间}&\textbf{脉搏波参数}&\textbf{研究结果}&\textbf{备注}\\
+        \hline
+        \endfirsthead
+        \caption[]{(续)}\\
+        \hline
+            \textbf{研究者}&\textbf{时间}&\textbf{脉搏波参数}&\textbf{研究结果}&\textbf{备注}\\
+        \hline
+        \endhead 
+        \hline
+        \endfoot
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+	\end{longtable}
+\end{center}
 \section{小结}
 本章主要对脉搏波信号的预处理过程与参数描述进行了详细了的说明。预处理方面，本研究重点介绍了经改进的模块化脉搏波的定位算法，该算法可以有效识别干扰段，提高检测精度。随后对信号滤波、重搏波检测、基线漂移、插值及标准化过程进行了介绍。
 脉搏波的描述方面，首先介绍了脉搏波描述的意义，其次从基于波形与基于时间窗等两大类，分别介绍了常见的脉搏波时域参数与本研究提出的新型描述参数，并在两者的基础上构建了脉搏波的一般时域特征描述集合，为后续数据分析部分打下坚实的基础。

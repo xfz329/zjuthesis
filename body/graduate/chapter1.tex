@@ -360,10 +360,16 @@ ROC高达0.89，此时真阳性为72.3\%，假阳性为8.8\%。
 综上，基于机器学习的PE研究可总结为\autoref{tab:AIinPE}所示，由于篇幅内容所限，一些正文里未做介绍的研究也在\autoref{tab:AIinPE}中进行了补充。
 
 \begin{center}
-    % \setlength\LTleft{20pt}
-    % \setlength\LTright{100pt}
     \fontsize{10}{4}
-	\begin{longtable}{p{3cm}<{\centering}p{0.8cm}<{\centering}p{1.8cm}<{\centering}p{3.5cm}<{\centering}p{3cm}<{\centering}p{2cm}<{\centering}}
+    % Plan A
+    % \setlength\LTleft{0pt}
+    % \setlength\LTright{0pt}
+	% \begin{longtable}{@{\extracolsep{\fill}}cccccc}
+    % Plan B
+    % 列宽总计16cm,各列按需分配长度,p{x-0.43cm}<{\centering}即可
+
+    % \begin{longtable}{p{3cm}<{\centering}p{0.8cm}<{\centering}p{1.8cm}<{\centering}p{3.5cm}<{\centering}p{3cm}<{\centering}p{2cm}<{\centering}}
+    \begin{longtable}{p{3cm}<{\centering}p{0.8cm}<{\centering}p{1.8cm}<{\centering}p{3.5cm}<{\centering}p{3cm}<{\centering}p{2cm}<{\centering}}
 		\caption{基于机器学习的PE研究小结}\\
 		\label{tab:AIinPE}\\
 		\hline
