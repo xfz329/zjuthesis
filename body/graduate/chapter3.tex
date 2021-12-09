@@ -186,10 +186,15 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
       \label{equ:fpr}
       FPR=\frac{TN}{TN+FP}=1-Specificity
 \end{equation}
-因此，ROC曲线也被称为灵敏度与1-特异性曲线。绘制曲线时，以分类器的预测结果对样例进行升序排列，依次将样本作为阳性进行预测，计算对应的TPR与FPR后，可得一坐标点$({FPR}_i,{TPR}_i)$，最后将所有坐标点连线即可，如所示。
+因此，ROC曲线也被称为灵敏度与1-特异性曲线。绘制曲线时，以分类器的预测结果对样例进行升序排列，依次将样本作为阳性进行预测，计算对应的TPR与FPR后，可得一坐标点$({FPR}_i,{TPR}_i)$，最后将所有坐标点连线即可，如\autoref{fig:roc}所示。
 其中，虚线表示纯随机分类器的ROC曲线，理想性能的分类器应无限逼近左上角，即坐标点$(0,1)$。
+\begin{figure}[htbp]
+      \centering
+      \includegraphics[width=.6\linewidth]{ch3/roc}
+      \caption[ROC曲线与AUC数值]{\label{fig:roc}ROC曲线与AUC数值。各分类器的AUC具体数值参见图例。}
+\end{figure}
 
-在衡量多个分类器性能优劣时，常将分类器对应的ROC曲线下面积作为判据，即为AUC（Area Under Curve）。纯随机分类器ROC的AUC数值为0.5，而理想分类器ROC的AUC数值为1，如所示。
+在衡量多个分类器性能优劣时，常将分类器对应的ROC曲线下面积作为判据，即为AUC（Area Under Curve）。纯随机分类器ROC的AUC数值为0.5，而理想分类器ROC的AUC数值为1，如\autoref{fig:roc}所示。
 
 此外，约登指数（Youden Index）也是用来评价分类器效果的一个指标。若在评估分类器性能时，给予将分类器假阴性和假阳性以相同权重，即可应用约登指数
 \begin{equation}
