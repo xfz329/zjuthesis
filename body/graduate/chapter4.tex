@@ -621,6 +621,7 @@ TODO
 
 不失一般性，我们可以将下降支的单向路径的起点坐标与终点坐标分别设置为S$(0,1)$与E$(1,0)$。对于该路径上任意一点P，可以用原点O坐标$(0,0)$与路径始末点坐标S、E等为基本参照点，以及P在X轴、Y轴的投射点$P_x$、$P_y$等衍生参照点
 进行对该点进行描述，如\autoref{fig:point}所示。此时对P点进行描述可参考使用\autoref{tab:pointsdesc}中的参数指标。
+% 同一类型下关于起始S、E两点对偶的参数只保留了一个。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{ch4/point}
@@ -629,13 +630,14 @@ TODO
 \begin{center}
     \fontsize{10}{4}
     % Plan A
-    \setlength\LTleft{0pt}
-    \setlength\LTright{0pt}
+    % \setlength\LTleft{0pt}
+    % \setlength\LTright{0pt}
 	% \begin{longtable}{@{\extracolsep{\fill}}|c|c|c|c|c|}
     % Plan B
+    % m表示居中，p为置顶，b为置底
     % 列宽总计16cm,各列按需分配长度,p{x-0.43cm}<{\centering}即可
     % \begin{longtable}{p{1.6cm}<{\centering}p{4.1cm}<{\centering}p{2.1cm}<{\centering}p{4.1cm}<{\centering}p{2.1cm}<{\centering}}
-    \begin{longtable}{p{1.57cm}<{\centering}p{4.07cm}<{\centering}p{2.07cm}<{\centering}p{4.07cm}<{\centering}p{2.07cm}<{\centering}}
+    \begin{longtable}{m{1.57cm}<{\centering}m{4.07cm}<{\centering}m{2.07cm}<{\centering}m{4.07cm}<{\centering}m{2.07cm}<{\centering}}
 		\caption{单向路径上任意一点的描述指标一览}\\
 		\label{tab:pointsdesc}\\
 		\hline
@@ -655,26 +657,22 @@ TODO
                                     & P点高度                  &   $OP_y$       &    P点高度与波峰比值   & $\frac{OP_y}{OS}$ \\
                                     & 从S点到P点所用时间        &    $OP_x$   &      起点至P点所用时间与下降支总时长比值 & $\frac{OP_x}{OE}$ \\
                                     & 从P点到E点所用时间        &    $EP_x$   &      P点至终点E所用时间与下降支总时长比值 & $\frac{EP_x}{OE}$ \\
-                                    & OP两点间几何距离        &    $OP$   &       &  \\
-                                    & SP两点间几何距离        &    $SP$   &       &  \\
-                                    & PE两点间几何距离        &    $PE$   &       &  \\
-        \multirow{2}[0]{*}{曲线长度} &  SP两点间曲线弧长     &  $\overset{\frown}{SP}$     &       &  \\
-                                    &  PE两点间曲线弧长   &   $\overset{\frown}{PE}$    &       &  \\
+                                    & OP两点间几何距离        &    $OP$   &  OP两点距离与SE两点距离之比     & $\frac{OP}{SE}$ \\
+                                    & SP两点间几何距离        &    $SP$   &  SP两点距离与SE两点距离之比     & $\frac{SP}{SE}$ \\
+                                    & PE两点间几何距离        &    $PE$   &  PE两点距离与SE两点距离之比     & $\frac{PE}{SE}$ \\
+        \multirow{2}[0]{*}{曲线长度} &  SP两点间曲线弧长     &  $L_{\overset{\frown}{SP}}$     &     SP两点间曲线弧长与SE两点直线距离之比  & $\frac{L_{\overset{\frown}{SP}}}{SE}$ \\
+                                    &  PE两点间曲线弧长   &   $L_{\overset{\frown}{PE}}$    &    PE两点间曲线弧长与SE两点直线距离之比  &  $\frac{L_{\overset{\frown}{PE}}}{SE}$\\
         \multirow{3}[0]{*}{斜率（弧度）} &  线段SP的斜率     &  $-\frac{SP_y}{PP_y}$     & $\angle SPP_y$的弧度      & $arttan(\frac{SP_y}{PP_y})$ \\
-                                &  线段PE的斜率     &   $-\frac{P_yP_x}{EP_x}$    &   $\angle POE$的弧度    &  $arttan(\frac{P_yP_x}{EP_x})$\\
-                                &  线段OP的斜率    &    $\frac{PP_y}{PP_x}$   &    $\angle PEO$的弧度   &  $arttan(\frac{PP_y}{PP_x})$\\
-        \multirow{4}[1]{*}{面积} &       &       &       &  \\
-        &       &       &       &  \\
-        &       &       &       &  \\
-        &       &       &       &  \\
-        &       &       &       &  \\
-        &       &       &       &  \\
-        &       &       &       &  \\
-        &       &       &       &  \\
-        &       &       &       &  \\
-        &       &       &       &  \\
+                                    &  线段PE的斜率     &   $-\frac{P_yP_x}{EP_x}$    &   $\angle POE$的弧度    &  $arttan(\frac{P_yP_x}{EP_x})$\\
+                                    &  线段OP的斜率    &    $\frac{PP_y}{PP_x}$   &    $\angle PEO$的弧度   &  $arttan(\frac{PP_y}{PP_x})$\\
+        \multirow{4}[0]{*}{面积}    &    坐标轴、曲线与$PP_y$以上围成的面积   &  $\int_{P_y}^{S}{P(t)dy} $     &   前述面积与整体面积之比    & $\frac{\int_{P_y}^{S}{P(t)dy}}{\int_O^E{P(t)dx}}$ \\
+                                    &   坐标轴、曲线与$OP$以左围成的面积   &    $\int_{O}^{P_x}{P(t)dx}-S_{\triangle OPP_x}$   &  前述面积与整体面积之比     & $\frac{\int_{O}^{P_x}{P(t)dx}-S_{\triangle OPP_x}}{\int_O^E{P(t)dx}}$ \\
+                                    &   坐标轴、曲线与$PP_x$以左围成的面积   &   $\int_{O}^{P_x}{P(t)dx}$    &  前述面积与整体面积之比     & $\frac{\int_{O}^{P_x}{P(t)dx}}{\int_O^E{P(t)dx}}$ \\
+                                    &    曲线与$SP$围成的面积   &   $\int_{P_y}^{S}{P(t)dy}-S_{\triangle SPP_y} $    &   /    &  /\\
 	\end{longtable}
 \end{center}
+
+从\autoref{tab:pointsdesc}中不难发现，
 
 二、新型脉搏波时域特征
 
