@@ -473,15 +473,72 @@ PPG波形特征点按上述SCV算法定位完成后，需要对算法的性能�
 在此前学者们的研究涉及的诸多PPG波形形态参数中，时间类参数、幅度类参数与面积类参数由于物理意义明确、易于理解且方便与脉搏波产生原理过程联系起来，在基于PPG的各类研究中得到了最广泛的应用\cite{cwl,mmt}。本小节对这三类时域特征进行了归纳介绍。
 此外，本小节补充介绍了一些有代表性的其他PPG特征参数。最后，在信号分析领域得到广泛使用的通用无量纲参数与高阶统计参数也被本研究采纳借鉴，本节也对相关参数的原理进行了介绍。
 
-1. 
+TODO AIX
 
-2. 
+1. 时间类特征参数
 
-3. AIx
+时间类特征参数主要包含脉搏波脉动周期、上升支间期、下降支间期等。此外，王梦婷提出了一种描述动脉内高压力水平维持的新时间参数，并在此基础上进一步提出了该参数的归一化表达\cite{mmt}。
+陈婉琳等人基于斜率极值提出了上升支最大斜率间期、下降支最小斜率间期等参数\cite{cwl}。以上参数的定义参见\autoref{fig:feature}及\autoref{tab:timefeature}所示。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{ch4/k}
+    \caption{\label{fig:feature}K值的提取}
+\end{figure}
+\begin{table}[h]
+    \centering
+    \caption{\label{tab:timefeature}常见PPG时间类参数定义}
+    \begin{tabularx}{\linewidth}{cX<{\centering}c}
+    \toprule
+    \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+    \midrule
+    脉动周期      &  从波形起点至峰值点对波形曲线积分所得面积值         &  $S_r=\int_{T_S}^{T_P}P(t)dt$\\
+    上升支间期      &  从波形峰值点至终点对波形曲线积分所得面积值         &  $S_f=\int_{T_P}^{T_E}P(t)dt$\\
+    下降支间期      &  脉搏波波形在一个完整周期内的积分所得面积值         &  $S_t=\int_{T_S}^{T_E}P(t)dt$\\
+    动脉高压力持续时间    &           &   $R_r=\frac{S_r}{S_{\triangle OPS}}$    \\
+    血管硬度指数    &           &   $R_f=\frac{S_f}{S_{\triangle OPE}}$    \\
+    心肌收缩系数    &           &   $R_t=\frac{S_t}{S_{\triangle SPE}}$    \\
+    心搏出系数&           &    $\Delta R_f=\frac{S_{\triangle OPE}-S_f}{S_{\triangle OPE}}=1-R_f$\\
+    上升支最大斜率间期    &           &   $R_t=\frac{S_t}{S_{\triangle SPE}}$    \\
+    下降支最大斜率间期&           &    $\Delta R_f=\frac{S_{\triangle OPE}-S_f}{S_{\triangle OPE}}=1-R_f$\\
+    \bottomrule
+    \end{tabularx}
+\end{table}
 
-PSI
+2. 幅值类特征参数
 
-3. 面积类特征参数
+幅值类特征参数主要包含脉搏波波峰幅值及波谷幅值差值。相关参数的定义参见\autoref{fig:feature}及\autoref{tab:heightfeature}所示。
+\begin{table}[htbp]
+    \centering
+    \caption{\label{tab:heightfeature}常见PPG幅值类参数定义}
+    \begin{tabularx}{\linewidth}{cX<{\centering}c}
+    \toprule
+    \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+    \midrule
+    波峰幅值      &  从波形起点至峰值点对波形曲线积分所得面积值         &  $S_r=\int_{T_S}^{T_P}P(t)dt$\\
+    波谷幅值差值      &  从波形峰值点至终点对波形曲线积分所得面积值         &  $S_f=\int_{T_P}^{T_E}P(t)dt$\\
+    \bottomrule
+    \end{tabularx}
+\end{table}
+
+3. 斜率类特征参数
+
+斜率参数是在先确定脉搏波波形上两点计算得到的描述波形特征的一类参数。常见的斜率参数定义参见\autoref{fig:feature}及\autoref{tab:slopefeature}所示。
+\begin{table}[htbp]
+    \centering
+    \caption{\label{tab:slopefeature}常见PPG斜率类参数定义}
+    \begin{tabularx}{\linewidth}{cX<{\centering}c}
+    \toprule
+    \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+    \midrule
+    上升支平均斜率      &  从波形起点至峰值点对波形曲线积分所得面积值         &  $S_r=\int_{T_S}^{T_P}P(t)dt$\\
+    下降支平均斜率      &  从波形峰值点至终点对波形曲线积分所得面积值         &  $S_f=\int_{T_P}^{T_E}P(t)dt$\\
+    上升支最大斜率      &  脉搏波波形在一个完整周期内的积分所得面积值         &  $S_t=\int_{T_S}^{T_E}P(t)dt$\\
+    下降支最小斜率    &           &   $R_r=\frac{S_r}{S_{\triangle OPS}}$    \\
+    \bottomrule
+    \end{tabularx}
+\end{table}
+
+4. 面积类特征参数
 
 面积类参数计算依赖与脉搏波波形与基线所形成的面积，其计算主要通过按时间方向对PPG波形曲线积分完成。王梦婷在其研究中指出\cite{mmt}，PPG上升支主要受心脏射血量与血压脉动影响，下降支主要受外周阻力影响。其中，上升支随心脏射血量增加愈益陡峭，射血时间越短，
 其形态图像越向左上方凸出；而当外周阻力增加时，会导致动脉血管壁弹性下降，下降支波形向上方凸出。本研究中使用了描述该过程中的上升支面积、下降支面积、
@@ -496,7 +553,7 @@ PSI
 \begin{table}[htbp]
     \centering
     \caption{\label{tab:areafeature}常见PPG面积类参数定义}
-    \begin{tabularx}{\linewidth}{cX<{\centering}X<{\centering}}
+    \begin{tabularx}{\linewidth}{cX<{\centering}c}
     \toprule
     \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
     \midrule
@@ -534,7 +591,7 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 \end{figure}
 
 
-4. 通用无量纲参数与高阶统计量
+5. 通用无量纲参数与高阶统计量
 
 无量纲参数（non-dimensional parameter）是指不使用计量学中基本单位及导出单位进行衡量的参数，该类参数通常以比值的形式出现，故严格意义来说，前文中部分比值类参数也可划归至无量纲参数中。
 无量纲参数作为信号时域分析重要参考指标，在机械控制、石油石化、电信电子、地球物理、故障诊断、信号处理等领域有着广泛的应用\cite{Jardine2006,Guo2014,Tu2013,Mendel1991}。本研究中使用了常见的峰值因子(crest factor)、
@@ -544,7 +601,7 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 本研究使用了高阶统计量中表示分布的峭度因子(kurtosis factor)与偏度(skewness)对PPG信号进行了评估，两者的基本定义参见\autoref{tab:ndp}。
 \begin{table}[htbp]
     \centering
-    \caption{\label{tab:ndp}本研究使用的无量纲参数及高阶统计量}
+    \caption{\label{tab:ndp}常见的无量纲参数及高阶统计量}
     \begin{tabularx}{\linewidth}{cX<{\centering}c}
         \toprule
         \textbf{参数}&\textbf{物理（统计）意义}&\textbf{定义方程}\\
@@ -750,6 +807,7 @@ TODO
 
 \subsection{PPG时域描述特征集构建}
 本小节对本研究实际采用的多种PPG时域描述特征进行汇总，对各参数符号及前置计算条件也进行了统一说明，如\autoref{tab:allfeatures}所示。
+TODO
 \begin{center}
     \fontsize{10}{4}
 	\begin{longtable}{p{3cm}<{\centering}p{1cm}<{\centering}p{2cm}<{\centering}p{6cm}<{\centering}p{1cm}<{\centering}}
