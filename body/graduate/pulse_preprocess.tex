@@ -38,7 +38,7 @@
     f_{co}=0.443*\frac{f_s}{N}    
 \end{equation}
 其中，$f_s$为原始信号采样率。由此可知，当滤波器的阶数越高，值越均匀，截止频率越低，滤波效果越好。在本研究中，其阶数$N$被设置为5。
-由\autoref{equ:malpf}可知此时的截止频率约为88$Hz$。经此滑动滤波前后的PPG信号对比如\autoref{fig:filter}所示。
+由\autoref{equ:malpf}可知此时的截止频率约为89$Hz$。经此滑动滤波前后的PPG信号对比如\autoref{fig:filter}所示。
 
 信噪比（signal-noise rate，SNR）与均方误差（root mean square error，RMSE）是最常用的评估滤波效果的两个指标，其定义分别为
 \begin{equation}
@@ -65,10 +65,11 @@
 \subsection{波形检测}
 脉搏波波形的正确检测是后续所有特征计算的基础，因此，PPG波形检测算法的准确性及抗干扰能力显得尤为重要。传统的检测算法一般都是对波形进行一次性检测，然后再人工判别检测的准确性。
 这种检测算法在应对较为复杂的信号时检测性能有所欠佳。
-另一方面，机制与策略的分离是计算机科学领域的重要设计原则，被广泛应用于一系列资源分配问题（例如 CPU 调度、内存分配、服务质量）以及软件抽象的设计等问题中\cite{Wulf1974,Levin1975,Brinch2001}。
-这里的机制可以理解成决定如何做（how），而策略则决定具体做什么(what)。
-本小节借鉴了该机制与策略分离的设计思想，
+本小节借鉴了计算机科学领域的机制与策略分离的设计思想，
 改进了上述PPG波形检测流程，提出了一种新型PPG波形检测算法，即初筛-复核-投票（Screen-Check-Vote Algorithm for PPG signal，SCVAP）算法。
+
+机制与策略分离是计算机系统领域的一项重要设计原则，被广泛应用于一系列资源分配问题（如CPU调度、内存分配、服务质量）以及软件抽象的设计等问题中\cite{Wulf1974,Levin1975,Brinch2001}。
+这里的机制可以理解成决定如何做（how），而策略则决定具体做什么（what）。
 SCVAP算法在对PPG波形进行检测时，充分利用“宽进严出”的筛选原则，预先设计了初筛、复核及投票等机制，而对每个机制下具体使用的策略不做过多限制，可有效增强对复杂信号的处理能力、提高算法的检测准确度，
 同时极大地保证了算法的适配性与调整的灵活性，如\autoref{fig:detect}所示。
 \begin{figure}[htbp]
@@ -86,7 +87,7 @@ SCVAP算法在对PPG波形进行检测时，充分利用“宽进严出”的筛
 波峰与波谷是脉搏波的最基本特征点，也是检测波形其他特征点的基础。顾名思义，波峰是特定PPG波形内的最大值，在其左邻域内PPG幅值单调递增，右邻域内PPG幅值单调递减，则显然波峰与波谷必然是原始数据中的局部极大值与局部极小值点。
 故对PPG波形特征点定位可按以下步骤进行。
 
-1. 波峰波谷定位
+1. 波峰定位
 
 计算并遍历原始信号的一阶导数$X^{'}$，若出现$X_i^{'}\ge 0$且$X_{i+1}^{'}\le 0$，则说明出现了极大值。此时，定义时长一长一短的两个搜索窗，分别以当前数据点为窗中心，向前后双向检测并返回窗内最大值的位置。
 若两个搜索窗的返回结果一致，则说明返回值就是一个波峰点。为防止同一波峰被多次检测，只有与上一成功检测的波峰位置点不同返回值才会被加入波峰缓存数组$Peaks$中。
@@ -106,38 +107,55 @@ SCVAP算法在对PPG波形进行检测时，充分利用“宽进严出”的筛
 若长窗在当前位置$C$以中心沿时间轴延伸方向找到了局部极大值的坐标$L$后，下一次的搜索窗位置可直接从该$L$处开始。具体而言，若此时短窗返回结果$S=L$，则返回值必然是检测得到的波峰位置$P$，下次搜索可直接从波峰后开始；若$S\ne L$，
 此时从$C$至$L$再进行搜索已经不可能再更新$L$坐标。而由于长窗搜索必然包含短窗，故下次搜索也可以同样调整检索位置从$L$处开始。
 
-对波谷的定位可参考上述波峰定位过程稍加修改后在一遍遍历中一同完成。类似地，波谷位置也被保存至缓存数组$Troughs$中。
+TODO 
+figure here
 
-2. 完整波形确认
+2. 波谷定位
 
-由于上一步已经分别得到了原始信号中所有波峰与波谷点，为方便后续研究，此时仅需按照波谷（start）——波峰(peak)——下一波谷(end)组合成完整波形即可。参考以往研究对PPG波形对经验统计，本研究规定，波形起点与波形终点间期$P_{S2E}\ge 0.4s$，
-波形峰值点与波形终点间期$P_{P2E}\ge 0.3s$。只有满足了该PPG间期的波形才是检波算法初检合格的输出。
+一般而言，在波峰的位置确定之后，波谷的定位相对简单，一种可行的处理思路是将两个连续波峰之间的最小值定义为PPG波形的波谷。但该思路对复杂信号的处理效果欠佳，因为这种处理思路已经默认了所有的波形均已被正确无误地检测出来且
+波形之间有连续性，即任意两个波形之间不存在其他干扰段。
+因此，本研究对波谷的定位仍然按照先寻找定位再二次确认的思路进行，其中,波谷在满足上述条件的基础上，需要进一步满足其出现位置必须在这两个波峰之间的后半段。
+此步得到的PPG波谷位置也被保存至缓存数组$Troughs$中，这一过程如\autoref{alg:troughs_detect}所示。
+\begin{breakablealgorithm}
+    \caption{PPG波形波谷定位检测}
+    \label{alg:troughs_detect}
+    \begin{algorithmic}[1] %每行显示行号
+        \Require 待检原始数据数组$Points$，原始数据的一阶差分数组$D$，波峰数组$Peaks$
+        \Ensure 正常形态下记录脉搏波波谷位置的数组
+        \Function {DetectTroughs}{$Points, D, Peaks$}
+            \State 初始化$Troughs$
+            \For{$i\gets 0,Peaks.length()-1$}
+                \State $leastX \gets (Peaks[i].x + Peaks[i+1].x )/2$
+                    \For{$j \gets Peaks[i+1].x)-1, leastX$}
+                        \If {$D[j-1]<0 \And D[j]\le 0$}
+                            \State $lastT \gets Points[j]$
+                            \State \textbf{break}
+                        \EndIf
+                    \EndFor
+                \State $Troughs \gets lastT$
+            \EndFor
+            \State \Return{$Troughs$}
+        \EndFunction
+    \end{algorithmic}
+\end{breakablealgorithm}
 
-% 这一过程如\autoref{alg:detect}所示。
-% \begin{breakablealgorithm}
-%     \caption{PPG信号检测特征点检测}
-%     \label{alg:detect}
-%     \begin{algorithmic}[1] %每行显示行号
-%         \Require 待检原始数据数组$Points$，数组大小$n$，原始采样率$samplerate$
-%         \Ensure 包含起始点及峰值点坐标的所有初筛合格的波形
-%         \Function {Detect}{$Points, samplerate$}
-%             \State 初始化$pulse$
-%             \If {$left < right$}
-%                 \State $middle \gets (left + right) / 2$
-%                 \State $result \gets result +$ \Call{MergerSort}{$Array, left, middle$}
-%                 \State $result \gets result +$ \Call{MergerSort}{$Array, middle, right$}
-%                 \State $result \gets result +$ \Call{Merger}{$Array,left,middle,right$}
-%             \EndIf
-%             \State \Return{$pulse$}
-%         \EndFunction
-%     \end{algorithmic}
-% \end{breakablealgorithm}
+3. 完整波形确认
+
+前两步已经分别得到了原始信号中所有波峰与波谷点，此时仅需按照波谷（start）——波峰（peak）——下一波谷（end）组合成完整波形即可。针对某些异常信号，\autoref{alg:troughs_detect}会出现两波峰之间无法有效检出波谷的极端情况。
+因此，有必要对可能组合成完整波形的波峰波谷再次进行检查。本研究以PPG波形必定符合一定的时间规则对上述波峰波谷进行了“组合”。参考以往研究对PPG波形对经验统计，最终组合的波形起点与波形终点间期$P_{S2E}\ge 0.4s$，
+波形峰值点与波形终点间期$P_{P2E}\ge 0.3s$。换言之，最终经过确认的波形的间期必定在上述数值内。
+
+4. 其他特征点定位
+
+由于波形其他特征点的定位依赖于波形的正确检测，因此，初筛阶段不做除波峰波谷外的其他特征点检测。这些特征点的检测被推迟到SCVAP算法检测完成后才进行。
 
 二、多标准评估
 
-对正常PPG波形，上述检测算法可以实现较好的检测效果，但对类似\autoref{fig:samplesignal}中的无效数据段信号极易产生错误识别与检测。为增强算法对干扰信号的检测能力、对畸变信号的识别判断能力，本研究引入了对PPG波形对二次审核评估机制。
-由于本研究中采集得到的PPG信号不存在运动伪差干扰，所有有效PPG波形信号在理论上应具有较高的相似性。此外，有效PPG信号与干扰信号、畸变信号在形态特征、统计特征方面均存在较大差异，存在设计算法实现自动区分的理论可行性。基于以上前提，
-为使具有且仅具有PPG波形一般特征的初筛“可疑波形”可以通过复核评估，本研究特设计并提出了以下复核标准。
+上述PPG检测算法与此前的诸多研究中的算法性能接近，改进提高有限。具体而言，对质量高的PPG信号有着较好的检测效果，但对类似\autoref{fig:samplesignal}中的异常段仍难以避免错检漏检等情况的出现。
+鉴于此，本研究特原创性地引入了对PPG波形对二次审核评估机制，以进一步增加检测算法对各种干扰信号的检测能力、对畸变信号的识别判断能力。
+
+如绪论中所述，PPG信号可以视为平稳随机信号的一种，短时间采样得到的有效PPG波形信号理应具有较高的相似性\cite{Qiu2012}。此外，有效PPG信号与干扰信号、畸变信号在形态特征、统计特征方面均存在较大差异，存在设计算法实现自动区分的理论可行性。
+基于以上前提，为使具有且仅具有PPG波形一般特征的初筛“可疑波形”可以通过复核评估，本研究特设计并提出了以下复核标准：
 
 1.能量与功率标准
 
@@ -250,7 +268,7 @@ SCVAP算法在对PPG波形进行检测时，充分利用“宽进严出”的筛
 
 5.集成学习分类器
 
-由于本研究尚未对上述PPG波形评估器的类概率进行相关研究，因而选择将各评估器的输出暂时直接限定为类别标记输出为0或1，最终基于硬投票策略进行初筛波形的类型判别。
+由于本研究尚未对上述PPG波形评估器的类概率进行相关研究，因而选择将各评估器的输出暂时直接限定为类别标记输出为0或1，最终基于硬投票策略进行初筛波形的类型判别。 
 
 四、检测算法性能评估
 
@@ -315,31 +333,65 @@ PPG波形特征点按上述SCV算法定位完成后，需要对算法的性能�
     \end{tabularx}
 \end{table}
 
+五、其他拓展
+
+检测指标的拓展
+
+评价指标的设计
+
+决策方法的设计
+
+异常信号的保留取舍问题
+
+用于其他生理信号的检测
+
 综上所述，SCV算法在PPG波形检测问题上的检测性能优异，抗干扰能力强。其中，SCV算法复核阶段各检测标准设计合理，均可按照设计初衷识别出特定的异常干扰段。同时，由于SCV算法整体采用模块化设计，各模块均具有良好的拓展性，
 不论是对已获取的数据进一步提高检测性能，还是对新的存在特定干扰待检信号的准确检测，SCV算法都有着可进一步挖掘的潜力。
 
 \subsection{重搏波与切迹检测}
-由于重博波特征不明显无法经由软件算法人工恢复，故本章节暂不对任何重博、切迹进行计算处理，后续也无任何与之相关的PPG信号特征参数。
-重博波是脉搏波最具标志性的波形特征之一，重博波波峰与切迹的检测是一个完整的脉搏波检测算法必不可少的定位项之一\cite{Wang2012}。但在实际应用中，并不是每个人的PPG信号都有着明显的重搏波，特别是当被试出现外周阻力增加、血管壁弹性下降的情况后\cite{mmt}。
+重博波是脉搏波最具标志性的波形特征之一，其波峰与切迹的检测是一个完整的脉搏波检测算法必不可少的定位项之一\cite{Wang2012}。但在实际应用中，并不是每个人的PPG信号都有着明显的重搏波，特别是当被试出现外周阻力增加、血管壁弹性下降的情况后\cite{mmt}。
 此时，随着PPG波形向外周传播，尖锐的重搏波切迹（incisura）常会变形甚至丢失，退变成一简单拐点，甚至重搏波波峰都会在下降支中不显著，导致最后无法从采集得到的信号中对两者直接进行精准定位，如\autoref{fig:samplesignal}所示。
 
-针对重搏波与切迹不明显的PPG原始信号，本研究借鉴使用了王选等人于2012年提出的一种基于曲率的定位算法\cite{Wang2012}，其核心思想是PPG信号在切迹退化成的变形点的邻域内具有最大的曲率值。在数学中，一般将曲线函数在点$(x,y)$处的曲率$K$定义为
+由于本次实验数据中有大量重博波及切迹不明显的信号段，因此本研究借鉴了王选等人于2012年提出的一种基于曲率$K$（curvature）的定位算法对上述特征点进行检测\cite{Wang2012}。
+该算法的核心思想是PPG信号在切迹退化成的变形点的邻域内具有最大的曲率值，如\autoref{fig:incisura}所示。
+数学中将一般曲线函数在点$(x,y)$处的曲率$K$定义为
 \begin{equation}
     \label{equ:curvature}
     K=\frac{|y^{''}|}{{(1+{y^{'}}^2)}^{3/2}}
 \end{equation}
-其中，$y^{'}$与$y^{''}$分别是曲线函数在该点的一阶导数与二阶导数。如\autoref{fig:incisura}所示，该算法检测过程可概括如下：
+其中，$y^{'}$与$y^{''}$分别是曲线函数在该点的一阶导数与二阶导数。王选等人的算法检测过程可概括如\autoref{alg:incisuras_detect}所示\cite{Wang2012}。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{pulse_preprocess/k}
     \caption{\label{fig:incisura}重搏波及切迹定位原理}
 \end{figure}
 
-首先，遍历切迹可能出现的所有位置，即PPG波形的下降支中后部分约$[\frac{3}{10}-\frac{9}{10}]$区间内。将该区间内一阶导数取值最大的点记为$M$，并对点M处的一阶导数$Y_M^{'}$的数值进行判断。
+\begin{breakablealgorithm}
+    \caption{PPG波形切迹定位检测}
+    \label{alg:incisuras_detect}
+    \begin{algorithmic}[1] %每行显示行号
+        \Require 原始数据数组$Points$,检测完毕的波形$pulse$，原始数据的一阶差分数组$D$
+        \Ensure 当前波形的切迹位置
+        \Function {DetectIncisura}{$Points, pulse, D$}
+            \State $s \gets pulse.peak.x + \frac{3}{10}(pulse.trough.x-pulse.peak.x)$
+            \State $e \gets pulse.peak.x + \frac{9}{10}(pulse.trough.x-pulse.peak.x)$
+            \State \Comment 切迹可能出现的位置为波形的下降支中后部分。
+            \State $M  \gets \Call{Max}{$D[s],D[e]$}$
+            \State \Comment 寻找到上述区间内一阶导数最大值点记为$M$。
+            \If{$D[M] >0$}
+                \State \Comment 下降支中存在明显的重搏波。
+                \State $Incisura \gets \Call{Min}{Points[s],Points[M]}$
+                \State \Comment 重搏波波峰即为点M至脉搏波终点之间的极大值点，切迹为脉搏波波峰至点M之间的最小值点。
+            \Else
+                \State \Comment 下降支一直单调下降，不存在明显的重搏波。
+                \State $Incisura \gets \textproc{Min}({\Call{Curvature}{Points[M],Points[e]}})$
+                \State \Comment 重搏波波峰定义为点M至脉搏波终点之间的曲率最大处，切迹定义为脉搏波波峰至点M之间的曲率最小处。
+            \EndIf
+            \State \Return{$Incisuras$}
+        \EndFunction
+    \end{algorithmic}
+\end{breakablealgorithm}
 
-若$Y_M^{'}\ge 0$，说明在下降支中一定存在一段单调上升的波形，即存在明显的重搏波。此时，重搏波波峰即为点M至脉搏波终点之间的极大值点，切迹为脉搏波波峰至点M之间的最小值点。
-
-若$Y_M^{'}<0$，说明脉搏波下降支一直单调下降，即不存在明显的重搏波。此时，可将重搏波波峰定义为点M至脉搏波终点之间的曲率最大处，切迹定义为脉搏波波峰至点M之间的曲率最小处。
 \subsection{去除基线漂移}
 在实际得到的PPG波形中，由于呼吸干扰等原因，一个完整PPG波形对应的两个波谷，即该波形的始末位置的幅值很难保持一致。这种差异最终会导致PPG信号的基线出现波动，也就是工程领域的基线漂移问题，如\autoref{fig:drift}所示。为满足后续特定PPG形态特征计算需求，
 需要消除基线漂移的影响。此时一种基于线性变换的处理过程可以实现该目标。
@@ -871,7 +923,13 @@ TODO
 \subsection{脉搏波间的描述与度量}
 包络线
 
-FD
+Frechet Distance
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{pulse_preprocess/frechet_distance}
+    \caption{\label{fig:frechet distance}frechet distance}
+\end{figure}
 
 互相关系数
 \section{小结}
