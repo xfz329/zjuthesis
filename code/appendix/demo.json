@@ -1,0 +1,29 @@
+{
+    "path": "D:\\UrgeData\\Documents\\ppgdata\\No",
+    "PEstate": 0,
+    "mode":31,
+    "files": [
+        {
+            "path": "by_wavePLETH_2017080113.csv",
+            "skipped": false,
+            "pulses": [
+                {
+                    "type": "R",
+                    "Points": [
+                        91,
+                        105,
+                        177
+                    ]
+                },
+                {
+                    "type": "A",
+                    "Points": [
+                        91,
+                        105,
+                        177
+                    ]
+                }
+            ]
+        }
+    ]
+}
