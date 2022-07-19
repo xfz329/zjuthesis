@@ -5,6 +5,7 @@
 \appendixsecmajornumbering
 
 \section{更多SCV检测算法的典型案例}
+本部分内容是对第三章中SCV算法的检测性能检验部分的补充，参见正文\pageref{fig:detect_details}页相关内容。
 
 \autoref{fig:detect_details2}给出了更多应用SCV算法进行波形检测的案例。可以看到，在大多数场景里SCV算法有着优异的检测性能。但对某些数据的处理仍有提高空间，如\autoref{fig:c_xjh}中在$6.5s$处有较为明显的检测错误。
 \begin{figure}[htbp]
@@ -24,6 +25,11 @@
     \subfigure[\label{fig:c_wc}被试WC的波形检测结果（局部）]{
         \includegraphics[width=7.5cm]{pulse_preprocess/check/wc2}
     }
+    \caption{\label{fig:detect_details2}SCV算法对复杂信号的检测效果示意（补充）}
+\end{figure}
+\addtocounter{figure}{-1} % 将图的编号减1
+\begin{figure}
+\addtocounter{subfigure}{4} % 子图编号加4
     \quad
     \subfigure[\label{fig:c_why}被试WHY的波形检测结果（局部）]{
         \includegraphics[width=7.5cm]{pulse_preprocess/check/why}
@@ -32,47 +38,64 @@
     \subfigure[\label{fig:c_xjh}被试XJH的波形检测结果（局部），6.5s处有明显错检]{
         \includegraphics[width=7.5cm]{pulse_preprocess/check/xjh}
     }
-    \caption{\label{fig:detect_details2}SCV算法对复杂信号的检测效果示意（补充）}
+    \caption[]{（续）}
 \end{figure}
 
 \section{基于SCV检测算法的一个详尽实例}
 
 基于\autoref{fig:samplesignal}中实采信号，SCV算法对其进行波形定位检测的初筛结果如\autoref{fig:detectcheck}所示，图中波峰处数字为该波形的初筛编号。
-各复核标准及最终加权投票（权值参考\autoref{tab:voting}）的输出如\autoref{tab:detect}所示，
-其中，输出值为0代表该初筛波形被判定为正常波形，否则为干扰段。
+各复核标准及最终加权投票（权值参考\autoref{tab:voting}）的输出如\autoref{tab:detect}所示。
+其中，综合标准中加粗标红的项目表示该波形可不经过加权投票直接判定为异常干扰段。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\linewidth]{pulse_preprocess/detectcheck}
     \caption{\label{fig:detectcheck}PPG波形检测算法初筛结果}
 \end{figure}
-\begin{table}[htbp]
-    \centering
-    \caption{\label{tab:detect}SCV算法对初筛波形的复核及决策输出(局部)}
-    \begin{tabularx}{\linewidth}{X<{\centering}ccccX<{\centering}cX<{\centering}X<{\centering}}
-    \toprule
-    \multirow{2}[4]{*}{\textbf{波形编号}} & \multicolumn{3}{c}{\textbf{单项复核评估标准输出}} & \multicolumn{2}{c}{\textbf{绝对多数投票}} & \multicolumn{2}{c}{\textbf{加权投票}} & \multirow{2}[2]{*}{\textbf{人工裁定}}\\
-    \cmidrule{2-8} & \textbf{功率} & \textbf{标准差} & \textbf{基线} & \textbf{输出} & \textbf{判定} & \textbf{输出} & \textbf{判定} \\
-    \midrule
-    ……    & ……    & ……    & ……    & ……    & ……    & ……    & …… & ……\\
-    52    & 0     & 0     & 0     & 0     & 正常波形  & 0     & 正常波形 & 正常波形\\
-    53    & 0     & 0     & 1     & 0     & 正常波形  & 0.2   & 正常波形 & 正常波形\\
-    54    & 1     & 0     & 1     & 1     & 干扰段   & 0.6   & 干扰段 & 干扰段\\
-    55    & 1     & 0     & 1     & 1     & 干扰段   & 0.6   & 干扰段 & 干扰段\\
-    56    & 1     & 1     & 1     & 1     & 干扰段   & 1     & 干扰段 & 干扰段\\
-    57    & 1     & 1     & 1     & 1     & 干扰段   & 1     & 干扰段 & 干扰段\\
-    58    & 1     & 1     & 1     & 1     & 干扰段   & 1     & 干扰段 & 干扰段\\
-    59    & 1     & 1     & 0     & 1     & 干扰段   & 0.8   & 干扰段 & 干扰段\\
-    60    & 1     & 1     & 1     & 1     & 干扰段   & 1     & 干扰段 & 干扰段\\
-    61    & 1     & 1     & 0     & 1     & 干扰段   & 0.8   & 干扰段 & 干扰段\\
-    62    & 1     & 1     & 0     & 1     & 干扰段   & 0.8   & 干扰段 & 干扰段\\
-    63    & 1     & 1     & 0     & 1     & 干扰段   & 0.8   & 干扰段 & 干扰段\\
-    64    & 0     & 0     & 0     & 0     & 正常波形  & 0     & 正常波形 & 正常波形\\
-    ……    & ……    & ……    & ……    & ……    & ……    & ……    & …… & ……\\
-    80    & 1     & 0     & 0     & 0     & 正常波形  & 0.4   & 正常波形 & 正常波形\\
-    ……    & ……    & ……    & ……    & ……    & ……    & ……    & …… & ……\\
-    \bottomrule
-    \end{tabularx}%
-\end{table}%
+\begin{landscape}
+    \zihao{6}
+	\begin{longtable}{m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{1.5cm}<{\centering}}
+		\caption{SCV算法对初筛波形的复核及决策输出(局部)}\\
+		\label{tab:detect}\\
+		\toprule
+        \textbf{波形编号}&\textbf{标准差 $S$}&\textbf{能量 $P$}&\textbf{基线 $\delta B$}&\textbf{基线 $\Delta B$}&\textbf{基线 $\Delta B'$}&\textbf{时间 $PP$}&\textbf{能量类标准 $ES$}&
+        \textbf{基线类标准 $ES$}&\textbf{时间类标准 $TS$}&\textbf{改良加权结果}&\textbf{最终裁决}\\
+        \midrule
+        \endfirsthead
+        \caption[]{(续)}\\
+        \midrule
+        \textbf{波形编号}&\textbf{标准差 $S$}&\textbf{能量 $P$}&\textbf{基线 $\delta B$}&\textbf{基线 $\Delta B$}&\textbf{基线 $\Delta B'$}&\textbf{时间 $PP$}&\textbf{能量类标准 $ES$}&
+        \textbf{基线类标准 $ES$}&\textbf{时间类标准 $TS$}&\textbf{改良加权结果}&\textbf{最终裁决}\\
+        \midrule
+        \endhead 
+        \midrule
+        \endfoot
+        \bottomrule
+        \endlastfoot
+        …… & …… & …… & …… & …… & …… & …… & …… & …… & …… & …… & ……\\
+        52 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 正常波形\\
+        53 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0.2 & 正常波形\\
+        54 & 0 & 1 & 1 & 0 & 1 & 1 & 1 & \textcolor{red}{\textbf{2}}& 1 & 1 & 干扰段\\
+        55 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 1 & 0.7 & 干扰段\\
+        56 & 1 & 1 & 0 & 0 & 0 & 0 & \textcolor{red}{\textbf{2}}& 0 & 0 & 1 & 干扰段\\
+        57 & 1 & 1 & 0 & 1 & 1 & 0 & \textcolor{red}{\textbf{2}}& \textcolor{red}{\textbf{2}}& 0 & 1 & 干扰段\\
+        58 & 1 & 1 & 0 & 1 & 1 & 1 & \textcolor{red}{\textbf{2}}& \textcolor{red}{\textbf{2}}& 1 & 1 & 干扰段\\
+        59 & 1 & 1 & 0 & 0 & 0 & 1 & \textcolor{red}{\textbf{2}}& 0 & 1 & 1 & 干扰段\\
+        60 & 1 & 1 & 0 & 0 & 0 & 1 & \textcolor{red}{\textbf{2}}& 0 & 1 & 1 & 干扰段\\
+        61 & 1 & 1 & 0 & 0 & 0 & 0 & \textcolor{red}{\textbf{2}}& 0 & 0 & 1 & 干扰段\\
+        62 & 1 & 1 & 0 & 0 & 0 & 1 & \textcolor{red}{\textbf{2}}& 0 & 1 & 1 & 干扰段\\
+        63 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 正常波形\\
+        64 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 正常波形\\
+        65 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 正常波形\\
+        66 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 正常波形\\
+        67 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 正常波形\\
+        68 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0.2 & 正常波形\\
+        69 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0.2 & 正常波形\\
+        70 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0.2 & 正常波形\\
+        71 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0.2 & 正常波形\\
+        72 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 正常波形\\
+        …… & …… & …… & …… & …… & …… & …… & …… & …… & …… & …… & ……\\
+	\end{longtable}
+\end{landscape}
 
 \section{一个附录}
 开发软件及工具
