@@ -7,7 +7,7 @@
 \section{更多SCV检测算法的典型案例}
 本部分内容是对第三章中SCV算法的检测性能检验部分的补充，参见正文\pageref{fig:detect_details}页相关内容。
 
-\autoref{fig:detect_details2}给出了更多应用SCV算法进行波形检测的案例。可以看到，在大多数场景里SCV算法有着优异的检测性能。但对某些数据的处理仍有提高空间，如\autoref{fig:c_xjh}中在$6.5s$处有较为明显的检测错误。
+\autoref{fig:detect_details2}给出了更多应用SCV算法进行波形检测的案例。可以看到，在大多数场景里SCV算法有着优异的检测性能,但对某些数据的检测处理仍有进一步提高的空间。
 \begin{figure}[htbp]
     \centering
     \subfigure[\label{fig:c_by}被试BY的波形检测结果（局部）]{
@@ -35,7 +35,7 @@
         \includegraphics[width=7.5cm]{pulse_preprocess/check/why}
     }
     \quad
-    \subfigure[\label{fig:c_xjh}被试XJH的波形检测结果（局部），6.5s处有明显错检]{
+    \subfigure[\label{fig:c_xjh}被试XJH的波形检测结果（局部），其中6.5s处有明显错检]{
         \includegraphics[width=7.5cm]{pulse_preprocess/check/xjh}
     }
     \caption[]{（续）}
@@ -44,7 +44,7 @@
 \section{基于SCV检测算法的一个详尽实例}
 
 基于\autoref{fig:samplesignal}中实采信号，SCV算法对其进行波形定位检测的初筛结果如\autoref{fig:detectcheck}所示，图中波峰处数字为该波形的初筛编号。
-各复核标准及最终加权投票（权值参考\autoref{tab:voting}）的输出如\autoref{tab:detect}所示。
+各复核标准及最终加权投票（权值参考正文\pageref{tab:voting}页\autoref{tab:voting}）的输出如\autoref{tab:detect}所示。
 其中，综合标准中加粗标红的项目表示该波形可不经过加权投票直接判定为异常干扰段。
 \begin{figure}[htbp]
     \centering
@@ -96,6 +96,75 @@
         …… & …… & …… & …… & …… & …… & …… & …… & …… & …… & …… & ……\\
 	\end{longtable}
 \end{landscape}
+
+\section{基于UCI-BP数据集的SCV算法检测详情}
+使用SCV算法对UCI-BP数据集\path{Part_1.mat}文件的前50条数据记录进行了分析，统计详情如\autoref{tab:ucibp_details}所示。
+此外，\autoref{fig:ucibp_detect_details}也给出了基于UCI-BP数据集的展现SCV算法优异的检测性能的一些典型案例。
+\begin{center}
+    \zihao{5}
+    \begin{longtable}{m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}} 
+        \caption{基于UCI-BP数据库的SCV算法检测效果统计}\\
+		\label{tab:ucibp_details}\\
+        \toprule
+        \textbf{编号} & \textbf{检测总数} & \textbf{错检数} & \textbf{正确率} & \textbf{编号} & \textbf{检测总数} & \textbf{错检数} & \textbf{正确率}  \\
+        \midrule
+        \endfirsthead
+        \caption[]{(续)}\\
+        \toprule
+        \textbf{编号} & \textbf{检测总数} & \textbf{错检数} & \textbf{正确率} & \textbf{编号} & \textbf{检测总数} & \textbf{错检数} & \textbf{正确率}  \\
+        \midrule
+        \endhead 
+        \bottomrule
+        \endfoot
+        \bottomrule
+        \endlastfoot
+        1	&   960 	&8	    &99.17\%	    &26	    &   48	 &0	    &100.00\%   \\
+        2	&   931 	&5	    &99.46\%	    &27	    &   48	 &0	    &100.00\%   \\
+        3	&   718 	&2	    &99.72\%	    &28	    &   59	 &1	    &98.31\%    \\    
+        4	&   1062	&0	    &100.00\% 	    &29     &	72   &0     &100.00\%   \\
+        5	&   976 	&2	    &99.80\%	    &30	    &   72	 &0	    &100.00\%   \\
+        6	&   301 	&1	    &99.67\%	    &31	    &   59	 &0	    &100.00\%   \\
+        7	&   1021	&3	    &99.71\%	    &32	    &   34	 &0	    &100.00\%   \\
+        8	&   55	    &0	    &100.00\% 	    &33     &	60   &0     &100.00\%   \\
+        9	&   26	    &0	    &100.00\% 	    &34     &	72   &0     &100.00\%   \\
+        10	&   10	    &0	    &100.00\% 	    &35     &	73   &0     &100.00\%   \\
+        11	&   9       &0      &100.00\%       &36	    &   926  &0	    &100.00\%   \\
+        12	&   26	    &0	    &100.00\% 	    &37     &	913  &0	    &100.00\%   \\
+        13	&   12	    &0	    &100.00\% 	    &38     &	607  &0 	&100.00\%   \\
+        14	&   12	    &0	    &100.00\% 	    &39     &	199  &0	    &100.00\%   \\
+        15	&   402 	&2	    &99.50\%	    &40	    &   755  &0     &100.00\%   \\
+        16	&   957 	&10 	&98.96\%  	    &41     &	902  &0	    &100.00\%   \\
+        17	&   891 	&3	    &99.66\%	    &42	    &   912  &0     &100.00\%   \\
+        18	&   314 	&5	    &98.41\%	    &43	    &   135  &0     &100.00\%   \\
+        19	&   802 	&5	    &99.38\%	    &44	    &   22	 &0	    &100.00\%   \\
+        20	&   19	    &0	    &100.00\% 	    &45     &	72   &0     &100.00\%   \\
+        21	&   19	    &0	    &100.00\% 	    &46     &	83   &0     &100.00\%   \\
+        22	&   9	    &0      &100.0 0\%	    &47	    &   846  &1	    &99.88\%    \\
+        23	&   44	    &0	    &100.00\% 	    &48     &	9	 &0	    &100.00\%   \\
+        24	&   59	    &0	    &100.00\% 	    &49     &	44   &1     &97.73\%    \\
+        25	&   897 	&1	    &99.89\%	    &50	    &   8	 &0     &100.00\%   \\
+        合计&           &       &               &       &   17562&50    &99.72\%    \\
+	\end{longtable}
+\end{center}
+\begin{figure}[htbp]
+    \centering
+    \subfigure[\label{fig:c_0003}数据编号0003的波形检测结果（局部）]{
+    \includegraphics[width=7.5cm]{pulse_preprocess/check/0003}
+    }
+    \quad
+    \subfigure[\label{fig:c_0016}数据编号0016的波形检测结果（局部）]{
+    \includegraphics[width=7.5cm]{pulse_preprocess/check/0016}
+    }
+    \quad
+    \subfigure[\label{fig:c_rmq}被试RMQ的波形检测结果（局部）]{
+        \includegraphics[width=7.5cm]{pulse_preprocess/check/rmq}
+    }
+    \quad
+    \subfigure[\label{fig:c_wc}被试WC的波形检测结果（局部）]{
+        \includegraphics[width=7.5cm]{pulse_preprocess/check/wc2}
+    }
+    \caption{\label{fig:ucibp_detect_details}SCV算法对复杂信号的检测效果示意（补充）}
+\end{figure}
 
 \section{一个附录}
 开发软件及工具
