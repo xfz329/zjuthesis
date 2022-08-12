@@ -381,76 +381,102 @@ ROC高达0.89，此时真阳性为72.3\%，假阳性为8.8\%。
 同年，Sufriyana团队进行的另外一项研究\cite{Sufriyana2020}则聚焦于与PE相关的特征。他们对包含95个特征的印度尼西亚孕妇数据集（$N_{PE}=3318$，$N_{Normal}=19883$）进行了建模分析。经筛选，最终由17项特征生成的随机森林模型对PE具有
 最好的预测分析效果。
 
-综上，基于机器学习的PE研究可总结为\autoref{tab:AIinPE}所示，由于篇幅内容所限，一些正文里未做介绍的研究也在\autoref{tab:AIinPE}中进行了补充。
-
-\begin{center}
-    \fontsize{10}{4}
-    % Plan A
-    % \setlength\LTleft{0pt}
-    % \setlength\LTright{0pt}
-	% \begin{longtable}{@{\extracolsep{\fill}}cccccc}
-    % Plan B
-    % 列宽总计16cm,各列按需分配长度,p{x-0.43cm}<{\centering}即可
-    % m表示居中，p为置顶，b为置底
-    % \begin{longtable}{p{3cm}<{\centering}p{0.8cm}<{\centering}p{1.8cm}<{\centering}p{3.5cm}<{\centering}p{3cm}<{\centering}p{2cm}<{\centering}}
-    \begin{longtable}{m{3cm}<{\centering}m{0.8cm}<{\centering}m{1.8cm}<{\centering}m{3.5cm}<{\centering}m{3cm}<{\centering}m{2cm}<{\centering}}
+综上，基于机器学习的PE研究可总结为\autoref{tab:AIinPE}所示。由于正文篇幅内容所限，\autoref{tab:AIinPE}也对未在上文中介绍的其他研究进行了补充，补充内容的研究者上方均标注了*。
+其中，数据集规模一栏按实验组人数+对照组人数或参与实验总人数的形式进行标注。
+\begin{landscape}
+    \zihao{-5}
+	\begin{longtable}{m{1cm}<{\centering}m{4cm}<{\centering}m{3cm}<{\centering}m{4.5cm}<{\centering}m{4.5cm}<{\centering}m{2cm}<{\centering}}
 		\caption{基于机器学习的PE研究小结}\\
 		\label{tab:AIinPE}\\
-		\hline\hline
-            \textbf{研究者}&\textbf{时间}&\textbf{主要任务}&\tabincell{c}{\textbf{涉及的机器}\\\textbf{学习方法}}&\textbf{涉及参数}&\textbf{数据集规模}\\
-        \hline
+		\toprule
+        \textbf{时间}&\textbf{研究者}&\textbf{主要任务}&\textbf{涉及的机器学习方法}&\textbf{涉及参数}&\textbf{数据集规模}\\
+        \midrule
         \endfirsthead
         \caption[]{(续)}\\
-        \hline
-            \textbf{研究者}&\textbf{时间}&\textbf{主要任务}&\tabincell{c}{\textbf{涉及的机器}\\\textbf{学习方法}}&\textbf{涉及参数}&\textbf{数据集规模}\\
-        \hline
+        \midrule
+        \textbf{时间}&\textbf{研究者}&\textbf{主要任务}&\textbf{涉及的机器学习方法}&\textbf{涉及参数}&\textbf{数据集规模}\\
+        \midrule
         \endhead 
-        \hline
+        \midrule
         \endfoot
-        \hline\hline
+        \bottomrule
         \endlastfoot
-            Louise C. Kenny\cite{Kenny2005}&2005&降维、分类&基因遗传算法&多种血浆代谢物&\tabincell{c}{$N_{PE}=87,$\\$N_{Normal}=87$}\\
-            Jose F Carre˜no\cite{Carreno2020}&2020&降维、分类&帝国竞争算法、基因集簇算法&\tabincell{c}{多种蛋白质\\组学物质}&$N=202$\\
-            Liron Yoffe\cite{Yoffe2018}&2018&降维、分类&逻辑回归&非编码循环RNA&\tabincell{c}{$N_{PE}=75,$\\$N_{Normal}=75$}\\
-            Rong Guo\cite{Guo2021}&2021&降维、分类&\tabincell{c}{集成学习、 C4.5决策树、\\自适应增强、多层感知机}&胎盘mRNA&\tabincell{c}{$N_{PE}=157,$\\$N_{Normal}=173$}\\
-            Muhlis Tahir\cite{Tahir2018,Tahir2018-2}&2018&降维、分类&粒子群优化算法&PE风险因子&$N=1077$\\
-            Pia M. Villa\cite{Villa2017}&2017&聚类分析&贝叶斯聚类算法&PE风险因子&$N=903$\\
-            Oknalita Simbolon\cite{Simbolon2020}&2020&分类&集成学习软投票&PE风险因子&$N=402$\\
-            EDUARDO TEJERA\cite{Tejera2011}&2011&分类&人工神经网络&\textbf{心电RR间期}及PE风险因子&$N=568$\\
-            Ivana Mari{\'{c}}\cite{Maric2020}&2020&分类&弹性网算法&PE风险因子&$N=16370$\\
-            % \multirow{2}{*}{Herdiantri Sufriyana\cite{Sufriyana2020-1,Sufriyana2020}}
-            % &分类&M5P树状回归演算法&PE风险因子及生化指标&\tabincell{c}{$N_{PE}=66,$\\$N_{Normal}=29$}\\
-            Herdiantri Sufriyana\cite{Sufriyana2020-1}&2020&分类&M5P树状回归演算法&PE风险因子及生化指标&\tabincell{c}{$N_{PE}=66,$\\$N_{Normal}=29$}\\
-            Herdiantri Sufriyana\cite{Sufriyana2020}&2020&降维、分类&随机森林算法&PE风险因子及多项其他指标&\tabincell{c}{$N_{PE}=3318,$\\$N_{Normal}=19883$}\\
-            Costas K. Neocleous\cite{Neocleous2009}\footnote{正文未做详细介绍，详情请参阅原文。\label{ft:note}}&2009&降维、分类&神经网络&PE风险因子及生化指标&$N=6838$\\
-            Jong Hyun Jhee\cite{Jhee2019}\textsuperscript{\ref{ft:note}}&2009&模式识别、聚类分析&\tabincell{c}{逻辑回归、决策树、\\朴素贝叶斯、随机森林等}&PE风险因子及多项其他指标&$N=11006$\\
-            Antonieta Martínez-Velasco\cite{Martinez2018}\textsuperscript{\ref{ft:note}}&2008&分类&多种机器学习算法&PE风险因子及多项其他指标&\tabincell{c}{$N_{PE}=269,$\\$N_{Normal}=1365$}\\
-            Mário W. L. Moreira\cite{Moreira2016}\textsuperscript{\ref{ft:note}}&2016&降维、分类&贝叶斯网络&PE风险因子及多项生理症状&$N=164$\\
+        2005&Louise C. Kenny\cite{Kenny2005}&降维、分类&基因遗传算法&多种血浆代谢物&87+87\\
+        2009&Costas K. Neocleous\cite{Neocleous2009}&降维、分类&神经网络&PE风险因子及生化指标&6838\\
+        2011&EDUARDO TEJERA\cite{Tejera2011}&分类&人工神经网络&\textbf{心电RR间期}及PE风险因子&568\\
+        2016&Mário W. L. Moreira\cite{Moreira2016}*&降维、分类&贝叶斯网络&PE风险因子及多项生理症状&164\\
+        2017&Pia M. Villa\cite{Villa2017}&聚类分析&贝叶斯聚类算法&PE风险因子&903\\
+        2018&Muhlis Tahir\cite{Tahir2018,Tahir2018-2}&降维、分类&粒子群优化算法&PE风险因子&1077\\
+        2018&Liron Yoffe\cite{Yoffe2018}&降维、分类&逻辑回归&非编码循环RNA&75+75\\
+        2018&Antonieta Martínez-Velasco\cite{Martinez2018}*&分类&多种机器学习算法&PE风险因子及多项其他指标&269+1365\\
+        2019&Jong Hyun Jhee\cite{Jhee2019}*&模式识别、聚类分析&\tabincell{c}{逻辑回归、决策树、\\朴素贝叶斯、随机森林等}&PE风险因子及多项其他指标&11006\\
+        2020&Jose F Carre˜no\cite{Carreno2020}&降维、分类&帝国竞争算法、基因集簇算法&多种蛋白质组学物质&202\\
+        2020&Ivana Mari{\'{c}}\cite{Maric2020}&分类&弹性网算法&PE风险因子&16370\\
+        2020&Oknalita Simbolon\cite{Simbolon2020}&分类&集成学习软投票&PE风险因子&402\\
+        2020&Herdiantri Sufriyana\cite{Sufriyana2020-1}&分类&M5P树状回归演算法&PE风险因子及生化指标&66+29\\
+        2020&Herdiantri Sufriyana\cite{Sufriyana2020}&降维、分类&随机森林算法&PE风险因子及多项其他指标&3318+19883\\
+        2021&Rong Guo\cite{Guo2021}&降维、分类&\tabincell{c}{集成学习、 C4.5决策树、\\自适应增强、多层感知机}&胎盘mRNA&157+173\\
 	\end{longtable}
-\end{center}
+\end{landscape}
 
 \subsection{存在的不足与分析}
-综合上述分析，对子痫前期的早期识别与检测可从按以下思路开展深入探索与研究。
+综合上述分析，目前已有很多基于子痫前期识别与诊断的相关研究。随着对子痫前期的了解不断深入，临床对子痫前期已经具有较为成熟的识别技术与检测手段。借助相关专业检测仪器设备，通过风险因子与生物标记物筛查等方法，
+现阶段已经可以对子痫前期进行较高准确率的识别与诊断。但上述检测方法仍然存在着一定的缺陷与不足。
 
-但上述方法仍存在着一定的缺陷与不足：风险因素量表方法对具备多项子痫前期的风险因子的孕妇进行了一定的排除，但整体而言准确性不足，且无法反映孕期过程中的任何动态变化；而现有的
-生理参数指标检测均需借助专业设备完成，有操作复杂、检测成本高、检测场地受限需有创采集等局限。此外，上述方法只能作为子痫前期的诊断之用，无法对整个孕期内子痫前期进行动态检测。因此，如何实现对子痫前期的便捷、快速、
-无创、准确的临床诊断乃至全孕期内的监测仍有待进一步深入研究。
+一、风险因子筛查
 
-而从无创检测的角度，光电容积脉搏波可以反应血液动力学的变化。因为脉搏波是心脏周期性搏动的体现，心脏的收缩和舒张引起的振动沿动脉血管和血流向外周传播从而
-形成了脉搏波。由于血管直径富于变化，脉搏波到达之处血液流动速率也将发生一定的脉动变化，容积脉搏波包含了有关人体血液微循环方面的更富细节的生理信息
-[17]。因此子痫前期导致的人体血液动力学改变，完全可以用光电容积脉搏波的特征来表示。同时光电容积脉搏波（Photoplethysmography, PPG）采集可无
-创进行，具有采集过程定位简单、易于操作，信号质量高、稳定性强等特点，所以完全满足临床便捷、快速、无创的检测要求。
+风险因子可以对孕妇罹患子痫前期的可能性进行一定程度上的初筛，但整体而言，仅通过风险因子进行筛选，识别与诊断的准确性有限。此外，风险因子往往是对孕妇某些特性的静态描述，无法体现
+整个孕期内的任何动态变化，具有一定的滞后性。
 
+二、生物标志物筛查
+
+相较而言，生物标志物筛查对子痫前期的识别与诊断有着更高的准确性与可靠性。但这些生物标志物（如血清妊娠相关蛋白A、胎盘生长因子等）必须借助专业设备在医院进行有创采样检测，
+对检测场所、操作流程、检测成本等多方面均有着较高要求。
+
+三、机器学习分析技术
+
+作为新兴研究方向，利用机器学习方法对子痫前期的相关问题进行分析研究无疑有着巨大的应用前景。但如上小节所述（参见\autoref{tab:AIinPE}），此前诸多学者使用机器学习方法进行分析时，使用的数据往往是
+蛋白质、mRNA等生物标志物。这些生物标志物的数据获取有着较大的难度与较高的专业壁垒。
+
+鉴于现有技术具有上述不足，实现对子痫前期的便捷、快速、无创、准确的临床诊断乃至全孕期内的动态监测无疑有着广阔的研究空间与应用前景。
+针对子痫前期的识别与检测，可按以下思路进行探索性研究：
+
+\textbf{一、寻求更好的能够表征子痫前期的参数指标}
+
+根据现有的子痫前期的发病机制的相关理论，子痫前期会导致孕妇多器官、多系统的病生理变化。存在着从这些受影响的器官、系统中挖掘出新的子痫前期表征参数的理论可能性与实践可行性。
+
+\textbf{二、利用机器学习领域的相关算法建立更好的分析模型}
+
+数据是讨论一切机器学习模型性能的基础。在获取到足量的研究数据之后，才能对不同模型、不同算法乃至不同参数对最终分析模型的影响进行研究、探索、对比及优化。
+
+\textbf{三、发挥大数据及移动端优势，探索更多应用场景}
+
+由于现有检测指标往往需要在医院借助专业设备才能进行。近年来，随着智能设备、物联网等技术的应用普及，可用于家庭、社区等多种场景的便携式检测设备无疑有着很高的实用性与广阔的市场前景。
+但目前这类微型智能检测设备还处于起步状态。
+
+从以上分析中不难发现，寻求更好的能够表征子痫前期的参数指标有着最高的研究优先级，是后续分析研究得以开展的基础。另一方面，由于子痫前期会引起全身小动脉痉挛，必然会引起血液动力学上的变化，而这些变化
+可以在光电容积脉搏波（Photoplethysmography, PPG）上得到体现，如\autoref{fig:contrast_pe}所示。
+
+具体而言，脉搏波是心脏周期性搏动的体现，心脏的收缩和舒张引起的振动沿动脉血管和血流向外周传播从而
+形成了脉搏波。由于血管直径富于变化，脉搏波到达之处血液流动速率也将发生一定的脉动变化，容积脉搏波包含了有关人体血液微循环方面的更富细节的生理信息\cite{PPGYY}。
+同时PPG的采集可无创进行，其采集过程具有定位简单、易于操作的特点，采集得到的信号质量高、稳定性强等，完全可以满足上述便捷、快速、无创的检测要求。\textbf{鉴于此，本研究使用PPG信号对子痫前期的识别进行相关研究。}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{intro/contrast_pe}
+    \caption[正常孕妇与患有PE孕妇的PPG波形对比]{\label{fig:contrast_pe}正常孕妇与患有PE孕妇的PPG波形对比。数据来源参见本文第二章。}
+\end{figure}
 
 \section{光电容积脉搏波的研究现状}
 本小节将从脉搏波产生原理、采集原理、典型特征及生理参数与非生理参数模型等方面对脉搏波进行介绍。此外，本小节的最后也对国内外学者的基于脉搏波的子痫前期的最新研究状况进行补充说明。
 \subsection{脉搏波产生原理}
-与心电产生原理类似，脉搏波也是由心脏周期性收缩与舒张引发的节律间歇性射血所产生的,其波形与心电有一定的关联性，如\autoref{fig:ecgppg}所示\cite{Allen2007}。由于血管系统本身的阻力与弹性，射血引起的主动脉扩张与收缩最终导致血液
+与心电产生原理类似，脉搏波也是由心脏周期性收缩与舒张引发的节律间歇性射血所产生的,其波形与心电有一定的关联性，如\autoref{fig:ecgppg}所示\cite{Allen2007}。
+脉搏波蕴含着丰富的血液动力学信息，可以通过脉搏波的形态、强度、速率、节律等特征反映心脏的功能与状态，也可以反映出各级动脉及分支中血管壁弹性、血管阻力、血液黏度等信息。
+由于血管系统本身的阻力与弹性，射血引起的主动脉扩张与收缩最终导致血液
 以压力波动的形式从主动脉传播、延伸至整个血管动脉系统。脉搏波在颈动脉、肱动脉、桡动脉等浅表动脉可以直接通过手指在皮肤表面感受到\cite{PPGYY}。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{intro/ecgppg}
-    \caption{\label{fig:ecgppg}心电与脉搏波信号对比}
+    \caption[心电与脉搏波信号对比]{\label{fig:ecgppg}心电与脉搏波信号对比\cite{Allen2007}}
 \end{figure}
 
 脉搏波在血管动脉系统中传播时，脉搏压力波的部分能量会从不同位置反射回心脏。由于不同动脉段管壁弹性存在差异、动脉在某些部位出现分叉管以及血管本身狭窄等因素，动脉管系中会出现一系列特殊的间断点。
@@ -462,8 +488,6 @@ ROC高达0.89，此时真阳性为72.3\%，假阳性为8.8\%。
     \caption[主动脉-手臂复合动脉系统及其对桡动脉-指动脉处动脉脉搏波的影响示意图]{\label{fig:artery}主动脉-手臂复合动脉系统及其对桡动脉-指动脉处动脉脉搏波的影响\cite{THOCBPM}。
     左心室输出的原发脉搏波（深色）在肾动脉与髂分叉动脉附近产生了两个反射波（浅色）。}
 \end{figure}
-
-综上可知，脉搏波蕴含着丰富的血液动力学信息，可以通过脉搏波的形态、强度、速率、节律等特征反映心脏的功能与状态，也可以反映出各级动脉及分支中血管壁弹性、血管阻力、血液黏度等信息。
 
 \subsection{光电容积脉搏波采集原理}
 根据检测方式的不同，可将脉搏波分为压力脉搏波和容积脉搏波等两类。压力脉搏波主要表征血管内血液压力的传输，容积脉搏波主要表征外周血管与微循环中等微血管血液容积的脉动性变化。
@@ -478,7 +502,7 @@ PPG检测可依据光的接收方式分为透射式与反射式两种\cite{THOCB
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.7\linewidth]{intro/led}
-    \caption{\label{fig:led}PPG检测的两种方式}
+    \caption[PPG检测的两种方式]{\label{fig:led}PPG检测的两种方式\cite{THOCBPM}}
 \end{figure}
 
 当心脏收缩时外周血容量最多，光吸收量也最大，故检测到的光强度最小；而在心脏舒张时则恰恰相反，外周血容最小，光的吸收量最小，检测到的光强度最大\cite{lhc,cwl}。
@@ -542,7 +566,7 @@ PPG检测可依据光的接收方式分为透射式与反射式两种\cite{THOCB
 \cite{1980Spectrophotometric,4122392,PPGYY}。PPG信号检测正是依此原理，通过光电转换硬件电路检测光信号并从光强变化率中获取指端血液容积变化率的信息。
 
 \subsection{光电容积脉搏波的一般特征}
-作为人体电生理内源信号的一种，脉搏波不仅拥有其鲜明的个性特点，还拥有一般医学信号的共性特征。本小节将从波形特征与时频特征两方面对脉搏波信号的一般特征进行介绍。
+作为人体电生理内源信号的一种，脉搏波不仅拥有其鲜明的个性特点，还拥有一般医学信号的共性特征。本小节将从波形特征、时频特征及位置特性等三方面对脉搏波信号的一般特征进行介绍。
 
 一、形态特征
 
@@ -680,7 +704,7 @@ PPG以低频信号为主，频谱范围是0.1-40$Hz$。其信号能量主要集�
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{intro/micro}
-    \caption{\label{fig:micro}微循环容积脉搏血流模型}
+    \caption[微循环容积脉搏血流模型]{\label{fig:micro}微循环容积脉搏血流模型\cite{PPGYY}}
 \end{figure}
 
 根据输入输出关系及该过程中动量守恒，可到微循环弹性腔血流模型的数学表达式为
@@ -782,9 +806,6 @@ ARMA模型是AR模型与MA模型的组合，表示脉搏波信号$X(n)$是由自
 
 一、传统指标
 
-2018年，Tammy Y. Euliano等人\cite{Euliano2018}通过无创监测心电图与光电脉搏图对识别PE患者（$N_{PE}=25$，$N_{Normal}=31$）进行了研究。他们发现PE患者的脉搏波波峰时长较正常孕妇长、弹性系数较正常孕妇小。
-将这些脉搏波特征与其他心电特征训练得到的分类器的ROC数值高达0.907，敏感性78.2\%，特异性89.9\%。
-
 2008年，KARLIJN VOLLEBREGT等人\cite{KARLIJN2008}研究了使用脉搏波数据进行PE初筛的可能。通过对健康孕妇（$N=223$）的跟踪研究表明舒张压、心输出量与脉搏波增强指数均对PE预测模型有明显影响。结合PE风险因子，最终得到的模型
 ROC数值可达0.95,其中敏感性90\%、特异性86\%。
 
@@ -793,14 +814,17 @@ ROC数值可达0.95,其中敏感性90\%、特异性86\%。
 的多项研究也进一步验证PWV在PE检测识别中的作用。
 
 2014年，Su Fangming等人\cite{Su2014}的研究发现，可以通过光电容积脉搏波无创评估整个妊娠过程中心血管活动情况。他们提取分析了脉搏波增强指数（AIX）、反射指数（RI）、传导时间（PTT）等，
-发现这些参数随者妊娠时间的增长在孕期内均有统计意义上的明显改变。
+发现这些参数随着妊娠时间的增长在孕期内均有统计意义上的明显改变。
 
 2014年，Nan Han等人\cite{Han2014}研究孕妇心血管系统与子宫动脉血流系统的一致性也得到了与Kathleen Tomsin等人\cite{Tomsin2012}类似的结论。他们以三个月为单位对子宫动脉多普勒超声与指端光电容积脉搏波的检测结
 果进行了对比分析（$N_{PE}=10$，$N_{Normal}=80$）。结果显示，正常孕妇的子宫动脉阻力指数（UtA RI）与脉搏波反射指数（RI）均随妊娠时间的延长而显著降低，且趋势基本一致。而PE患者的两项参数的数值均明显高于正常孕妇。
 
+2018年，Tammy Y. Euliano等人\cite{Euliano2018}通过无创监测心电图与光电脉搏图对识别PE患者（$N_{PE}=25$，$N_{Normal}=31$）进行了研究。他们发现PE患者的脉搏波波峰时长较正常孕妇长、弹性系数较正常孕妇小。
+将这些脉搏波特征与其他心电特征训练得到的分类器的ROC数值高达0.907，敏感性78.2\%，特异性89.9\%。
+
 二、新型指标
 
-2018年，Ying Feng等人\cite{Feng2018}基于光电容积脉搏波提出了差异面积比参数（ADR），发现子痫前期会导致孕妇ADR较正常妊娠孕妇低；
+2018年，Ying Feng等人\cite{Feng2018}基于光电容积脉搏波提出了差异面积比参数（ADR），发现子痫前期会导致孕妇ADR较正常妊娠孕妇低。
 
 2019年，陈婉琳等人\cite{Chen2019}基于光电容积脉搏波提出了光电容积斜率指数（photoplethysmography slope index，PSI），并通过对50例孕妇（子痫患者23例，正常孕妇27例）的脉搏波数据对PSI进行了检验，
 结果表明其灵敏性和特异性分别达到 87.0\%和 96.3\%，准确性达到 92.0\%。
@@ -810,23 +834,33 @@ ROC数值可达0.95,其中敏感性90\%、特异性86\%。
 综上，基于机器学习的PE研究可总结为\autoref{tab:PPGinPE}所示。
 
 \begin{center}
-    \fontsize{10}{4}
-	\begin{longtable}{m{3cm}<{\centering}m{1cm}<{\centering}m{2cm}<{\centering}m{6cm}<{\centering}m{1cm}<{\centering}}
+    \zihao{5}
+	\begin{longtable}{m{1cm}<{\centering}m{3cm}<{\centering}m{3cm}<{\centering}m{7cm}<{\centering}}
 		\caption{基于脉搏波的PE研究小结}\\
 		\label{tab:PPGinPE}\\
-		\hline\hline
-            \textbf{研究者}&\textbf{时间}&\textbf{脉搏波参数}&\textbf{研究结果}&\textbf{备注}\\
-        \hline
+        \toprule
+        \textbf{时间}&\textbf{研究者}&\textbf{涉及的脉搏波参数}&\textbf{主要研究结论}\\
+        \midrule
         \endfirsthead
         \caption[]{(续)}\\
-        \hline
-            \textbf{研究者}&\textbf{时间}&\textbf{脉搏波参数}&\textbf{研究结果}&\textbf{备注}\\
-        \hline
+        \midrule
+        \textbf{时间}&\textbf{研究者}&\textbf{涉及的脉搏波参数}&\textbf{主要研究结论}\\
+        \midrule
         \endhead 
-        \hline
+        \midrule
         \endfoot
-        \hline\hline
+        \bottomrule
         \endlastfoot
+        2008    &   KARLIJN VOLLEBREGT\cite{KARLIJN2008}    &   AIX     &   AIX对PE预测模型有明显影响。\\
+        2012    &   Kathleen Tomsin\cite{Tomsin2012}    &   PWV     &   PE患者的PWV数值较正常孕妇数值更低。 \\
+        2014    &   Ira Bernstein\cite{Ira2014}     &   PWV &   \\
+        2014    &   Irene Katsipi\cite{Katsipi2014}     &   PWV &   \\
+        2014    &   Nan Han\cite{Han2014}     &   RI &  PE患者的RI数值明显高于正常孕妇。 \\
+        2014    &   Su Fangming\cite{Su2014}    &   AIX、RI、PTT    &   这些参数在孕期内有统计意义上的明显改变。\\
+        2018    &   MIHAELA VIVIANA IVAN\cite{VivianaIvan2018}     &   PWV &   \\
+        2018    &   Tammy Y. Euliano\cite{Euliano2018}     &   波峰时长、弹性系数 &   PE患者的脉搏波波峰时长较正常孕妇长、弹性系数较正常孕妇小\\
+        2018    &   Ying Feng\cite{Feng2018}    &   ADR &  PE患者的ADR数值较正常孕妇数值更低。 \\
+        2019    &   陈婉琳\cite{Chen2019}     &   PSI &   \\
 	\end{longtable}
 \end{center}
 
@@ -860,4 +894,7 @@ ROC数值可达0.95,其中敏感性90\%、特异性86\%。
 第六章是低耦合高拓展的软件综合分析系统的设计与实现。阐述了本研究包括数据源导入管理、预处理算法管理、特征拓展管理、标准数据管理、模型训练生成管理等方面在内的整体分析系统的软件设计思路，
 介绍了为提高本研究各部分内的内聚性、降低各研究内容之间的耦合性、提高系统整体可拓展性及实用性、提高系统真正落地临床的可能性所做出的各项规划及实现。
 
-第七章是总结与展望。对本论文的全部研究工作进行系统性总结，阐述本论文的创新工作点，并对下一阶段的研究工作内容进行了规划与展望。
+第八章是云+端+智能 低耦合、高拓展的软件综合分析系统的设计与实现。将本研究的各项工作按云+端+智能的形式进行了软件设计，使其能符合类似工作的开展进行。同时对该过程中涉及的所有算法及软件开发
+工作进行的设计进行介绍。
+
+第九章是总结与展望。对本论文的全部研究工作进行系统性总结，阐述本论文的创新工作点，并对下一阶段的研究工作内容进行了规划与展望。
