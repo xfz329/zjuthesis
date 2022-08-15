@@ -239,7 +239,7 @@ TODO figure here
 若将多个学习器$h_i$在样本$x$上的预测输出表示为$N$维向量
 \begin{equation}
     \label{equ:vector_h}
-    \boldsymbol H(x) = [h_i^1(x),h_i^2(x),\cdots,h_i^N(x)]
+    \boldsymbol H(x) = [h_1(x),h_2(x),\cdots,h_N(x)]
 \end{equation}
 其中，$h_i(x)$的值域为类别标记集合$\{c_0,c_1,\cdots,c_N\}$。
 此时，上述评估过程可进一步抽象成
@@ -249,7 +249,7 @@ TODO figure here
 \end{equation}
 其中，$f$为具体决策策略函数。
 
-在机器学习领域，集成学习（参见本研究第5章相关内容）中的投票策略（voting）定义了几种决策函数$f$\cite{Zhou2016}。
+在机器学习领域，集成学习（参见本研究第5章相关内容）中的投票策略（voting）给出了了几种决策方法$f$\cite{Zhou2016}。
 具体而言，集成学习将上述学习器$h_i$按输出值类型分为了类标记与类概率等两大类。
 而基于这两类输出值进行的投票也相应被称为硬投票与软投票，类标记与类概率的特点可总结概括为\autoref{tab:vote}所示。
 其中，硬投票可能会导致最终的分类结果由多数概率值较低的学习器决定，而非少数概率更高、更有分类把握的学习器。因此，在条件允许的情况下，应尽可能使用软投票机制进行决策。
@@ -429,8 +429,14 @@ SCV算法是针对脉搏波的检测而设计，但其检测思路也可作为�
 其中，$y^{'}$与$y^{''}$分别是曲线函数在该点的一阶导数与二阶导数。王选等人的算法检测过程可概括如\autoref{alg:incisuras_detect}所示\cite{Wang2012}。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.6\linewidth]{pulse_preprocess/k}
-    \caption{\label{fig:incisura}重搏波及切迹定位原理}
+    \subfigure[重博波明显的PPG波形]{
+    \includegraphics[width=5.5cm]{pulse_preprocess/ri1}
+    }
+    \quad
+    \subfigure[重博波不明显的PPG波形]{
+    \includegraphics[width=5.5cm]{pulse_preprocess/ri2}
+    }
+    \caption[重搏波及切迹定位原理]{\label{fig:incisura}重搏波及切迹定位原理\cite{Wang2012,Su2014}}
 \end{figure}
 
 \begin{breakablealgorithm}
@@ -491,7 +497,8 @@ SCV算法是针对脉搏波的检测而设计，但其检测思路也可作为�
 其中，减少抽样率的过程称为信号的抽取，也称抽样率压缩；增加抽样率的过程则称之为信号的插值，也即抽样率扩张\cite{Cheng2008}。信号的抽取与插值都会导致原始信号出现频谱迁移，即改变信号的频率成份\cite{Cheng2008}。
 
 相对而言，信号的抽取过程更容易理解。若需要用整数$D$对$x(n)$进行抽取，以使抽样率降低到原始值的$1/D$，可按照每连贯的$D$个抽样中取出一个信号值。这样的处理称为整数$D$抽取\cite{Cheng2008}。
-插值是抽取的逆过程，通过某些已知的数据点去推断一个（系列）特定的函数，使得所有已知数据点均在该函数图像上，从而去推断更多未知数据点，这一过程如\autoref{fig:spline}所示。
+插值是抽取的逆过程，通过某些已知的数据点去推断一个（系列）特定的函数，使得所有已知数据点均在该函数图像上，从而去推断更多未知数据点，这一过程如\autoref{fig:spline}所示。若不考虑可能出现的信号失真，理论上
+可以通过调整抽取与插值的数值对原始信号的采样率进行任意的调整。
 \begin{figure}[htbp]
     \centering
     \subfigure[经过点(1,2)，(2,1)，(4,4)和(5,3)的线性样条]{
@@ -625,7 +632,49 @@ SCV算法是针对脉搏波的检测而设计，但其检测思路也可作为�
 在此前学者们的研究涉及的诸多PPG波形形态参数中，时间类参数、幅度类参数与面积类参数由于物理意义明确、易于理解且方便与脉搏波产生原理过程联系起来，在基于PPG的各类研究中得到了最广泛的应用\cite{cwl,mmt}。本小节对这三类时域特征进行了归纳介绍。
 此外，本小节补充介绍了一些有代表性的其他PPG特征参数。最后，在信号分析领域得到广泛使用的通用无量纲参数与高阶统计参数也被本研究采纳借鉴，本节也对相关参数的原理进行了介绍。
 
-TODO AIX
+脉搏波增强指数
+
+脉搏波增强指数（Augmentation Index，AIX）指心脏收缩期早期与晚期拐点之间的差值与峰值之比，计算的关键需要先找到表征脉搏波反射波上升冲程（up-stroke）的拐点$P1$，如\autoref{fig:aix}所示\cite{Su2014}。
+\begin{equation}
+    \label{equ:aix}
+    AIX = \pm \frac{\Delta P}{PP}
+\end{equation}
+特别地，\autoref{equ:character}中$\pm$的取值视拐点$P1$与峰值点的相对位置而定。图\autoref{fig:aix1}中的拐点在峰值点左侧，AIX符号取正，表示主波峰是经过叠加得到的；而图\autoref{fig:aix2}中的拐点在峰值点右侧，AIX符号取负，
+表明主波峰未得到“增强”。
+
+\begin{figure}[htbp]
+    \centering
+    \subfigure[\label{fig:aix1}拐点在波峰左侧]{
+    \includegraphics[width=5.5cm]{pulse_preprocess/aix1}
+    }
+    \quad
+    \subfigure[\label{fig:aix2}拐点在波峰右侧]{
+    \includegraphics[width=5.5cm]{pulse_preprocess/aix2}
+    }
+    \caption[AIX计算时的两种情况]{\label{fig:aix}AIX计算时的两种情况\cite{Su2014}}
+\end{figure}
+
+反射指数与脉搏传导时间
+
+反射指数（Reflection Index，RI）是由脉搏波舒张峰值或拐点处幅值与收缩谷值之比计算得到的\cite{Su2014,Elgendi2012}。
+类似地，可以得到脉搏传导时间（Pulse Transit Time，PTT）。
+
+\begin{equation}
+    \label{equ:ri}
+    RI = \frac{b}{a}
+\end{equation}
+
+\begin{figure}[htbp]
+    \centering
+    \subfigure[\label{fig:ri1}重博波明显的PPG波形]{
+    \includegraphics[width=5.5cm]{pulse_preprocess/ri1}
+    }
+    \quad
+    \subfigure[\label{fig:ri2}重博波不明显的PPG波形]{
+    \includegraphics[width=5.5cm]{pulse_preprocess/ri2}
+    }
+    \caption[利用PPG及其一阶导数计算RI及PTT原理示意]{\label{fig:aix}利用PPG及其一阶导数计算RI及PTT原理示意\cite{Su2014}}
+\end{figure}
 
 1. 时间类特征参数
 
