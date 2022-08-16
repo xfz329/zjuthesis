@@ -629,43 +629,14 @@ SCV算法是针对脉搏波的检测而设计，但其检测思路也可作为�
 一、基于波形的时域特征
 
 在诸多PPG波形形态学特征参数中，时间类参数、幅度类参数与面积类参数往往定义清晰明了、意义明确易于理解、且易与脉搏波产生原理过程联系起来，从而具有一定的生理学意义。
-因此，这些参数在基于PPG的各类研究中得到了最广泛的应用\cite{cwl,mmt}。
+因此，这些参数在基于PPG的各类研究中得到了最广泛的应用\cite{cwl,mmt}。除这三类参数外，斜率类参数也在描述脉搏波形态特征领域占有一席之地。
+最后，在信号分析领域得到广泛使用的通用无量纲参数与高阶统计参数也可在一定程度上反应PPG信号特征。
+以下是各类参数的具体介绍。
 
-本小节对这三类时域特征进行了归纳介绍。
-此外，本小节补充介绍了一些有代表性的其他PPG特征参数。最后，在信号分析领域得到广泛使用的通用无量纲参数与高阶统计参数也被本研究采纳借鉴，本节也对相关参数的原理进行了介绍。
+1. 时间类特征参数
 
-脉搏波增强指数
-
-脉搏波增强指数（Augmentation Index，AIX）指心脏收缩期早期与晚期拐点之间的差值与峰值之比，计算的关键需要先找到表征脉搏波反射波上升冲程（up-stroke）的拐点$P1$，如\autoref{fig:aix}所示\cite{Su2014}。
-\begin{equation}
-    \label{equ:aix}
-    AIX = \pm \frac{\Delta P}{PP}
-\end{equation}
-特别地，\autoref{equ:character}中$\pm$的取值视拐点$P1$与峰值点的相对位置而定。当拐点在脉搏波波峰点左侧时，AIX符号取正，表示主波峰是经过叠加得到的，如图\autoref{fig:aix1}所示；反之，
-当拐点在脉搏波波峰点右侧时，AIX符号取负，表明主波峰未得到“增强”，如图\autoref{fig:aix2}所示。
-
-\begin{figure}[htbp]
-    \centering
-    \subfigure[\label{fig:aix1}拐点在波峰左侧]{
-    \includegraphics[width=5.5cm]{pulse_preprocess/aix1}
-    }
-    \quad
-    \subfigure[\label{fig:aix2}拐点在波峰右侧]{
-    \includegraphics[width=5.5cm]{pulse_preprocess/aix2}
-    }
-    \caption[AIX计算时的两种情况]{\label{fig:aix}AIX计算时的两种情况\cite{Su2014}}
-\end{figure}
-
-反射指数与脉搏传导时间
-
-反射指数（Reflection Index，RI）是由脉搏波舒张峰值或拐点处幅值与收缩谷值之比计算得到的\cite{Su2014,Elgendi2012}。
-类似地，可以得到脉搏传导时间（Pulse Transit Time，PTT）\cite{Brumfield2005,Su2014}。
-
-\begin{equation}
-    \label{equ:ri}
-    RI = \frac{b}{a}
-\end{equation}
-
+时间类特征参数描述了PPG波形中某些特殊点之间的时长值或多个这样时长之间的比例关系。脉搏传导时间（Pulse Transit Time，PTT）则是其中最有代表性的时间类参数之一。
+如\autoref{fig:ri}所示，PTT是对脉搏波主波峰与重博波波峰或反射波导致的拐点之间的时间间隔的量化描述\cite{Brumfield2005,Su2014}。PTT在基于PPG的各类研究中得到了广泛应用。
 \begin{figure}[htbp]
     \centering
     \subfigure[\label{fig:ri1}重博波明显的PPG波形]{
@@ -675,17 +646,16 @@ SCV算法是针对脉搏波的检测而设计，但其检测思路也可作为�
     \subfigure[\label{fig:ri2}重博波不明显的PPG波形]{
     \includegraphics[width=5.5cm]{pulse_preprocess/ri2}
     }
-    \caption[利用PPG及其一阶导数计算RI及PTT原理示意]{\label{fig:aix}利用PPG及其一阶导数计算RI及PTT原理示意\cite{Su2014}}
+    \caption[PTT及RI计算原理示意]{\label{fig:ri}PTT及RI计算原理示意\cite{Su2014}}
 \end{figure}
 
-1. 时间类特征参数
-
-时间类特征参数主要包含脉搏波脉动周期、上升支间期、下降支间期等。此外，王梦婷提出了一种描述动脉内高压力水平维持的新时间参数，并在此基础上进一步提出了该参数的归一化表达\cite{mmt}。
-陈婉琳等人基于斜率极值提出了上升支最大斜率间期、下降支最小斜率间期等参数\cite{cwl}。以上参数的定义参见\autoref{fig:feature}及\autoref{tab:timefeature}所示。
+除PTT外，时间类特征参数还包含脉搏波脉动周期、上升支间期、下降支间期等。2016年，王梦婷提出了一种描述动脉内高压力水平维持的时间参数，并在此基础上归一化处理后得到了多项衍生参数，
+包含动脉高压力持续时间、血管硬度指数、心肌收缩系数及心博出系数等\cite{mmt}。
+2018年，陈婉琳等人基于斜率极值提出了上升支最大斜率间期、下降支最小斜率间期等参数\cite{cwl}。以上参数的定义参见\autoref{fig:timefeature}及\autoref{tab:timefeature}所示。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.6\linewidth]{pulse_preprocess/k}
-    \caption{\label{fig:feature}K值的提取}
+    \includegraphics[width=.6\linewidth]{pulse_preprocess/timefeature}
+    \caption[PPG时间及幅值类参数示意]{\label{fig:timefeature}PPG时间及幅值类参数示意。其中，AA'的幅值为主波峰值的2/3，D点为降中峡。}
 \end{figure}
 \begin{table}[h]
     \centering
@@ -694,22 +664,63 @@ SCV算法是针对脉搏波的检测而设计，但其检测思路也可作为�
     \toprule
     \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
     \midrule
-    脉动周期      &  从波形起点至峰值点对波形曲线积分所得面积值         &  $S_r=\int_{T_S}^{T_P}P(t)dt$\\
-    上升支间期      &  从波形峰值点至终点对波形曲线积分所得面积值         &  $S_f=\int_{T_P}^{T_E}P(t)dt$\\
-    下降支间期      &  脉搏波波形在一个完整周期内的积分所得面积值         &  $S_t=\int_{T_S}^{T_E}P(t)dt$\\
-    动脉高压力持续时间    &           &   $R_r=\frac{S_r}{S_{\triangle OPS}}$    \\
-    血管硬度指数    &           &   $R_f=\frac{S_f}{S_{\triangle OPE}}$    \\
-    心肌收缩系数    &           &   $R_t=\frac{S_t}{S_{\triangle SPE}}$    \\
-    心搏出系数&           &    $\Delta R_f=\frac{S_{\triangle OPE}-S_f}{S_{\triangle OPE}}=1-R_f$\\
-    上升支最大斜率间期    &           &   $R_t=\frac{S_t}{S_{\triangle SPE}}$    \\
-    下降支最大斜率间期&           &    $\Delta R_f=\frac{S_{\triangle OPE}-S_f}{S_{\triangle OPE}}=1-R_f$\\
+    脉动周期      &  相邻两个波谷之间的时间间隔         &  $SE$\\
+    上升支间期      &  从波形起点（波谷）至主波峰之间的时间间隔         &  $SO$\\
+    下降支间期      &  从主波峰至波形终点（波谷）之间的时间间隔        &  $OE$\\
+    动脉高压力持续时间    &  主波维持在峰值幅值2/3高度的时间间隔         &    $A'B'$   \\
+    血管硬度指数    &  动脉高压力持续时间与脉动周期的比值         &   $\frac{A'B'}{SE}$    \\
+    心肌收缩系数    &  上升支间期与脉动周期的比值         &  $\frac{SO}{SE}$    \\
+    心搏出系数      &   从波峰至降中峡的时间间隔与脉动周期的比值       &   $\frac{OB'}{SE}$\\
+    上升支最大斜率间期      &   上升支波谷与上升支斜率最大点之间的时间间隔      &   /    \\
+    下降支最大斜率间期      &   下降支斜率最小点与下降支波谷之间的时间间隔      &    /  \\
     \bottomrule
     \end{tabularx}
 \end{table}
 
 2. 幅值类特征参数
 
-幅值类特征参数主要包含脉搏波波峰幅值及波谷幅值差值。相关参数的定义参见\autoref{fig:feature}及\autoref{tab:heightfeature}所示。
+幅值类特征参数描述了PPG波形中某个时刻的幅值高度或多个时刻幅值高度之间的比例关系。在各项研究中得到普遍应用的脉搏波增强指数（Augmentation Index，AIX）、反射指数（Reflection Index，RI）及K值等
+均属于幅值类参数。
+
+AIX指心脏收缩期早期与晚期拐点之间的差值与峰值之比，计算的关键需要先找到表征脉搏波反射波上升冲程（up-stroke）的拐点$P1$，如\autoref{fig:aix}所示\cite{Su2014}。
+\begin{equation}
+    \label{equ:aix}
+    AIX = \pm \frac{\Delta P}{PP}
+\end{equation}
+特别地，\autoref{equ:character}中$\pm$的取值视拐点$P1$与峰值点的相对位置而定。当拐点在脉搏波波峰点左侧时，AIX符号取正，表示主波峰是经过叠加得到的，如图\autoref{fig:aix1}所示；反之，
+当拐点在脉搏波波峰点右侧时，AIX符号取负，表明主波峰未得到“增强”，如图\autoref{fig:aix2}所示。
+\begin{figure}[htbp]
+    \centering
+    \subfigure[\label{fig:aix1}拐点在波峰左侧]{
+    \includegraphics[width=5.5cm]{pulse_preprocess/aix1}
+    }
+    \quad
+    \subfigure[\label{fig:aix2}拐点在波峰右侧]{
+    \includegraphics[width=5.5cm]{pulse_preprocess/aix2}
+    }
+    \caption[AIX计算原理示意]{\label{fig:aix}AIX计算原理示意\cite{Su2014}}
+\end{figure}
+
+RI是由脉搏波舒张峰值或拐点处幅值与收缩谷值之比计算得到的，如\autoref{fig:ri}所示\cite{Su2014,Elgendi2012}
+\begin{equation}
+    \label{equ:ri}
+    RI = \frac{b}{a} \cdot 100\%
+\end{equation}
+
+K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形态学特征无量纲参数，最早由罗志昌等人提出\cite{Luo1988,PPGYY}
+\begin{equation}
+    \label{equ:ppgk}
+    K=\frac{P_m-P_d}{P_s-P_d}
+\end{equation}
+其中，$P_m=\frac{1}{T}\int_{0}^{T}P(t)dt$为一个心动周期内脉搏压力$P(t)$的平均值，$P_s$与$P_d$分别为收缩压与舒张压。罗志昌等人的研究表明，K值依赖于脉搏波的波形动态变化，
+同时能够在很大程度上反应血管外周阻力与血管壁硬化程度等生理因素的变化。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.55\linewidth]{pulse_preprocess/k}
+    \caption{\label{fig:k}K值的计算原理示意}
+\end{figure}
+
+除上述参数外，幅值类特征参数还包括脉搏波波峰幅值、波谷幅值差值、降中峡幅值及外周阻力系数等\cite{cwl,mmt}。这些参数的具体定义参见\autoref{fig:timefeature}及\autoref{tab:heightfeature}所示。
 \begin{table}[htbp]
     \centering
     \caption{\label{tab:heightfeature}常见PPG幅值类参数定义}
@@ -717,15 +728,75 @@ SCV算法是针对脉搏波的检测而设计，但其检测思路也可作为�
     \toprule
     \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
     \midrule
-    波峰幅值      &  从波形起点至峰值点对波形曲线积分所得面积值         &  $S_r=\int_{T_S}^{T_P}P(t)dt$\\
-    波谷幅值差值      &  从波形峰值点至终点对波形曲线积分所得面积值         &  $S_f=\int_{T_P}^{T_E}P(t)dt$\\
+    波峰幅值      &  主波峰幅值         &  $OP$\\
+    波谷幅值差值      &  相邻波谷之间的幅值之差         &  /\\
+    降中峡幅值      &  降中峡至基线幅值         &  $DD'$\\
+    外周阻力系数      &  降中峡幅值与主波峰幅值之比         &  $\frac{DD'}{OP}$\\
     \bottomrule
     \end{tabularx}
 \end{table}
 
-3. 斜率类特征参数
+3. 面积类特征参数
 
-斜率参数是在先确定脉搏波波形上两点计算得到的描述波形特征的一类参数。常见的斜率参数定义参见\autoref{fig:feature}及\autoref{tab:slopefeature}所示。
+面积类参数计算依赖与脉搏波波形与基线所形成的面积，主要通过按时间方向对PPG波形曲线积分完成计算过程。
+面积类参数可以看成是血管在一段时间内的血液容积的映射。
+王梦婷在其研究中指出\cite{mmt}，PPG上升支主要受心脏射血量与血压脉动影响，下降支主要受外周阻力影响。其中，上升支随心脏射血量增加愈益陡峭，射血时间越短，
+其形态图像越向左上方凸出；而当外周阻力增加时，会导致动脉血管壁弹性下降，下降支波形向上方凸出。
+
+常见的面积类特征参数包括上升支面积、下降支面积、
+全周期面积、上升支面积比、下降支面积比、全周期面积比及（下降支）面积差值比（Area Difference Ratio，ADR）\cite{Feng2018}等。
+以上参数的具体定义参见\autoref{fig:areafeature}及\autoref{tab:areafeature}。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{pulse_preprocess/areafeature}
+    \caption{\label{fig:areafeature}常见PPG面积类参数示意}
+\end{figure}
+
+\begin{center}
+    % \zihao{5}
+	\begin{longtable}{m{3.5cm}<{\centering}m{6.5cm}<{\centering}m{4.5cm}<{\centering}}
+		\caption{常见PPG面积类参数定义}\\
+		\label{tab:areafeature}\\
+        \toprule
+        \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \midrule
+        \endfirsthead
+        \caption[]{(续)}\\
+        \toprule
+        \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \midrule
+        \endhead 
+        \midrule
+        \endfoot
+        \bottomrule
+        \endlastfoot
+        上升支面积      &  从波形起点至峰值点对波形曲线积分所得面积值         &  $S_r=\int_{T_S}^{T_P}P(t)dt$\\
+        下降支面积      &  从波形峰值点至终点对波形曲线积分所得面积值         &  $S_f=\int_{T_P}^{T_E}P(t)dt$\\
+        全周期面积      &  脉搏波波形在一个完整周期内的积分所得面积值         &  $S_t=\int_{T_S}^{T_E}P(t)dt$\\
+        上升支面积比    &  上升支面积与$\triangle OPS$面积之比         &   $R_r=\frac{S_r}{S_{\triangle OPS}}$    \\
+        下降支面积比    &  下降支面积与$\triangle OPE$面积之比        &   $R_f=\frac{S_f}{S_{\triangle OPE}}$    \\
+        全周期面积比    &  全周期面积与$\triangle SPE$面积之比         &   $R_t=\frac{S_t}{S_{\triangle SPE}}$    \\
+        下降支面积差值比&  下降支面积和$\triangle OPE$面积之差与$\triangle OPE$面积之比        &    $\Delta R_f=\frac{S_{\triangle OPE}-S_f}{S_{\triangle OPE}}=1-R_f$\\
+	\end{longtable}
+\end{center}
+
+值得一提的是，Feng等人已经将ADR应用于子痫前期的研究中，其研究结果显示患有PE的孕妇与正常孕妇在PPG信号的ADR参数上具有统计意义上的显著差异（0.752 VS 0.723，P<0.01）\cite{Feng2018}。
+
+另外需要注意的是，从\autoref{tab:areafeature}中的参数定义不难发现，ADR与下降支面积比完全线形相关
+\begin{equation}
+    \label{equ:adr}
+    ADR = 1-R_f
+\end{equation}
+此外，王选在其研究中也证明了全周期面积比与幅值类参数K值完全线性相关\cite{Wang2012}
+\begin{equation}
+    \label{equ:kandart}
+    R_t=\frac{S_t}{S_{\triangle SPE}}=\frac{\int_{0}^{T}P(t)dt}{\frac{1}{2}P_sT}=\frac{2\cdot P_mT}{P_sT}=2\cdot K
+\end{equation}
+因此，若需要使用这两组参数对PPG进行描述时，只需视情况分别从每组中选取一个即可。
+
+4. 斜率类特征参数
+
+斜率参数是在先确定脉搏波波形上两点计算得到的描述波形特征的一类参数。常见的斜率参数定义参见\autoref{fig:slopefeature}及\autoref{tab:slopefeature}所示。
 \begin{table}[htbp]
     \centering
     \caption{\label{tab:slopefeature}常见PPG斜率类参数定义}
@@ -740,59 +811,11 @@ SCV算法是针对脉搏波的检测而设计，但其检测思路也可作为�
     \bottomrule
     \end{tabularx}
 \end{table}
-
-4. 面积类特征参数
-
-面积类参数计算依赖与脉搏波波形与基线所形成的面积，其计算主要通过按时间方向对PPG波形曲线积分完成。王梦婷在其研究中指出\cite{mmt}，PPG上升支主要受心脏射血量与血压脉动影响，下降支主要受外周阻力影响。其中，上升支随心脏射血量增加愈益陡峭，射血时间越短，
-其形态图像越向左上方凸出；而当外周阻力增加时，会导致动脉血管壁弹性下降，下降支波形向上方凸出。本研究中使用了描述该过程中的上升支面积、下降支面积、
-全周期面积、上升支面积比、下降支面积比、全周期面积比及（下降支）面积差值比（Area Difference Ratio，ADR）\cite{Feng2018}等参数。
-以上参数的具体定义参见\autoref{fig:areafeature}及\autoref{tab:areafeature}。
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.6\linewidth]{pulse_preprocess/areafeature}
-    \caption{\label{fig:areafeature}常见PPG面积类参数示意}
-\end{figure}
-
-\begin{table}[htbp]
-    \centering
-    \caption{\label{tab:areafeature}常见PPG面积类参数定义}
-    \begin{tabularx}{\linewidth}{cX<{\centering}c}
-    \toprule
-    \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-    \midrule
-    上升支面积      &  从波形起点至峰值点对波形曲线积分所得面积值         &  $S_r=\int_{T_S}^{T_P}P(t)dt$\\
-    下降支面积      &  从波形峰值点至终点对波形曲线积分所得面积值         &  $S_f=\int_{T_P}^{T_E}P(t)dt$\\
-    全周期面积      &  脉搏波波形在一个完整周期内的积分所得面积值         &  $S_t=\int_{T_S}^{T_E}P(t)dt$\\
-    上升支面积比    &           &   $R_r=\frac{S_r}{S_{\triangle OPS}}$    \\
-    下降支面积比    &           &   $R_f=\frac{S_f}{S_{\triangle OPE}}$    \\
-    全周期面积比    &           &   $R_t=\frac{S_t}{S_{\triangle SPE}}$    \\
-    下降支面积差值比&           &    $\Delta R_f=\frac{S_{\triangle OPE}-S_f}{S_{\triangle OPE}}=1-R_f$\\
-    \bottomrule
-    \end{tabularx}
-\end{table}
-
-值得一提的是，Feng等人已经将ADR应用于子痫前期的研究中，其研究结果显示患有PE的孕妇与正常孕妇在PPG信号的ADR参数上具有统计意义上的显著差异（0.752 VS 0.723，P<0.01）\cite{Feng2018}。但从\autoref{tab:areafeature}中的参数定义不难发现，
-ADR与下降支面积比完全线形相关，因此，本研究后续分析仅使用了两者中的下降支面积比参数。
-
-K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形态学特征无量纲参数，最早由罗志昌等人于上个世纪八十年代提出\cite{Luo1988,PPGYY}。K值其具体定义为
-\begin{equation}
-    \label{equ:ppgk}
-    K=\frac{P_m-P_d}{P_s-P_d}
-\end{equation}
-其中，$P_m=\frac{1}{T}\int_{0}^{T}P(t)dt$为一个心动周期内脉搏压力$P(t)$的平均值，$P_s$与$P_d$分别为收缩压与舒张压。罗志昌等人的研究表明，K值依赖于脉搏波的波形动态变化，
-同时能够在很大程度上反应血管外周阻力与血管壁硬化程度等生理因素的变化。考察\autoref{tab:areafeature}中全周期面积比与K值的定义，同时结合相关数学知识，不难
-推导得到
-\begin{equation}
-    \label{equ:kandart}
-    R_t=\frac{S_t}{S_{\triangle SPE}}=\frac{\int_{0}^{T}P(t)dt}{\frac{1}{2}P_sT}=\frac{2\cdot P_mT}{P_sT}=2\cdot K
-\end{equation}
-这说明全周期面积比与K值之间也完全线形相关，因此，在本研究的后续分析中仅使用了两者中的全周期面积比参数。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{pulse_preprocess/k}
-    \caption{\label{fig:k}K值的提取}
+    \caption{\label{fig:slopefeature}K值的计算原理示意}
 \end{figure}
-
 
 5. 通用无量纲参数与高阶统计量
 
@@ -833,10 +856,9 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 
 与先定位好具体的PPG波形再进行计算的PPG时域参数不同，另一种描述PPG波形的思路则以时间窗为单位，关注时间窗内的原始信号的整体统计特征再进行具体参数的计算，而时间窗的长度一般也从数秒至数十秒不等。
 
-1. SPV与PPV
-
-人体的呼吸作用会导致胸腔内血压出现变化，使得血容量不同的人群在脉搏波的幅值存在一定的差异性。动脉压变异性（arterial pressure variation，APV）分析则是评估人体体液状况的常见方法，
-其中，收缩压变异性（Systolic pressure variation，SPV)与脉压变异性(pulse pressure variation，PPV)是两个常见的参数指标\cite{GE2021,Michard1999,Perel1987,Michard2005}，如\autoref{fig:spv}所示。其具体定义如下\cite{GE2021}:
+收缩压变异性（Systolic pressure variation，SPV）与脉压变异性（pulse pressure variation，PPV）则是两个有代表性的时间窗类特征，如\autoref{fig:spv}所示\cite{GE2021,Michard1999,Perel1987,Michard2005}。
+人体的呼吸作用会导致胸腔内血压出现变化，使得血容量不同的人群在脉搏波的幅值存在一定的差异性。
+在对人体体液状况进行评估时，常使用动脉压变异性（arterial pressure variation，APV）的方法。SPV与PPV则是进行APV分析时的两个具体指标，其定义分别为\cite{GE2021}:
 \begin{equation}
     \label{equ:spv}
     SPV=SBP_{max}-SBP_{min}
@@ -851,12 +873,6 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
     \includegraphics[width=.6\linewidth]{pulse_preprocess/spv}
     \caption{\label{fig:spv}SPV与PPV示意}
 \end{figure}
-
-通常而言，APV是基于有创血压的数据进行相关分析工作的，但本研究在借鉴其相关参数思路的和临床设备设计标准的基础上，也将SPV与PPV应用到无创的PPG分析过程中来。
-
-2. 熵指数
-
-TODO
 
 三、其他特征
 
@@ -1002,13 +1018,6 @@ TODO
 
 需要注意的是，在脉搏波双向均一化过程中，幅值方向的均一化处理易于理解也较容易完成，但在时长尺度的处理上，直接均一化很可能导致即使完全相同的波形也会因为原始数据的采样点数目不同而导致结果迥异。因此，时间均一化过程
 需保证最后所有波形下降支的数据采样点数目一致。在实际处理时，本研究舍弃了PPG波形的原始采样值，使用三次样条插值方法将下降支原始波形的采样点数均匀插值提高至1000，最后将所有数值映射到$[0,1]$区间。
-
-三、重搏波的量化描述
-
-作为PPG信号最典型特征，重搏波可以在很大程度上反应人体血管外周阻力、血管壁弹性等信息，但以往的研究对脉搏波的重搏波相关特性描述较少，对重搏波的描述往往局限于“波形特征明显”与“波形特征不明显”等简单文字定性描述，
-缺乏具体定量描述标准。鉴于此，本研究首创设计了多种量化指标以具体描述PPG信号重搏波形态特征。
-
-TODO
 
 \subsection{PPG时域描述特征集构建}
 本小节对本研究实际采用的多种PPG时域描述特征进行汇总，对各参数符号及前置计算条件也进行了统一说明，如\autoref{tab:allfeatures}所示。

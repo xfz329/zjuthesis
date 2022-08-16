@@ -165,13 +165,8 @@ $Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子�
 
 扩展标记语言(Extensible Markup Language，XML) \cite{xml,Li2016}与JavaScript对象标记法（JavaScript Object Notation，JSON）\cite{json,Crockford2006}是两种服务器端流行的数据交换格式。两者均可按照实际需求灵活定制存储规则，对较为复杂的数据结构
 支持性好、拓展性强。但由于XML是基于标签描述数据的，在描述数组类型数据时，引入了大量冗余信息。而JSON则对数组类数据有着更好的支持，有着更快的读写速度与更高的存储效率\cite{Nurseitov2009}。因此，软件分析系统最终使用JSON作为数据交换格式，
-而在具体实现时使用了中国阿里巴巴公司的开源JSON解析库fastjson\cite{fastjson}进行编码。最后的导出数据如\autoref{lst:json}所示，除基本数据特征外，与数据相关的文件信息及孕妇人口统计学信息也被保存至JSON文件。
-\lstinputlisting[caption={导出数据示意},label=lst:json,style=myJava]{code/ch6/out.json}
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=.6\linewidth]{ch6/json}
-%     \caption{\label{fig:json}导出数据示意}
-% \end{figure}
+而在具体实现时使用了中国阿里巴巴公司的开源JSON解析库fastjson\cite{fastjson}进行编码。最后的导出数据如\autoref{lst:json_export}所示，除基本数据特征外，与数据相关的文件信息及孕妇人口统计学信息也被保存至JSON文件。
+\lstinputlisting[caption={导出数据示意},label=lst:json_export,style=myJava]{code/ch6/out.json}
 
 六、多平台支持
 
