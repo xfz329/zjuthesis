@@ -1,6 +1,59 @@
 \chapter{数据特征工程}
 \section{引言}
 
+
+特征的处理
+
+* 分布特性
+
+  * 有无差异性，SPSS统计，已用python实现
+
+  * 特征相关性，heatmap
+
+* 标准化
+
+* 处理缺失值
+
+* 构建新特征（char参数）
+
+* 分析数据集准备：两种方式
+
+  * A. by pulse
+
+  * B. by person
+
+* 降维与特征贡献度
+
+  * 部分工作需要下一章节完成后才能确认
+
+\subsection{PPG时域描述特征集构建}
+本小节对本研究实际采用的多种PPG时域描述特征进行汇总，对各参数符号及前置计算条件也进行了统一说明，如\autoref{tab:allfeatures}所示。
+TODO
+\begin{center}
+    \fontsize{10}{4}
+    \begin{longtable}{p{3cm}<{\centering}p{1cm}<{\centering}p{2cm}<{\centering}p{6cm}<{\centering}p{1cm}<{\centering}}
+        \caption{本研究使用的所有PPG时域指标一览}\\
+        \label{tab:allfeatures}\\
+        \hline\hline
+            \textbf{研究者}&\textbf{时间}&\textbf{脉搏波参数}&\textbf{研究结果}&\textbf{备注}\\
+        \hline
+        \endfirsthead
+        \caption[]{(续)}\\
+        \hline
+            \textbf{研究者}&\textbf{时间}&\textbf{脉搏波参数}&\textbf{研究结果}&\textbf{备注}\\
+        \hline
+        \endhead 
+        \hline
+        \endfoot
+        \hline\hline
+        \endlastfoot
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+        &       &       &       &  \\
+    \end{longtable}
+\end{center}
 \section{数据清洗}
 \section{新特征的创建}
 \section{相关性验证}
