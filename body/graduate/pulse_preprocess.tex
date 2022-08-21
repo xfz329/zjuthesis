@@ -1063,29 +1063,62 @@ PPG波形的细节信息无法在最终的数值中得到体现
 \subsection{脉搏波波形间的描述与度量}
 在某些情景下，脉搏波波形间的差异可能更需要被研究者们关注。如何评估、量化这种波形间或者是整条数据所有波形之间的差异是本小节要阐述的重点。
 
-本章此前介绍的PPG各项特征参数的设计逻辑都是以一个完整波形为基本单位并对其进行量化描述，若直接用这些参数描述波形间的差异，会存在以下问题：
-但在某些情况下，若需要直接比较两个波形
+本章此前介绍的PPG各项特征参数的设计逻辑多数是以一个完整波形为基本单位并对其进行量化描述，若直接用这些参数描述波形间的差异，会存在描述不够直接与描述能力有局限性等两项不足。
+其中，前者是指波形间的差异能在具体参数的数值上得到体现，但差异的具体程度有待商榷；后者是指若出现涉及多个波形间的差异比较的情景，之前的参数会更显乏力。
+鉴于此，本研究特进行了以下探索性研究。
 
-不够直接。随着波形数量的增加更加不够直观。
+一、两个波形的差异描述
 
-一、两个波形的直接描述
+本研究提出了互相关系数、Frechet距离及包络面积等三种参数量化描述脉搏波波形间的差异性。
+此外，还对这三种参数的最容易遇到的对齐问题给出了解决办法。
 
-双向均一化法是本研究使用的一种量化比较峰值、周期均不相同的脉搏波波形形态特征的处理方法。如前文波形特征的设计基础小节介绍，若将两条路径所对应的原始脉搏波的波峰、下降支时长均映射至$[0,1]$区间内，此时即可评估
-该两条路径的相似度，如\autoref{fig:road}所示。若两条路径完全重合，则说明两个脉搏波下降支波形有着峰值、周期以外的共性特征。针对更一般的不重合的两条路径，
+1. 描述参数
 
-包络线
+\Rnum{1}. 相关系数
 
-Frechet Distance
+本文的第二章已经介绍过相关系数的这一变量分析方法，如\autoref{fig:relation}所示。由于相关系数本身就是作为衡量两个变量因素的密切程度而设计的，
+因此，一种可行的办法是直接用相关系数去衡量两个波形之间的“相似”程度。需要注意的是，斯皮尔曼相关系数在计算时要求必须原始数据进行排序操作，而这一操作会直接破坏波形数据。
+故本文最终选取了皮尔逊相关系数$r_p$进行表征
+\begin{equation}
+    \label{equ:pearson2}
+    r_p=\frac{\sum_{i=1}^n{(x_i- \mathop{x} \limits^-)(y_i- \mathop{y} \limits^-)}}{\sqrt{{\sum_{i=1}^n}{{(x_i- \mathop{x} \limits^-)^2\sum_{i=1}^n}{(y_i- \mathop{y} \limits^-)^2}}}}
+\end{equation}
 
+\Rnum{2}. 弗朗明歇距离
+
+弗朗明歇距离（Fréchet distance，FD）是最早由法国数学家Maurice René Fréchet于1906年提出的一种路径空间相似形描述方法\cite{Wien1994,Kaveh2013,GN2017}。
+\autoref{fig:frechet distance}给出了FD定义的示意图。一种最经典、形象的理解是人牵着一条狗沿着不同的轨迹行走，两者之间最大的最短距离就是狗绳长度的下限，
+这个值即为弗朗明歇距离。
+
+FD的完整数学定义如下，若将曲线视为其在定义域至度量空间的一种映射关系，即$[a,b]\rightarrow \bold V$，
+那么对曲线$f:[a,b]\rightarrow V$与曲线$g:[a',b']\rightarrow V$，两者的弗朗明歇距离为
+\begin{equation}
+    \label{equ:frechet distance}
+    \delta_F(f,g)=inf \mathop{max}\limits_{\alpha,\beta \; t \in (0,1)} d(f(\alpha(t)), g(\beta(t)))
+\end{equation}
+其中，$\alpha$与$\beta$是满足能将$[0,1]$分别映射至$[a,b]$与$[a',b']$的任意连续非递减函数，$d$是$\boldsymbol V$上的度量函数\cite{Wien1994}。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.6\linewidth]{pulse_preprocess/frechet_distance}
-    \caption{\label{fig:frechet distance}frechet distance}
+    \subfigure[\label{fd0}弗朗明歇距离的形象示意]{
+    \includegraphics[width=6cm]{pulse_preprocess/frechet_distance0}
+    }
+    \quad
+    \subfigure[\label{fig:fd1}弗朗明歇距离的数学示意\cite{GN2017}]{
+    \includegraphics[width=6cm]{pulse_preprocess/frechet_distance1}
+    }
+    \caption{\label{fig:frechet distance}弗朗明歇距离的定义}
 \end{figure}
 
-互相关系数
 
-二、多个波形的描述
+\Rnum{3}. 包络面积
+
+
+2. 注意事项
+
+
+
+二、更多波形的差异描述
+
 
 
 \section{小结}
