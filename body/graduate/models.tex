@@ -22,10 +22,41 @@
     \caption{\label{fig:dt}决策树模型示意}
 \end{figure}
 
-二、决策树的构建
+二、决策树的特征选择
 
-决策树的生成构建过程一般是一个递归地选择最优特征，并根据最优特征对训练数据进行分割，使该分割对各个新的子数据集有最优分类效果的过程。
+为生成一颗分类能力强的决策树，一种可行的策略是只选取对分类效果有提升的特征参与构建。基尼指数（Gini index）与信息增益（information gain）是两种最常用的用于筛选最佳特征的指标。
 
+基尼指数,也称为基尼不纯度，其定义为
+\begin{equation}
+    \label{equ:gini}
+    G_i = 1 - \sum_{k=1}^n{p_{i,k}}^2
+\end{equation}
+其中，$p_{i,k}$是第$i$个节点上，类别为$k$的训练实例占比。基尼指数数值越大，样本集合的不确定性也越大。特别地，若样本集合$D$根据特征$A$是否取某一可能值$a$而被分割成$D_1$和$D_2$两部分，即
+\begin{equation}
+    \label{equ:daset}
+    \left \{
+    \begin{aligned}
+        D_1 &= \{ (x,y) \in D \mid A(x) = a\} \\
+        D_2 &= D - D_1
+    \end{aligned}
+    \right.
+\end{equation}
+那么，在特征$A$的条件下，样本集合的基尼指数可以表示为
+\begin{equation}
+    \label{equ:ginia}
+    G(D,A) = \frac{|D_1|}{|D|}G(D_1) + \frac{|D_2|}{|D|}G(D_2)
+\end{equation}
+其中，$|D|$表示样本集合$D$的样本数量。\autoref{equ:ginia}描述了$D$经$A=a$分割后的不确定性，此时，筛选最佳特征的过程可以转换为寻找使\autoref{equ:ginia}取值最小的特征$A$的具体数值。
+
+另一方面，信息增益是在引入了信息论中的信息熵（information entropy）概念进行定义的并计算使用的，其作用与具体使用方法与基尼指数类似，这里不再进行赘述\cite{Zhou2016,Li2017}。
+
+三、决策树的生成
+
+决策树的生成构建过程就是递归地选择最优特征，并根据最优特征对训练数据进行分割，使该分割对各个新的子数据集有最优分类效果的过程。其中，最经典生成算法包括ID3（Iterative Dichotomiser 3，第三代迭代二分器）决策树学习算法、
+C4.5（Classifier 4.5，第4.5代分类器）决策树学习算法及CART（classification and regression tree，分类与回归树）决策树学习算法等三种\cite{quinlan1986,quinlan1993,breiman1984}。
+在这三种算法中，只有CART算法生成的决策树既可以执行分类任务也可以执行回归任务，故CART算法的应用也最为广泛。
+
+CART算法采用最小基尼指数来选择特征，生成的决策树为二叉树。其工作的基本原理如\autoref{alg:cart}所示。
 \begin{breakablealgorithm}
     \caption[CART生成算法]{CART递归生成算法\cite{Li2017}}
     \label{alg:cart}
@@ -33,8 +64,8 @@
         \Require 训练数据集$D$。
         \Ensure CART决策树。
         \State 建立一颗空树$CART$，设该树的根结点为$root$。
-        \Function{GenerateCart}{$CART,D_0,root$}
-            \State $D_0$为当前结点的训练数据集，计算现有特征对该数据集的基尼指数。对每一个特征$A$，对其可能取的每个值$a$，根据样本点对$A=a$的测试为“是”或“否”将$D_0$分割成$D_l$与$D_r$两部分，计算$A=a$时的基尼指数。
+        \Function{GenerateCart}{$CART,D_c,root$}
+            \State $D_c$为当前结点的训练数据集，计算现有特征对该数据集的基尼指数。对每一个特征$A$，对其可能取的每个值$a$，根据样本点对$A=a$的测试为“是”或“否”将$D_c$分割成$D_l$与$D_r$两部分，使用\autoref{equ:ginia}计算$A=a$时的基尼指数。
             \State 在所有可能的特征$A$以及它们所有可能的切分点$a$中，选择基尼指数最小的特征及其对应的切分点作为最有特征与最优切分点。
             \State 依最优特征与最优切分点，从现结点生成两个子节点$left$与$right$，将训练数据集依特征分配到两个子节点中去，即$D_l$与$D_r$。更新当前$CART$。
             \If {结点中的样本个数小于预定阈值 \textbf{or} 样本集的基尼指数小于预定阈值 \textbf{or} 没有更多特征}
@@ -47,6 +78,9 @@
     \end{algorithmic}
 \end{breakablealgorithm}
 
+四、决策树的剪枝
+
+剪枝(pruning)
 
 \subsection{常见的监督学习方法}
 
