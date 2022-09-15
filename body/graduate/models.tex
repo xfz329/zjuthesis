@@ -18,7 +18,7 @@
 决策树的学习目的就是从训练数据集中集中归纳出一组分类规则，产生一颗与训练数据的矛盾小的、泛化能力强的逻辑判断树。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.6\linewidth]{models/dt3.png}
+    \includegraphics[width=.6\linewidth]{models/dt.png}
     \caption{\label{fig:dt}决策树模型示意}
 \end{figure}
 
@@ -46,7 +46,7 @@
     \label{equ:ginia}
     G(D,A) = \frac{|D_1|}{|D|}G(D_1) + \frac{|D_2|}{|D|}G(D_2)
 \end{equation}
-其中，$|D|$表示样本集合$D$的样本数量。\autoref{equ:ginia}描述了$D$经$A=a$分割后的不确定性，此时，筛选最佳特征的过程可以转换为寻找使\autoref{equ:ginia}取值最小的特征$A$的具体数值。
+其中，$|D|$表示样本集合$D$的样本数量。\autoref{equ:ginia}描述了$D$经特征$A=a$分割后的不确定性，此时，筛选最佳特征的过程可以转换为寻找使\autoref{equ:ginia}取值最小的特征$A$的具体数值。
 
 另一方面，信息增益是在引入了信息论中的信息熵（information entropy）概念进行定义的并计算使用的，其作用与具体使用方法与基尼指数类似，这里不再进行赘述\cite{Zhou2016,Li2017}。
 
@@ -82,11 +82,11 @@ CART算法采用最小基尼指数来选择特征，生成的决策树为二叉�
 
 为防止决策树出现过拟合的情况，通常都会对过于“茂密”的树进行剪枝（pruning）处理。决策树的剪枝方法可以分为预剪枝与后剪枝两大类。
 前者的工作原理是在决策树的生长阶段就对其进行一定的限制，包括限制树最大生长深度、限制决策树生成的最多叶节点数量等。
-后剪枝则是在决策树得到完全生长之后进行，其处理算法也更复杂、训练时间等开销也更大\cite{Zhou2016,Liu2019}。
+后剪枝则是在决策树得到完全生长之后进行，其处理算法也更复杂、训练时间等开销也更大\cite{Zhou2016,Liu2018}。
 
 \subsection{监督学习的其他方法}
 除决策树外，常见的无监督学习的算法还包括线性回归算法（linear regression）、随机梯度下降（stochastic gradient descent，SGD）算法、支持向量机（support vector machine，SVM）算法、
-K-近邻（K-nearest neighbor，KNN）算法及贝叶斯分类算法（naive Bayes, NB）等\cite{Zhou2016,Li2017,Liu2019,Aurélien2018}。由于篇幅原因，这里对这些算法不作过多介绍。
+K-近邻（K-nearest neighbor，KNN）算法及贝叶斯分类算法（naive Bayes, NB）等\cite{Zhou2016,Li2017,Liu2018,Aurélien2018}。由于篇幅原因，这里对这些算法不作过多介绍。
 
 
 \section{基本机器学习模型的应用（无监督学习）}
@@ -94,7 +94,7 @@ K-近邻（K-nearest neighbor，KNN）算法及贝叶斯分类算法（naive Bay
 聚类（clustering）是无监督学习算法中最为典型的应用之一，本小节将介绍几种有代表性的聚类算法。
 
 \subsection{K均值}
-K均值（K-Means）算法属于原型聚类算法的一种\cite{Zhou2016,Liu2019}。顾名思义，该算法可以将原始数据$D=\{x_1,x_2,\dots,x_n\}$划分为指定的K个簇$C=\{C_1,C_2,\dots,C_n\}$,并使得平方误差最小化
+K均值（K-Means）算法属于原型聚类算法的一种\cite{Zhou2016,Liu2018}。顾名思义，该算法可以将原始数据$D=\{x_1,x_2,\dots,x_n\}$划分为指定的K个簇$C=\{C_1,C_2,\dots,C_n\}$,并使得平方误差最小化
 \begin{equation}
     \label{equ:leastsq}
     E=\sum_{i=1}^k \sum_{x \in C_i}{||x- \mu_i||}_2^2
@@ -136,14 +136,86 @@ K均值（K-Means）算法属于原型聚类算法的一种\cite{Zhou2016,Liu201
 
 \subsection{无监督学习的其他方法}
 除K近邻算法外，原型聚类算法还包括学习向量量化（Learning Vector Quantization，LVQ）算法、高斯混合聚类（Mixture of Gaussian）算法等。此外，密度聚类（density-based clustering）与层次聚类
-（hierarchical clustering）则是按照另外的标准对原始数据样本分簇的算法。DBSCAN（Density-Based Spatial Clustering of Applications with Noise，具有噪声的基于密度的聚类）算法
+（hierarchical clustering）则是按照另外的标准对原始数据样本分簇的算法。具有噪声的基于密度的聚类（Density-Based Spatial Clustering of Applications with Noise，DBSCAN）算法
 与自底向上层次聚类（Agglomerative Nesting，AGNES）算法分别是两者的典型代表\cite{Zhou2016}。
 
 \section{集成学习的应用}
-\subsection{常见的集成学习方法}
-\subsection{Adboost}
-\subsection{随机森林}
-随机森林
+与此前的诸多算法不同，集成学习（ensemble learning）并不是一个特定的单独机器学习算法，而是使用多种算法构建多个学习器并结合它们的输出完成学习任务的过程\cite{Zhou2016,Aurélien2018}。
+集成学习也因此被看成是一种元算法（meta-algorithm），结合多个学习器进行集成学习，通常会获得比单一学习器更好的性能与泛化效果。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{models/el}
+    \caption[集成学习示意]{\label{fig:el}集成学习示意}
+\end{figure}
+
+一般而言，一个完整的集成学习算法包括构建基学习器与结合基学习器两步，如\autoref{fig:el}所示。其中，按构建方法按个体学习器之间是否存在依赖关系、必须顺序化生成可以分为平行方法与序列化方法两大类\cite{Zhou2016}。
+前者的代表是Boosting算法，后者的代表是自举汇聚法（bootstrap aggregating,bagging）与随机森林（Random Forest，RF）。组合基学习器的策略有平均法、投票法及学习法等三类。平均法将各个基学习器按一定的权值累加后作为最终输出
+\begin{equation}
+    \label{equ:average}
+    H(x)=\sum_{i=1}^{T}{w_ih_i(x)}
+\end{equation}
+其中，$w_i$是个体学习器$h_i$的权值，$w_i\le 0$，$\sum_{i=1}^T{w_i}=1$。
+投票法是从多个个体学习器的结果中票选出结果，相关概念已经在本文第三章介绍脉搏波检测算法时进行过介绍，在此不再赘述。而学习法则是使用额外的学习器来完成基学习器的结果输出。
+
+\subsection{Bagging与随机森林}
+一、Bagging
+
+为获得泛化性能强的不同的基学习器，一种可行的策略是对所有学习器使用同一种训练算法，但是在训练集的不同随机子集上进行训练，使这些基学习器的能够有一定的差异。
+\autoref{fig:bp}所示，在上述过程的随机子集的建立过程中，若对原始数据样本的采样后放回，这种方法即为bagging；与之对应的，采样后不放回的方法称为pasting\cite{Aurélien2018,Zhou2016}。
+由于bagging方法可以获得的随机子集数量要远远高于pasting方法，bagging方法应用得也更加广泛。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{models/bp}
+    \caption[Bagging与Pasting示意]{\label{fig:bp}Bagging与Pasting示意\cite{Aurélien2018}}
+\end{figure}
+
+当使用有采样后即放回的方法从包含$m$个原始样本的训练集$D$抽取出$m$个新的样本构成此次训练数据集$D_{bs}$时，显然，$D$有部分数据样本在$D_{bs}$重复出现，部分数据则从未被抽样过。
+易知样本在$m$次均未被抽中的概率为$(1-\frac{1}{m})^m$，当$m \to \infty$时，
+\begin{equation}
+    \label{equ:me}
+    \lim_{m \to \infty}{(1-\frac{1}{m})}^m = \frac{1}{e} \approx 0.368
+\end{equation}
+\autoref{equ:me}说明约有36.8\%的原始样本未出现在采样集$D_{bs}$中，这部分数据可以作为当前训练算法的测试集。
+
+按上述思想，可从原始样本训练集$D$采样得到$T$个包含$m$个训练样本的采样集，基于这些采样集，使用特定的机器学习算法可以训练得到$T$个基学习器，结合这些基学习器的输出即为Bagging算法
+的基本流程，如\autoref{alg:bagging}所示。投票法和平均法是Bagging在进行基学习器的输出时常采用的策略。
+\begin{breakablealgorithm}
+    \caption[Bagging算法]{Bagging算法\cite{Zhou2016}}
+    \label{alg:bagging}
+    \begin{algorithmic}[1] %每行显示行号
+        \Require 训练集$D=\{(x_1,y_1),(x_2,y_2),\dots,(x_m,y_m)\}$；基学习算法$\xi$；训练轮数$T$。
+        \Ensure $H(x)=\arg \max \limits_{y \in Y} \sum_{t=1}^T \mathbb{I}(h_t(x)=y)$，其中$\mathbb{I}(.)$为指示函数，在$.$为真或假时函数值分别为1或0。
+        \For {$t=1,2,\dots,T$}
+            \State 从原始训练集$D$自助采样得到此次的样本分布$D_{bs}$
+            \State $h_t=\xi (D,D_{bs})$
+        \EndFor
+    \end{algorithmic}
+\end{breakablealgorithm}
+
+二、随机森林
+
+随机森林是另一种在Bagging算法基础上发展起来的集成学习的算法，最早由Leo Breiman于2001年提出\cite{breiman2001}。\autoref{fig:rf}所示，“森林”表示该算法是由多棵\autoref{fig:dt}所示的决策树构成，
+这些决策树一般都是经过充分生长的、未经剪枝处理的CART决策树。而“随机”一词有两重含义，首先是同Bagging算法一样，每棵决策树在训练时使用的训练样本是随机抽取的；其次，与\autoref{alg:cart}不同，这些CART
+决策树在生长时并不是在当前结点的属性集合$A$中选取最优特征及其最优切分点，而是先从$A$中随机生成一个包含$k$个属性子集的$A_{bs}$，随后再从$A_{bs}$中选择最优属性进行划分\cite{Zhou2016,Liu2018,breiman2001}。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{models/rf}
+    \caption{\label{fig:rf}随机森林示意}
+\end{figure}
+
+k值怎么取。对回归问题而言，随机森林算法的输出是所有决策树的输出的均值；而对分类任务而言，算法输出是所有决策树输出投票的结果。随机森林在树的生长过程中的两次随机使决策树具有更大的多样性，相当于用更高的偏差换取更低的方差，因此，
+最终的集成结果有着出色的泛化性能，有效避免了单决策树可能导致的过拟合问题。随机森林算法运行速度快、准确率高且泛化性能优秀，被誉为“代表集成学习技术水平的方法”\cite{Zhou2016,Liu2018}。
+
+
+
+
+
+
+特征的贡献度
+
+\subsection{Stacking}
+
+
 
 \section{深度学习模型的应用}
 \section{小结}
