@@ -194,28 +194,58 @@ K均值（K-Means）算法属于原型聚类算法的一种\cite{Zhou2016,Liu201
 
 二、随机森林
 
-随机森林是另一种在Bagging算法基础上发展起来的集成学习的算法，最早由Leo Breiman于2001年提出\cite{breiman2001}。\autoref{fig:rf}所示，“森林”表示该算法是由多棵\autoref{fig:dt}所示的决策树构成，
-这些决策树一般都是经过充分生长的、未经剪枝处理的CART决策树。而“随机”一词有两重含义，首先是同Bagging算法一样，每棵决策树在训练时使用的训练样本是随机抽取的；其次，与\autoref{alg:cart}不同，这些CART
-决策树在生长时并不是在当前结点的属性集合$A$中选取最优特征及其最优切分点，而是先从$A$中随机生成一个包含$k$个属性子集的$A_{bs}$，随后再从$A_{bs}$中选择最优属性进行划分\cite{Zhou2016,Liu2018,breiman2001}。
+随机森林是另一种在Bagging算法基础上发展起来的集成学习的算法，最早由Leo Breiman于2001年提出\cite{breiman2001}。如\autoref{fig:rf}所示，“森林”表示该算法是由多棵\autoref{fig:dt}所示的决策树构成，
+这些决策树一般都是经过充分生长的、未经剪枝处理的CART决策树。而“随机”一词有两重含义，首先是同Bagging算法一样，每棵决策树在训练时使用的训练样本是随机抽取的；其次，与\autoref{alg:cart}所示的一般CART决策树生成算法不同，随机森林中的CART
+决策树在生长时并不是在当前结点的$d$个属性集合$A$中选取最优特征及其最优切分点，而是先从$A$中随机生成一个包含$k$个属性子集的$A_{bs}$，随后再从$A_{bs}$中选择最优属性进行划分\cite{Zhou2016,Liu2018,breiman2001}。其中，$k$的推荐取值为
+$\lfloor \log_2m + 1 \rfloor$\cite{breiman2001}。
+
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{models/rf}
     \caption{\label{fig:rf}随机森林示意}
 \end{figure}
 
-k值怎么取。对回归问题而言，随机森林算法的输出是所有决策树的输出的均值；而对分类任务而言，算法输出是所有决策树输出投票的结果。随机森林在树的生长过程中的两次随机使决策树具有更大的多样性，相当于用更高的偏差换取更低的方差，因此，
+对回归问题而言，随机森林算法的输出是所有决策树的输出的均值；而对分类任务而言，算法输出是所有决策树输出投票的结果。随机森林在树的生长过程中的两次随机使决策树具有更大的多样性，相当于用更高的偏差换取更低的方差。因此，
 最终的集成结果有着出色的泛化性能，有效避免了单决策树可能导致的过拟合问题。随机森林算法运行速度快、准确率高且泛化性能优秀，被誉为“代表集成学习技术水平的方法”\cite{Zhou2016,Liu2018}。
 
+此外，随机森林算法往往也会在特征选择的过程中得到应用\cite{Aurélien2018}。重新考察\autoref{fig:dt}中的决策树可以发现，越靠近根结点位置的特征对决策过程的重要程度也越高，而不重要的特征多出现在靠近结点的位置、甚至不出现在决策树中。
+因此，特征的重要性（或贡献度）可以通过计算其在随机森林众多决策树的平均深度来进行量化衡量。
 
+\subsection{堆叠法}
+此前已经介绍过学习法是一种使用额外的学习器来完成多个基学习器的结果输出策略。相较平均法与投票法这种简单策略，学习法有着更为强大的性能优势。而堆叠法（Stacking）则是学习法中最为典型的代表。其中，基学习器也称为初级学习器，用于
+结合的学习器称为次级学习器或元学习器（meta-learner），如\autoref{fig:stacking}所示。
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{models/stacking}
+    \caption{\label{fig:stacking}堆叠法原理示意}
+\end{figure}
 
-
-
-特征的贡献度
-
-\subsection{Stacking}
-
+在使用堆叠法时，需要先从初始数据集中训练出多个初级学习器，然后“生成”一个新数据集用于训练次级学习器。多个初级学习器是同质或异质均可，即使用相同或不同学习算法产生。
+在新生成的数据集中，初级学习器的输出作为新样本的输入特征，而对应的初始样本的标记仍被当做新样本的标记。整个堆叠法的算法描述如\autoref{alg:stacking}所示。
+\begin{breakablealgorithm}
+    \caption[堆叠算法]{堆叠算法\cite{Zhou2016}}
+    \label{alg:stacking}
+    \begin{algorithmic}[1] %每行显示行号
+        \Require 训练集$D=\{(x_1,y_1),(x_2,y_2),\dots,(x_m,y_m)\}$；初级学习算法$\xi_1,\xi_2,\dots,\xi_T$；次级学习算法$\xi$。
+        \Ensure $H(x)=h^{'}(h_1(x),h_2(x),\dots,h_T(x))$。
+        \For {$t=1,2,\dots,T$}
+            \State 使用初级学习算法$\xi_t$训练产生初级学习器$h_t$。
+            \State $h_t=\xi_t (D)$
+        \EndFor
+        \State $D^{'}=\emptyset$
+        \State 生成次级训练集
+        \For {$i=1,2,\dots,m$}
+            \For {$t=1,2,\dots,T$}
+                \State $z_{it}=h_t(x_i)$
+            \EndFor
+            \State $D^{'}=D^{'} \cup ((z_{i1},z_{i2},\dots,z_{iT},),y_i)$
+        \EndFor
+        \State $h^{'}=\xi(D^{'})$
+    \end{algorithmic}
+\end{breakablealgorithm}
 
 
 \section{深度学习模型的应用}
 \section{小结}
+本研究过程中基于脉搏波特征数据，综合使用了多种机器学习模型算法进行了子痫前期的识别模型建立。而本章则从这些模型中选取了最为经典几种算法进行了原理性的介绍说明。
