@@ -71,6 +71,102 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
 \end{equation}
 一般认为，当YI取值最大时，此时对应的分类阈值为最佳阈值\cite{cwl}。
 \section{具体模型表现对比}
+\subsection{模型的初筛}
+
+基于特征识别判断波形属于正常孕妇或子痫患者
+
+
+数据集划分成了训练集与测试集，其中，训练集上数据按5层交叉验证设计。
+
+
+\begin{landscape}
+      \zihao{-5}
+      \begin{longtable}{m{3cm}<{\centering}m{1.7cm}<{\centering}m{2.3cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{2cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}}
+            \caption{初筛结果}\\
+            \label{tab:model_screen}\\
+            \toprule
+            &  & \multicolumn{6}{c}{\textbf{训练集}} & \multicolumn{5}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
+            \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}} & \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC} &  \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
+            \midrule
+            \endfirsthead
+            \caption[]{(续)}\\
+            \midrule
+            &  & \multicolumn{6}{c}{\textbf{训练集}} & \multicolumn{5}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
+            \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}} & \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC} &  \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
+            \midrule
+            \endhead 
+            \midrule
+            \endfoot
+            \bottomrule
+            \endlastfoot
+            随机梯度下降      &   6.17 s  &     $\left[ \begin{array}{cc} 2165 & 380 \\ 1164 & 2582 \end{array} \right]$ & 87.2\% & 68.9\% & 77.0\% & 75.5\% & 0.876 &
+            $\left[ \begin{array}{cc} 328 & 308 \\ 22 & 915 \end{array} \right]$ & 74.8\% & 97.7\% & 84.7\% & 79.0\% \\
+            决策树            &   5.24 s  &     $\left[ \begin{array}{cc} 2241 & 304 \\ 635 & 3111 \end{array} \right]$ & 91.1\% & 83.0\% & 86.9\% & 85.1\% & 0.907 &
+            $\left[ \begin{array}{cc} 584 & 52 \\ 174 & 763 \end{array} \right]$ & 93.6\% & 81.4\% & 87.1\% & 85.6\% \\
+            K近邻算法      &   3.77 s  &     $\left[ \begin{array}{cc} 2347 & 198 \\ 237 & 3509 \end{array} \right]$ & 94.7\% & 93.7\% & 94.2\% & 93.1\% & 0.974 &
+            $\left[ \begin{array}{cc} 594 & 42 \\ 63 & 874 \end{array} \right]$ & 95.4\% & 93.3\% & 94.3\% & 93.3\% \\
+            高斯朴素贝叶斯算法      &   1.22 s  &     $\left[ \begin{array}{cc} 2215 & 320 \\ 1354 & 2392 \end{array} \right]$ & 87.9\% & 63.9\% & 74.0\% & 73.2\% & 0.838 &
+            $\left[ \begin{array}{cc} 569 & 67 \\ 328 & 609 \end{array} \right]$ & 90.1\% & 65.0\% & 75.5\% & 74.9\% \\
+            逻辑回归算法      &   170.05 s  &     $\left[ \begin{array}{cc} 2174 & 371 \\ 347 & 3399 \end{array} \right]$ & 90.2\% & 90.7\% & 90.4\% & 88.6\% & 0.950 &
+            $\left[ \begin{array}{cc} 573 & 63 \\ 66 & 871 \end{array} \right]$ & 93.3\% & 93.0\% & 93.1\% & 91.8\% \\
+            线性支持向量机      &   47.22 s  &     $\left[ \begin{array}{cc} 1658 & 887 \\ 254 & 3492 \end{array} \right]$ & 79.7\% & 93.2\% & 86.0\% & 81.9\% & 0.917 &
+            $\left[ \begin{array}{cc} 603 & 33 \\ 170 & 767 \end{array} \right]$ & 95.9\% & 81.9\% & 88.3\% & 87.1\% \\
+            核支持向量机      &   60.28 s  &     $\left[ \begin{array}{cc} 1828 & 717 \\ 363 & 3383 \end{array} \right]$ & 82.5\% & 90.3\% & 86.2\% & 82.8\% & 0.916 &
+            $\left[ \begin{array}{cc} 484 & 152 \\ 81 & 856 \end{array} \right]$ & 84.9\% & 91.4\% & 88.0\% & 85.2\% \\
+            C-支持向量机      &   42.47 s  &     $\left[ \begin{array}{cc} 1914 & 631 \\ 354 & 3392 \end{array} \right]$ & 84.3\% & 90.5\% & 87.3\% & 84.3\% & 0.929 &
+            $\left[ \begin{array}{cc} 510 & 126 \\ 86 & 851 \end{array} \right]$ & 87.1\% & 90.8\% & 88.9\% & 86.5\% \\
+            多层感知机      &   26.8 s  &     $\left[ \begin{array}{cc} 1982 & 563 \\ 906 & 2840 \end{array} \right]$ & 83.5\% & 75.8\% & 79.5\% & 76.6\% & 0.905 &
+            $\left[ \begin{array}{cc} 534 & 102 \\ 83 & 854 \end{array} \right]$ & 89.3\% & 91.1\% & 90.2\% & 88.2\% \\
+      \end{longtable}
+\end{landscape}
+
+\begin{landscape}
+      \zihao{-5}
+      \begin{longtable}{m{3cm}<{\centering}m{5cm}<{\centering}m{1cm}<{\centering}m{2cm}<{\centering}m{1cm}<{\centering}m{3cm}<{\centering}m{1cm}<{\centering}m{2cm}<{\centering}m{1cm}<{\centering}}
+            \caption{超参数优化前后模型性能对比}\\
+            \label{tab:super_para}\\
+            \toprule
+            \multicolumn{1}{c}{\multirow{3}{*}{\textbf{模型类型}}} & \multicolumn{1}{c}{\multirow{3}{*}{\textbf{超参数值域}}}    & \multicolumn{3}{c}{\textbf{优化前}}   & \multicolumn{1}{c}{\multirow{3}{*}{\textbf{最优超参数}}}   & \multicolumn{3}{c}{\textbf{优化后}} \\
+            \multicolumn{1}{c}{} & \multicolumn{1}{c}{}     & \textbf{训练集} & \multicolumn{2}{c}{\textbf{测试集}} & \multicolumn{1}{c}{}   & \textbf{训练集} & \multicolumn{2}{c}{\textbf{测试集}}     \\
+            \multicolumn{1}{c}{} & \multicolumn{1}{c}{}     & \textbf{AUC} & \textbf{混淆矩阵}    & \textbf{准确率} & \multicolumn{1}{c}{}    & \textbf{AUC} & \multicolumn{1}{c}{\textbf{混淆矩阵}}     & \textbf{准确率} \\
+            \midrule
+            \endfirsthead
+            \caption[]{(续)}\\
+            \midrule
+            \multicolumn{1}{c}{\multirow{3}{*}{\textbf{模型类型}}} & \multicolumn{1}{c}{\multirow{3}{*}{\textbf{超参数值域}}}    & \multicolumn{3}{c}{\textbf{优化前}}   & \multicolumn{1}{c}{\multirow{3}{*}{\textbf{最优超参数}}}   & \multicolumn{3}{c}{\textbf{优化后}} \\
+            \multicolumn{1}{c}{} & \multicolumn{1}{c}{}     & \textbf{训练集} & \multicolumn{2}{c}{\textbf{测试集}} & \multicolumn{1}{c}{}   & \textbf{训练集} & \multicolumn{2}{c}{\textbf{测试集}}     \\
+            \multicolumn{1}{c}{} & \multicolumn{1}{c}{}     & \textbf{AUC} & \textbf{混淆矩阵}    & \textbf{准确率} & \multicolumn{1}{c}{}    & \textbf{AUC} & \multicolumn{1}{c}{\textbf{混淆矩阵}}     & \textbf{准确率} \\
+            \endhead 
+            \midrule
+            \endfoot
+            \bottomrule
+            \endlastfoot
+            % \multirow{2}{*}{随机梯度下降}                            & \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}loss:{[}hinge, log\_loss,   \\ log, modified\_huber, \\ squared\_hinge, perceptron, \\ squared\_error,  huber,\\  epsilon\_insensitive, \\ squared\_epsilon\_insensitive{]},\\    penalty:{[}l2,l1,elasticnet{]},\\   alpha:{[}0.001,0.0001,0.00001{]}\end{tabular}} & \multirow{2}{*}{0.876} & \multirow{2}{*}{$\left[ \begin{array}{cc} 328 & 308 \\ 22 & 915 \end{array} \right]$ } & \multirow{2}{*}{79.0\%} & \multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}alpha=0.001, \\ loss=squared\_hinge,   \\ penalty=elasticnet\end{tabular}} & \multirow{2}{*}{0.918} & \multirow{2}{*}{$\left[ \begin{array}{cc} 631 & 5 \\ 393 & 544 \end{array} \right]$} & \multirow{2}{*}{74.7\%} \\
+            % &                      &      &       &    &    &    &      &     \\
+            随机梯度下降    & \begin{tabular}[c]{@{}l@{}}loss:{[}\textbf{hinge}, log\_loss,   \\ log, modified\_huber, \\ squared\_hinge, perceptron, \\ squared\_error,  huber,\\  epsilon\_insensitive, \\ squared\_epsilon\_insensitive{]},\\    penalty:{[}\textbf{l2},l1,elasticnet{]},\\   alpha:{[}0.001,\textbf{0.0001},0.00001{]}\end{tabular} & 0.876        & $\left[ \begin{array}{cc} 328 & 308 \\ 22 & 915 \end{array} \right]$ & 79.0\%       & \begin{tabular}[c]{@{}l@{}}alpha=0.001, \\ loss=squared\_hinge,   \\ penalty=elasticnet\end{tabular} & 0.918        & $\left[ \begin{array}{cc} 631 & 5 \\ 393 & 544 \end{array} \right]$ & 74.7\%       \\
+            决策树          & \begin{tabular}[c]{@{}l@{}}criterion:{[}\textbf{gini},entropy,log\_loss{]},\\  splitter:{[}\textbf{best},random{]},\\     max\_depth:{[}\textbf{3},4,5{]},\\  max\_features:{[}sqrt,log2,\textbf{None}{]}\end{tabular}       & 0.907        & $\left[ \begin{array}{cc} 584 & 52 \\ 174 & 763 \end{array} \right]$ & 85.6\%       & \begin{tabular}[c]{@{}l@{}}criterion=entropy,\\  max\_depth=5, \\ max\_features=None\end{tabular}                             & 0.949        & $\left[ \begin{array}{cc} 621 & 15 \\ 159 & 778 \end{array} \right]$ & 88.9\%       \\
+            K近邻算法           & \begin{tabular}[c]{@{}l@{}}n\_neighbors:{[}3,\textbf{5},7,9{]},\\    weights:{[}\textbf{uniform},distance{]}\end{tabular}     & 0.974        & $\left[ \begin{array}{cc} 594 & 42 \\ 63 & 874 \end{array} \right]$    & 93.3\%       & \begin{tabular}[c]{@{}l@{}}n\_neighbors=9,\\  weights=distance\end{tabular}      & 0.978        & $\left[ \begin{array}{cc} 598 & 38 \\ 67 & 870 \end{array} \right]$ & 93.3\%       \\
+            高斯朴素贝叶斯算法   & var\_smoothing:{[}1e-5,1e-7,\textbf{1e-9},1e-11{]}       & 0.838        & $\left[ \begin{array}{cc} 569 & 67 \\ 328 & 609 \end{array} \right]$ & 74.9\%       & var\_smoothing=1e-7,                   & 0.842        & $\left[ \begin{array}{cc} 568 & 68 \\ 328 & 609 \end{array} \right]$ & 74.8\%      \\
+      \end{longtable}
+\end{landscape}
+
+\subsection{模型参数的优化}
+
+
+
+超参数调优
+
+
+解释
+
+边际效应
+过拟合
+
+
+
+\subsection{}
+
+
 
 \section{聚类分析}
 聚类分析是无监督学习的一种，旨在发现数据间是否有潜在的相似性\cite{Liu2018,Li2017}。
