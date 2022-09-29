@@ -72,14 +72,68 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
       \end{aligned}
 \end{equation}
 一般认为，当YI取值最大时，此时对应的分类阈值为最佳阈值\cite{cwl}。
-\section{具体模型表现对比}
-\subsection{模型的初筛}
+\section{机器学习模型在不同数据集上的具体表现及分析}
+\subsection{基于脉搏波时域特征集\Rnum{1}的结果及分析}
+一、按照全波波形抽样
+
+1. 模型初筛
 
 基于特征识别判断波形属于正常孕妇或子痫患者
 
 
 数据集划分成了训练集与测试集，其中，训练集上数据按5层交叉验证设计。
 
+2. 参数优化
+
+超参数调优
+
+3. 特征贡献度
+
+\begin{figure}[htbp]
+      \centering
+      \includegraphics[width=.6\linewidth]{results/rf_ip_pulse_0.7.png}
+      \caption[各特征对随机森林的相对贡献度]{\label{fig:rf_importance_pulse}各特征对随机森林的相对贡献度}
+\end{figure}
+
+\begin{center}
+      \zihao{-5}
+      \begin{longtable}{m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{3cm}<{\centering}m{2cm}<{\centering}}
+            \caption{初筛结果}\\
+            \label{tab:model_screen}\\
+            \toprule
+            \multicolumn{1}{c}{\multirow{2}{*}{训练所用特征贡献比例}} & \multicolumn{1}{c}{\multirow{2}{*}{训练特征数量}} & \multicolumn{1}{c}{\multirow{2}{*}{训练时间}} & \multicolumn{1}{c}{训练集} & \multicolumn{2}{c}{测试集}                            \\
+      \multicolumn{1}{c}{}                            & \multicolumn{1}{c}{}                        & \multicolumn{1}{c}{}                      & \multicolumn{1}{c}{AUC} & \multicolumn{1}{c}{混淆矩阵} & \multicolumn{1}{c}{准确性} \\ 
+            \midrule
+            \endfirsthead
+            \caption[]{(续)}\\
+            \midrule
+            \multicolumn{1}{c}{\multirow{2}{*}{训练所用特征贡献比例}} & \multicolumn{1}{c}{\multirow{2}{*}{训练特征数量}} & \multicolumn{1}{c}{\multirow{2}{*}{训练时间}} & \multicolumn{1}{c}{训练集} & \multicolumn{2}{c}{测试集}                            \\
+      \multicolumn{1}{c}{}                            & \multicolumn{1}{c}{}                        & \multicolumn{1}{c}{}                      & \multicolumn{1}{c}{AUC} & \multicolumn{1}{c}{混淆矩阵} & \multicolumn{1}{c}{准确性} \\ 
+            \midrule
+            \endhead 
+            \midrule
+            \endfoot
+            \bottomrule
+            \endlastfoot
+            100\%        & 238             &    52.06       &         0.990               &       $\left[ \begin{array}{cc} 617 & 19 \\ 28 & 909 \end{array} \right]$                    &         97.0\%                \\
+            70\%         & 74              &    25.06       &         0.993              &     $\left[ \begin{array}{cc} 617 & 19 \\ 26 & 911 \end{array} \right]$        &         97.1\%                \\
+            50\%         & 34             &   16.24          &    0.992                  &    $\left[ \begin{array}{cc} 618 & 18 \\ 29 & 908 \end{array} \right]$    &           97.0\%              \\                  
+\end{longtable}
+\end{center}
+
+
+
+4. 分析
+
+
+解释
+
+边际效应
+过拟合
+
+单个波形影响？
+
+多数波形决定，整体相似度，好像一个意思
 
 \begin{landscape}
       \zihao{-5}
@@ -105,11 +159,11 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
             $\left[ \begin{array}{cc} 328 & 308 \\ 22 & 915 \end{array} \right]$ & 74.8\% & 97.7\% & 84.7\% & 79.0\% \\
             决策树            &   5.24 s  &     $\left[ \begin{array}{cc} 2241 & 304 \\ 635 & 3111 \end{array} \right]$ & 91.1\% & 83.0\% & 86.9\% & 85.1\% & 0.907 &
             $\left[ \begin{array}{cc} 584 & 52 \\ 174 & 763 \end{array} \right]$ & 93.6\% & 81.4\% & 87.1\% & 85.6\% \\
-            K近邻算法      &   3.77 s  &     $\left[ \begin{array}{cc} 2347 & 198 \\ 237 & 3509 \end{array} \right]$ & 94.7\% & 93.7\% & 94.2\% & 93.1\% & 0.974 &
+            K近邻算法      &   3.08 s  &     $\left[ \begin{array}{cc} 2347 & 198 \\ 237 & 3509 \end{array} \right]$ & 94.7\% & 93.7\% & 94.2\% & 93.1\% & 0.974 &
             $\left[ \begin{array}{cc} 594 & 42 \\ 63 & 874 \end{array} \right]$ & 95.4\% & 93.3\% & 94.3\% & 93.3\% \\
             高斯朴素贝叶斯算法      &   1.22 s  &     $\left[ \begin{array}{cc} 2215 & 320 \\ 1354 & 2392 \end{array} \right]$ & 87.9\% & 63.9\% & 74.0\% & 73.2\% & 0.838 &
             $\left[ \begin{array}{cc} 569 & 67 \\ 328 & 609 \end{array} \right]$ & 90.1\% & 65.0\% & 75.5\% & 74.9\% \\
-            逻辑回归算法      &   170.05 s  &     $\left[ \begin{array}{cc} 2174 & 371 \\ 347 & 3399 \end{array} \right]$ & 90.2\% & 90.7\% & 90.4\% & 88.6\% & 0.950 &
+            逻辑回归算法      &   203.0 s  &     $\left[ \begin{array}{cc} 2174 & 371 \\ 347 & 3399 \end{array} \right]$ & 90.2\% & 90.7\% & 90.4\% & 88.6\% & 0.950 &
             $\left[ \begin{array}{cc} 573 & 63 \\ 66 & 871 \end{array} \right]$ & 93.3\% & 93.0\% & 93.1\% & 91.8\% \\
             线性支持向量机      &   47.22 s  &     $\left[ \begin{array}{cc} 1658 & 887 \\ 254 & 3492 \end{array} \right]$ & 79.7\% & 93.2\% & 86.0\% & 81.9\% & 0.917 &
             $\left[ \begin{array}{cc} 603 & 33 \\ 170 & 767 \end{array} \right]$ & 95.9\% & 81.9\% & 88.3\% & 87.1\% \\
@@ -152,21 +206,21 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
       \end{longtable}
 \end{landscape}
 
-\subsection{模型参数的优化}
+二、按照被试人员分层抽样
+
+1. 模型初筛
+
+基于特征识别判断波形属于正常孕妇或子痫患者
 
 
+数据集划分成了训练集与测试集，其中，训练集上数据按5层交叉验证设计。
+
+2. 参数优化
 
 超参数调优
 
+4. 分析
 
-解释
-
-边际效应
-过拟合
-
-单个波形影响？
-
-多数波形决定，整体相似度，好像一个意思
 
 
 
