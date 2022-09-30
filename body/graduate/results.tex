@@ -2,8 +2,7 @@
 \section{引言}
 此前的论文内容已经分别从机器学习的输入特征及机器学习的模型算法等方面进行铺垫介绍。本章将具体介绍利用前文提出的脉搏波的特征集合、使用多种机器学习算法
 构建并评估子痫前期的一般识别模型。此外， 本章也对评估机器学习模型性能表现的一般指标进行了介绍。
-\section{模型评估指标}
-\subsection{性能度量方法}
+\section{监督学习模型评估指标}
 一、混淆矩阵
 
 混淆矩阵（confusion matrix）是评估分类器分类效果优劣的常用工具\cite{Zhou2016,Aurélien2018}。其总体思路就是分别统计A类别实例被划分成B类别实例的数目。理论上混淆矩阵的行列没有上限，而在实际应用中，二分类任务的混淆矩阵是最常见的。
@@ -72,68 +71,15 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
       \end{aligned}
 \end{equation}
 一般认为，当YI取值最大时，此时对应的分类阈值为最佳阈值\cite{cwl}。
-\section{机器学习模型在不同数据集上的具体表现及分析}
+\section{监督学习算法的具体表现及分析}
 \subsection{基于脉搏波时域特征集\Rnum{1}的结果及分析}
-一、按照全波波形抽样
+一、按照全部波形抽样
 
 1. 模型初筛
 
-基于特征识别判断波形属于正常孕妇或子痫患者
-
-
-数据集划分成了训练集与测试集，其中，训练集上数据按5层交叉验证设计。
-
-2. 参数优化
-
-超参数调优
-
-3. 特征贡献度
-
-\begin{figure}[htbp]
-      \centering
-      \includegraphics[width=.6\linewidth]{results/rf_ip_pulse_0.7.png}
-      \caption[各特征对随机森林的相对贡献度]{\label{fig:rf_importance_pulse}各特征对随机森林的相对贡献度}
-\end{figure}
-
-\begin{center}
-      \zihao{-5}
-      \begin{longtable}{m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{3cm}<{\centering}m{2cm}<{\centering}}
-            \caption{初筛结果}\\
-            \label{tab:model_screen}\\
-            \toprule
-            \multicolumn{1}{c}{\multirow{2}{*}{训练所用特征贡献比例}} & \multicolumn{1}{c}{\multirow{2}{*}{训练特征数量}} & \multicolumn{1}{c}{\multirow{2}{*}{训练时间}} & \multicolumn{1}{c}{训练集} & \multicolumn{2}{c}{测试集}                            \\
-      \multicolumn{1}{c}{}                            & \multicolumn{1}{c}{}                        & \multicolumn{1}{c}{}                      & \multicolumn{1}{c}{AUC} & \multicolumn{1}{c}{混淆矩阵} & \multicolumn{1}{c}{准确性} \\ 
-            \midrule
-            \endfirsthead
-            \caption[]{(续)}\\
-            \midrule
-            \multicolumn{1}{c}{\multirow{2}{*}{训练所用特征贡献比例}} & \multicolumn{1}{c}{\multirow{2}{*}{训练特征数量}} & \multicolumn{1}{c}{\multirow{2}{*}{训练时间}} & \multicolumn{1}{c}{训练集} & \multicolumn{2}{c}{测试集}                            \\
-      \multicolumn{1}{c}{}                            & \multicolumn{1}{c}{}                        & \multicolumn{1}{c}{}                      & \multicolumn{1}{c}{AUC} & \multicolumn{1}{c}{混淆矩阵} & \multicolumn{1}{c}{准确性} \\ 
-            \midrule
-            \endhead 
-            \midrule
-            \endfoot
-            \bottomrule
-            \endlastfoot
-            100\%        & 238             &    52.06       &         0.990               &       $\left[ \begin{array}{cc} 617 & 19 \\ 28 & 909 \end{array} \right]$                    &         97.0\%                \\
-            70\%         & 74              &    25.06       &         0.993              &     $\left[ \begin{array}{cc} 617 & 19 \\ 26 & 911 \end{array} \right]$        &         97.1\%                \\
-            50\%         & 34             &   16.24          &    0.992                  &    $\left[ \begin{array}{cc} 618 & 18 \\ 29 & 908 \end{array} \right]$    &           97.0\%              \\                  
-\end{longtable}
-\end{center}
-
-
-
-4. 分析
-
-
-解释
-
-边际效应
-过拟合
-
-单个波形影响？
-
-多数波形决定，整体相似度，好像一个意思
+为检验借助脉搏波时域特征集\Rnum{1}中的各项时域参数能否识别出孕妇是否患有子痫前期，本研究首先基于全部波形分层抽样的数据样本进行了监督学习算法的试探性研究\cite{scikit-learn}。
+本研究共使用了随机梯度下降、决策树、K近邻、高斯朴素贝叶斯算法、逻辑回归、线性支持向量机、核支持向量机、C-支持向量机及多层感知机等9种基本分类算法进行模型探究，在模型初筛时未调整设置任何模型的默认超参数\cite{scikit-learn}。
+具体结果如\autoref{tab:model_screen}所示。
 
 \begin{landscape}
       \zihao{-5}
@@ -206,6 +152,83 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
       \end{longtable}
 \end{landscape}
 
+从\autoref{tab:model_screen}可以看到，这9类基本分类算法都能取得较好的分类识别效果，除高斯朴素贝叶斯算法外所有模型在测试集上的AUC数值均在0.850以上，
+而随机梯度算法、决策树算法、K近邻算法、高斯朴素贝叶斯算法及逻辑回归算法也能在测试集上达到87.0\%以上的精确度。而在验证集的泛化能力验证上，决策树算法、K近邻算法、逻辑回归算法能够将其在验证集上的优秀表现加以保持。
+而三种支持向量机模型在验证集上的整体性能表现出现了反常的上升，精确率及准确率均较测试集出现了提升。
+随机梯度算法与多层感知机算法则在训练模型时出现了过拟合现象，在验证集上的性能有所退化。
+
+整体而言，初筛使用的9中模型性能表现均较好，其中，以决策树算法与K近邻算法最为出色。此外，上述结果也初步说明了本研究提出的脉搏波时域特征集\Rnum{1}在子痫前期的识别问题上具有较强的表征能力。
+
+
+2. 参数优化
+
+在综合考虑模型的训练时间及性能表现的情况，本研究从上述9种单一分类中选取了随机梯度下降算法、决策树算法与K近邻算法、高斯朴素贝叶斯算法等四种进行了模型的超参数调优，超参数在优化时评价的标准为训练集上的AUC面积数值。
+\autoref{tab:super_para}则展示了参数优化的结果，其中，表格中超参数值域一栏给出了参数优化的范围，其中的加粗数值为默认超参数数值；最优超参数一栏则是在训练集AUC
+取最大值时取得。可以看到四种模型的在超参数调整前后的AUC数值均有所提高，但只有决策树算法与K近邻算法
+延续了之前的优秀表现，而随机梯度下降算法与高斯朴素贝叶斯算法的识别准确率没有明显的提升。此外，上述结果也进一步体现了脉搏波时域特征集\Rnum{1}的表征能力。
+
+
+3. 随机森林算法与特征降维
+
+除上述单一机器学习模型外，本研究也使用了集成学习中的随机森林算法进行了模型训练。结果表明随机森林算法的性能表现极为优秀，其在训练集上的AUC面积为0.990，在训练集与测试集上的准确率更是分别高达达到95.2\%与97.0\%。
+这一现象进一步证实了脉搏波时域特征集\Rnum{1}的子痫前期表征能力。
+
+另一方面，本章之前的内容已经阐述过随机森林算法可以用作对原始数据样本各属性的贡献度的衡量，即随机森林算法可以用作特征降维处理。基于脉搏波时域特征集\Rnum{1}完成随机森林的构建之后，可以得到各时域特征对最终模型的重要性，
+结果\autoref{fig:rf_importance_pulse}所示。\autoref{fig:rf_importance_pulse}以随机森林计算得到的最重要特征$CVALF\_9$的重要性为参照，其他特征的相对值。原始数据特征共有238个，\autoref{fig:rf_importance_pulse}仅保留了
+累计贡献度达70\%的74个特征。为进一步考察脉搏波时域特征集\Rnum{1}中特征参数降维的可能性，本研究分别以累计贡献度达全部特征集的70\%的74个特征与50\%的34个特征建立了新的随机森林模型。结果表明，新的随机森林仍然具有非常优秀的性能表现，
+在训练集上有着极高的AUC面积值（0.990以上）、测试集上的准确性达97\%。这也说明了本研究进行的降维处理工作是有效的。
+
+\begin{figure}[htbp]
+      \centering
+      \includegraphics[width=.6\linewidth]{results/rf_ip_pulse_0.7.png}
+      \caption[各特征对随机森林的相对贡献度]{\label{fig:rf_importance_pulse}各特征对随机森林的相对贡献度}
+\end{figure}
+
+\begin{center}
+      \zihao{-5}
+      \begin{longtable}{m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{3cm}<{\centering}m{2cm}<{\centering}}
+            \caption{初筛结果}\\
+            \label{tab:model_screen}\\
+            \toprule
+            \multicolumn{1}{c}{\multirow{2}{*}{训练所用特征贡献比例}} & \multicolumn{1}{c}{\multirow{2}{*}{训练特征数量}} & \multicolumn{1}{c}{\multirow{2}{*}{训练时间}} & \multicolumn{1}{c}{训练集} & \multicolumn{2}{c}{测试集}                            \\
+      \multicolumn{1}{c}{}                            & \multicolumn{1}{c}{}                        & \multicolumn{1}{c}{}                      & \multicolumn{1}{c}{AUC} & \multicolumn{1}{c}{混淆矩阵} & \multicolumn{1}{c}{准确性} \\ 
+            \midrule
+            \endfirsthead
+            \caption[]{(续)}\\
+            \midrule
+            \multicolumn{1}{c}{\multirow{2}{*}{训练所用特征贡献比例}} & \multicolumn{1}{c}{\multirow{2}{*}{训练特征数量}} & \multicolumn{1}{c}{\multirow{2}{*}{训练时间}} & \multicolumn{1}{c}{训练集} & \multicolumn{2}{c}{测试集}                            \\
+      \multicolumn{1}{c}{}                            & \multicolumn{1}{c}{}                        & \multicolumn{1}{c}{}                      & \multicolumn{1}{c}{AUC} & \multicolumn{1}{c}{混淆矩阵} & \multicolumn{1}{c}{准确性} \\ 
+            \midrule
+            \endhead 
+            \midrule
+            \endfoot
+            \bottomrule
+            \endlastfoot
+            100\%        & 238             &    52.06       &         0.990               &       $\left[ \begin{array}{cc} 617 & 19 \\ 28 & 909 \end{array} \right]$                    &         97.0\%                \\
+            70\%         & 74              &    25.06       &         0.993              &     $\left[ \begin{array}{cc} 617 & 19 \\ 26 & 911 \end{array} \right]$        &         97.1\%                \\
+            50\%         & 34             &   16.24          &    0.992                  &    $\left[ \begin{array}{cc} 618 & 18 \\ 29 & 908 \end{array} \right]$    &           97.0\%              \\                  
+\end{longtable}
+\end{center}
+
+
+
+4. 分析
+
+
+基于特征识别判断波形属于正常孕妇或子痫患者
+解释
+
+边际效应
+过拟合
+
+单个波形影响？
+
+多数波形决定，整体相似度，好像一个意思
+
+
+
+
+
 二、按照被试人员分层抽样
 
 1. 模型初筛
@@ -213,9 +236,80 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
 基于特征识别判断波形属于正常孕妇或子痫患者
 
 
+
 数据集划分成了训练集与测试集，其中，训练集上数据按5层交叉验证设计。
 
 2. 参数优化
+
+
+\begin{landscape}
+      \zihao{-5}
+      \begin{longtable}{m{3cm}<{\centering}m{1.7cm}<{\centering}m{2.3cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{2cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}}
+            \caption{初筛结果}\\
+            \label{tab:model_screen}\\
+            \toprule
+            &  & \multicolumn{6}{c}{\textbf{训练集}} & \multicolumn{5}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
+            \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}} & \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC} &  \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
+            \midrule
+            \endfirsthead
+            \caption[]{(续)}\\
+            \midrule
+            &  & \multicolumn{6}{c}{\textbf{训练集}} & \multicolumn{5}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
+            \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}} & \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC} &  \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
+            \midrule
+            \endhead 
+            \midrule
+            \endfoot
+            \bottomrule
+            \endlastfoot
+            K近邻算法      &   4.08 s  &     $\left[ \begin{array}{cc} 2250 & 384 \\ 888 & 2815 \end{array} \right]$ & 88.0\% & 76.0\% &81.6\% & 80.0\% & 0.870 &
+            $\left[ \begin{array}{cc} 357 & 190 \\ 141 & 839 \end{array} \right]$ & 81.5\% & 85.6\% & 83.5\% & 78.3\% \\
+            决策树算法      &   1.44 s  &     $\left[ \begin{array}{cc} 2062 & 572 \\ 706 & 2997 \end{array} \right]$ & 84.0\% & 80.9\% & 82.4\% & 79.8\% & 0.862 &
+            $\left[ \begin{array}{cc} 168 & 379 \\ 136 & 844 \end{array} \right]$ & 69.0\% & 86.1\% & 76.6\% & 66.3\% \\
+            随机森林算法      &   50.03 s  &     $\left[ \begin{array}{cc} 2326 & 308 \\ 718 & 2985 \end{array} \right]$ & 90.6\% & 80.6\% & 85.3\% & 83.8\% & 0.929 &
+            $\left[ \begin{array}{cc} 317 & 230 \\ 89 & 891 \end{array} \right]$ & 79.5\% & 90.9\% & 84.8\% & 79.1\% \\
+            
+      \end{longtable}
+\end{landscape}
+
+\begin{landscape}
+      \zihao{-5}
+      \begin{longtable}{m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}}
+            \caption{初筛结果}\\
+            \label{tab:model_screen}\\
+            \toprule
+            \multirow{2}{*}{被试孕妇} & \multirow{2}{*}{波形总数} & \multicolumn{2}{c}{K近邻算法} & \multicolumn{2}{c}{决策树} & \multicolumn{2}{c}{随机森林} & \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}真实子痫前\\ 期患病状态\end{tabular}} \\
+                        &                       & 预测阳性数目     & 预测比例       & 预测阳性数目     & 预测比例       & 预测阳性数目     & 预测比例        &                                                                        \\
+            \midrule
+            \endfirsthead
+            \caption[]{(续)}\\
+            \midrule
+            \multirow{2}{*}{被试孕妇} & \multirow{2}{*}{波形总数} & \multicolumn{2}{c}{K近邻算法} & \multicolumn{2}{c}{决策树} & \multicolumn{2}{c}{随机森林} & \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}真实子痫前\\ 期患病状态\end{tabular}} \\
+                        &                       & 预测阳性数目     & 预测比例       & 预测阳性数目     & 预测比例       & 预测阳性数目     & 预测比例        &                                                                        \\
+            \midrule
+            \endhead 
+            \midrule
+            \endfoot
+            \bottomrule
+            \endlastfoot
+            cmf                   & 88                    & 54         & 61.4\%     & 85         & 96.6\%     & 53         & 60.2\%      & 0                                                                      \\
+            lxx                   & 63                    & 32         & 50.8\%     & 53         & 84.1\%     & 34         & 54.0\%      & 0                                                                      \\
+            shs                   & 112                   & 37         & 33.0\%     & 105        & 93.8\%     & 55         & 49.1\%      & 0                                                                      \\
+            sxh                   & 95                    & 27         & 28.4\%     & 64         & 67.4\%     & 21         & 22.1\%      & 0                                                                      \\
+            wdq                   & 36                    & 0          & 0.0\%      & 0          & 0.0\%      & 0          & 0.0\%       & 0                                                                      \\
+            wsj                   & 78                    & 0          & 0.0\%      & 2          & 2.6\%      & 0          & 0.0\%       & 0                                                                      \\
+            ygy                   & 75                    & 40         & 53.3\%     & 70         & 93.3\%     & 67         & 89.3\%      & 0                                                                      \\
+            gmn                   & 139                   & 106        & 76.3\%     & 135        & 97.1\%     & 109        & 78.4\%      & 1                                                                      \\
+            ty                    & 98                    & 97         & 99.0\%     & 97         & 99.0\%     & 97         & 99.0\%      & 1                                                                      \\
+            wjh                   & 86                    & 86         & 100.0\%    & 86         & 100.0\%    & 86         & 100.0\%     & 1                                                                      \\
+            xjf                   & 106                   & 23         & 21.7\%     & 59         & 55.7\%     & 87         & 82.1\%      & 1                                                                      \\
+            ywy                   & 111                   & 110        & 99.1\%     & 111        & 100.0\%    & 111        & 100.0\%     & 1                                                                      \\
+            yxl                   & 110                   & 110        & 100.0\%    & 108        & 98.2\%     & 110        & 100.0\%     & 1                                                                      \\
+            zdq                   & 89                    & 81         & 91.0\%     & 84         & 94.4\%     & 82         & 92.1\%      & 1                                                                      \\
+            zl                    & 152                   & 137        & 90.1\%     & 75         & 49.3\%     & 120        & 78.9\%      & 1                                                                      \\
+            zyy                   & 89                    & 89         & 100.0\%    & 89         & 100.0\%    & 89         & 100.0\%     & 1                                                                       \\    
+\end{longtable}
+\end{landscape}
 
 超参数调优
 
@@ -224,11 +318,45 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
 
 
 
-\subsection{}
+\subsection{基于脉搏波时域特征集\Rnum{2}的结果及分析}
+
+一、按照全波波形抽样
+
+\begin{landscape}
+      \zihao{-5}
+      \begin{longtable}{m{3cm}<{\centering}m{1.7cm}<{\centering}m{2.3cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{2cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}}
+            \caption{初筛结果}\\
+            \label{tab:model_screen}\\
+            \toprule
+            &  & \multicolumn{6}{c}{\textbf{训练集}} & \multicolumn{5}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
+            \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}} & \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC} &  \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
+            \midrule
+            \endfirsthead
+            \caption[]{(续)}\\
+            \midrule
+            &  & \multicolumn{6}{c}{\textbf{训练集}} & \multicolumn{5}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
+            \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}} & \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC} &  \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
+            \midrule
+            \endhead 
+            \midrule
+            \endfoot
+            \bottomrule
+            \endlastfoot
+            决策树算法      &   1.31 s  &     $\left[ \begin{array}{cc} 1220 & 1325 \\ 604 & 3142 \end{array} \right]$ & 70.3\% & 83.9\% &76.5\% & 69.3\% & 0.743 &
+            $\left[ \begin{array}{cc} 227 & 409 \\ 78 & 859 \end{array} \right]$ & 67.8\% & 91.7\% & 77.9\% & 69.0\% \\
+            K近邻算法      &   2.93 s  &     $\left[ \begin{array}{cc} 1515 & 1030 \\ 607 & 3139 \end{array} \right]$ & 75.2\% & 83.8\% & 79.3\% & 74.03\% & 0.810 &
+            $\left[ \begin{array}{cc} 381 & 255 \\ 142 & 799 \end{array} \right]$ & 75.7\% & 84.8\% & 80.0\% & 74.8\% \\
+            随机森林算法      &   1.45 s  &     $\left[ \begin{array}{cc} 1220 & 1325 \\ 604 & 3142 \end{array} \right]$ & 70.3\% & 83.9\% & 76.5\% & 69.3\% & 0.743 &
+            $\left[ \begin{array}{cc} 227 & 409 \\ 78 & 859 \end{array} \right]$ & 67.7\% & 91.7\% & 77.9\% & 69.0\% \\
+            
+      \end{longtable}
+\end{landscape}
 
 
 
-\section{聚类分析}
+
+
+\section{非监督学习算法的具体表现及分析}
 聚类分析是无监督学习的一种，旨在发现数据间是否有潜在的相似性\cite{Liu2018,Li2017}。
 因此，我们做了额外的探究——在不给定脉搏波对应的子痫前期的数据标签的基础上，探究能否有效的将数据分成两类，并考察验证分类的效果。
 
