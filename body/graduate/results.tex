@@ -185,17 +185,104 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
 
 3. 随机森林算法与特征降维
 
-除上述单一机器学习模型外，本研究也使用了集成学习中的随机森林算法进行了模型训练。结果表明随机森林算法的性能表现极为优秀，其在训练集上的AUC面积为0.990，在训练集与测试集上的准确率更是分别高达达到95.2\%与97.0\%。
-这一现象进一步证实了脉搏波时域特征集\Rnum{1}的子痫前期表征能力。
-
-另一方面，本章之前的内容已经阐述过随机森林算法可以用作对原始数据样本各属性的贡献度的衡量，即随机森林算法可以用作特征降维处理。基于脉搏波时域特征集\Rnum{1}完成随机森林的构建之后，可以得到各时域特征对最终模型的重要性，
-结果\autoref{fig:rf_importance_pulse}所示。\autoref{fig:rf_importance_pulse}以随机森林计算得到的最重要特征$CVALF\_9$的重要性为参照，其他特征的相对值。
+此前初筛过程中使用的均是单机器学习模型，本小节则使用了集成学习中的随机森林算法在脉搏波时域特征集\Rnum{1}进行了模型训练。
+如\autoref{tab:rf_dr_2}第一行所示，使用默认超参数生成的随机森林模型在训练集与测试集上均有着优秀的表现，其在训练集上的AUC面积为0.990，在训练集与测试集上的准确率更是分别达到了95.2\%与97.0\%。
+这些数值均高于之前的单机器模型中性能最好的K近邻算法与逻辑回归算法，充分体现了集成学习的优势。
 
 \begin{figure}[htbp]
       \centering
-      \includegraphics[width=.6\linewidth]{results/rf_ip_pulse_0.7.png}
-      \caption[各特征对随机森林的相对贡献度]{\label{fig:rf_importance_pulse}各特征对随机森林的相对贡献度}
+      \includegraphics[width=\linewidth]{results/dt_clf}
+      \caption{\label{fig:dt_clf}在训练集上的构建的一棵决策树示意}
 \end{figure}
+
+另一方面，本章之前的内容已经阐述过随机森林算法可以用来衡量原始数据样本各属性的贡献度，即随机森林算法可以用作特征降维处理。在使用脉搏波时域特征集\Rnum{1}的286个时域特征完成随机森林的构建之后，可以从中得到各特征对最终模型的贡献度的数值，
+结果如\autoref{tab:rf_dr_1}所示。脉搏波时域特征集\Rnum{1}共有的286个特征中，这些特征的平均贡献度为0.34\%，贡献度最高的特征$CVALF\_9$的贡献度为平均值的13.5倍。
+若以特征$CVALF\_9$为基准，可以得到所有特征对随机森林模型的相对贡献度如\autoref{fig:rf_importance_pulse}所示。
+
+\begin{center}
+      \zihao{5}
+      \begin{longtable}{m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}}
+            \caption[参与构建随机森林的特征贡献度]{参与构建随机森林的特征贡献度。仅列举了对随机森林累计贡献度达51.9\%的前36个特征。}\\
+            \label{tab:rf_dr_1}\\
+            \toprule
+            \textbf{特征名}&\textbf{贡献度}&\textbf{特征名}&\textbf{贡献度}&\textbf{特征名}&\textbf{贡献度}\\
+            \midrule
+            \endfirsthead
+            \caption[]{(续)}\\
+            \midrule
+            \textbf{特征名}&\textbf{贡献度}&\textbf{特征名}&\textbf{贡献度}&\textbf{特征名}&\textbf{贡献度}\\
+            \midrule
+            \endhead 
+            \midrule
+            \endfoot
+            \bottomrule
+            \endlastfoot
+            CVALF\_9                         & 4.6\%                            & LVRF\_9                          & 3.4\%                            & SVD\_10                          & 3.0\%                            \\
+            SVAF\_10                         & 2.5\%                            & LVALF\_7                         & 2.4\%                            & SVAT\_10                         & 2.3\%                            \\
+            CVRF\_11                         & 2.1\%                            & SVAR\_10                         & 1.8\%                            & STDZ\_3                          & 1.6\%                            \\
+            LVRF\_8                          & 1.6\%                            & LVALF\_6                         & 1.6\%                            & CVD\_11                          & 1.6\%                            \\
+            STDZ\_1                          & 1.5\%                            & CVALF\_8                         & 1.5\%                            & SVD\_9                           & 1.4\%                            \\
+            SVAAR\_10                        & 1.4\%                            & CVALF\_1                         & 1.4\%                            & SVAAR\_8                         & 1.3\%                            \\
+            SVD\_8                           & 1.1\%                            & SVAR\_9                          & 1.0\%                            & SVAF\_9                          & 1.0\%                            \\
+            CVAAF\_1                         & 1.0\%                            & LVLF\_8                          & 0.9\%                            & SVAT\_8                          & 0.9\%                            \\
+            CVRF\_1                          & 0.9\%                            & CVAAF\_2                         & 0.9\%                            & SVAR\_8                          & 0.8\%                            \\
+            SVAF\_2                          & 0.8\%                            & CVRR\_11                         & 0.8\%                            & LVRF\_1                          & 0.7\%                            \\
+            SVSR\_7                          & 0.7\%                            & CVRF\_3                          & 0.7\%                            & CVALR\_10                        & 0.7\%                            \\
+            CVALF\_7                         & 0.7\%                            & CVAAR\_5                         & 0.7\%                            & LVRF\_2                          & 0.6\%                           
+      \end{longtable}
+\end{center}
+
+\begin{figure}[htbp]
+      \centering
+      \includegraphics[width=0.6\linewidth]{results/rf_ip_pulse_0.52}
+      \caption[各特征对随机森林的相对贡献度]{\label{fig:rf_importance_pulse}各特征对随机森林的相对贡献度。仅列举了对随机森林累计贡献度达51.9\%的前36个特征。}
+\end{figure}
+
+\begin{landscape}
+      \zihao{-5}
+      \begin{longtable}{m{1.8cm}<{\centering}m{1.8cm}<{\centering}m{1.8cm}<{\centering}m{1.8cm}<{\centering}m{1.8cm}<{\centering}m{2cm}<{\centering}m{1cm}<{\centering}m{2cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}}
+            \caption{随机森林对脉搏波特征降维效果}\\
+            \label{tab:rf_dr_2}\\
+            \toprule
+            \multicolumn{3}{c}{\textbf{随机森林特征输入}}              & \multicolumn{2}{c}{\textbf{训练时间}} & \multicolumn{2}{c}{\textbf{训练集}} & \multicolumn{5}{c}{\textbf{测试集}}                                          \\
+            \textbf{贡献度比例} & \textbf{特征数量} & \textbf{数量比例} & \textbf{训练时间}  & \textbf{时间比例}  & \textbf{混淆矩阵}   & \textbf{AUC}   & \textbf{混淆矩阵} & \textbf{精确率} & \textbf{召回率} & \textbf{F1值} & \textbf{准确率} \\
+            \midrule
+            \endfirsthead
+            \caption[]{(续)}\\
+            \midrule
+            \multicolumn{3}{c}{\textbf{随机森林特征输入}}              & \multicolumn{2}{c}{\textbf{训练时间}} & \multicolumn{2}{c}{\textbf{训练集}} & \multicolumn{5}{c}{\textbf{测试集}}                                          \\
+            \textbf{贡献度比例} & \textbf{特征数量} & \textbf{数量比例} & \textbf{训练时间}  & \textbf{时间比例}  & \textbf{混淆矩阵}   & \textbf{AUC}   & \textbf{混淆矩阵} & \textbf{精确率} & \textbf{召回率} & \textbf{F1值} & \textbf{准确率} \\
+            \midrule
+            \endhead 
+            \midrule
+            \endfoot
+            \bottomrule
+            \endlastfoot
+            100.0\%        & 286           & 100.0\%       & 41.30          & 100.0\%          & $\left[ \begin{array}{cc} 2404 & 141 \\ 160 & 3586 \end{array} \right]$  & 0.990        & $\left[ \begin{array}{cc} 617 & 19 \\ 28 & 909 \end{array} \right]$   & 98.0\%       & 97.0\%       & 97.5\%       & 97.0\%       \\
+            90.0\%         & 162           & 56.6\%        & 38.11          & 92.3\%           & $\left[ \begin{array}{cc} 2421 & 124 \\ 134 & 3612 \end{array} \right]$  & 0.991        & $\left[ \begin{array}{cc} 619 & 17 \\ 25 & 912 \end{array} \right]$   & 98.1\%       & 97.3\%       & 97.8\%       & 97.3\%       \\
+            80.0\%         & 108           & 37.8\%        & 29.33          & 71.0\%           & $\left[ \begin{array}{cc} 2431 & 114 \\ 130 & 3616 \end{array} \right]$  & 0.993        & $\left[ \begin{array}{cc} 615 & 21 \\ 26 & 911 \end{array} \right]$   & 97.7\%       & 97.2\%       & 97.5\%       & 97.0\%       \\
+            70.0\%         & 74            & 25.9\%        & 23.67          & 57.3\%           & $\left[ \begin{array}{cc} 2431 & 114 \\ 125 & 3621 \end{array} \right]$  & 0.993        & $\left[ \begin{array}{cc} 618 & 18 \\ 23 & 914 \end{array} \right]$   & 98.1\%       & 97.5\%       & 97.8\%       & 97.4\%       \\
+            60.0\%         & 51            & 17.8\%        & 20.91          & 50.6\%           & $\left[ \begin{array}{cc} 2442 & 103 \\ 115 & 3631 \end{array} \right]$  & 0.994        & $\left[ \begin{array}{cc} 620 & 16 \\ 27 & 910 \end{array} \right]$   & 98.3\%       & 97.1\%       & 97.7\%       & 97.3\%       \\
+            50.0\%         & 34            & 11.9\%        & 15.17          & 36.7\%           & $\left[ \begin{array}{cc} 2433 & 112 \\ 146 & 3600 \end{array} \right]$  & 0.993        & $\left[ \begin{array}{cc} 616 & 20 \\ 28 & 909 \end{array} \right]$   & 97.8\%       & 97.0\%       & 97.4\%       & 97.0\%       \\
+            40.0\%         & 21            & 7.3\%         & 11.90          & 28.8\%           & $\left[ \begin{array}{cc} 2432 & 113 \\ 145 & 3601 \end{array} \right]$  & 0.993        & $\left[ \begin{array}{cc} 615 & 21 \\ 30 & 907 \end{array} \right]$   & 97.7\%       & 96.8\%       & 97.3\%       & 96.8\%       \\
+            30.0\%         & 13            & 4.5\%         & 9.79           & 23.7\%           & $\left[ \begin{array}{cc} 2422 & 123 \\ 200 & 3546 \end{array} \right]$  & 0.987        & $\left[ \begin{array}{cc} 612 & 24 \\ 34 & 903 \end{array} \right]$   & 97.4\%       & 96.4\%       & 96.9\%       & 96.3\%       \\
+            20.0\%         & 7             & 2.4\%         & 7.82           & 18.9\%           & $\left[ \begin{array}{cc} 2277 & 268 \\ 382 & 3364 \end{array} \right]$  & 0.961        & $\left[ \begin{array}{cc} 587 & 49 \\ 92 & 845 \end{array} \right]$   & 94.5\%       & 90.1\%       & 92.3\%       & 91.0\%       \\
+            10.0\%         & 3             & 1.0\%         & 5.31           & 12.9\%           & $\left[ \begin{array}{cc} 2065 & 480 \\ 484 & 3262 \end{array} \right]$  & 0.931        & $\left[ \begin{array}{cc} 539 & 97 \\ 124 & 813 \end{array} \right]$  & 89.3\%       & 86.8\%       & 88.0\%       & 86.0\%      
+      \end{longtable}
+\end{landscape}
+
+从\autoref{tab:rf_dr_1}可以发现，，
+原始数据特征共有238个，\autoref{fig:rf_importance_pulse}仅保留了
+累计贡献度达70\%的74个特征。为进一步考察脉搏波时域特征集\Rnum{1}中特征参数降维的可能性，本研究分别以累计贡献度达全部特征集的70\%的74个特征与50\%的34个特征建立了新的随机森林模型。结果表明，新的随机森林仍然具有非常优秀的性能表现，
+在训练集上有着极高的AUC面积值（0.990以上）、测试集上的准确性达97\%。这也说明了本研究进行的降维处理工作是有效的。
+
+
+先升后降。 主要特征合理。 降维工作比较成功。
+
+
+
+4. 分析
+
 
 具体特征分析。列举 表格
 
@@ -204,49 +291,6 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
 1 下降支 符合
 
 2 C S 巨多 Ljiaoshao
-
-
-原始数据特征共有238个，\autoref{fig:rf_importance_pulse}仅保留了
-累计贡献度达70\%的74个特征。为进一步考察脉搏波时域特征集\Rnum{1}中特征参数降维的可能性，本研究分别以累计贡献度达全部特征集的70\%的74个特征与50\%的34个特征建立了新的随机森林模型。结果表明，新的随机森林仍然具有非常优秀的性能表现，
-在训练集上有着极高的AUC面积值（0.990以上）、测试集上的准确性达97\%。这也说明了本研究进行的降维处理工作是有效的。
-
-
-\begin{center}
-      \zihao{-5}
-      \begin{longtable}{m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{2.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}}
-            \caption{随机森林对脉搏波特征降维效果}\\
-            \label{tab:rf_dr}\\
-            \toprule
-            % \multicolumn{3}{l}{\multirow{2}{*}{随机森林特征输入}} & \multicolumn{2}{l}{\multirow{2}{*}{训练时间}} & \multicolumn{3}{l}{随机森林性能}        \\
-            % \multicolumn{3}{l}{}                          & \multicolumn{2}{l}{}                      & 训练集     & \multicolumn{2}{l}{测试集} \\
-            % 特征贡献度比例         & 特征数量        & 特征数量比例        & 训练时间               & 训练时间比例               & AUC     & 混淆矩阵        & 准确率       \\
-            \multicolumn{3}{c}{随机森林特征输入} & \multicolumn{2}{c}{训练时间} & 训练集 & \multicolumn{2}{c}{测试集} \\
-            特征贡献度比例   & 特征数量   & 特征数量比例  & 训练时间       & 训练时间比例      & AUC & 混淆矩阵        & 准确率       \\
-            \midrule
-            \endfirsthead
-            \caption[]{(续)}\\
-            \midrule
-            % \\multicolumn{3}{l}{\multirow{2}{*}{随机森林特征输入}} & \multicolumn{2}{l}{\multirow{2}{*}{训练时间}} & \multicolumn{3}{l}{随机森林性能}        \\
-            % \multicolumn{3}{l}{}                          & \multicolumn{2}{l}{}                      & 训练集     & \multicolumn{2}{l}{测试集} \\
-            % 特征贡献度比例         & 特征数量        & 特征数量比例        & 训练时间               & 训练时间比例               & AUC     & 混淆矩阵        & 准确率       \\
-            \multicolumn{3}{c}{随机森林特征输入} & \multicolumn{2}{c}{训练时间} & 训练集 & \multicolumn{2}{c}{测试集} \\
-            特征贡献度比例   & 特征数量   & 特征数量比例  & 训练时间       & 训练时间比例      & AUC & 混淆矩阵        & 准确率       \\
-            \midrule
-            \endhead 
-            \midrule
-            \endfoot
-            \bottomrule
-            \endlastfoot
-            100.0\%        & 238             &    100.0\%   &     52.06       &     100.0\%     &       0.990               &       $\left[ \begin{array}{cc} 617 & 19 \\ 28 & 909 \end{array} \right]$  &         97.0\%                \\
-            70.0\%         & 74              &    31.1\%    &     25.06       &     48.1\%      &    0.993              &     $\left[ \begin{array}{cc} 617 & 19 \\ 26 & 911 \end{array} \right]$        &         97.1\%                \\
-            50.0\%         & 34             &   12.0\%      &     16.24       &    31.2\%       &     0.992                  &    $\left[ \begin{array}{cc} 618 & 18 \\ 29 & 908 \end{array} \right]$    &           97.0\%              \\                  
-\end{longtable}
-\end{center}
-
-
-
-4. 分析
-
 
 基于特征识别判断波形属于正常孕妇或子痫患者
 解释
@@ -279,7 +323,7 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
       \zihao{-5}
       \begin{longtable}{m{3cm}<{\centering}m{1.7cm}<{\centering}m{2.3cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{2cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}}
             \caption{初筛结果}\\
-            \label{tab:model_screen}\\
+            \label{tab:model_screen3}\\
             \toprule
             &  & \multicolumn{6}{c}{\textbf{训练集}} & \multicolumn{5}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
             \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}} & \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC} &  \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
@@ -309,7 +353,7 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
       \zihao{-5}
       \begin{longtable}{m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}}
             \caption{初筛结果}\\
-            \label{tab:model_screen}\\
+            \label{tab:model_screen4}\\
             \toprule
             \multirow{2}{*}{被试孕妇} & \multirow{2}{*}{波形总数} & \multicolumn{2}{c}{K近邻算法} & \multicolumn{2}{c}{决策树} & \multicolumn{2}{c}{随机森林} & \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}真实子痫前\\ 期患病状态\end{tabular}} \\
                         &                       & 预测阳性数目     & 预测比例       & 预测阳性数目     & 预测比例       & 预测阳性数目     & 预测比例        &                                                                        \\
@@ -359,7 +403,7 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
       \zihao{-5}
       \begin{longtable}{m{3cm}<{\centering}m{1.7cm}<{\centering}m{2.3cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{2cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}}
             \caption{初筛结果}\\
-            \label{tab:model_screen}\\
+            \label{tab:model_screen5}\\
             \toprule
             &  & \multicolumn{6}{c}{\textbf{训练集}} & \multicolumn{5}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
             \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}} & \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC} &  \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
