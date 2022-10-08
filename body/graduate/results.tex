@@ -34,7 +34,7 @@ $TP+FP+TN+FN=\text{样例总数}$。
       \end{aligned}
       \right.
 \end{equation}
-其中，查全率亦称召回率、灵敏性(sensitivity）或真阳性率（true positive rate，TPR），查准率亦称精准率，特异性亦称真阴性率。查全率与查准率是应用的最广泛的两个指标\cite{Zhou2016,Aurélien2018}。
+其中，查全率亦称召回率、灵敏性（sensitivity）或真阳性率（true positive rate，TPR），查准率亦称精准率，特异性亦称真阴性率。查全率与查准率是应用的最广泛的两个指标\cite{Zhou2016,Aurélien2018}。
 一般而言，查全率与查准率是对相互矛盾的度量指标，一个指标性能的提高意味着另一个指标性能的下降。通常只有在简单分类任务中，
 才能同时获得较高的查准率与查全率。这称为精度-召回率权衡。为评估查全率与查准率均不相等的分类器性能，人们进一步定义了$F_1\text{分数}$，如\autoref{equ:f1}所示。
 \begin{equation}
@@ -78,8 +78,8 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
 1. 模型初筛
 
 为检验借助脉搏波时域特征集\Rnum{1}中的各项时域参数能否识别出孕妇是否患有子痫前期，本研究首先基于全部波形分层抽样的数据样本进行了监督学习算法的试探性研究\cite{scikit-learn}。
-本研究共使用了随机梯度下降、决策树、K近邻、高斯朴素贝叶斯算法、逻辑回归、线性支持向量机、核支持向量机、C-支持向量机及多层感知机等9种基本分类算法进行模型探究，在模型初筛时未调整设置任何模型的默认超参数\cite{scikit-learn}。
-具体结果如\autoref{tab:model_screen}所示。
+本研究共使用了随机梯度下降、决策树、K近邻、高斯朴素贝叶斯算法、逻辑回归、线性支持向量机、核支持向量机、C-支持向量机及多层感知机等9种基本分类算法进行模型探究。这些模型在进行初筛时，模型超参数均使用了默认设置\cite{scikit-learn}。
+9种模型的初筛结果如\autoref{tab:model_screen}所示，其中训练集相关数据是对原始训练集数据经过5层交叉验证后得到的。
 
 \begin{landscape}
       \zihao{-5}
@@ -87,13 +87,13 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
             \caption{初筛结果}\\
             \label{tab:model_screen}\\
             \toprule
-            &  & \multicolumn{6}{c}{\textbf{训练集}} & \multicolumn{5}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
+            &  & \multicolumn{6}{c}{\textbf{训练集（5层交叉验证）}} & \multicolumn{5}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
             \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}} & \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC} &  \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
             \midrule
             \endfirsthead
             \caption[]{(续)}\\
             \midrule
-            &  & \multicolumn{6}{c}{\textbf{训练集}} & \multicolumn{5}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
+            &  & \multicolumn{6}{c}{\textbf{训练集（5层交叉验证）}} & \multicolumn{5}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
             \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}} & \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC} &  \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
             \midrule
             \endhead 
@@ -128,14 +128,14 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
             \caption{超参数优化前后模型性能对比}\\
             \label{tab:super_para}\\
             \toprule
-            \multicolumn{1}{c}{\multirow{3}{*}{\textbf{模型类型}}} & \multicolumn{1}{c}{\multirow{3}{*}{\textbf{超参数值域}}}    & \multicolumn{3}{c}{\textbf{优化前}}   & \multicolumn{1}{c}{\multirow{3}{*}{\textbf{最优超参数}}}   & \multicolumn{3}{c}{\textbf{优化后}} \\
+            \multicolumn{1}{c}{\multirow{3}{*}{\textbf{模型类型}}} & \multicolumn{1}{c}{\multirow{3}{*}{\textbf{超参数组合值域}}}    & \multicolumn{3}{c}{\textbf{优化前}}   & \multicolumn{1}{c}{\multirow{3}{*}{\textbf{最优超参数}}}   & \multicolumn{3}{c}{\textbf{优化后}} \\
             \multicolumn{1}{c}{} & \multicolumn{1}{c}{}     & \textbf{训练集} & \multicolumn{2}{c}{\textbf{测试集}} & \multicolumn{1}{c}{}   & \textbf{训练集} & \multicolumn{2}{c}{\textbf{测试集}}     \\
             \multicolumn{1}{c}{} & \multicolumn{1}{c}{}     & \textbf{AUC} & \textbf{混淆矩阵}    & \textbf{准确率} & \multicolumn{1}{c}{}    & \textbf{AUC} & \multicolumn{1}{c}{\textbf{混淆矩阵}}     & \textbf{准确率} \\
             \midrule
             \endfirsthead
             \caption[]{(续)}\\
             \midrule
-            \multicolumn{1}{c}{\multirow{3}{*}{\textbf{模型类型}}} & \multicolumn{1}{c}{\multirow{3}{*}{\textbf{超参数值域}}}    & \multicolumn{3}{c}{\textbf{优化前}}   & \multicolumn{1}{c}{\multirow{3}{*}{\textbf{最优超参数}}}   & \multicolumn{3}{c}{\textbf{优化后}} \\
+            \multicolumn{1}{c}{\multirow{3}{*}{\textbf{模型类型}}} & \multicolumn{1}{c}{\multirow{3}{*}{\textbf{超参数组合值域}}}    & \multicolumn{3}{c}{\textbf{优化前}}   & \multicolumn{1}{c}{\multirow{3}{*}{\textbf{最优超参数}}}   & \multicolumn{3}{c}{\textbf{优化后}} \\
             \multicolumn{1}{c}{} & \multicolumn{1}{c}{}     & \textbf{训练集} & \multicolumn{2}{c}{\textbf{测试集}} & \multicolumn{1}{c}{}   & \textbf{训练集} & \multicolumn{2}{c}{\textbf{测试集}}     \\
             \multicolumn{1}{c}{} & \multicolumn{1}{c}{}     & \textbf{AUC} & \textbf{混淆矩阵}    & \textbf{准确率} & \multicolumn{1}{c}{}    & \textbf{AUC} & \multicolumn{1}{c}{\textbf{混淆矩阵}}     & \textbf{准确率} \\
             \endhead 
@@ -146,26 +146,41 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
             % \multirow{2}{*}{随机梯度下降}                            & \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}loss:{[}hinge, log\_loss,   \\ log, modified\_huber, \\ squared\_hinge, perceptron, \\ squared\_error,  huber,\\  epsilon\_insensitive, \\ squared\_epsilon\_insensitive{]},\\    penalty:{[}l2,l1,elasticnet{]},\\   alpha:{[}0.001,0.0001,0.00001{]}\end{tabular}} & \multirow{2}{*}{0.876} & \multirow{2}{*}{$\left[ \begin{array}{cc} 328 & 308 \\ 22 & 915 \end{array} \right]$ } & \multirow{2}{*}{79.0\%} & \multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}alpha=0.001, \\ loss=squared\_hinge,   \\ penalty=elasticnet\end{tabular}} & \multirow{2}{*}{0.918} & \multirow{2}{*}{$\left[ \begin{array}{cc} 631 & 5 \\ 393 & 544 \end{array} \right]$} & \multirow{2}{*}{74.7\%} \\
             % &                      &      &       &    &    &    &      &     \\
             随机梯度下降    & \begin{tabular}[c]{@{}l@{}}loss:{[}\textbf{hinge}, log\_loss,   \\ log, modified\_huber, \\ squared\_hinge, perceptron, \\ squared\_error,  huber,\\  epsilon\_insensitive, \\ squared\_epsilon\_insensitive{]},\\    penalty:{[}\textbf{l2},l1,elasticnet{]},\\   alpha:{[}0.001,\textbf{0.0001},0.00001{]}\end{tabular} & 0.876        & $\left[ \begin{array}{cc} 328 & 308 \\ 22 & 915 \end{array} \right]$ & 79.0\%       & \begin{tabular}[c]{@{}l@{}}alpha=0.001, \\ loss=squared\_hinge,   \\ penalty=elasticnet\end{tabular} & 0.918        & $\left[ \begin{array}{cc} 631 & 5 \\ 393 & 544 \end{array} \right]$ & 74.7\%       \\
+            高斯朴素贝叶斯算法   & var\_smoothing:{[}1e-5,1e-7,\textbf{1e-9},1e-11{]}       & 0.838        & $\left[ \begin{array}{cc} 569 & 67 \\ 328 & 609 \end{array} \right]$ & 74.9\%       & var\_smoothing=1e-7,                   & 0.842        & $\left[ \begin{array}{cc} 568 & 68 \\ 328 & 609 \end{array} \right]$ & 74.8\%      \\
             决策树          & \begin{tabular}[c]{@{}l@{}}criterion:{[}\textbf{gini},entropy,log\_loss{]},\\  splitter:{[}\textbf{best},random{]},\\     max\_depth:{[}\textbf{3},4,5{]},\\  max\_features:{[}sqrt,log2,\textbf{None}{]}\end{tabular}       & 0.907        & $\left[ \begin{array}{cc} 584 & 52 \\ 174 & 763 \end{array} \right]$ & 85.6\%       & \begin{tabular}[c]{@{}l@{}}criterion=entropy,\\  max\_depth=5, \\ max\_features=None\end{tabular}                             & 0.949        & $\left[ \begin{array}{cc} 621 & 15 \\ 159 & 778 \end{array} \right]$ & 88.9\%       \\
             K近邻算法           & \begin{tabular}[c]{@{}l@{}}n\_neighbors:{[}3,\textbf{5},7,9{]},\\    weights:{[}\textbf{uniform},distance{]}\end{tabular}     & 0.974        & $\left[ \begin{array}{cc} 594 & 42 \\ 63 & 874 \end{array} \right]$    & 93.3\%       & \begin{tabular}[c]{@{}l@{}}n\_neighbors=9,\\  weights=distance\end{tabular}      & 0.978        & $\left[ \begin{array}{cc} 598 & 38 \\ 67 & 870 \end{array} \right]$ & 93.3\%       \\
-            高斯朴素贝叶斯算法   & var\_smoothing:{[}1e-5,1e-7,\textbf{1e-9},1e-11{]}       & 0.838        & $\left[ \begin{array}{cc} 569 & 67 \\ 328 & 609 \end{array} \right]$ & 74.9\%       & var\_smoothing=1e-7,                   & 0.842        & $\left[ \begin{array}{cc} 568 & 68 \\ 328 & 609 \end{array} \right]$ & 74.8\%      \\
       \end{longtable}
 \end{landscape}
 
-从\autoref{tab:model_screen}可以看到，这9类基本分类算法都能取得较好的分类识别效果，除高斯朴素贝叶斯算法外所有模型在测试集上的AUC数值均在0.850以上，
-而随机梯度算法、决策树算法、K近邻算法、高斯朴素贝叶斯算法及逻辑回归算法也能在测试集上达到87.0\%以上的精确度。而在验证集的泛化能力验证上，决策树算法、K近邻算法、逻辑回归算法能够将其在验证集上的优秀表现加以保持。
-而三种支持向量机模型在验证集上的整体性能表现出现了反常的上升，精确率及准确率均较测试集出现了提升。
-随机梯度算法与多层感知机算法则在训练模型时出现了过拟合现象，在验证集上的性能有所退化。
+从\autoref{tab:model_screen}中结果可以得到以下结论:
 
-整体而言，初筛使用的9中模型性能表现均较好，其中，以决策树算法与K近邻算法最为出色。此外，上述结果也初步说明了本研究提出的脉搏波时域特征集\Rnum{1}在子痫前期的识别问题上具有较强的表征能力。
+\Rnum{1} 在测试集上，除高斯朴素贝叶斯算法外剩余8种模型的AUC数值均在0.850以上，其中，K近邻算法的AUC数值更是高达0.974。
+从各模型在训练集上得到的混淆矩阵来看，K近邻算法与逻辑回归算法在精度-召回率权衡上表现最好，精确率、召回率及F1数值均在90.0\%以上。决策树算法与三种支持向量机算法在精确率与召回率可以达到90.0\%+80.0\%
+（或80.0\%+90.0\%）以上，4种算法模型的F1值也均在86.0\%以上。而剩下的随机梯度算法、高斯朴素贝叶斯算法与多层感知机算法在这些数值上表现较差。
+另外，在各模型的训练时间方面，高斯朴素贝叶斯算法训练所需时间最短，仅需1.22s，而多层感知机、支持向量机模型所需时间较长、逻辑回归算法训练时间最长为203.0s。这些数值也与各算法模型的
+复杂度对应，符合预期。
+
+\Rnum{2} 在验证集上，随机梯度算法与高斯朴素贝叶斯算法的表现最差，出现精确率或召回率数值小于75\%的情况。剩余7种算法均在验证集上有较好的泛化能力，决策树算法、逻辑回归算法、三种支持向量机算法及多层感知机算法性能接近，精确率与召回率可以达到90.0\%+80.0\%
+（或80.0\%+90.0\%），F1值也均在87.0\%以上。而K近邻算法与逻辑回归算法表现最为优秀，精确率、召回率与F1值三者数值更是均在93.0\%以上。
+
+综上，上述结果初步说明了本研究提出的脉搏波时域特征集\Rnum{1}在子痫前期的识别问题上具有较强的表征能力，可以构建出具有较好泛化性能的子痫前期识别分类模型。
+若不考虑模型训练所需时间，K近邻算法与逻辑回归算法的表现最为出色，随机梯度算法与高斯朴素贝叶斯算法表现最差。
 
 
-2. 参数优化
+2. 超参数优化
 
-在综合考虑模型的训练时间及性能表现的情况，本研究从上述9种单一分类中选取了随机梯度下降算法、决策树算法与K近邻算法、高斯朴素贝叶斯算法等四种进行了模型的超参数调优，超参数在优化时评价的标准为训练集上的AUC面积数值。
-\autoref{tab:super_para}则展示了参数优化的结果，其中，表格中超参数值域一栏给出了参数优化的范围，其中的加粗数值为默认超参数数值；最优超参数一栏则是在训练集AUC
-取最大值时取得。可以看到四种模型的在超参数调整前后的AUC数值均有所提高，但只有决策树算法与K近邻算法
-延续了之前的优秀表现，而随机梯度下降算法与高斯朴素贝叶斯算法的识别准确率没有明显的提升。此外，上述结果也进一步体现了脉搏波时域特征集\Rnum{1}的表征能力。
+上小节已经在脉搏波时域特征集\Rnum{1}上初步得到了各机器学习模型的表现。由于上述模型的建立均采用默认超参数，上小节的结论并不完全严谨。
+一般而言，超参数的调整与优化会使模型的性能得到提升。因此，本小节主要对模型超参数的设置进行了研究。
+在综合考虑模型的训练时间及初筛时的性能表现，本研究从上述9种单一分类中选取了随机梯度下降算法、高斯朴素贝叶斯算法、决策树算法与K近邻算法等四种模型进行了超参数调优工作。
+其中，前两类在初筛阶段表现较差的算法主要探索能否通过超参数的调整提升性能，后两种算法的超参数调整则是为了进一步的考察性能。
+各模型超参数的最优数值组合通过网格搜索的方法来进行探索，而优化的评价标准是新生成模型在训练集上的AUC面积数值大小。
+
+\autoref{tab:super_para}展示了超参数优化的过程与结果。其中，表格中超参数值域一栏给出了网格搜索时使用的具体超参数及其值域范围，加粗数值为默认超参数数值；优化前后，模型在训练集上的AUC数值均是在
+进行了5层交叉验证后取得的；最优超参数一栏则是在各模型在训练集AUC取最大值时使用的超参数组合，此时模型在测试集上的混淆矩阵与准确率也在表格中一并给出。
+
+从\autoref{tab:super_para}中的具体数值不难发现，四种模型的在超参数调整前后的AUC数值均有所提高。但只有决策树算法与K近邻算法
+延续了之前的优秀表现，甚至整体性能有微幅上升。但对随机梯度下降算法与高斯朴素贝叶斯算法而言，超参数的调整并没有明显的提升模型性能。
+因此，本小节的实验结果进一步佐证了上小节初筛时得到的各项结论。
 
 
 3. 随机森林算法与特征降维
@@ -174,9 +189,7 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
 这一现象进一步证实了脉搏波时域特征集\Rnum{1}的子痫前期表征能力。
 
 另一方面，本章之前的内容已经阐述过随机森林算法可以用作对原始数据样本各属性的贡献度的衡量，即随机森林算法可以用作特征降维处理。基于脉搏波时域特征集\Rnum{1}完成随机森林的构建之后，可以得到各时域特征对最终模型的重要性，
-结果\autoref{fig:rf_importance_pulse}所示。\autoref{fig:rf_importance_pulse}以随机森林计算得到的最重要特征$CVALF\_9$的重要性为参照，其他特征的相对值。原始数据特征共有238个，\autoref{fig:rf_importance_pulse}仅保留了
-累计贡献度达70\%的74个特征。为进一步考察脉搏波时域特征集\Rnum{1}中特征参数降维的可能性，本研究分别以累计贡献度达全部特征集的70\%的74个特征与50\%的34个特征建立了新的随机森林模型。结果表明，新的随机森林仍然具有非常优秀的性能表现，
-在训练集上有着极高的AUC面积值（0.990以上）、测试集上的准确性达97\%。这也说明了本研究进行的降维处理工作是有效的。
+结果\autoref{fig:rf_importance_pulse}所示。\autoref{fig:rf_importance_pulse}以随机森林计算得到的最重要特征$CVALF\_9$的重要性为参照，其他特征的相对值。
 
 \begin{figure}[htbp]
       \centering
@@ -184,29 +197,49 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
       \caption[各特征对随机森林的相对贡献度]{\label{fig:rf_importance_pulse}各特征对随机森林的相对贡献度}
 \end{figure}
 
+具体特征分析。列举 表格
+
+分析
+
+1 下降支 符合
+
+2 C S 巨多 Ljiaoshao
+
+
+原始数据特征共有238个，\autoref{fig:rf_importance_pulse}仅保留了
+累计贡献度达70\%的74个特征。为进一步考察脉搏波时域特征集\Rnum{1}中特征参数降维的可能性，本研究分别以累计贡献度达全部特征集的70\%的74个特征与50\%的34个特征建立了新的随机森林模型。结果表明，新的随机森林仍然具有非常优秀的性能表现，
+在训练集上有着极高的AUC面积值（0.990以上）、测试集上的准确性达97\%。这也说明了本研究进行的降维处理工作是有效的。
+
+
 \begin{center}
       \zihao{-5}
-      \begin{longtable}{m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{2cm}<{\centering}m{3cm}<{\centering}m{2cm}<{\centering}}
-            \caption{初筛结果}\\
-            \label{tab:model_screen}\\
+      \begin{longtable}{m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{2.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}}
+            \caption{随机森林对脉搏波特征降维效果}\\
+            \label{tab:rf_dr}\\
             \toprule
-            \multicolumn{1}{c}{\multirow{2}{*}{训练所用特征贡献比例}} & \multicolumn{1}{c}{\multirow{2}{*}{训练特征数量}} & \multicolumn{1}{c}{\multirow{2}{*}{训练时间}} & \multicolumn{1}{c}{训练集} & \multicolumn{2}{c}{测试集}                            \\
-      \multicolumn{1}{c}{}                            & \multicolumn{1}{c}{}                        & \multicolumn{1}{c}{}                      & \multicolumn{1}{c}{AUC} & \multicolumn{1}{c}{混淆矩阵} & \multicolumn{1}{c}{准确性} \\ 
+            % \multicolumn{3}{l}{\multirow{2}{*}{随机森林特征输入}} & \multicolumn{2}{l}{\multirow{2}{*}{训练时间}} & \multicolumn{3}{l}{随机森林性能}        \\
+            % \multicolumn{3}{l}{}                          & \multicolumn{2}{l}{}                      & 训练集     & \multicolumn{2}{l}{测试集} \\
+            % 特征贡献度比例         & 特征数量        & 特征数量比例        & 训练时间               & 训练时间比例               & AUC     & 混淆矩阵        & 准确率       \\
+            \multicolumn{3}{c}{随机森林特征输入} & \multicolumn{2}{c}{训练时间} & 训练集 & \multicolumn{2}{c}{测试集} \\
+            特征贡献度比例   & 特征数量   & 特征数量比例  & 训练时间       & 训练时间比例      & AUC & 混淆矩阵        & 准确率       \\
             \midrule
             \endfirsthead
             \caption[]{(续)}\\
             \midrule
-            \multicolumn{1}{c}{\multirow{2}{*}{训练所用特征贡献比例}} & \multicolumn{1}{c}{\multirow{2}{*}{训练特征数量}} & \multicolumn{1}{c}{\multirow{2}{*}{训练时间}} & \multicolumn{1}{c}{训练集} & \multicolumn{2}{c}{测试集}                            \\
-      \multicolumn{1}{c}{}                            & \multicolumn{1}{c}{}                        & \multicolumn{1}{c}{}                      & \multicolumn{1}{c}{AUC} & \multicolumn{1}{c}{混淆矩阵} & \multicolumn{1}{c}{准确性} \\ 
+            % \\multicolumn{3}{l}{\multirow{2}{*}{随机森林特征输入}} & \multicolumn{2}{l}{\multirow{2}{*}{训练时间}} & \multicolumn{3}{l}{随机森林性能}        \\
+            % \multicolumn{3}{l}{}                          & \multicolumn{2}{l}{}                      & 训练集     & \multicolumn{2}{l}{测试集} \\
+            % 特征贡献度比例         & 特征数量        & 特征数量比例        & 训练时间               & 训练时间比例               & AUC     & 混淆矩阵        & 准确率       \\
+            \multicolumn{3}{c}{随机森林特征输入} & \multicolumn{2}{c}{训练时间} & 训练集 & \multicolumn{2}{c}{测试集} \\
+            特征贡献度比例   & 特征数量   & 特征数量比例  & 训练时间       & 训练时间比例      & AUC & 混淆矩阵        & 准确率       \\
             \midrule
             \endhead 
             \midrule
             \endfoot
             \bottomrule
             \endlastfoot
-            100\%        & 238             &    52.06       &         0.990               &       $\left[ \begin{array}{cc} 617 & 19 \\ 28 & 909 \end{array} \right]$                    &         97.0\%                \\
-            70\%         & 74              &    25.06       &         0.993              &     $\left[ \begin{array}{cc} 617 & 19 \\ 26 & 911 \end{array} \right]$        &         97.1\%                \\
-            50\%         & 34             &   16.24          &    0.992                  &    $\left[ \begin{array}{cc} 618 & 18 \\ 29 & 908 \end{array} \right]$    &           97.0\%              \\                  
+            100.0\%        & 238             &    100.0\%   &     52.06       &     100.0\%     &       0.990               &       $\left[ \begin{array}{cc} 617 & 19 \\ 28 & 909 \end{array} \right]$  &         97.0\%                \\
+            70.0\%         & 74              &    31.1\%    &     25.06       &     48.1\%      &    0.993              &     $\left[ \begin{array}{cc} 617 & 19 \\ 26 & 911 \end{array} \right]$        &         97.1\%                \\
+            50.0\%         & 34             &   12.0\%      &     16.24       &    31.2\%       &     0.992                  &    $\left[ \begin{array}{cc} 618 & 18 \\ 29 & 908 \end{array} \right]$    &           97.0\%              \\                  
 \end{longtable}
 \end{center}
 
