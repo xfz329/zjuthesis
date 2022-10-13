@@ -336,7 +336,7 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
             zdq                   & 89                    & 81         & 91.0\%     & 84         & 94.4\%     & 82         & 92.1\%      & 1                                                                      \\
             zl                    & 152                   & 137        & 90.1\%     & 75         & 49.3\%     & 120        & 78.9\%      & 1                                                                      \\
             zyy                   & 89                    & 89         & 100.0\%    & 89         & 100.0\%    & 89         & 100.0\%     & 1                                                                       \\    
-\end{longtable}
+      \end{longtable}
 \end{landscape}
 
 在获取了所有特征对随机森林的贡献度后，此时即可按照贡献度按从高到低的顺序进行特征筛选，新筛选出的特征也被用于建立随机模型用于识别子痫，并用于评价筛选的效果。\autoref{tab:rf_dr_2}展示了这一过程，
@@ -369,11 +369,11 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
 横向对比\autoref{tab:model_screen}、\autoref{tab:rf_dr_2}及\autoref{tab:model_screen2}中结果可以发现，在将原始数据按被试人员分层抽样之后，K近邻、决策树及随机森林等三种算法在训练集与测试集上的均出现了
 较为明显的性能下降，在测试集上性能下降得尤为明显。而单就\autoref{tab:model_screen2}而言，随机森林算法与K近邻算法的性能接近，在测试集上F1值可达到83\%以上，准确率也在78\%以上；决策树算法表现最差F1值仅有76.6\%，准确率也仅有66.3\%。
 但以上数据仍旧是按照波形进行统计，并没有体现出新的分层抽样的结果。在将\autoref{tab:model_screen2}各模型对测试集上的各波形的预测结果按被试进行统计的结果如\autoref{tab:model_detail}所示。
-\autoref{tab:model_detail}给出了测试集上被试人员所对应的脉搏波波形总数与其子痫前期患病状态，对三种算法分别统计了预测为子痫前期阳性的脉搏波波形数目，而预测比例则为模型预测阳性数目与该被人脉搏波波形总数之比。
+\autoref{tab:model_detail}给出了测试集上被试人员所对应的脉搏波波形总数与其子痫前期患病状态，对三种算法分别统计了预测为子痫前期阳性的脉搏波波形数目，而预测比例则为相应模型下预测为阳性的脉搏波数目与该被人脉搏波波形总数之比。
 
 \begin{figure}[htbp]
       \centering
-      \includegraphics[width=.6\linewidth]{results/detail}
+      \includegraphics[width=.55\linewidth]{results/detail}
       \caption[几种机器学习的detail]{\label{fig:model_detail}几种机器学习的detail}
 \end{figure}
 \begin{figure}[htbp]
@@ -382,54 +382,114 @@ $F_1\text{分数}$是召回率与精准率的谐波均值。召回率与精准�
       \caption[几种机器学习ROC曲线]{\label{fig:model_roc}几种机器学习ROC曲线}
 \end{figure}
 
+若将\autoref{tab:model_detail}中三种模型的预测比例作为该模型表征子痫前期患病状态的输出，则可以得到\autoref{fig:model_detail}所示的散点图。此时，对子痫前期的识别分析可以转换为寻找
+能将\autoref{fig:model_detail}进行最佳分割的阈值。遍历各模型的预测比例数值并将该数值作为分割阈值，可以得到在该数值下的混淆矩阵，并进一步得到该数值对应的敏感性与特异性。最终，三种模型的预测比例
+所对应的ROC曲线如\autoref{fig:model_roc}所示。其中，决策树、K近邻及随机森林三种模型对应的AUC数值分别为0.825、0.921及0.952。同时，借助约登指数可以确定三种模型的最佳分割阈值分别为0.969、0.907与0.688，各模型在最佳阈值下的
+混淆矩阵如\autoref{tab:cm_on_best}所示。三种模型的整体识别准确率分别为81.3\%、81.3\%与93.8\%。
 
+\begin{table}[htbp]
+      \zihao{5}
+      \centering
+      \caption{\label{tab:cm_on_best}三种模型在最佳分割阈值下的混淆矩阵}
+      \begin{tabular}{ccc}
+      \toprule
+      \textbf{决策树算法}&\textbf{K近邻算法}&\textbf{随机森林算法}\\
+      \midrule
+      $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$ & $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$ & $\left[ \begin{array}{cc} 9 & 0 \\ 1 & 6 \end{array} \right]$ \\
+      \bottomrule
+      \end{tabular}%
+\end{table}%
 
+在上述三种分类算法中，随机森林模型无疑有着最佳的分类效果。从AUC数值而言，随机森林模型的AUC数值最大。从\autoref{tab:cm_on_best}来看，随机森林算法识别的总体准确率高于决策树与K近邻算法;
+识别为假阴性的数目（0）也少于其他两种模型（3与3）。从最佳分割阈值来看，决策树与K近邻算法的预测比例分割阈值过于接近100\%，有泛化能力不足的潜在风险，而随机森林模型的分割阈值（0.688）则相对适中。
 
-
-4. 分析
-
-按照波形进行群体决策。
-
-
-
+综上，本小节按照被试孕妇进行子痫前期识别模型的研究过程实际上基于子痫前期导致的病生理变化可以通过具体的脉搏波波形上，并可以通过评估该被试全部
+脉搏波波形的形态特征进行群体决策的假设。本小节通过决策树算法、K近邻算法与随机森林算法分别构建了子痫前期的识别模型，并得到了各模型被测试集被试孕妇的预测比例数值。
+借助AUC与ROC分析，可以分别达到81.3\%、81.3\%与93.8\%的整体准确率。
 
 \subsection{基于脉搏波时域特征集\Rnum{2}的结果及分析}
+
+脉搏波时域特征集\Rnum{2}实质上是将脉搏波波形各原始采样值看成是相应的输入特征进行处理。在采样率相同的情况下，脉搏波波形时长的差异会导致波形所对应的“特征”维数的差异。
+参考心电分析中心率图的定义，将同一被试的所有脉搏波波形按起点进行对齐后描述在同一张图里则可以得到该被试的脉率图，如\autoref{fig:no_pe}所示。
+\begin{figure}[htbp]
+      \centering
+      \subfigure[\label{fig:pe_hdy}患有子痫前期的被试hdy的脉率图]{
+      \includegraphics[width=7.5cm]{results/hdy in group PE}
+      }
+      \quad
+      \subfigure[\label{fig:pe_wjh}患有子痫前期的被试wjh的脉率图]{
+      \includegraphics[width=7.5cm]{results/wjh in group PE}
+      }
+      \quad
+      \subfigure[\label{fig:no_cmf}正常被试cmf的脉率图]{
+      \includegraphics[width=7.5cm]{results/cmf in group No}
+      }
+      \quad
+      \subfigure[\label{fig:no_lh}正常被试lh的脉率图]{
+      \includegraphics[width=7.5cm]{results/lh in group No}
+      }
+      \caption{\label{fig:no_pe}被试孕妇的原始脉搏波脉率图对照}
+\end{figure}
+
+从\autoref{fig:no_pe}可以看到，在本研究采集得到的被试数据中，正常组与实验组在脉搏波波形形态及脉搏波整体分布上均有一定的差异。同时，可以看到不同脉搏波波形的时长差异较为明显。因此，本研究采取了两种
+处理策略:一是在原始采样值的尾端进行补零，将所有脉搏波波形的采样点数均调整为120（该值已经可以确保涵盖本次研究采集得到的所有脉搏波波形时长的最大值）;二是
+对原始采样值进行重采样，使采样点数均调整至100（该值可以保证脉搏波波形的描述的分辨率与精度），如\autoref{fig:no_pe2}所示。
+在此基础上，本小节也进行了与上小节类似的研究工作，分别按波形与被试对脉搏波波形进行了处理与建模。
+
+\begin{figure}[htbp]
+      \centering
+      \subfigure[\label{fig:pe_hdy2}患有子痫前期的被试hdy的脉率图]{
+      \includegraphics[width=7.5cm]{results/contrast/hdy in group PE}
+      }
+      \quad
+      \subfigure[\label{fig:pe_wjh2}患有子痫前期的被试wjh的脉率图]{
+      \includegraphics[width=7.5cm]{results/contrast/wjh in group PE}
+      }
+      \quad
+      \subfigure[\label{fig:no_cmf2}正常被试cmf的脉率图]{
+      \includegraphics[width=7.5cm]{results/contrast/cmf in group No}
+      }
+      \quad
+      \subfigure[\label{fig:no_lh2}正常被试lh的脉率图]{
+      \includegraphics[width=7.5cm]{results/contrast/lh in group No}
+      }
+      \caption{\label{fig:no_pe2}重采样后的被试孕妇的脉搏波脉率图对照}
+\end{figure}
 
 一、按照全波波形抽样
 
 \begin{landscape}
       \zihao{-5}
-      \begin{longtable}{m{3cm}<{\centering}m{1.7cm}<{\centering}m{2.3cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{2cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}}
+      \begin{longtable}{m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{2cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{2cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}}
             \caption{初筛结果}\\
             \label{tab:model_screen5}\\
             \toprule
-            &  & \multicolumn{6}{c}{\textbf{训练集}} & \multicolumn{5}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
-            \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}} & \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC} &  \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
+                  & \multicolumn{1}{c}{}   & \multicolumn{1}{c}{}  & \multicolumn{6}{c}{\textbf{训练集（5层交叉验证）}}   & \multicolumn{5}{c}{\textbf{验证集}}     \\
+            \multirow{-2}{*}{\textbf{处理方式}}  & \multicolumn{1}{c}{\multirow{-2}{*}{\textbf{模型类型}}} & \multicolumn{1}{c}{\multirow{-2}{*}{\textbf{训练时间}}} & \textbf{混淆矩阵} & \textbf{精确率} & \textbf{召回率}& \textbf{F1值} & \textbf{准确率}& \textbf{AUC} & \textbf{混淆矩阵}& \textbf{精确率} & \textbf{召回率} & \textbf{F1值}& \textbf{准确率} \\
             \midrule
             \endfirsthead
             \caption[]{(续)}\\
             \midrule
-            &  & \multicolumn{6}{c}{\textbf{训练集}} & \multicolumn{5}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
-            \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}} & \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC} &  \textbf{混淆矩阵} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
+                  & \multicolumn{1}{c}{}   & \multicolumn{1}{c}{}  & \multicolumn{6}{c}{\textbf{训练集（5层交叉验证）}}   & \multicolumn{5}{c}{\textbf{验证集}}                                                                                                                                                                                                    \\
+            \multirow{-2}{*}{\textbf{处理方式}}  & \multicolumn{1}{c}{\multirow{-2}{*}{\textbf{模型类型}}} & \multicolumn{1}{c}{\multirow{-2}{*}{\textbf{训练时间}}} & \textbf{混淆矩阵} & \textbf{精确率} & \textbf{召回率}& \textbf{F1值} & \textbf{准确率}& \textbf{AUC} & \textbf{混淆矩阵}& \textbf{精确率} & \textbf{召回率} & \textbf{F1值}& \textbf{准确率} \\
             \midrule
             \endhead 
             \midrule
             \endfoot
             \bottomrule
             \endlastfoot
-            决策树算法      &   1.31 s  &     $\left[ \begin{array}{cc} 1220 & 1325 \\ 604 & 3142 \end{array} \right]$ & 70.3\% & 83.9\% &76.5\% & 69.3\% & 0.743 &
-            $\left[ \begin{array}{cc} 227 & 409 \\ 78 & 859 \end{array} \right]$ & 67.8\% & 91.7\% & 77.9\% & 69.0\% \\
-            K近邻算法      &   2.93 s  &     $\left[ \begin{array}{cc} 1515 & 1030 \\ 607 & 3139 \end{array} \right]$ & 75.2\% & 83.8\% & 79.3\% & 74.03\% & 0.810 &
-            $\left[ \begin{array}{cc} 381 & 255 \\ 142 & 799 \end{array} \right]$ & 75.7\% & 84.8\% & 80.0\% & 74.8\% \\
-            随机森林算法      &   1.45 s  &     $\left[ \begin{array}{cc} 1220 & 1325 \\ 604 & 3142 \end{array} \right]$ & 70.3\% & 83.9\% & 76.5\% & 69.3\% & 0.743 &
-            $\left[ \begin{array}{cc} 227 & 409 \\ 78 & 859 \end{array} \right]$ & 67.7\% & 91.7\% & 77.9\% & 69.0\% \\
-            
+            & 决策树      & 4.13    & $\left[ \begin{array}{cc} 1906 & 639 \\ 428 & 3318 \end{array} \right]$ & 83.9\%  & 88.6\%  & 86.1\% & 83.0\% & 0.914    & $\left[ \begin{array}{cc} 504 & 132 \\ 85 & 852 \end{array} \right]$ & 86.6\%  & 90.9\%  & 88.7\% & 86.2\% \\
+            & K近邻     & 2.81    & $\left[ \begin{array}{cc} 2309 & 236 \\ 392 & 3354 \end{array} \right]$ & 93.4\%  & 90.0\%  & 91.4\% & 90.0\%   & 0.967  & $\left[ \begin{array}{cc} 587 & 49 \\ 87 & 850 \end{array} \right]$ & 94.5\%   & 90.7\%   & 92.6\% & 91.4\% \\
+            \multirow{-3}{*}{补零} & 随机森林    & 23.23    & $\left[ \begin{array}{cc} 2295 & 250 \\ 271 & 3475 \end{array} \right]$ & 93.3\%  & 92.8\% & 93.0\% & 91.7\%  & 0.977 & $\left[ \begin{array}{cc} 587 & 49 \\ 52 & 885 \end{array} \right]$  & 94.8\% & 94.5\%   & 94.6\% & 93.6\% \\
+            & 决策树      & 6.77    & $\left[ \begin{array}{cc} 2206 & 539 \\ 554 & 3192 \end{array} \right]$ & 85.6\%  & 85.2\%  & 85.4\% & 82.6\% & 0.902    & $\left[ \begin{array}{cc} 532 & 104 \\ 149 & 788 \end{array} \right]$ & 88.3\%  & 84.1\%  & 86.2\% & 83.9\% \\
+            & K近邻     & 3.90    & $\left[ \begin{array}{cc} 2234 & 311 \\ 392 & 3354 \end{array} \right]$ & 91.5\%  & 89.5\%  & 90.5\% & 88.8\%   & 0.957 & $\left[ \begin{array}{cc} 583 & 53 \\ 79 & 858 \end{array} \right]$ & 94.2\%   & 91.2\%   & 92.9\% & 91.6\% \\
+            \multirow{-3}{*}{重采样} & 随机森林    & 51.57    & $\left[ \begin{array}{cc} 2222 & 323 \\ 305 & 3441 \end{array} \right]$ & 91.4\%  & 91.9\% & 91.6\% & 90.0\%  & 0.967 & $\left[ \begin{array}{cc} 574 & 62 \\ 56 & 881 \end{array} \right]$  & 93.4\% & 94.0\%   & 93.7\% & 92.5\% \\
       \end{longtable}
 \end{landscape}
 
 
 
-
+\subsection{基于脉搏波时域特征集\Rnum{3}的结果及分析}
 
 \section{非监督学习算法的具体表现及分析}
 聚类分析是无监督学习的一种，旨在发现数据间是否有潜在的相似性\cite{Liu2018,Li2017}。
