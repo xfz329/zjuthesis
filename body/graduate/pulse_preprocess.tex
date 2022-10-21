@@ -74,6 +74,7 @@ B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和�
 一般而言，参数检验的精确度高于非参数检验，因此在条件允许的情况下，应优先采用参数检验。若由于各种原因导致参数检验的条件不满足，可以应用非参数检验方法对数据进行分析。
 常见的非参数检验方法及其适用情形如\autoref{tab:nonparametric-test}所示。
 \begin{center}
+    \zihao{-4}
       \begin{longtable}{m{1.8cm}<{\centering}m{2.5cm}<{\centering}m{5cm}<{\centering}m{6cm}<{\centering}}
 		\caption{常见的非参数检验方法}\\
 		\label{tab:nonparametric-test}\\
@@ -114,6 +115,7 @@ B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和�
 
 \begin{table}[htbp]
       \centering
+      \zihao{-4}
       \caption{\label{tab:factors_res}被试孕妇风险因子统计结果}
       \begin{tabular}{cccc}
       \toprule
@@ -376,6 +378,7 @@ SCV算法在对PPG波形进行检测时，充分利用“宽进严出”的筛�
 计算结果超过0.5的波形会被判断为干扰。
 \begin{table}[htbp]
     \centering
+    \zihao{-4}
     \caption{\label{tab:voting}经改良的加权投票法}
     \begin{tabularx}{\linewidth}{X<{\centering}X<{\centering}cX<{\centering}}
         \toprule
@@ -572,6 +575,7 @@ UCI-BP数据集由于其出色的易用性而被广泛使用，本研究亦采�
 即此时可以构造处无穷多条通过所有数据点$(x_i,y_i)$的样条曲线。因此，需要添加额外的方程对样条曲线进行约束，一般的约束条件都是对样条左右端点处进行限定 ，常见的附加边界条件如\autoref{tab:splinekind}所示\cite{Timothy2018}。
 \begin{table}[htbp]
     \centering
+    \zihao{-4}
     \caption{\label{tab:splinekind}几种常见的三次样条端点条件}
     \begin{tabularx}{\linewidth}{X<{\centering}X<{\centering}}
         \toprule 
@@ -677,6 +681,7 @@ UCI-BP数据集由于其出色的易用性而被广泛使用，本研究亦采�
 \end{figure}
 \begin{table}[h]
     \centering
+    \zihao{-4}
     \caption{\label{tab:timefeature}常见PPG时间类参数定义}
     \begin{tabularx}{\linewidth}{cX<{\centering}c}
     \toprule
@@ -741,6 +746,7 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 除上述参数外，幅值类特征参数还包括脉搏波波峰幅值、波谷幅值差值、降中峡幅值及外周阻力系数等\cite{cwl,mmt}。这些参数的具体定义参见\autoref{fig:timefeature}及\autoref{tab:heightfeature}所示。
 \begin{table}[htbp]
     \centering
+    \zihao{-4}
     \caption{\label{tab:heightfeature}常见PPG幅值类参数定义}
     \begin{tabularx}{\linewidth}{cX<{\centering}c}
     \toprule
@@ -763,15 +769,9 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 
 常见的面积类特征参数包括上升支面积、下降支面积、
 全周期面积、上升支面积比、下降支面积比、全周期面积比及（下降支）面积差值比（Area Difference Ratio，ADR）\cite{Feng2018}等。
-以上参数的具体定义参见\autoref{fig:areafeature}及\autoref{tab:areafeature}。
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.6\linewidth]{pulse_preprocess/areafeature}
-    \caption{\label{fig:areafeature}PPG面积及斜率类参数示意}
-\end{figure}
-
+以上参数的具体定义参见\autoref{tab:areafeature}及\autoref{fig:areafeature}。
 \begin{center}
-    % \zihao{5}
+    \zihao{-4}
 	\begin{longtable}{m{3.5cm}<{\centering}m{6.5cm}<{\centering}m{4.5cm}<{\centering}}
 		\caption{PPG面积类参数示意}\\
 		\label{tab:areafeature}\\
@@ -797,6 +797,11 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
         下降支面积差值比&  下降支面积和$\triangle OPE$面积之差与$\triangle OPE$面积之比        &    $\Delta R_f=\frac{S_{\triangle OPE}-S_f}{S_{\triangle OPE}}=1-R_f$\\
 	\end{longtable}
 \end{center}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{pulse_preprocess/areafeature}
+    \caption{\label{fig:areafeature}PPG面积及斜率类参数示意}
+\end{figure}
 
 值得一提的是，Feng等人已经将ADR应用于子痫前期的研究中，其研究结果显示患有PE的孕妇与正常孕妇在PPG信号的ADR参数上具有统计意义上的显著差异（0.752 VS 0.723，P<0.01）\cite{Feng2018}。
 
@@ -817,17 +822,17 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 斜率类参数是对PPG波形在一段时间内幅值的上升/下降速率的快慢的量化描述，反应了血液容积在这段时间内的平均流速。
 
 光电容积斜率指数（photoplethysmography slope index，PSI）是斜率类参数中比较有代表性的一种\cite{Chen2019}。其计算的基本思想是将PPG波形分段后再描述各段之间的幅值变化，
-如\autoref{fig:psi}所示。
+如\autoref{fig:psi}所示。值得一提的是，陈婉琳等人的研究发现PSI可以在一定程度上对PE患者进行识别\cite{Chen2019}。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{pulse_preprocess/psi}
     \caption[PSI计算原理示意]{\label{fig:psi}PSI计算原理示意\cite{Chen2019}}
 \end{figure}
-值得一提的是，陈婉琳等人的研究发现PSI可以在一定程度上对PE患者进行识别\cite{Chen2019}。
 
 此外，常见的斜率参数还包括上升支平均斜率、上升支最大斜率、下降支平均斜率、下降支最大斜率等。这些参数的具体定义参见\autoref{fig:areafeature}及\autoref{tab:slopefeature}所示。
 \begin{table}[htbp]
     \centering
+    \zihao{-4}
     \caption{\label{tab:slopefeature}常见PPG斜率类参数定义}
     \begin{tabularx}{\linewidth}{cX<{\centering}c}
     \toprule
@@ -893,7 +898,7 @@ PWV已被证实与动脉扩张性、僵硬度、管壁厚度和血液黏稠度�
     \caption{\label{fig:point}单向路径上点的描述}
 \end{figure}
 \begin{center}
-    \fontsize{10}{4}
+    \zihao{-4}
     % Plan A
     % \setlength\LTleft{0pt}
     % \setlength\LTright{0pt}
