@@ -133,7 +133,7 @@
 
 一、重采样
 
-重采样策略主要通过信号的插值与抽取将所有PPG波形的采样点数调整至相同数值$n_s$。由于采集得到的绝大多数PPG波形采样点数均不足100，本研究最终将$n_s$值确定为100。
+重采样策略主要通过信号的插值与抽取将所有PPG波形的采样点数调整至相同数值$n_s$。由于采集得到的绝大多数PPG波形采样点数均不足80，本研究最终将$n_s$值确定为100。
 该值保证了PPG波形的描述的分辨率与精度，同时可保证只有极少数波形需要进行采样点的压缩。
 将\autoref{fig:no_pe}中的被试数据进行重采样处理，所得的最终结果如\autoref{fig:no_pe2}展示。
 
@@ -218,7 +218,7 @@
         \endlastfoot
           LVLR\_9  &  0.004 &  \cellcolor{cyan}CVLF\_1  & \cellcolor{cyan} \textbf{0.068} &  SVRR\_2  &  0.027 \\
           \cellcolor{cyan}LVLF\_1  &  \cellcolor{cyan}\textbf{0.27}  &  CVLF\_2  &  0.038 &  SVRR\_3  &  0.001 \\
-          LVRR\_6  &  0.002 &  CVRF\_4  & \cellcolor{cyan} \textbf{0.44}  &  SVRR\_4  &  0.001 \\
+          LVRR\_6  &  0.002 &  \cellcolor{cyan}CVRF\_4  & \cellcolor{cyan} \textbf{0.44}  &  SVRR\_4  &  0.001 \\
           \cellcolor{cyan}LVRR\_7  &  \cellcolor{cyan}\textbf{0.387} &  \cellcolor{cyan}CVD\_1   &  \cellcolor{cyan}\textbf{0.159} &  SVD\_2   &  0.009 \\
           LVD\_1   &  0.022 &  CVD\_2   &  0.024 &  \cellcolor{cyan}SVD\_3   & \cellcolor{cyan} \textbf{0.65}  \\
           LVD\_2   &  0.006 &  CVALF\_6 &  0.02  &  \cellcolor{cyan}SVALR\_2 & \cellcolor{cyan} \textbf{0.078} \\
