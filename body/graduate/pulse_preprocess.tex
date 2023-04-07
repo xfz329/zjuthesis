@@ -75,63 +75,44 @@ B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和�
 常见的非参数检验方法及其适用情形如\autoref{tab:nonparametric-test}所示。
 \begin{center}
     \zihao{-4}
-      \begin{longtable}{m{1.8cm}<{\centering}m{2.5cm}<{\centering}m{5cm}<{\centering}m{6cm}<{\centering}}
+    \begin{longtable}{m{1.8cm}<{\centering}m{2.5cm}<{\centering}m{5cm}<{\centering}m{6cm}<{\centering}}
 		\caption{常见的非参数检验方法}\\
 		\label{tab:nonparametric-test}\\
-		\toprule
-            \textbf{样本数目}&\textbf{样本相关性}&\textbf{检验方法}&\textbf{检验方法英文名}\\
-            \midrule
-            \endfirsthead
-            \caption[]{(续)}\\
-            \toprule
-            \textbf{样本数目}&\textbf{样本相关性}&\textbf{检验方法}&\textbf{检验方法英文名}\\
-            \midrule
-            \endhead 
-            \hline
-            \endfoot
-            \bottomrule
-            \endlastfoot
-            单样本   & /     & 卡方检验  & Chi-Squared Test \\
-            单样本   & /     & 二项分布检验 & Binomial Test \\
-            单样本   & /     & K-S检验 & Kolmogorov–Smirnov Test \\
-            单样本   & /     & 符号秩检验 & Wilcoxon Signed-Rank Test \\
-            单样本   & /     & 游程检验  & Wald–Wolfowitz runs Test \\
-            两样本   & 独立    & Wilcxon W等级和检验 & Mann-Whitney U Test \\
-            两样本   & 独立    & 摩西极端反映差异检验 & Moses Extreme Reaction Test \\
-            两样本   & 独立    & K-S检验 & Kolmogorov–Smirnov Test \\
-            两样本   & 独立    & 游程检验  & Wald–Wolfowitz runs Test \\
-            两样本   & 相关    & 符号检验  & Sign Test \\
-            两样本   & 相关    & 符号秩检验 & Wilcoxon Signed-Rank Test \\
-            两样本   & 相关    & 变化显著性检验 & McNemar's Test \\
-            两样本   & 相关    & 边缘一致性检验 & Marginal Homogeneity Test \\
-            多样本   & 独立    & K-W平均秩检验 & Kruskal-Wallis H Test \\
-            多样本   & 独立    & 中位数检验 & Median Test \\
-            多样本   & 独立    & 分组分布检验 & Jonckheere-Terpstra Test \\
-            多样本   & 相关    & 双向等级方差分析 & Friedman Test \\
-            多样本   & 相关    & 肯德尔和谐系数检验 & Kendall's W Test \\
-            多样本   & 相关    & 二分变量检验 & Cochran's Q Test \\
-      \end{longtable}
+		\topline
+        \colorhead\textbf{样本数目}&\textbf{样本相关性}&\textbf{检验方法}&\textbf{检验方法英文名}\\
+        \midline
+        \endfirsthead
+        \caption[]{(续)}\\
+        \topline
+        \colorhead\textbf{样本数目}&\textbf{样本相关性}&\textbf{检验方法}&\textbf{检验方法英文名}\\
+        \midline
+        \endhead 
+        \hline
+        \endfoot
+        \bottomline
+        \endlastfoot
+        \colorrowa 单样本   & /     & 卡方检验  & Chi-Squared Test \\
+        \colorrowc 单样本   & /     & 二项分布检验 & Binomial Test \\
+        \colorrowa 单样本   & /     & K-S检验 & Kolmogorov–Smirnov Test \\
+        \colorrowc 单样本   & /     & 符号秩检验 & Wilcoxon Signed-Rank Test \\
+        \colorrowa 单样本   & /     & 游程检验  & Wald–Wolfowitz runs Test \\
+        \colorrowc 两样本   & 独立    & Wilcxon W等级和检验 & Mann-Whitney U Test \\
+        \colorrowa 两样本   & 独立    & 摩西极端反映差异检验 & Moses Extreme Reaction Test \\
+        \colorrowc 两样本   & 独立    & K-S检验 & Kolmogorov–Smirnov Test \\
+        \colorrowa 两样本   & 独立    & 游程检验  & Wald–Wolfowitz runs Test \\
+        \colorrowc 两样本   & 相关    & 符号检验  & Sign Test \\
+        \colorrowa 两样本   & 相关    & 符号秩检验 & Wilcoxon Signed-Rank Test \\
+        \colorrowc 两样本   & 相关    & 变化显著性检验 & McNemar's Test \\
+        \colorrowa 两样本   & 相关    & 边缘一致性检验 & Marginal Homogeneity Test \\
+        \colorrowc 多样本   & 独立    & K-W平均秩检验 & Kruskal-Wallis H Test \\
+        \colorrowa 多样本   & 独立    & 中位数检验 & Median Test \\
+        \colorrowc 多样本   & 独立    & 分组分布检验 & Jonckheere-Terpstra Test \\
+        \colorrowa 多样本   & 相关    & 双向等级方差分析 & Friedman Test \\
+        \colorrowc 多样本   & 相关    & 肯德尔和谐系数检验 & Kendall's W Test \\
+        \colorrowa 多样本   & 相关    & 二分变量检验 & Cochran's Q Test \\
+    \end{longtable}
 \end{center}
 
-\begin{table}[htbp]
-      \centering
-      \zihao{-4}
-      \caption{\label{tab:factors_res}被试孕妇风险因子统计结果}
-      \begin{tabular}{cccc}
-      \toprule
-      \textbf{检验变量（单位）}      & \textbf{实验组（n=44）} & \textbf{对照组（n=35）} & \textbf{p值} \\
-      \midrule
-      年龄（years） & 32.3±3.6 & 33.8±4.6 & 0.108 \\
-      孕周（weeks） & 32.7±3.8 & 34.3±4.3 & 0.053 \\
-      身高（cm） & 158.1±5.0 & 160.0±3.3 & 0.089 \\
-      体重（kg） & \textbf{75.7±12.9} & \textbf{67.1±8.2} & 0.002* \\
-      BMI（kg/cm） & \textbf{30.2±4.5} & \textbf{26.2±3.3} & <0.001* \\
-      收缩压（mmhg） & \textbf{160.1±19.5} & \textbf{111.2±9.8} & <0.001* \\
-      舒张压（mmhg） & \textbf{96.1±14.5} & \textbf{66.8±10.4} & <0.001* \\
-      心率（bpm） & 87.0±11.9 & 87.5±13.1 & 0.656 \\
-      \bottomrule
-      \end{tabular}%
-\end{table}%
 \subsection{分析结果}
 在此前数据采集阶段得到的关于所有被试的年龄、孕周、身高、体重、BMI指数、血压及心率等风险因子之间的联系关系等不属于本研究内容，故未作任何相关性分析。而
 诸多风险因子等待检参数存在样本量较小、具体分布未知等客观限制因素，故对这些变量的分析均采用了非参数检验中的Wilcxon W等级和检验，亦即Mann-Whitney U检验。
@@ -139,6 +120,34 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
 
 被试孕妇涉及的PE风险因子的经U检验后的统计结果如\autoref{tab:factors_res}所示，所有待分析变量均以平均值±标准差的形式表征。从\autoref{tab:factors_res}不难发现，实验组与对照组的被试孕妇在年龄、孕周、身高、心率等风险因子
 上均无明显统计意义上的差别（p>0.05），但在收缩压与舒张压的数值上有显著差异（p<0.001），这也与被试孕妇的PE患病状态一致，符合预期。
+\begin{center}
+    \zihao{-4}
+    \begin{longtable}{m{4cm}<{\centering}m{4cm}<{\centering}m{4cm}<{\centering}m{2cm}<{\centering}}
+		\caption{被试孕妇风险因子统计结果}\\
+		\label{tab:factors_res}\\
+		\topline
+        \colorhead\textbf{检验变量（单位）}      & \textbf{实验组（n=44）} & \textbf{对照组（n=35）} & \textbf{p值} \\
+        \midline
+        \endfirsthead
+        \caption[]{(续)}\\
+        \topline
+        \colorhead\textbf{检验变量（单位）}      & \textbf{实验组（n=44）} & \textbf{对照组（n=35）} & \textbf{p值} \\
+        \midline
+        \endhead 
+        \hline
+        \endfoot
+        \bottomline
+        \endlastfoot
+        \colorrowa 年龄（years） & 32.3±3.6 & 33.8±4.6 & 0.108 \\
+        \colorrowc 孕周（weeks） & 32.7±3.8 & 34.3±4.3 & 0.053 \\
+        \colorrowa 身高（cm） & 158.1±5.0 & 160.0±3.3 & 0.089 \\
+        \colorrowc 体重（kg） & \textbf{75.7±12.9} & \textbf{67.1±8.2} & 0.002* \\
+        \colorrowa BMI（kg/cm） & \textbf{30.2±4.5} & \textbf{26.2±3.3} & <0.001* \\
+        \colorrowc 收缩压（mmhg） & \textbf{160.1±19.5} & \textbf{111.2±9.8} & <0.001* \\
+        \colorrowa 舒张压（mmhg） & \textbf{96.1±14.5} & \textbf{66.8±10.4} & <0.001* \\
+        \colorrowc 心率（bpm） & 87.0±11.9 & 87.5±13.1 & 0.656 \\
+    \end{longtable}
+\end{center}
 
 \section{脉搏波的预处理}
 本研究采集得到的一段有代表性的数据波形如\autoref{fig:samplesignal}所示。
@@ -381,13 +390,13 @@ SCV算法在对PPG波形进行检测时，充分利用“宽进严出”的筛�
     \zihao{-4}
     \caption{\label{tab:voting}经改良的加权投票法}
     \begin{tabularx}{\linewidth}{X<{\centering}X<{\centering}cX<{\centering}}
-        \toprule
+        \topline
         \textbf{综合标准}&\textbf{计算方式}&\textbf{类概率权重}&\textbf{直接判为异常条件}\\
-        \midrule
+        \midline
         能量类标准&     $ES=P+S$               &0.3& $ES =2$ \\
         时间类标准&     $TS=PP$&0.2&/\\
         基线类标准&     $BS=\delta B+\Delta B+\Delta B'$&0.5& $BS\ge 2$  \\
-        \bottomrule
+        \bottomline
     \end{tabularx}
 \end{table}
 
@@ -573,21 +582,31 @@ UCI-BP数据集由于其出色的易用性而被广泛使用，本研究亦采�
 \end{equation}
 使用微积分的定义,将\autoref{equ:spline}代入\autoref{equ:cubiccha}化简整理后，可以得到包含$3n-5$个独立方程的方程组。另一方面，由于每个局部$S_i$中有三个未知参数，一共有$3n-3$个待解参数，则此时由线性代数相关知识可知，该方程组有无穷多组解。
 即此时可以构造处无穷多条通过所有数据点$(x_i,y_i)$的样条曲线。因此，需要添加额外的方程对样条曲线进行约束，一般的约束条件都是对样条左右端点处进行限定 ，常见的附加边界条件如\autoref{tab:splinekind}所示\cite{Timothy2018}。
-\begin{table}[htbp]
-    \centering
+\begin{center}
     \zihao{-4}
-    \caption{\label{tab:splinekind}几种常见的三次样条端点条件}
-    \begin{tabularx}{\linewidth}{X<{\centering}X<{\centering}}
-        \toprule 
-        \textbf{样条种类}&\textbf{端点条件}\\
-        \midrule 
-        自然三次样条&
+    \begin{longtable}{m{4cm}<{\centering}m{7cm}<{\centering}}
+		\caption{几种常见的三次样条端点条件}\\
+		\label{tab:splinekind}\\
+		\topline
+        \colorhead \textbf{样条种类}&\textbf{端点条件}\\
+        \midline
+        \endfirsthead
+        \caption[]{(续)}\\
+        \topline
+        \colorhead \textbf{样条种类}&\textbf{端点条件}\\
+        \midline
+        \endhead 
+        \hline
+        \endfoot
+        \bottomline
+        \endlastfoot
+        \colorrowa 自然三次样条&
         $
             S_{1}^{''}(x_{1})=0,
             S_{n-1}^{''}(x_{n})=0
         $
         \\
-        曲率调整三次样条&
+        \colorrowc 曲率调整三次样条&
         $\left \{
         \begin{aligned}
             &S_{1}^{''}(x_{1})=v_1,&v_{1}\neq0\\
@@ -596,7 +615,7 @@ UCI-BP数据集由于其出色的易用性而被广泛使用，本研究亦采�
         \right.
         $
         \\
-        钳制三次样条&
+        \colorrowa 钳制三次样条&
         $\left \{
         \begin{aligned}
             &S_{1}^{'}(x_{1})=v_1,&v_{1}\neq0\\
@@ -605,19 +624,18 @@ UCI-BP数据集由于其出色的易用性而被广泛使用，本研究亦采�
         \right.
         $
         \\
-        抛物线端点三次样条&
+        \colorrowc 抛物线端点三次样条&
         $
             d_1=0,d_{n-1}=0
         $
         \\
-        非纽结三次样条&
+        \colorrowa 非纽结三次样条&
         $
             d_1=d_2, d_{n-2}=d_{n-1}
         $
         \\
-        \bottomrule
-    \end{tabularx}
-\end{table}
+    \end{longtable}
+\end{center}
 
 在补充\autoref{tab:splinekind}中的两个端点条件公式后，即可完成上述方程组求解，从而确定唯一的三次样条插值曲线。本研究中三次样条算法基于自然边界条件对PPG信号进行均匀插值\cite{ttk2021}，使信号采样率被提高至2000$Hz$。
 \subsection{数据标准化}
@@ -684,9 +702,9 @@ UCI-BP数据集由于其出色的易用性而被广泛使用，本研究亦采�
     \zihao{-4}
     \caption{\label{tab:timefeature}常见PPG时间类参数定义}
     \begin{tabularx}{\linewidth}{cX<{\centering}c}
-    \toprule
+    \topline
     \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-    \midrule
+    \midline
     脉动周期      &  相邻两个波谷之间的时间间隔         &  $SE$\\
     上升支间期      &  从波形起点（波谷）至主波峰之间的时间间隔         &  $SO$\\
     下降支间期      &  从主波峰至波形终点（波谷）之间的时间间隔        &  $OE$\\
@@ -696,7 +714,7 @@ UCI-BP数据集由于其出色的易用性而被广泛使用，本研究亦采�
     心搏出系数      &   从波峰至降中峡的时间间隔与脉动周期的比值       &   $\frac{OB'}{SE}$\\
     上升支最大斜率间期      &   上升支波谷与上升支斜率最大点之间的时间间隔      &   /    \\
     下降支最大斜率间期      &   下降支斜率最小点与下降支波谷之间的时间间隔      &    /  \\
-    \bottomrule
+    \bottomline
     \end{tabularx}
 \end{table}
 
@@ -749,14 +767,14 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
     \zihao{-4}
     \caption{\label{tab:heightfeature}常见PPG幅值类参数定义}
     \begin{tabularx}{\linewidth}{cX<{\centering}c}
-    \toprule
+    \topline
     \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-    \midrule
+    \midline
     波峰幅值      &  主波峰幅值         &  $OP$\\
     波谷幅值差值      &  相邻波谷之间的幅值之差         &  /\\
     降中峡幅值      &  降中峡至基线幅值         &  $DD'$\\
     外周阻力系数      &  降中峡幅值与主波峰幅值之比         &  $\frac{DD'}{OP}$\\
-    \bottomrule
+    \bottomline
     \end{tabularx}
 \end{table}
 
@@ -775,18 +793,18 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 	\begin{longtable}{m{3.5cm}<{\centering}m{6.5cm}<{\centering}m{4.5cm}<{\centering}}
 		\caption{PPG面积类参数示意}\\
 		\label{tab:areafeature}\\
-        \toprule
+        \topline
         \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-        \midrule
+        \midline
         \endfirsthead
         \caption[]{(续)}\\
-        \toprule
+        \topline
         \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-        \midrule
+        \midline
         \endhead 
-        \midrule
+        \midline
         \endfoot
-        \bottomrule
+        \bottomline
         \endlastfoot
         上升支面积      &  从波形起点至峰值点对波形曲线积分所得面积值         &  $S_r=\int_{T_S}^{T_P}P(t)dt$\\
         下降支面积      &  从波形峰值点至终点对波形曲线积分所得面积值         &  $S_f=\int_{T_P}^{T_E}P(t)dt$\\
@@ -837,14 +855,14 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
     \zihao{-4}
     \caption{\label{tab:slopefeature}常见PPG斜率类参数定义}
     \begin{tabularx}{\linewidth}{cX<{\centering}c}
-    \toprule
+    \topline
     \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-    \midrule
+    \midline
     上升支平均斜率      &  主波峰值与上升支时间之比         &  $\frac{OP}{SO}$\\
     下降支平均斜率      &  主波峰值与下降支时间之比         &  $-\frac{OP}{OE}$\\
     上升支最大斜率      &           &  /\\
     下降支最小斜率      &           &   /    \\
-    \bottomrule
+    \bottomline
     \end{tabularx}
 \end{table}
 
