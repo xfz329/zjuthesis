@@ -697,26 +697,36 @@ UCI-BP数据集由于其出色的易用性而被广泛使用，本研究亦采�
     \includegraphics[width=.6\linewidth]{pulse_preprocess/timefeature}
     \caption[PPG时间及幅值类参数示意]{\label{fig:timefeature}PPG时间及幅值类参数示意。其中，AA'的幅值为主波峰值的2/3，D点为降中峡。}
 \end{figure}
-\begin{table}[h]
-    \centering
-    \zihao{-4}
-    \caption{\label{tab:timefeature}常见PPG时间类参数定义}
-    \begin{tabularx}{\linewidth}{cX<{\centering}c}
-    \topline
-    \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-    \midline
-    脉动周期      &  相邻两个波谷之间的时间间隔         &  $SE$\\
-    上升支间期      &  从波形起点（波谷）至主波峰之间的时间间隔         &  $SO$\\
-    下降支间期      &  从主波峰至波形终点（波谷）之间的时间间隔        &  $OE$\\
-    动脉高压力持续时间    &  主波维持在峰值幅值2/3高度的时间间隔         &    $A'B'$   \\
-    血管硬度指数    &  动脉高压力持续时间与脉动周期的比值         &   $\frac{A'B'}{SE}$    \\
-    心肌收缩系数    &  上升支间期与脉动周期的比值         &  $\frac{SO}{SE}$    \\
-    心搏出系数      &   从波峰至降中峡的时间间隔与脉动周期的比值       &   $\frac{OB'}{SE}$\\
-    上升支最大斜率间期      &   上升支波谷与上升支斜率最大点之间的时间间隔      &   /    \\
-    下降支最大斜率间期      &   下降支斜率最小点与下降支波谷之间的时间间隔      &    /  \\
-    \bottomline
-    \end{tabularx}
-\end{table}
+
+\begin{center}
+    \zihao{5}
+    \begin{longtable}{m{4cm}<{\centering}m{9cm}<{\centering}m{2cm}<{\centering}}
+		\caption{常见PPG时间类参数定义}\\
+		\label{tab:timefeature}\\
+		\topline
+        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \midline
+        \endfirsthead
+        \caption[]{(续)}\\
+        \topline
+        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \midline
+        \endhead 
+        \hline
+        \endfoot
+        \bottomline
+        \endlastfoot
+        \colorrowa 脉动周期      &  相邻两个波谷之间的时间间隔         &  $SE$\\
+        \colorrowc 上升支间期      &  从波形起点（波谷）至主波峰之间的时间间隔         &  $SO$\\
+        \colorrowa 下降支间期      &  从主波峰至波形终点（波谷）之间的时间间隔        &  $OE$\\
+        \colorrowc 动脉高压力持续时间    &  主波维持在峰值幅值2/3高度的时间间隔         &    $A'B'$   \\
+        \colorrowa 血管硬度指数    &  动脉高压力持续时间与脉动周期的比值         &   $\frac{A'B'}{SE}$    \\
+        \colorrowc 心肌收缩系数    &  上升支间期与脉动周期的比值         &  $\frac{SO}{SE}$    \\
+        \colorrowa 心搏出系数      &   从波峰至降中峡的时间间隔与脉动周期的比值       &   $\frac{OB'}{SE}$\\
+        \colorrowc 上升支最大斜率间期      &   上升支波谷与上升支斜率最大点之间的时间间隔      &   /    \\
+        \colorrowa 下降支最大斜率间期      &   下降支斜率最小点与下降支波谷之间的时间间隔      &    /  \\
+    \end{longtable}
+\end{center}
 
 2. 幅值类特征参数
 
@@ -762,21 +772,30 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 \end{figure}
 
 除上述参数外，幅值类特征参数还包括脉搏波波峰幅值、波谷幅值差值、降中峡幅值及外周阻力系数等\cite{cwl,mmt}。这些参数的具体定义参见\autoref{fig:timefeature}及\autoref{tab:heightfeature}所示。
-\begin{table}[htbp]
-    \centering
-    \zihao{-4}
-    \caption{\label{tab:heightfeature}常见PPG幅值类参数定义}
-    \begin{tabularx}{\linewidth}{cX<{\centering}c}
-    \topline
-    \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-    \midline
-    波峰幅值      &  主波峰幅值         &  $OP$\\
-    波谷幅值差值      &  相邻波谷之间的幅值之差         &  /\\
-    降中峡幅值      &  降中峡至基线幅值         &  $DD'$\\
-    外周阻力系数      &  降中峡幅值与主波峰幅值之比         &  $\frac{DD'}{OP}$\\
-    \bottomline
-    \end{tabularx}
-\end{table}
+\begin{center}
+    \zihao{-5}
+    \begin{longtable}{m{4cm}<{\centering}m{9cm}<{\centering}m{2cm}<{\centering}}
+		\caption{常见PPG幅值类参数定义}\\
+		\label{tab:heightfeature}\\
+		\topline
+        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \midline
+        \endfirsthead
+        \caption[]{(续)}\\
+        \topline
+        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \midline
+        \endhead 
+        \hline
+        \endfoot
+        \bottomline
+        \endlastfoot
+        \colorrowa 波峰幅值      &  主波峰幅值         &  $OP$\\
+        \colorrowc 波谷幅值差值      &  相邻波谷之间的幅值之差         &  /\\
+        \colorrowa 降中峡幅值      &  降中峡至基线幅值         &  $DD'$\\
+        \colorrowc 外周阻力系数      &  降中峡幅值与主波峰幅值之比         &  $\frac{DD'}{OP}$\\
+    \end{longtable}
+\end{center}
 
 3. 面积类特征参数
 
@@ -789,34 +808,34 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 全周期面积、上升支面积比、下降支面积比、全周期面积比及（下降支）面积差值比（Area Difference Ratio，ADR）\cite{Feng2018}等。
 以上参数的具体定义参见\autoref{tab:areafeature}及\autoref{fig:areafeature}。
 \begin{center}
-    \zihao{-4}
+    \zihao{-5}
 	\begin{longtable}{m{3.5cm}<{\centering}m{6.5cm}<{\centering}m{4.5cm}<{\centering}}
 		\caption{PPG面积类参数示意}\\
 		\label{tab:areafeature}\\
         \topline
-        \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
         \midline
         \endfirsthead
         \caption[]{(续)}\\
         \topline
-        \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
         \midline
         \endhead 
         \midline
         \endfoot
         \bottomline
         \endlastfoot
-        上升支面积      &  从波形起点至峰值点对波形曲线积分所得面积值         &  $S_r=\int_{T_S}^{T_P}P(t)dt$\\
-        下降支面积      &  从波形峰值点至终点对波形曲线积分所得面积值         &  $S_f=\int_{T_P}^{T_E}P(t)dt$\\
-        全周期面积      &  脉搏波波形在一个完整周期内的积分所得面积值         &  $S_t=\int_{T_S}^{T_E}P(t)dt$\\
-        上升支面积比    &  上升支面积与$\triangle OPS$面积之比         &   $R_r=\frac{S_r}{S_{\triangle OPS}}$    \\
-        下降支面积比    &  下降支面积与$\triangle OPE$面积之比        &   $R_f=\frac{S_f}{S_{\triangle OPE}}$    \\
-        全周期面积比    &  全周期面积与$\triangle SPE$面积之比         &   $R_t=\frac{S_t}{S_{\triangle SPE}}$    \\
-        下降支面积差值比&  下降支面积和$\triangle OPE$面积之差与$\triangle OPE$面积之比        &    $\Delta R_f=\frac{S_{\triangle OPE}-S_f}{S_{\triangle OPE}}=1-R_f$\\
+        \colorrowa 上升支面积      &  从波形起点至峰值点对波形曲线积分所得面积值         &  $S_r=\int_{T_S}^{T_P}P(t)dt$\\
+        \colorrowc 下降支面积      &  从波形峰值点至终点对波形曲线积分所得面积值         &  $S_f=\int_{T_P}^{T_E}P(t)dt$\\
+        \colorrowa 全周期面积      &  脉搏波波形在一个完整周期内的积分所得面积值         &  $S_t=\int_{T_S}^{T_E}P(t)dt$\\
+        \colorrowc 上升支面积比    &  上升支面积与$\triangle OPS$面积之比         &   $R_r=\frac{S_r}{S_{\triangle OPS}}$    \\
+        \colorrowa 下降支面积比    &  下降支面积与$\triangle OPE$面积之比        &   $R_f=\frac{S_f}{S_{\triangle OPE}}$    \\
+        \colorrowc 全周期面积比    &  全周期面积与$\triangle SPE$面积之比         &   $R_t=\frac{S_t}{S_{\triangle SPE}}$    \\
+        \colorrowa 下降支面积差值比&  下降支面积和$\triangle OPE$面积之差与$\triangle OPE$面积之比        &    $\Delta R_f=\frac{S_{\triangle OPE}-S_f}{S_{\triangle OPE}}=1-R_f$\\
 	\end{longtable}
 \end{center}
 
-\clearpage
+% \clearpage
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{pulse_preprocess/areafeature}
@@ -850,21 +869,30 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 \end{figure}
 
 此外，常见的斜率参数还包括上升支平均斜率、上升支最大斜率、下降支平均斜率、下降支最大斜率等。这些参数的具体定义参见\autoref{fig:areafeature}及\autoref{tab:slopefeature}所示。
-\begin{table}[htbp]
-    \centering
-    \zihao{-4}
-    \caption{\label{tab:slopefeature}常见PPG斜率类参数定义}
-    \begin{tabularx}{\linewidth}{cX<{\centering}c}
-    \topline
-    \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-    \midline
-    上升支平均斜率      &  主波峰值与上升支时间之比         &  $\frac{OP}{SO}$\\
-    下降支平均斜率      &  主波峰值与下降支时间之比         &  $-\frac{OP}{OE}$\\
-    上升支最大斜率      &           &  /\\
-    下降支最小斜率      &           &   /    \\
-    \bottomline
-    \end{tabularx}
-\end{table}
+\begin{center}
+    \zihao{-5}
+    \begin{longtable}{m{4cm}<{\centering}m{9cm}<{\centering}m{2cm}<{\centering}}
+		\caption{常见PPG斜率类参数定义}\\
+		\label{tab:slopefeature}\\
+		\topline
+        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \midline
+        \endfirsthead
+        \caption[]{(续)}\\
+        \topline
+        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \midline
+        \endhead 
+        \hline
+        \endfoot
+        \bottomline
+        \endlastfoot
+        \colorrowa 上升支平均斜率      &  主波峰值与上升支时间之比         &  $\frac{OP}{SO}$\\
+        \colorrowc 下降支平均斜率      &  主波峰值与下降支时间之比         &  $-\frac{OP}{OE}$\\
+        \colorrowa 上升支最大斜率      &           &  /\\
+        \colorrowc 下降支最小斜率      &           &   /    \\
+    \end{longtable}
+\end{center}
 
 二、其他特征
 
@@ -918,7 +946,7 @@ PWV已被证实与动脉扩张性、僵硬度、管壁厚度和血液黏稠度�
     \caption{\label{fig:point}单向路径上点的描述}
 \end{figure}
 \begin{center}
-    \zihao{-4}
+    \zihao{-5}
     % Plan A
     % \setlength\LTleft{0pt}
     % \setlength\LTright{0pt}
@@ -927,43 +955,43 @@ PWV已被证实与动脉扩张性、僵硬度、管壁厚度和血液黏稠度�
     % m表示居中，p为置顶，b为置底
     % 列宽总计16cm,各列按需分配长度,p{x-0.43cm}<{\centering}即可
     % \begin{longtable}{p{1.6cm}<{\centering}p{4.1cm}<{\centering}p{2.1cm}<{\centering}p{4.1cm}<{\centering}p{2.1cm}<{\centering}}
-    \begin{longtable}{m{1.57cm}<{\centering}m{4.07cm}<{\centering}m{2.07cm}<{\centering}m{4.07cm}<{\centering}m{2.07cm}<{\centering}}
+    \begin{longtable}{m{1.57cm}<{\centering}m{4.07cm}<{\centering}m{2.07cm}<{\centering}m{4.07cm}<{\centering}m{2.67cm}<{\centering}}
 		\caption{单向路径上任意一点的描述指标一览}\\
 		\label{tab:pointsdesc}\\
-		\hline\hline
-        \multirow{2}[2]{*}{\textbf{参数类型}} & \multicolumn{2}{c}{\textbf{原始数值表达}} & \multicolumn{2}{c}{\textbf{归一化表达}} \\
-            & \multicolumn{1}{c}{物理意义} & \multicolumn{1}{c}{表达式或公式} & \multicolumn{1}{c}{物理意义} & \multicolumn{1}{c}{表达式或公式} \\
-        \hline
+		\topline
+        \colorhead  & \multicolumn{2}{c}{\textbf{原始数值表达}} & \multicolumn{2}{c}{\textbf{归一化表达}} \\
+        \colorhead \multirow{-2}{*}{\textbf{参数类型}}  & 物理意义 & 表达式或公式 & 物理意义 & 表达式或公式 \\
+        \midline
         \endfirsthead
         \caption[]{(续)}\\
-        \hline
-        \multirow{2}[2]{*}{\textbf{参数类型}} & \multicolumn{2}{c}{\textbf{原始数值表达}} & \multicolumn{2}{c}{\textbf{归一化表达}} \\
-            & \multicolumn{1}{c}{物理意义} & \multicolumn{1}{c}{表达式或公式} & \multicolumn{1}{c}{物理意义} & \multicolumn{1}{c}{表达式或公式} \\
-        \hline
+        \topline
+        \colorhead  & \multicolumn{2}{c}{\textbf{原始数值表达}} & \multicolumn{2}{c}{\textbf{归一化表达}} \\
+        \colorhead \multirow{-2}{*}{\textbf{参数类型}}  & 物理意义 & 表达式或公式 & 物理意义 & 表达式或公式 \\
+        \midline
         \endhead 
-        \hline
+        \midline
         \endfoot
-        \hline\hline
+        \bottomline
         \endlastfoot
-                                    & Y轴方向下降高度           &   $SP_y$      &  Y轴方向下降比例     & $\frac{SP_y}{OS}$ \\
-                                    & P点高度                  &   $OP_y$       &    P点高度与波峰比值   & $\frac{OP_y}{OS}$ \\
-                                    & 从S点到P点所用时间        &    $OP_x$   &      起点至P点所用时间与下降支总时长比值 & $\frac{OP_x}{OE}$ \\
-                                    & 从P点到E点所用时间        &    $EP_x$   &      P点至终点E所用时间与下降支总时长比值 & $\frac{EP_x}{OE}$ \\
-                                    & OP两点间几何距离        &    $OP$   &  OP两点距离与SE两点距离之比     & $\frac{OP}{SE}$ \\
-                                    & SP两点间几何距离        &    $SP$   &  SP两点距离与SE两点距离之比     & $\frac{SP}{SE}$ \\
-        \multirow{-7}*{线段}         & PE两点间几何距离        &    $PE$   &  PE两点距离与SE两点距离之比     & $\frac{PE}{SE}$ \\
-                                    &  SP两点间曲线弧长     &  $L_{\overset{\frown}{SP}}$     &     SP两点间曲线弧长与SE两点直线距离之比  & $\frac{L_{\overset{\frown}{SP}}}{SE}$ \\
-        \multirow{-2}*{曲线长度} &  PE两点间曲线弧长   &   $L_{\overset{\frown}{PE}}$    &    PE两点间曲线弧长与SE两点直线距离之比  &  $\frac{L_{\overset{\frown}{PE}}}{SE}$\\
-                                    &  线段SP的斜率     &  $-\frac{SP_y}{PP_y}$     &   /    &  /  \\
-                                    &  线段PE的斜率     &   $-\frac{P_yP_x}{EP_x}$    &    /  &  /   \\
-        \multirow{-3}*{斜率}        &  线段OP的斜率    &    $\frac{PP_y}{PP_x}$   &    /   &  /     \\
-                                    &  $\angle SPP_y$的弧度      & $\arctan(\frac{SP_y}{PP_y})$     &    /  &  /   \\
-                                    &   $\angle POE$的弧度    &  $\arctan(\frac{P_yP_x}{EP_x})$      &    /  &  /   \\
-        \multirow{-3}*{弧度（角度）}&   $\angle PEO$的弧度   &  $\arctan(\frac{PP_y}{PP_x})$         &    /  &  /   \\
-                                    &    坐标轴、曲线与$PP_y$以上围成的面积   &  $\int_{P_y}^{S}{P(t)dy} $     &   前述面积与整体面积之比    & $\frac{\int_{P_y}^{S}{P(t)dy}}{\int_O^E{P(t)dx}}$ \\
-                                    &   坐标轴、曲线与$OP$以左围成的面积   &    $\int_{O}^{P_x}{P(t)dx}-S_{\triangle OPP_x}$   &  前述面积与整体面积之比     & $\frac{\int_{O}^{P_x}{P(t)dx}-S_{\triangle OPP_x}}{\int_O^E{P(t)dx}}$ \\
-                                    &   坐标轴、曲线与$PP_x$以左围成的面积   &   $\int_{O}^{P_x}{P(t)dx}$    &  前述面积与整体面积之比     & $\frac{\int_{O}^{P_x}{P(t)dx}}{\int_O^E{P(t)dx}}$ \\
-        \multirow{-4}*{面积}        &    曲线与$SP$围成的面积   &   $\int_{P_y}^{S}{P(t)dy}-S_{\triangle SPP_y} $    &   /    &  /\\
+        \colorrowa                             & Y轴方向下降高度           &   $SP_y$      &  Y轴方向下降比例     & $\frac{SP_y}{OS}$ \\
+        \colorrowa                             & P点高度                  &   $OP_y$       &    P点高度与波峰比值   & $\frac{OP_y}{OS}$ \\
+        \colorrowa                             & 从S点到P点所用时间        &    $OP_x$   &      起点至P点所用时间与下降支总时长比值 & $\frac{OP_x}{OE}$ \\
+        \colorrowa                             & 从P点到E点所用时间        &    $EP_x$   &      P点至终点E所用时间与下降支总时长比值 & $\frac{EP_x}{OE}$ \\
+        \colorrowa                             & OP两点间几何距离        &    $OP$   &  OP两点距离与SE两点距离之比     & $\frac{OP}{SE}$ \\
+        \colorrowa                             & SP两点间几何距离        &    $SP$   &  SP两点距离与SE两点距离之比     & $\frac{SP}{SE}$ \\
+        \colorrowa \multirow{-7}*{线段}         & PE两点间几何距离        &    $PE$   &  PE两点距离与SE两点距离之比     & $\frac{PE}{SE}$ \\
+        \colorrowc                             &  SP两点间曲线弧长     &  $L_{\overset{\frown}{SP}}$     &     SP两点间曲线弧长与SE两点直线距离之比  & $\frac{L_{\overset{\frown}{SP}}}{SE}$ \\
+        \colorrowa \multirow{-2}*{曲线长度} &  PE两点间曲线弧长   &   $L_{\overset{\frown}{PE}}$    &    PE两点间曲线弧长与SE两点直线距离之比  &  $\frac{L_{\overset{\frown}{PE}}}{SE}$\\
+        \colorrowa                             &  线段SP的斜率     &  $-\frac{SP_y}{PP_y}$     &   /    &  /  \\
+        \colorrowa                             &  线段PE的斜率     &   $-\frac{P_yP_x}{EP_x}$    &    /  &  /   \\
+        \colorrowa \multirow{-3}*{斜率}        &  线段OP的斜率    &    $\frac{PP_y}{PP_x}$   &    /   &  /     \\
+        \colorrowc                             &  $\angle SPP_y$的弧度      & $\arctan(\frac{SP_y}{PP_y})$     &    /  &  /   \\
+        \colorrowc                             &   $\angle POE$的弧度    &  $\arctan(\frac{P_yP_x}{EP_x})$      &    /  &  /   \\
+        \colorrowc \multirow{-3}*{弧度（角度）}&   $\angle PEO$的弧度   &  $\arctan(\frac{PP_y}{PP_x})$         &    /  &  /   \\
+        \colorrowa                             &    坐标轴、曲线与$PP_y$以上围成的面积   &  $\int_{P_y}^{S}{P(t)dy} $     &   前述面积与整体面积之比    & $\frac{\int_{P_y}^{S}{P(t)dy}}{\int_O^E{P(t)dx}}$ \\
+        \colorrowa                             &   坐标轴、曲线与$OP$以左围成的面积   &    $\int_{O}^{P_x}{P(t)dx}-S_{\triangle OPP_x}$   &  前述面积与整体面积之比     & $\frac{\int_{O}^{P_x}{P(t)dx}-S_{\triangle OPP_x}}{\int_O^E{P(t)dx}}$ \\
+        \colorrowa                             &   坐标轴、曲线与$PP_x$以左围成的面积   &   $\int_{O}^{P_x}{P(t)dx}$    &  前述面积与整体面积之比     & $\frac{\int_{O}^{P_x}{P(t)dx}}{\int_O^E{P(t)dx}}$ \\
+        \colorrowa \multirow{-4}*{面积}        &    曲线与$SP$围成的面积   &   $\int_{P_y}^{S}{P(t)dy}-S_{\triangle SPP_y} $    &   /    &  /\\
 	\end{longtable}
 \end{center}
 
