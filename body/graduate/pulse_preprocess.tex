@@ -46,19 +46,19 @@ B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和�
 统计学上引入了相关系数$r$以量化表征变量之间的密切程度。$r$的取值范围为[-1,1],其绝对值大小反映了两变量之间相关性的强弱：当$r$>0时，表明两个变量正相关；反之，则两个变量变化趋势相反，呈负相关。
 
 \begin{figure}[htbp]
-      \centering
-      \includegraphics[width=.6\linewidth]{data_plan/relation}
-      \caption[二元变量之间常见的相关关系]{\label{fig:relation}二元变量之间常见的相关关系\cite{IXL2022}}
+    \centering
+    \includegraphics[width=.6\linewidth]{data_plan/relation}
+    \caption[二元变量之间常见的相关关系]{\label{fig:relation}二元变量之间常见的相关关系\cite{IXL2022}}
 \end{figure}
 
 常用的相关性分析方法有皮尔逊（Pearson）相关性分析法与斯皮尔曼（Spearman）相关性分析法，利用这两种方法计算得到的相关系数也对应被称为皮尔逊相关系数$r_p$与斯皮尔曼相关系数$r_s$:
 \begin{equation}
-      \label{equ:spearman}
-      r_s=1-\frac{6\sum_{i=1}^{n}(x_{i}-y_{i})^2}{n(n^2-1)}
+    \label{equ:spearman}
+    r_s=1-\frac{6\sum_{i=1}^{n}(x_{i}-y_{i})^2}{n(n^2-1)}
 \end{equation}
 \begin{equation}
-      \label{equ:pearson}
-      r_p=\frac{\sum_{i=1}^n{(x_i- \mathop{x} \limits^-)(y_i- \mathop{y} \limits^-)}}{\sqrt{{\sum_{i=1}^n}{{(x_i- \mathop{x} \limits^-)^2\sum_{i=1}^n}{(y_i- \mathop{y} \limits^-)^2}}}}
+    \label{equ:pearson}
+    r_p=\frac{\sum_{i=1}^n{(x_i- \mathop{x} \limits^-)(y_i- \mathop{y} \limits^-)}}{\sqrt{{\sum_{i=1}^n}{{(x_i- \mathop{x} \limits^-)^2\sum_{i=1}^n}{(y_i- \mathop{y} \limits^-)^2}}}}
 \end{equation}
 
 一般认为，斯皮尔曼相关性分析适用于对存在单调性关系的变量进行检测，而皮尔逊相关性分析适用于对正态分布的变量进行检测。

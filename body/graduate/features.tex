@@ -63,7 +63,7 @@ SVS将PPG波峰$P$在水平线$TT'$上的映射点计为$O$，作线段$OP$的�
 \begin{center}
   \zihao{5}
   \begin{longtable}{m{1.5cm}<{\centering}m{3.5cm}<{\centering}m{2cm}<{\centering}m{8cm}<{\centering}}
-    \caption{本研究使用的PPG多维度时域特征指标}\\
+    \caption{由三种策略确定的PPG多维度时域特征集合}\\
     \label{tab:allfeatures}\\
         \topline
         \colorhead \textbf{类别}&\textbf{特征名称}&\textbf{缩写符号}&\textbf{物理意义}\\
@@ -186,7 +186,7 @@ CS则是以采样点数为$m$的PPG波形为基准，对两一个波形在尾端
 二、基于被试的研究
 
 基于被试的研究（subject-based research，SR）将单个被试的所有PPG波形作为一个整体进行分析处理，并进行ML算法模型的研究。此研究方向下，同一被试的PPG波形只会出现在训练集或测试集之中，
-测试集中的数据样本对于训练得到的模型是完全陌生的未见示例，因此更考ML模型的泛化能力。
+测试集中的数据样本对于训练得到的模型是完全陌生的未见示例，因此更考验ML模型的泛化能力。
 
 \subsection{数据集的划分}
 数据集的划分是监督学习在开始模型训练前必不可少的重要步骤，是将原始数据集划分为训练集与测试集的过程。其中，训练集作为训练模型的输入数据，而测试集则是用来评估该模型在未见示例上的泛化能力。
@@ -233,7 +233,7 @@ CS则是以采样点数为$m$的PPG波形为基准，对两一个波形在尾端
         \bottomline
         \endlastfoot
         \colorrowa  PR  & 7864  & 3746 & 2545 & 937 & 636 \\
-        \colorrowa  PR  & 79  & 35 & 28 & 9 & 7 \\           
+        \colorrowc  SR  & 79  & 35 & 28 & 9 & 7 \\           
   \end{longtable}
 \end{center}
 \vspace{-0.8cm} 
@@ -250,7 +250,7 @@ CS则是以采样点数为$m$的PPG波形为基准，对两一个波形在尾端
 
 而标准化的过程可将所有数据的特征属性调整至符合正态分布
 \begin{equation}
-  \label{equ:maxmin}
+  \label{equ:normalization}
   z = \frac{x - \mu}{\epsilon}
 \end{equation}
 其中，$z$为缩放后的数据，$x$需要标准化的数据，$\mu$与$\epsilon$分别对应这批数据的平均值与样本方差。
@@ -260,10 +260,9 @@ CS则是以采样点数为$m$的PPG波形为基准，对两一个波形在尾端
 为加快模型训练速度，一种可行的策略在构建模型时尽可能只使用“与预期结果最相关的”、“最重要的”输入特征，即按照特征的贡献度对
 原始数据集进行降维处理。需要注意的是，数据降维在加速训练的同时，通常也会导致模型性能的下降。因此，一般认为特征降维是机器学习过程中的一个可选项而非必选项。
 
-
 特征降维在训练模型前后均可进行。在训练模型前的特征降维处理
 主要依赖于特征数据属性值的分布特性进行筛选；在模型训练完成后的特征降维主要依赖于特征属性对模型的贡献程度进行筛选。
-本小节在训练机器学习模型前，使用U检验通过评估PPG多维度时域特征集中各特征参数与PE的相关性完成了筛选工作，如\autoref{tab:utest}所示。
+本小节在训练机ML模型前，使用统计分析中的U检验方法，评估了PPGMTFS中各特征参数与PE的相关性，进而完成了特征筛选与降维，如\autoref{tab:utest}所示。
 
 \begin{center}
   \zihao{-5}
@@ -271,12 +270,12 @@ CS则是以采样点数为$m$的PPG波形为基准，对两一个波形在尾端
     \caption{脉搏波时域特征集\Rnum{1}数据特征的U检验结果}\\
     \label{tab:utest}\\
         \topline
-        \colorhead \textbf{特征}&\textbf{p值}&\textbf{特征}&\textbf{p值}&\textbf{特征}&\textbf{p值}\\
+        \colorhead \textbf{特征缩写}&\textbf{p值}&\textbf{特征缩写}&\textbf{p值}&\textbf{特征缩写}&\textbf{p值}\\
         \midline
         \endfirsthead
         \caption[]{(续)}\\
         \midline
-        \colorhead \textbf{特征}&\textbf{p值}&\textbf{特征}&\textbf{p值}&\textbf{特征}&\textbf{p值}\\
+        \colorhead \textbf{特征缩写}&\textbf{p值}&\textbf{特征缩写}&\textbf{p值}&\textbf{特征缩写}&\textbf{p值}\\
         \midline
         \endhead 
         \midline
@@ -293,11 +292,15 @@ CS则是以采样点数为$m$的PPG波形为基准，对两一个波形在尾端
         \colorrowc  LVALR\_5 &  \cellcolor{pink}\textbf{0.063} &           &        &           &               
   \end{longtable}
 \end{center}
+\vspace{-0.8cm} 
 
-\autoref{tab:utest}给出了经U检验得到$p$值$>10^{-4}$的特征参数，$p$值$> 0.05$的特征未参与后续模型的训练过程，这部分特征参数在\autoref{tab:utest}进行了突出显示。
-；在模型训练后的特征筛选处理可参见下一章节相关内容。
+\autoref{tab:utest}列举出了由U检验得到的所有$p$值$>10^{-4}$的特征参数，其中，特征缩写所对应的具体特征与\autoref{tab:allfeatures}保持一致，特征缩写后的数值表示
+该特征在PPGFV中的向量下标，该数值越小表示该特征在对应的PPGFV中越接近PPG波峰。由三种策略确定的PPG多维度时域特征均存在着一定数量的在PE数值上无统计差别的特征（$p$值$> 0.05$），
+这部分\autoref{tab:utest}特征未参与后续模型的训练，\autoref{tab:utest}对其用粉红底色加粗字体进行了突出显示。
 
+在模型训练后的特征筛选处理可参见下一章节相关内容。
 
 \section{小结}
-本小节在已经脉搏波预处理过程的基础上完成了脉搏波时域特征集合的构建，包括基于脉搏波波形特征描述向量、原始采样值及脉搏波波形差异值等三大类。
-此外，本小节也完成了机器学习的数据集划分、特征缩放及特征降维等部分的工作。
+本小节在第三章工作的基础上，完成了PPGMTFS与PPGSTFS等两个数据集的构建工作，对两个特征集的在构建过程中的设计思路与处理细节也进行了详细说明。此外，本章
+明确了利用PPG数据通过ML方法对PE识别这一问题进行研究的具体目标，并按ML模型构建的一般要求，对两个特征集进行了预处理工作。
+此部分的工作内容为下一章节的数据分析工作打下了坚实的基础。
