@@ -49,7 +49,7 @@ D的学习目的就是从训练数据集中集中归纳出一组分类规则，�
 
 2、DT的特征选择
 
-为生成一颗分类能力强的DT，一种可行的策略是只选取对分类效果有提升的特征参与构建。基尼指数（gini index，GI）与信息增益（information gain，IG）是两种最常用的用于筛选最佳特征的指标。
+为生成一颗分类能力强的DT，一种可行的策略是只选取对分类效果有提升的特征参与构建。基尼指数（Gini index，GI）与信息增益（information gain，IG）是两种最常用的用于筛选最佳特征的指标。
 
 GI也称为基尼不纯度，其定义为
 \begin{equation}
@@ -87,7 +87,7 @@ CART算法采用最小GI来选择特征，生成的决策树为二叉树，其�
       \label{alg:cart}
       \begin{algorithmic}[1] %每行显示行号
             \Require 训练数据集$D$。
-            \Ensure CART。
+            \Ensure 分类回归树CART。
             \State 建立一颗空树$CART$，设该树的根结点为$root$。
             \Function{GenerateCart}{$CART,D_c,root$}
                   \State $D_c$为当前结点的训练数据集，计算现有特征对该数据集的GI。对每一个特征$A$，对其可能取的每个值$a$，根据样本点对$A=a$的测试为“是”或“否”将$D_c$分割成$D_l$与$D_r$两部分，使用\autoref{equ:ginia}计算$A=a$时的GI。
@@ -208,22 +208,26 @@ $\lfloor \log_2m + 1 \rfloor$\cite{breiman2001}。
       \label{equ:measures}
       \left \{
       \begin{aligned}
-            Recall      &=\frac{TP}{TP+FN}         \\
-            Precison    &=\frac{TP}{TP+FP}          \\
-            Accuracy    &=\frac{TP+TN}{TP+FP+TN+FN} \\
-            Specificity &=\frac{TN}{TN+FP}       \\
+            \text{Recall}      &=\frac{\text{TP}}{\text{TP+FN}}         \\
+            \text{Precison}    &=\frac{\text{TP}}{\text{TP+FP}}          \\
+            \text{Accuracy}    &=\frac{\text{TP+TN}}{\text{TP+FP+TN+FN}} \\
+            \text{Specificity} &=\frac{\text{TN}}{\text{TN+FP}}       \\
       \end{aligned}
       \right.
 \end{equation}
 
-在\autoref{equ:measures}中，查全率亦称召回率、灵敏性（sensitivity）或真阳性率（true positive rate，TPR），查准率亦称精准率，特异性亦称真阴性率。查全率与查准率是应用的最广泛的两个指标\cite{Zhou2016,Aurélien2018}。
+查全率亦称召回率、灵敏性（sensitivity）或真阳性率（true positive rate，TPR），查准率亦称精准率，特异性亦称真阴性率。查全率与查准率是应用的最广泛的两个指标\cite{Zhou2016,Aurélien2018}。
 而查全率与查准率是对相互矛盾的度量指标，一个指标性能的提高意味着另一个指标性能的下降，这称为精度-召回率权衡。通常只有在简单分类任务中，
 才能同时获得较高的查准率与查全率。
 
 为评估查全率与查准率均不相等的分类器性能，人们进一步定义了$F_1$值
 \begin{equation}
       \label{equ:f1}
-      F_1=\frac{2}{\frac{1}{Precison}+\frac{1}{Recall}}=\frac{2\cdot Precison\cdot Recall}{Precison+Recall}=\frac{TP}{TP+\frac{FN+FP}{2}}
+      \begin{aligned}
+            F_1   &= \frac{2}{\frac{1}{\text{Precison}}+\frac{1}{\text{Recall}}}         \\
+                  &=\frac{2\cdot \text{Precison}\cdot \text{Recall}}{\text{Precison+Recall}}          \\
+                  % &=\frac{TP}{TP+\frac{FN+FP}{2}} \\
+      \end{aligned}
 \end{equation}
 $F_1$值是召回率与精准率的谐波均值，召回率与精准率相近的分类器易获得更高的$F_1$值。
 
@@ -231,54 +235,59 @@ $F_1$值是召回率与精准率的谐波均值，召回率与精准率相近的
 
 二、ROC曲线、AUC与约登指数
 
-受试者工作特征（Receiver Operating Characteristic，ROC）曲线是另一种常用于二分类问题的分析工具。ROC绘制的是真阳性率和假阳性率（false positive rate，FPR）之间的变化关系，其中
+ROC曲线是另一种常用于二分类问题的分析工具。ROC绘制的是真阳性率和假阳性率（false positive rate，FPR）之间的变化关系，其中
 \begin{equation}
       \label{equ:fpr}
-      FPR=\frac{TN}{TN+FP}=1-Specificity
+      \text{FPR}=\frac{\text{TN}}{\text{TN+FP}}=1-\text{Specificity}
 \end{equation}
-因此，ROC曲线也被称为灵敏度与1-特异性曲线。绘制曲线时，以分类器的预测结果对样例进行升序排列，依次将样本作为阳性进行预测，计算对应的TPR与FPR后，可得一坐标点$({FPR}_i,{TPR}_i)$，最后将所有坐标点连线即可，如\autoref{fig:roc}所示。
+因此，ROC曲线也被称为灵敏度与1$-$特异性曲线。绘制曲线时，以分类器的预测结果对样例进行升序排列，依次将样本作为阳性进行预测。计算对应的TPR与FPR后，可得一坐标点$(\text{FPR},\text{TPR})$，最后将所有坐标点连线即可，如\autoref{fig:roc}所示。
 其中，虚线表示纯随机分类器的ROC曲线，理想性能的分类器应无限逼近左上角，即坐标点$(0,1)$。
 \begin{figure}[htbp]
       \centering
       \includegraphics[width=.6\linewidth]{data_plan/roc}
-      \caption[ROC曲线与AUC数值]{\label{fig:roc}ROC曲线与AUC数值。各分类器的AUC具体数值参见图例。}
+      \caption[ROC曲线与AUC关系]{\label{fig:roc}ROC曲线与AUC关系}
 \end{figure}
 
-在衡量多个分类器性能优劣时，常将分类器对应的ROC曲线下面积作为判据，即为AUC（Area Under Curve）。纯随机分类器ROC的AUC数值为0.5，而理想分类器ROC的AUC数值为1，如\autoref{fig:roc}所示。
+在衡量多个分类器性能优劣时，常将分类器对应的ROC曲线下面积AUC作为判据。纯随机分类器ROC曲线对应的AUC数值为0.5，而理想分类器ROC曲线的AUC数值为1，如\autoref{fig:roc}所示。
 
-此外，约登指数（Youden Index）也是用来评价分类器效果的一个指标。若在评估分类器性能时，给予将分类器假阴性和假阳性以相同权重，即可应用约登指数
+此外，约登指数（Youden index，YI）也是用来评价分类器效果的一个指标。若在评估分类器性能时，给予将分类器假阴性和假阳性以相同权重，即可应用约登指数
 \begin{equation}
       \label{equ:yi}
       \begin{aligned}
-            YI&=Sensitivity-(1-Specificity)\\
-            &=Sensitivity+Specificity-1
+            YI&=\text{Sensitivity}-(1-\text{Specificity})\\
+            &=\text{Sensitivity}+\text{Specificity}-1
       \end{aligned}
 \end{equation}
 一般认为，当YI取值最大时，此时对应的分类阈值为最佳阈值\cite{cwl}。
 
 \section{基于PPG多维度时域特征集的机器学习分析}
-本小节基于PPG多维度时域特征集，分别研究了被试单个PPG波形、所有PPG波形与PE之间关系。而这两类研究本质上都是二分类任务。
-\subsection{单个PPG波形与PE之间关系}
-在被试的单个PPG波形具备了能够表征被试PE患病状态的假设前提下，本部分进行了机器学习算法初筛、算法超参数优化及特征降维等研究工作。
+本小节基于第四章提出的PG多维度时域特征集（PPGMTFS），围绕基于PPG波形（PR）与基于被试（SR）等两个研究方向，利用多种ML算法，进行了PE识别分析模型的相关研究。
+\subsection{基于PPG波形的研究}
+PR将单个PPG波形作为分析识别PE的最小分析对象，认为PPG的波形是孕妇PE病发状态的稳定“表达”，单个PPG波形包含了可以识别区分PE的全部信息。
+PR使用了第四章提及的对波形分层抽样的数据作为训练集与测试集。在此基础上，进行了ML算法初筛、算法超参数优化及特征贡献度分析与特征降维等研究工作。
 
 一、算法初筛
 
-在按PPG波形划分数据集的基础上，本研究使用了多种监督学习的算法进行了PE识别模型的前期研究，具体包括随机梯度下降、决策树、K近邻、高斯朴素贝叶斯、逻辑回归、线性支持向量机、核支持向量机、C-支持向量机及多层感知机等九种分类算法。
+本研究使用了九种监督学习的算法进行了PE识别模型的前期研究，具体包括随机梯度下降（stochastic gradient descent，SGD）、决策树（decision tree，DT）、K近邻（K-nearest neighbors，KNN）、
+高斯朴素贝叶斯（Gaussian plain Bayes，GPB）、逻辑回归（logistic regression，LR）、线性支持向量机（linear support vector machines，LSVM）、核支持向量机（kernel support vector machines，KSVM）、
+C-支持向量机（C-support vector machines，CSVM）及多层感知机（multilayer perceptron，MLP）等九种分类算法。
+
 前期研究未对上述算法的超参数进行调整，全部使用默认数值或推荐数值\cite{scikit-learn}。
-通过这些算法训练得到的机器学习模型（以下简称为模型）在训练集与测试集上的结果如\autoref{tab:model_screen}所示，其中训练集的统计结果是经5层交叉验证处理后得到的。
+通过这些算法训练得到的ML模型（以下简称为模型）在训练集与测试集上的结果如\autoref{tab:model_screen}所示，其中训练集的统计结果是经5层交叉验证处理后得到的，而一些需要注意的数据信息也在\autoref{tab:model_screen}
+用粉色底色进行了突出显示。
 \begin{center}
       \zihao{-5}
       \begin{longtable}{m{1.5cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}}
             \caption{初筛结果}\\
             \label{tab:model_screen}\\
             \topline
-            \colorhead &  & \multicolumn{5}{c}{\textbf{训练集（5层交叉验证）}} & \multicolumn{4}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
+            \colorhead &  & \multicolumn{5}{c}{\textbf{训练集}} & \multicolumn{4}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
             \colorhead \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC}  &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
             \midline
             \endfirsthead
             \caption[]{(续)}\\
             \midline
-            \colorhead &  & \multicolumn{5}{c}{\textbf{训练集（5层交叉验证）}} & \multicolumn{4}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
+            \colorhead &  & \multicolumn{5}{c}{\textbf{训练集}} & \multicolumn{4}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
             \colorhead \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC}  &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
             \midline
             \endhead 
@@ -286,44 +295,47 @@ $F_1$值是召回率与精准率的谐波均值，召回率与精准率相近的
             \endfoot
             \bottomline
             \endlastfoot
-            \colorrowa 随机梯度下降      &   6.17 s   & 87.2\% & 68.9\% & 77.0\% & 75.5\% & 0.876 & 74.8\% & 97.7\% & 84.7\% & 79.0\% \\
-            \colorrowc 决策树            &   5.24 s  & 91.1\% & 83.0\% & 86.9\% & 85.1\% & 0.907 & 93.6\% & 81.4\% & 87.1\% & 85.6\% \\
-            \colorrowa K近邻算法      &   3.08 s    & 94.7\% & 93.7\% & 94.2\% & 93.1\% & 0.974  & 95.4\% & 93.3\% & 94.3\% & 93.3\% \\
-            \colorrowc 高斯朴素贝叶斯算法      &   1.22 s  & 87.9\% & 63.9\% & 74.0\% & 73.2\% & 0.838  & 90.1\% & 65.0\% & 75.5\% & 74.9\% \\
-            \colorrowa 逻辑回归算法      &   203.0 s  & 90.2\% & 90.7\% & 90.4\% & 88.6\% & 0.950 & 93.3\% & 93.0\% & 93.1\% & 91.8\% \\
-            \colorrowc 线性支持向量机      &   47.22 s  & 79.7\% & 93.2\% & 86.0\% & 81.9\% & 0.917 & 95.9\% & 81.9\% & 88.3\% & 87.1\% \\
-            \colorrowa 核支持向量机      &   60.28 s  & 82.5\% & 90.3\% & 86.2\% & 82.8\% & 0.916 & 84.9\% & 91.4\% & 88.0\% & 85.2\% \\
-            \colorrowc C-支持向量机      &   42.47 s  & 84.3\% & 90.5\% & 87.3\% & 84.3\% & 0.929 & 87.1\% & 90.8\% & 88.9\% & 86.5\% \\
-            \colorrowa 多层感知机      &   26.8 s  & 83.5\% & 75.8\% & 79.5\% & 76.6\% & 0.905 & 89.3\% & 91.1\% & 90.2\% & 88.2\% \\
+            \colorrowa SGD      &   6.17 s   & 87.2\% & 68.9\% & 77.0\% & 75.5\% & 0.876 & \cellcolor{pink} 74.8\% & 97.7\% & 84.7\% & 79.0\% \\
+            \colorrowc DT       &   5.24 s  & 91.1\% & 83.0\% & 86.9\% & 85.1\% & 0.907 & 93.6\% & 81.4\% & 87.1\% & 85.6\% \\
+            \colorrowa KNN      &   3.08 s    & \cellcolor{pink} 94.7\% & \cellcolor{pink} 93.7\% & \cellcolor{pink} 94.2\% & \cellcolor{pink} 93.1\% & \cellcolor{pink} 0.974  & 95.4\% & 93.3\% & 94.3\% & 93.3\% \\
+            \colorrowc GNB      &   \cellcolor{pink}1.22 s  & 87.9\% & 63.9\% & 74.0\% & 73.2\% & \cellcolor{pink}0.838  & 90.1\% & \cellcolor{pink} 65.0\% & 75.5\% & 74.9\% \\
+            \colorrowa LR       &   \cellcolor{pink}203.0 s  & 90.2\% & 90.7\% & 90.4\% & 88.6\% & 0.950 & 93.3\% & 93.0\% & 93.1\% & 91.8\% \\
+            \colorrowc LSVM     &   47.22 s  & 79.7\% & 93.2\% & 86.0\% & 81.9\% & 0.917 & 95.9\% & 81.9\% & 88.3\% & 87.1\% \\
+            \colorrowa KSVM     &   60.28 s  & 82.5\% & 90.3\% & 86.2\% & 82.8\% & 0.916 & 84.9\% & 91.4\% & 88.0\% & 85.2\% \\
+            \colorrowc CSVM     &   42.47 s  & 84.3\% & 90.5\% & 87.3\% & 84.3\% & 0.929 & 87.1\% & 90.8\% & 88.9\% & 86.5\% \\
+            \colorrowa MLP      &   26.8 s  & 83.5\% & 75.8\% & 79.5\% & 76.6\% & 0.905 & 89.3\% & 91.1\% & 90.2\% & 88.2\% \\
       \end{longtable}
 \end{center}
 
-从\autoref{tab:model_screen}中可以得到以下初步结论:
+从\autoref{tab:model_screen}中的具体数值可以得到以下结论:
 
-1、从模型的训练时间方面来看，高斯朴素贝叶斯算法训练所需时间最短，仅需1.22s，而多层感知机、支持向量机模型所需时间较长、逻辑回归算法训练时间最长为203.0s。这些数值也与各算法的
+1、从模型的训练时间方面来看，GNB算法训练所需时间最短，仅需1.22s，而MLP、LSVM、KSVM与CSVM算法所需时间较长，LR算法训练时间最长为203.0s。这些数值也与各算法的
 复杂度对应，符合预期。
 
-2、从模型在测试集上AUC方面来看，只有经高斯朴素贝叶斯算法得到的模型AUC数值在0.850以下，而由K近邻算法得到的AUC最高可达为0.974。
+2、从模型在测试集上AUC方面来看，只有GNB算法得到的模型AUC数值在0.850以下，而由KNN算法得到的AUC最高可达为0.974。
 
-3、从各模型在训练集上的混淆矩阵来看，由K近邻算法与逻辑回归算法得到的模型在精度-召回率权衡上表现最好，精确率、召回率及F1数值均在90.0\%以上。由决策树算法与三种支持向量机算法得到的模型在精确率与召回率可以达到90.0\%+80.0\%
-（或80.0\%+90.0\%）以上，这些模型的F1值也均在86.0\%以上。而由随机梯度算法、高斯朴素贝叶斯算法与多层感知机算法得到的模型在这些数值上表现较差。
+3、从各模型在训练集上的精度-召回率权衡上来看，由KNN与LR算法得到的模型表现最好，精确率、召回率及F1数值均在90.0\%以上。由DT、LSVM、KSVM与CSVM等算法得到的模型在精确率与召回率可以达到90.0\%+80.0\%
+（或80.0\%+90.0\%）以上，这些模型的F1值也均在86.0\%以上。而由SGD、GNB与MLP算法得到的模型在这些数值上表现较差。
 
-4、从各模型在验证集上的泛化能力来看，由随机梯度算法与高斯朴素贝叶斯算法得到的模型性能最差，出现精确率或召回率数值小于75\%的情况，而由另外七种算法得到的模型泛化能力较强。其中，由决策树算法、逻辑回归算法、三种支持向量机算法及多层感知机算法得到的模型性能接近，精确率与召回率可以达到90.0\%+80.0\%
-（或80.0\%+90.0\%），F1值也均在87.0\%以上。而由K近邻算法与逻辑回归算法得到的模型表现最为优秀，精确率、召回率与F1值三者数值更是均在93.0\%以上。
+4、从各模型在验证集上的泛化能力来看，由SGD与GNB算法得到的模型性能最差，出现精确率或召回率数值小于75\%的情况，而由另外七种算法得到的模型泛化能力较强。其中，由DT、LR、LSVM、KSVM、CSVM与MLP算法得到的模型性能接近，精确率与召回率可以达到90.0\%+80.0\%
+（或80.0\%+90.0\%），F1值也均在87.0\%以上。而由KNN与LR算法得到的模型表现最为优秀，精确率、召回率与F1值三者数值更是均在93.0\%以上。
 
-综上，上述数值结果初步说明了本研究提出的PPG多维度时域特征集包含了一定数量的与PE相关性较强的特征参数，在此基础上可以训练得到有一定泛化能力的识别PE的机器学习模型。
-此外，对初筛阶段探索使用的九种机器学习算法而言，通过K近邻与逻辑回归算法构建的子痫前期识别模型的性能最为出色，而由随机梯度算法与高斯朴素贝叶斯算法得到的模型性能最差。
+5、上述数值结果初步说明了PPGMTDS包含了一定数量的与PE相关性较强的特征参数。
+而对初筛阶段探索使用的九种机器学习算法而言，通过KNN与LR算法构建的PE识别模型的性能最为出色，而由SGD与GNB算法得到的模型性能最差。
 
 二、初筛模型的超参数优化
 
-超参数（Hyperparameter）是指机器学习模型在开始学习过程之前人工设置值的调优参数\cite{scikit-learn,Aurélien2018}，而超参数的调整与优化通常会使模型的性能得到一定的提升。
+超参数（Hyperparameter）是指ML模型在开始学习过程之前人工设置值的调优参数\cite{scikit-learn,Aurélien2018}，而超参数的调整与优化通常会使模型的性能得到一定的提升。
 网格搜索是寻找最优超参数最为常用的策略之一，其基本原理为预先设置好该算法的所有待调超参数的可选值集合，通过排列组合的方式得到该算法的多个实例后，
 使用这些算法实例分别在训练集上训练模型，在测试集上的性能最优的模型使用的超参数组合即为全局最优超参数\cite{Aurélien2018}。
 而判断性能最优可使用多种参数指标，各模型在训练集上的AUC数值是其中最为常见的一种。
 
-由于初筛时\autoref{tab:model_screen}中的数值结果是在各算法使用默认超参数的条件下得到的，因此，本研究也对这些算法的最优超参数进行了研究。
-在综合考虑模型的训练时间及初筛性能表现等因素，本研究选取了初筛阶段有代表性的随机梯度下降、高斯朴素贝叶斯、决策树与K近邻等四种算法进行了超参数优化。
+由于上步模型初筛时，\autoref{tab:model_screen}中的数值结果是在各算法使用默认超参数的条件下得到的，因此，本研究也对这些算法的最优超参数进行了研究。
+在综合考虑模型的训练时间及初筛性能表现等因素，本研究选取了初筛阶段有代表性的SGD、GNB、DT与KNN等四种算法进行了超参数优化。
 其中，由前两类算法训练得到的模型在初筛阶段性能较差，超参数优化是为了探索显著提升其性能的可能；由后两类算法训练得到的模型在初筛阶段表现较好，超参数优化是为了探索其最佳性能。
+
+\autoref{tab:super_para}给出了上述四种算法给出了在进行网格搜索时各超参数的值域组合与最优超参数数值。其中，超参数组合值域一栏加粗显示了各模型的超参数的默认数值，而最优超参数是以各模型在测试集上的AUC取值为衡量标准得到的。
+与此同时，\autoref{fig:contrast_model}也对比展示了在超参数优化前后，各模型在训练集上的AUC数值及在测试集上准确率变化情况，其中，AUC数值是在测试集上进行5层交叉验证后求均值得到的。
 
 \begin{center}
       \zihao{-5}
@@ -342,12 +354,13 @@ $F_1$值是召回率与精准率的谐波均值，召回率与精准率相近的
             \endfoot
             \bottomline
             \endlastfoot
-            \colorrowa 随机梯度下降    & \begin{tabular}[c]{@{}l@{}}loss:{[}\textbf{hinge}, log\_loss,   \\ log, modified\_huber, \\ squared\_hinge, perceptron, \\ squared\_error,  huber,\\  epsilon\_insensitive, \\ squared\_epsilon\_insensitive{]},\\    penalty:{[}\textbf{l2},l1,elasticnet{]},\\   alpha:{[}0.001,\textbf{0.0001},0.00001{]}\end{tabular} &  \begin{tabular}[c]{@{}l@{}}alpha=0.001, \\ loss=squared\_hinge,   \\ penalty=elasticnet\end{tabular}     \\
-            \colorrowc 高斯朴素贝叶斯算法   & var\_smoothing:{[}1e-5,1e-7,\textbf{1e-9},1e-11{]}             & var\_smoothing=1e-7                     \\
-            \colorrowa 决策树          & \begin{tabular}[c]{@{}l@{}}criterion:{[}\textbf{gini},entropy,log\_loss{]},\\  splitter:{[}\textbf{best},random{]},\\     max\_depth:{[}\textbf{3},4,5{]},\\  max\_features:{[}sqrt,log2,\textbf{None}{]}\end{tabular}        & \begin{tabular}[c]{@{}l@{}}criterion=entropy,\\ splitter=random,\\ max\_depth=5, \\ max\_features=None\end{tabular}         \\
-            \colorrowc K近邻算法           & \begin{tabular}[c]{@{}l@{}}n\_neighbors:{[}3,\textbf{5},7,9{]},\\    weights:{[}\textbf{uniform},distance{]}\end{tabular}       & \begin{tabular}[c]{@{}l@{}}n\_neighbors=9,\\  weights=distance\end{tabular}             \\
+            \colorrowa SGD    & \begin{tabular}[c]{@{}l@{}}loss:{[}\textbf{hinge}, log\_loss,   \\ log, modified\_huber, \\ squared\_hinge, perceptron, \\ squared\_error,  huber,\\  epsilon\_insensitive, \\ squared\_epsilon\_insensitive{]},\\    penalty:{[}\textbf{l2},l1,elasticnet{]},\\   alpha:{[}0.001,\textbf{0.0001},0.00001{]}\end{tabular} &  \begin{tabular}[c]{@{}l@{}}alpha=0.001, \\ loss=squared\_hinge,   \\ penalty=elasticnet\end{tabular}     \\
+            \colorrowc GNB   & var\_smoothing:{[}1e-5,1e-7,\textbf{1e-9},1e-11{]}             & var\_smoothing=1e-7                     \\
+            \colorrowa DT          & \begin{tabular}[c]{@{}l@{}}criterion:{[}\textbf{gini},entropy,log\_loss{]},\\  splitter:{[}\textbf{best},random{]},\\     max\_depth:{[}\textbf{3},4,5{]},\\  max\_features:{[}sqrt,log2,\textbf{None}{]}\end{tabular}        & \begin{tabular}[c]{@{}l@{}}criterion=entropy,\\ splitter=random,\\ max\_depth=5, \\ max\_features=None\end{tabular}         \\
+            \colorrowc KNN           & \begin{tabular}[c]{@{}l@{}}n\_neighbors:{[}3,\textbf{5},7,9{]},\\    weights:{[}\textbf{uniform},distance{]}\end{tabular}       & \begin{tabular}[c]{@{}l@{}}n\_neighbors=9,\\  weights=distance\end{tabular}             \\
       \end{longtable}
 \end{center}
+\vspace{-0.8cm}
 
 \begin{figure}[htbp]
       \centering
@@ -361,20 +374,17 @@ $F_1$值是召回率与精准率的谐波均值，召回率与精准率相近的
       \caption{\label{fig:contrast_model}各模型在超参数优化前后的性能对比}
 \end{figure}
 
-\autoref{tab:super_para}给出了上述四种算法给出了在进行网格搜索时各超参数的值域组合与最优超参数数值。其中，超参数组合值域一栏加粗显示了各模型的超参数的默认数值，而最优超参数是以各模型在测试集上的AUC取值为衡量标准得到的。
-与此同时，\autoref{fig:contrast_model}也对比展示了在超参数优化前后，各模型在训练集上的AUC数值与准确率变化情况。这些统计数值也是在测试集上进行5层交叉验证后求均值得到的。
-
-由于测试集上AUC是作为衡量标准使用，在超参数调优后，\autoref{fig:contrast_model}中的四种模型的AUC数值按预期有一定的数值提升。但从测试集上的准确率来看，只有决策树算法与K近邻算法
-延续了上步中较为优秀的性能表现，模型在测试集上的准确率有一定的提升。这也进一步佐证了模型初筛时得到的各项结论。
+从\autoref{fig:contrast_model}展现的数值上看，由于测试集上AUC是作为超参数调优的衡量标准，四种模型的AUC数值按预期有一定的数值提升；但从测试集上的准确率来看，只有DT与KNN算法
+延续了上步中较为优秀的性能表现，经由算法得到的模型在测试集上的准确率有一定的提升。这也进一步佐证了上步模型初筛中得到的各项结论。
 
 三、随机森林算法与特征降维
 
-前文中已经介绍过，集成学习通常会较仅使用单一算法的机器学习具有更好的性能表现。本研究以集成学习的常见的随机森林算法为代表在PPG多维度时域特征集
-上进行了PE识别模型训练。此外，本研究也使用随机森林算法衡量了PPG多维度时域特征集各属性的贡献度，并在此基础上进行了模型训练后的降维处理。
+由于集成学习通常会较仅使用单一算法的机器学习具有更好的性能表现，故在此以集成学习的代表性RF算法也进行了PE识别模型的训练，并在此基础上进行了
+PPGMTFS中各属性的贡献度分析与PPGMTFS的特征降维处理。
 
-本研究利用默认超参数在PPG多维度时域特征集上也训练得到了随机森林模型\cite{scikit-learn}。结果表现，由随机森林算法训练得到的模型在训练集与测试集上均有着优秀的表现，
+直接利用默认超参数即可以训练得到PE识别的RF模型\cite{scikit-learn}。数值结果表现，RF算法训练得到的模型在训练集与测试集上均有着优秀的表现，
 其在训练集上的AUC面积为0.990，在训练集与测试集上的准确率更是分别达到了95.2\%与97.0\%。
-这些数值均高于上步中的任一单算法模型的结果，充分体现了集成学习的优势。
+这些数值均高于上步中的任一单算法模型的结果，体现了集成学习的优势。
 
 \begin{figure}[htbp]
       \centering
@@ -382,11 +392,9 @@ $F_1$值是召回率与精准率的谐波均值，召回率与精准率相近的
       \caption{\label{fig:dt_clf}由随机森林算法构建得到的决策树示意}
 \end{figure}
 
-PPG多维度时域特征集共有286个时域特征，利用随机森林算法构成多棵决策树形成森林之后，可以得到每棵决策树中特征的相对深度，如\autoref{tab:rf_dr_1}所示。
-而进一步计算各特征在森林中的平均深度即可得到各特征对最终PE识别模型的贡献度的数值。
-\autoref{tab:rf_dr_1}列举了对随机森林累计贡献度达51.9\%的前36个特征。其中，基于脉搏波上升支的特征为红色背景填充，基于脉搏波下降支的特征为蓝色背景填充；特征名后的数字下标代表了
-特征所对应的脉搏波位置，越靠近峰值的位置下标值越大。其中，贡献度最高的特征为CVALF\_9，贡献度为4.6\%。
-若以特征CVALF\_9为基准，可以得到所有特征对随机森林模型的相对贡献度如\autoref{fig:rf_importance_pulse}所示。
+利用RF算法构成多棵DT形成森林之后，可以得到每棵DT中使用的特征及其相对深度。\autoref{fig:dt_clf}则给出了此RF中一棵具体的DT，其中每个节点均给出用于判断的关键特征及其数值、
+GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测类别，节点的深浅颜色也代表了实际所属类别的比值大小。
+对统计RF中所有DT的特征及其相对深度进行统计，可得各特征在RF中的平均深度，该值即为各特征对最终PE识别模型的贡献度，其结果如\autoref{tab:rf_dr_1}。
 
 \begin{center}
       \zihao{-5}
@@ -420,9 +428,20 @@ PPG多维度时域特征集共有286个时域特征，利用随机森林算法�
             \cellcolor{cyan}CVALF\_7                         & \cellcolor{cyan}0.7\%                            & \cellcolor{pink}CVAAR\_5                         & \cellcolor{pink}0.7\%                            & \cellcolor{cyan}LVRF\_2                          & \cellcolor{cyan}0.6\%                           
       \end{longtable}
 \end{center}
+\vspace{-0.8cm}
 
-在获取了PPG多维度时域特征集中中所有特征对随机森林的贡献度后，此时即可按照贡献度按从高到低的顺序进行特征筛选。
-本研究按10\%为梯度，完成了从贡献度10\%到90\%的特征筛选过程，基于每个梯度下筛选出的特征子集也使用随机森林算法
+\autoref{tab:rf_dr_1}列举了PPGMTFS的286个时域特征对RF累计贡献度排名靠前的36个特征，这些特征的累计贡献度为51.9\%。其中，基于PPG上升支的特征使用了粉红色背景填充，基于PPG下降支的特征为蓝色背景填充；特征名后的数字下标代表了
+特征所对应的PPG位置，越靠近峰值的位置下标值越小。若以\autoref{tab:rf_dr_1}中的贡献度最大的特征CVALF\_9（4.6\%）为基准，可以得到所有特征对RF模型的相对贡献度如\autoref{fig:rf_importance_pulse}所示所示。
+
+\begin{figure}[htbp]
+      \centering
+      \includegraphics[width=0.6\linewidth]{results/rf_ip_pulse_0.52}
+      \caption[各特征对随机森林的相对贡献度（局部）]{\label{fig:rf_importance_pulse}各特征对随机森林的相对贡献度（局部）}
+\end{figure}
+
+另一方面，在获取各特征对最终PE识别模型的贡献度后，可按照贡献度按从高到低的顺序进行特征筛选。
+本研究按10\%为梯度，完成了从贡献度10\%到90\%的特征筛选过程，基于每个梯度下筛选出的特征子集也使用RF算法
+训练了PE识别模型，该过程中各项具体数值结果如\autoref{tab:rf_dr_2}所示。
 
 \begin{center}
       \zihao{-5}
@@ -438,7 +457,6 @@ PPG多维度时域特征集共有286个时域特征，利用随机森林算法�
             \midline
             \colorhead \multicolumn{3}{c}{\textbf{随机森林特征输入}}              &  &  & \multicolumn{4}{c}{\textbf{测试集}}                                          \\
             \colorhead \textbf{贡献度比例} & \textbf{特征数量} & \textbf{数量比例} & \multirow{-2}{*}{\textbf{训练时间}}  & \multirow{-2}{*}{\textbf{AUC}}   & \textbf{精确率} & \textbf{召回率} & \textbf{F1值} & \textbf{准确率} \\
-            \midline
             \midline
             \endhead 
             \midline
@@ -457,51 +475,29 @@ PPG多维度时域特征集共有286个时域特征，利用随机森林算法�
             \colorrowc 100.0\%        & 286           & 100.0\%       & 41.30    & 0.990      & 98.0\%       & 97.0\%       & 97.5\%       & 97.0\%       \\
       \end{longtable}
 \end{center}
+\vspace{-0.8cm}
 
-\begin{figure}[htbp]
-      \centering
-      \includegraphics[width=0.55\linewidth]{results/rf_ip_pulse_0.52}
-      \caption[各特征对随机森林的相对贡献度（局部）]{\label{fig:rf_importance_pulse}各特征对随机森林的相对贡献度（局部）}
-\end{figure}
+分析上述特征降维处理过程中\autoref{tab:rf_dr_2}、\autoref{tab:rf_dr_2}与\autoref{fig:rf_importance_pulse}，可以得到以下结论:
 
+1、PPGMTFS包含了与PE相关性较强的特征。从数值上来看，特征集的286个特征的平均贡献度为0.34\%，而对由RF算法得到的贡献度最高的单特征CVALF\_9的贡献度为4.6\%，该值为平均值的13.5倍。
+而从\autoref{tab:rf_dr_2}的特征贡献度来看，PPGMTFS的286个特征中与PE相关性较强的特征较少，存在着无PE相关性较低的冗余特征。在保留原始特征集90\%的贡献度的条件下，就可以
+在几乎不损失模型预测能力的条件下排除
+\clearpage
 \noindent
-训练了PE识别模型，这一过程中的具体数值结果如\autoref{tab:rf_dr_2}所示。
+约43.4\%的无关特征。
 
-从上述特征降维处理过程中可以得到以下结论:
+2、从\autoref{tab:rf_dr_1}中特征种类来看，与PPG下降支相关的特征要远多于PPG上升支的特征，这可能与PPG下降支是血液回流过程的反应、下降支包含了更多的血液循环中细节信息的事实有关。同时，\autoref{tab:rf_dr_1}中
+贡献度较高的特征主要集中在前端（1-3）与尾端（8-10），这说明PPG下降支的前端与尾端可能包含了更多与PE相关的生理学信息。而从这些特征计算过程中对应的基准点确定策略来看，
+左视类指标相较中视类指标与分层类指标也更少，这说明了较另外两种策略而言，左视类指标对下降支的表征效果最差。
 
-1、本研究提出的PPG多维度时域特征集中包含了与PE相关性较强的特征。从数值上来看，特征集的286个特征的平均贡献度为0.34\%，而对由随机森林算法得到的贡献度最高的单特征CVALF\_9的贡献度为4.6\%，该值为平均值的13.5倍。
-而从\autoref{tab:rf_dr_2}的特征贡献度来看，PPG多维度时域特征集中的286个特征中与PE相关性较强的特征较少，存在着无PE相关性较低的冗余特征。在保留原始特征集90\%的贡献度的条件下，就可以
-在几乎不损失模型预测能力的条件下排除约43.4\%的无关特征。
+3、从\autoref{tab:rf_dr_2}的特征降维过程来看，随着特征数量的减少，RF模型的训练速度大大加快，新生成的RF模型在训练集与测试集上均出现了性能小幅提高再下降的整体趋势，
+模型最佳性能出现在贡献度60\%-70\%之间。这说明筛选刚开始进行时排除了无关冗余特征，从而使模型性能得到了提升；而随着筛选的进行，对模型生成贡献度较大的特征数量的也在减少，并使最后模型的性能降低。
 
-2、从\autoref{tab:rf_dr_1}中特征种类来看，与下降支相关的特征要远多于上升支的特征。这也与PPG下降支是血液回流过程的反应、下降支包含了更多的血液循环中细节信息的事实相符合。同时，\autoref{tab:rf_dr_1}中
-贡献度较高的特征主要集中在前端（1-3）与尾端（8-10）。这说明PPG下降支的前端与尾端可能包含了更多与PE相关的生理学信息。而从这些特征计算过程中使用的基准点确定策略来看，
-左视类指标相较中视类指标与分层类指标也更少。这说明了较另外两种策略而言，左视类指标对下降支的表征效果最差。
+\subsection{基于被试的研究}
+SR基于孕妇的一段时间内采集得到的所有 PPG 波形包含了可以识别区分PE的全部信息这一猜想，将单个被试的所有PPG波形作为一个整体进行分析处理。
+SR使用了第四章提及的对被试分层抽样的数据作为训练集与测试集，在此基础上，使用了前文研究中综合性能较好的KNN、DT与RF等三种算法进行PE识别模型的训练。
 
-3、从\autoref{tab:rf_dr_2}的特征降维过程来看，随着特征数量的减少，随机森林模型的训练速度大大加快，但随着特征数量的减少，新生成的随机森林模型在训练集与测试集上均出现了性能小幅提高再下降的整体趋势，
-模型最佳性能出现在贡献度60\%-70\%之间。这说明筛选刚开始进行时排除了大量无关特征，从而使模型性能得到了提升；而随着筛选的进行，对模型生成有贡献度的特征数量的也在减少，导致随机森林的性能降低。
-
-\subsection{所有PPG波形与PE之间关系}
-
-本文第四章已经阐述过，研究所有PPG波形与PE之间关系并在此基础上得到的识别PE的机器学习模型具有更强泛化的能力及更广泛的适用性。
-本研究将63名被试孕妇的全部PPG波形被划分为训练集，余下16名被试的全部波形被划分为测试集。
-在此基础上，使用了在研究单个PPG波形与PE之间关系时综合性能较好的K近邻、决策树及随机森林等三种算法进行PE识别模型的训练。
-\autoref{tab:model_screen2}给出了由这三种算法训练得到的模型的具体表现，其中，训练集上的AUC数值也是在测试集上进行5层交叉验证后求均值得到的。
-
-横向对比\autoref{tab:model_screen}、\autoref{tab:rf_dr_2}及\autoref{tab:model_screen2}中结果可以发现，在研究被试所有PPG波形与PE之间关系时，K近邻、决策树及随机森林等三种算法在训练集与测试集上的均出现了
-较为明显的性能下降，在测试集上性能下降得尤为明显。这一现象可能与测试集中的被试的任何PPG波形从未在训练集中出现有关。从\autoref{tab:model_screen2}可以发现，由随机森林算法与K近邻算法训练所得的模型的性能接近，在测试集上F1值可达到83\%以上，准确率也在78\%以上；而决策树算法生成的模型性能最差，其F1值与准确率分别仅为76.6\%与66.3\%。
-
-注意到\autoref{tab:model_screen2}中测试集的混淆矩阵仍是按照单个PPG波形统计的，并不能完全反应被试所有PPG波形与PE之间关系。
-将\autoref{tab:model_screen2}测试集中反应单个PPG波形的识别结果的混淆矩阵按其与测试集16名被试的隶属关系重新统计可得到\autoref{tab:model_detail}。
-\autoref{tab:model_detail}统计了每名被试所对应的PPG波形总数与使用由三种算法得到的PE识别模型判断为PE的PPG波形数目，而预测比例一栏为这两个PPG波形数目的比值。
-另外，每名被试所对应的真实PE状态也在\autoref{tab:model_detail}进行了标记。
-
-
-若将\autoref{tab:model_detail}中经由各模型对应的预测比例作为判断识别PE的依据，则对PE的识别分析可以转换为寻找
-能将这些预测比例进行分割的最佳阈值。\autoref{fig:model_detail}展示了测试集每名被试的预测比例所对应的散点图。
-对特定的模型而言，依次将该模型下所有的预测比例数值作为分割阈值，可以得到在该数值下对PE识别的混淆矩阵，同时得到该值对应的敏感性与特异性。借助与每个预测比例数值对应的敏感性与特异性最终，最终可得到经由三种算法得到的预测比例
-ROC曲线如\autoref{fig:model_roc}所示。其中，决策树、K近邻及随机森林三种算法对应的AUC数值分别为0.825、0.921及0.952。借助约登指数可以确定三种模
-型的最佳分割阈值分别为0.969、0.907与0.688，各模型在最佳阈值下的准确率分别为81.3\%、81.3\%与93.8\%，其
-具体混淆矩阵如\autoref{tab:cm_on_best}所示。
+\autoref{tab:model_screen2}给出了KNN、DT与RF等三种算法训练得到的模型的具体表现，其中，训练集上的AUC数值是在进行5层交叉验证后得到的。
 
 \begin{center}
       \zihao{-5}
@@ -528,6 +524,16 @@ ROC曲线如\autoref{fig:model_roc}所示。其中，决策树、K近邻及随�
             \colorrowa 随机森林算法      &   50.03 s  & 90.6\% & 80.6\% & 85.3\% & 83.8\% & 0.929 & 79.5\% & 90.9\% & 84.8\% & 79.1\% \\
       \end{longtable}
 \end{center}
+\vspace{-0.8cm}
+
+从\autoref{tab:model_screen2}可以发现，由RF与KNN算法训练所得的模型的性能接近，在测试集上F1值可达到83\%以上，准确率也在78\%以上；而DT算法生成的模型性能最差，其F1值与准确率分别仅为76.6\%与66.3\%。
+将\autoref{tab:model_screen2}的数值结果与此前的\autoref{tab:model_screen}及\autoref{tab:rf_dr_2}中结果对比可得，相较PR的方式，在SR方式下，KNN、DT与RF等三种算法在训练集与测试集上均出现了
+较为明显的性能下降，在测试集上性能下降得尤为明显。这一现象可能与测试集中的被试的任何PPG波形从未在训练集中出现有关。
+
+注意到\autoref{tab:model_screen2}中评价模型的性能的各指标仍是按照单个PPG波形统计的，并不能完全反应SR方式下被试PPG波形与PE之间关系。
+在\autoref{tab:model_screen2}测试集中，将反应单个PPG波形的识别结果重新按被试统计可得到\autoref{tab:model_detail}。
+\autoref{tab:model_detail}额外统计了每名被试所对应的PPG波形总数与由预测模型识别判断为PE的PPG波形数目，预测比例一栏为这两个数值之比，
+而每名被试所对应的真实PE状态也在\autoref{tab:model_detail}进行了标记。
 
 \begin{center}
       \zihao{-5}
@@ -567,7 +573,11 @@ ROC曲线如\autoref{fig:model_roc}所示。其中，决策树、K近邻及随�
             \colorrowc zyy       & 1           & 89                    & 89         & 100.0\%    & 89         & 100.0\%    & 89         & 100.0\%                                                                            \\    
       \end{longtable}
 \end{center}
+\vspace{-0.8cm}
 
+若将\autoref{tab:model_detail}中经由各模型对应的预测比例作为判断识别PE的依据，则对PE的识别分析可以转换为寻找
+能将这些预测比例进行分割的最佳阈值。\autoref{fig:model_detail}展示了测试集每名被试的预测比例所对应的散点图，并进一步可到与经由每种算法得到的预测比例在PE识别问题上的ROC曲线，如\autoref{fig:model_roc}所示。
+此过程中涉及的各算法最佳阈值及最佳阈值下的CM、准确率与AUC数值结果如如\autoref{tab:cm_on_best}所示。
 \begin{figure}[htbp]
       \centering
       \includegraphics[width=.55\linewidth]{results/detail}
@@ -579,48 +589,48 @@ ROC曲线如\autoref{fig:model_roc}所示。其中，决策树、K近邻及随�
       \includegraphics[width=.55\linewidth]{results/roc}
       \caption[由子痫前期预测比例得到的ROC曲线]{\label{fig:model_roc}由子痫前期预测比例得到的ROC曲线}
 \end{figure}
+\vspace{-1cm}
 
 \begin{center}
-      \begin{longtable}{m{4cm}<{\centering}m{4cm}<{\centering}m{4cm}<{\centering}}
+      \zihao{-5}
+      % \setlength{\belowcaptionskip}{-0.5cm} 
+      \begin{longtable}{m{2.8cm}<{\centering}m{2cm}<{\centering}m{1.5cm}<{\centering}m{1.8cm}<{\centering}m{1.8cm}<{\centering}}
             \caption{三种模型在最佳分割阈值下的混淆矩阵}\\
             \label{tab:cm_on_best}\\
             \topline
-            \textbf{决策树算法}&\textbf{K近邻算法}&\textbf{随机森林算法}\\
+            \colorhead \textbf{机器学习算法}&\textbf{最佳阈值}&\textbf{混淆矩阵}&\textbf{准确率}&\textbf{AUC}\\
             \midline
             \endfirsthead
             \caption[]{(续)}\\ 
+            \topline
+            \colorhead \textbf{机器学习算法}&\textbf{最佳阈值}&\textbf{混淆矩阵}&\textbf{准确率}&\textbf{AUC}\\
             \midline
-            \textbf{决策树算法}&\textbf{K近邻算法}&\textbf{随机森林算法}\\
             \endhead 
             \midline
             \endfoot
             \bottomline
             \endlastfoot
-            $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$ & $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$ & $\left[ \begin{array}{cc} 9 & 0 \\ 1 & 6 \end{array} \right]$ \\
+            \colorrowa DT       & 0.969    &     $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$  & 81.3\% & 0.825  \\
+            \colorrowc KNN       & 0.907     &     $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$  & 81.3\% & 0.921 \\
+            \colorrowa RF     & 0.688    &     $\left[ \begin{array}{cc} 9 & 0 \\ 1 & 6 \end{array} \right]$  & 93.8\% & 0.952  \\
       \end{longtable}
 \end{center}
+\vspace{-1.4cm}
 
-
-从上述研究结果中可以发现，在研究每名所有PPG波形与PE之间关系时，借助由具体算法得到的PE识别模型将判断为PE的PPG波形数目与同一被试的PPG波形总数的比例数值，可以较好的识别PE。通过AUC与ROC分析，三种算法中随机森林算法有着最佳的分类效果，其AUC数值最大（0.952）、识别准确率最高
-（93.8\%），另外随机森林算法识别为假阴性的数目（0）也少于其他两种模型（均为3）。而从最佳分割阈值来看，决策树与K近邻算法的预测比例分割阈值（0.969与0.907）过于接近100\%，有泛化能力不足的潜在风险，而随机森林模型的分割阈值（0.688）则相对适中。
+从上述研究结果中可以发现，在SR方式下，借助由ML算法得到的预测比例数值可以较好的识别PE。通过AUC与ROC分析，在三种构建模型的算法中，RF算法有着最佳的分类效果，其AUC数值最大（0.952）、识别准确率最高
+（93.8\%），RF算法识别为假阴性的数目（0）也少于其他两种模型（均为3）。而从最佳分割阈值来看，DT与KNN算法的预测比例分割阈值（0.969与0.907）过于接近100\%，有泛化能力不足的潜在风险，而RF模型的分割阈值（0.688）则相对适中。
 
 \section{基于PPG采样值时域特征集的机器学习分析}
-本小节基于PPG采样值时域特征集，也分别研究了被试单个PPG波形、所有PPG波形与PE之间关系。
+本小节基于第四章提出的PPG采样值时域特征集（PPGSTFS），围绕基于PPG波形（PR）与基于被试（SR）等两个研究方向，利用多种ML算法，进行了PE识别分析模型的相关研究。
+注意到PPGSTFS中可能需要对PPG波形进行对齐处理，本小节按第四章中介绍过重采样策略（RS）与补齐策略（CS）分别进行了处理。
 
-\subsection{单个PPG波形与PE之间关系}
-与上部分类似，本部分也进行了机器学习算法初筛与调优及特征贡献度分析等研究工作。
+\subsection{基于PPG波形的研究}
+PR将单个PPG波形作为分析识别PE的最小分析对象，认为PPG的波形是孕妇PE病发状态的稳定“表达”，单个PPG波形包含了可以识别区分PE的全部信息。
+PR使用了第四章提及的对波形分层抽样的数据作为训练集与测试集。在此基础上，进行了ML算法初筛、算法超参数优化及特征贡献度分析等研究工作。
 
 一、模型初筛与调优
 
-在上小节研究内容的基础上，本部分对初筛阶段使用的机器学习算法数量进行了缩减，只选用此前综合性能较好的决策树、K近邻及随机森林等三种算法。
-在将采样值时域特征集按PPG波形划分数据集的基础上，这三种算法在的综合表现如\autoref{tab:model_screen3}所示。
-其中，由决策树与K近邻算法训练得到的模型的统计数据是在全局最优超参数的条件下得到的，而各模型训练集的统计结果是经5层交叉验证处理后得到的。另外，\autoref{tab:model_screen3}中处理方式
-一栏对应着第四章中介绍过的解决PPG波形时长差异的两种处理策略，即重采样策略与短端补齐策略（下同）。
-
-从\autoref{tab:model_screen3}中可以得到以下结论：
-
-1、从模型的训练时间方面来看，使用K近邻算法构建模型的速度最快，而使用随机森林算法速度最慢。这一结果也与各算法的时间复杂度一致。
-
+模型初筛选用此前综合性能较好的DT、KNN及RF等三种算法，这三种算法在全局最优超参数下的综合表现如\autoref{tab:model_screen3}所示，其中各模型训练集的统计结果是经5层交叉验证处理后得到的。
 \begin{center}
       \zihao{-5}
       \begin{longtable}{m{1.2cm}<{\centering}m{1.2cm}<{\centering}m{1.2cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}}
@@ -641,31 +651,36 @@ ROC曲线如\autoref{fig:model_roc}所示。其中，决策树、K近邻及随�
             \endfoot
             \bottomline
             \endlastfoot
-            \colorrowa & 决策树      & 4.13    & 83.9\%  & 88.6\%  & 86.1\% & 83.0\% & 0.914   & 86.6\%  & 90.9\%  & 88.7\% & 86.2\% \\
-            \colorrowa & K近邻     & 2.81     & 93.4\%  & 90.0\%  & 91.4\% & 90.0\%   & 0.967  & 94.5\%   & 90.7\%   & 92.6\% & 91.4\% \\
-            \colorrowa \multirow{-3}{*}{补零} & 随机森林    & 23.23   & 93.3\%  & 92.8\% & 93.0\% & 91.7\%  & 0.977 & 94.8\% & 94.5\%   & 94.6\% & 93.6\% \\
-            \colorrowc & 决策树      & 6.77   & 85.6\%  & 85.2\%  & 85.4\% & 82.6\% & 0.902    & 88.3\%  & 84.1\%  & 86.2\% & 83.9\% \\
-            \colorrowc & K近邻     & 3.90    & 91.5\%  & 89.5\%  & 90.5\% & 88.8\%   & 0.957  & 94.2\%   & 91.2\%   & 92.9\% & 91.6\% \\
-            \colorrowc \multirow{-3}{*}{重采样} & 随机森林    & 51.57    & 91.4\%  & 91.9\% & 91.6\% & 90.0\%  & 0.967  & 93.4\% & 94.0\%   & 93.7\% & 92.5\% \\
+            \colorrowa CS & DT      & 4.13    & 83.9\%  & 88.6\%  & 86.1\% & 83.0\% & 0.914   & 86.6\%  & 90.9\%  & 88.7\% & 86.2\% \\
+            \colorrowc CS & KNN     & 2.81     & 93.4\%  & 90.0\%  & 91.4\% & 90.0\%   & 0.967  & 94.5\%   & 90.7\%   & 92.6\% & 91.4\% \\
+            \colorrowa CS & RF    & 23.23   & 93.3\%  & 92.8\% & 93.0\% & 91.7\%  & 0.977 & 94.8\% & 94.5\%   & 94.6\% & 93.6\% \\
+            \colorrowc RS & DT     & 6.77   & 85.6\%  & 85.2\%  & 85.4\% & 82.6\% & 0.902    & 88.3\%  & 84.1\%  & 86.2\% & 83.9\% \\
+            \colorrowa RS & KNN     & 3.90    & 91.5\%  & 89.5\%  & 90.5\% & 88.8\%   & 0.957  & 94.2\%   & 91.2\%   & 92.9\% & 91.6\% \\
+            \colorrowc RS & RF    & 51.57    & 91.4\%  & 91.9\% & 91.6\% & 90.0\%  & 0.967  & 93.4\% & 94.0\%   & 93.7\% & 92.5\% \\
       \end{longtable}
 \end{center}
+\vspace{-0.8cm}
 
-2、从模型在测试集上的表现来看，在重采样与短端补齐等两种处理PPG时长差异的策略下，由三种算法得到的模型均能对测试集数据进行较好的学习，各模型的AUC数值均超过了0.900，其中随机森林的AUC数值更是在0.967以上。
-而从精度-召回率权衡方面来看，K近邻与随机森林算法明显优于决策树算法，使用这两种算法构建得到的模型的精确率、召回率及F1数值几乎全部在 90.0\% 以上（只有在重采样策略下使用K近邻算法得到的模型的召回率低于90.0\%，为89.5\%）。
+从\autoref{tab:model_screen3}中可以得到以下结论：
 
-3、从模型在验证集上的泛化能力方面来看，K近邻与随机森林算法也明显优于决策树算法。就准确率而言，由K近邻与随机森林算法的到的模型可达到91\%以上，而由决策树算法得到的模型准确率则不足87\%。
-在精度­召回率权衡上，K近邻与随机森林算法也明显优于决策树算法，前两种算法训练得到的模型的精确率、召回率及F1等数值均在90.0\%以上，均明显高于决策树算法得到的模型表现。
+1、从模型的训练时间方面来看，使用KNN算法构建模型的速度最快，而使用RF算法速度最慢，这一结果也与各算法的时间复杂度一致。
 
-4、综合2与3中结论，可以得到随机森林算法的综合性能表现最好，K近邻算法次之，决策树算法表现较差。这也验证了此前阐述过的集成学习算法较单一算法在训练模型时具有性能优势。
+2、从模型在测试集上的表现来看，按CS与IS对PPG进行对齐后，由三种算法得到的模型均能对测试集数据进行较好的学习，各模型的AUC数值均超过了0.900，其中RF模型的AUC数值更是在0.967以上。
+而从精度-召回率权衡方面来看，KNN与RF算法明显优于DT算法，这两种算法构建得到的模型的精确率、召回率及F1数值几乎全部在 90.0\% 以上（只有RS下，使用KNN算法得到的模型的召回率为89.5\%）。
 
-5、横向对比\autoref{tab:model_screen3}中重采样与短端补齐等两种处理PPG时长差异的策略可以发现，使用短端补齐策略会各模型在构建速度、训练集AUC及模型整体准确率、精确率等方面均略微优于使用重采样策略的对应结果。
+3、从模型在验证集上的泛化能力方面来看，KNN与RF算法也明显优于DT算法。就准确率而言，由KNN与RF算法得到的模型可达到91\%以上，而由DT算法得到的模型准确率则不足87\%。
+在精度-召回率权衡上，KNN与RF算法也明显优于DT算法，前两种算法训练得到的模型的精确率、召回率及F1等数值均在90.0\%以上，均明显高于DT算法得到的模型表现。
 
+4、综合2与3中结论，可以得到RF算法的综合性能表现最好，KNN算法次之，DT算法表现较差，这进一步验证了集成学习算法较单一算法在训练模型时具有性能优势。
+
+5、横向对比\autoref{tab:model_screen3}中RS与CS等两种对齐PPG波形的策略，使用CS会各模型在构建速度、训练集AUC及模型整体准确率、精确率等方面均略微优于使用RS的对应结果。
+ 
 二、特征贡献度分析
 
-与上小节中处理类似，在PPG采样值时域特征集上使用随机森林算法构建模型后，同样可以得到特征集中各特征对最终模型的贡献度，也即
+与上小节中处理类似，在PPGTSFS上使用RF算法构建模型后，同样可以得到特征集中各特征对最终模型的贡献度，也即
 原始PPG中不同位置上的采样点对模型的贡献度。由于对这些原始采样点进行降维处理无实际意义，本部分未进行相应的降维分析与处理工作。
 
-在\autoref{tab:model_screen3}中两种处理PPG时长差异的策略下，统计各采样点的在生成的随机森林中的平均深度后，得到各采样点的贡献度如\autoref{fig:rf_imp2}所示。
+按CS与RS对PPG对齐处理后，统计各采样点的在生成的RF中的平均深度后，得到两种策略下各采样点的贡献度如\autoref{fig:rf_imp2}所示。
 为直观显现各采样点贡献度与PPG波形的对应关系，\autoref{fig:rf_imp2}也同时绘制了在两种策略下的“平均”PPG波形，即所有PPG波形按采样点对齐再计算算术平均值的归一化结果。
 
 \begin{figure}[htbp]
@@ -679,20 +694,15 @@ ROC曲线如\autoref{fig:model_roc}所示。其中，决策树、K近邻及随�
 1、两种策略下，各采样点的贡献度分布形态高度相似，均在平均PPG波形的波峰之后出现贡献度的主峰，在平均PPG波形的下降支尾端附近出现第二个次峰。平均PPG波形起点与终点处的采样点较
 平均PPG波形波峰附近的采样点贡献度可以忽略不计。
 
-2、对两种处理PPG时长差异的策略而言，尽管短端补齐的策略会得到更多的采样点数（120）,但采样点贡献度的具体分布反而更为集中，有效特征点的贡献度数值也更大。
-第四章中已经阐述过，本研究采集得到的绝大多数PPG波形采样点数均不超过80。而从\autoref{fig:rf_imp2}中也可以观察到，短端补齐处理后，序号在80以后的采样点贡献度几乎全部为0，也说明这部分采样点几乎没有参与到最终随机森林模型的构建之中。
-但对重采样策略而言，重采样后所有PPG波形的采样点数均为100，且不完全为0，这也与\autoref{fig:rf_imp2}中该策略下所有采样点的贡献度均不为0的现象相匹配。
+2、对两种处理PPG时长差异的策略而言，尽管CS会得到更多的采样点数（120），但采样点贡献度的具体分布反而更为集中，有效特征点的贡献度数值也更大。
+第四章中已经介绍过，本文采集得到的绝大多数PPG波形采样点数均不超过80。而从\autoref{fig:rf_imp2}中也可以观察到，经CS处理后，序号在80以后的采样点贡献度几乎全部为0，也说明这部分采样点几乎没有参与到最终RF模型的构建之中。
+但RS而言，重采样后所有PPG波形的采样点数均为100，且不完全为0，这也与\autoref{fig:rf_imp2}中该策略下所有采样点的贡献度均不为0的现象相匹配。
 
-\subsection{所有PPG波形与PE之间关系}
+\subsection{基于被试的研究}
+SR基于孕妇的一段时间内采集得到的所有 PPG 波形包含了可以识别区分PE的全部信息这一猜想，将单个被试的所有PPG波形作为一个整体进行分析处理。
+SR使用了第四章提及的对被试分层抽样的数据作为训练集与测试集，在此基础上，使用了前文研究中综合性能较好的KNN、DT与RF等三种算法进行PE识别模型的训练。
 
-与在PPG多维度时域特征集上的处理类似，本研究也基于PPG采样值时域特征集，研究了被试所有PPG波形与PE之间关系。
-63名被试孕妇的全部PPG波形被划分为训练集，余下16名被试的全部波形被划分为测试集。而K近邻、决策树及随机森林等三种算法也被选作PE识别模型的训练算法。\autoref{tab:model_screen4}给出了由这三种算法训练得到
-的模型的具体表现，其中，训练集上的 AUC 数值也是在测试集上进行 5 层交叉验证后
-求均值得到的。
-
-从\autoref{tab:model_screen4}中可以得到以下结论：
-
-1、在研究被试所有PPG波形与PE之间关系时，K近邻、决策树及随机森林等三种
+\autoref{tab:model_screen4}给出了由这三种算法训练得到的模型的具体表现，其中，训练集上的AUC数值是在进行5层交叉验证后得到的。
 
 \begin{center}
       \zihao{6}
@@ -714,14 +724,27 @@ ROC曲线如\autoref{fig:model_roc}所示。其中，决策树、K近邻及随�
             \endfoot
             \bottomline
             \endlastfoot
-            \colorrowa &     K近邻      &   3.12 s  & 86.0\% & 73.7\% &79.4\% & 77.6\% & 0.863 & 81.5\% & 85.6\% & 83.5\% & 78.3\% \\
-            \colorrowa &     决策树      &   3.62 s  & 84.0\% & 82.2\% & 83.1\% & 80.5\% & 0.880 & 70.6\% & 84.6\% & 77.0\% & 67.5\% \\
-            \colorrowa \multirow{-3}{*}{补零}  & 随机森林      &   23.18 s  & 87.0\% & 81.5\% & 84.2\% & 82.1\% & 0.909 & 76.5\% & 86.5\% & 81.2\% & 74.3\% \\
-            \colorrowc &     K近邻      &   2.51 s   & 85.5\% & 76.9\% &81.0\% & 78.9\% & 0.862 & 76.7\% & 80.1\% & 78.4\% & 71.6\% \\
-            \colorrowc &     决策树      &   1.49 s  & 82.7\% & 76.9\% & 79.7\% & 77.1\% & 0.847 & 76.2\% & 88.1\% & 81.7\% & 74.7\% \\
-            \colorrowc \multirow{-3}{*}{重采样}  & 随机森林      &   36.36 s  & 85.1\% & 77.8\% & 81.2\% & 79.0\% & 0.884 & 78.9\% & 87.6\% & 83.0\% & 77.0\% \\
+            \colorrowa CS &     KNN      &   3.12 s  & 86.0\% & 73.7\% &79.4\% & 77.6\% & 0.863 & 81.5\% & 85.6\% & 83.5\% & 78.3\% \\
+            \colorrowa CS &     DT      &   3.62 s  & 84.0\% & 82.2\% & 83.1\% & 80.5\% & 0.880 & 70.6\% & 84.6\% & 77.0\% & 67.5\% \\
+            \colorrowa CS  & RF      &   23.18 s  & 87.0\% & 81.5\% & 84.2\% & 82.1\% & 0.909 & 76.5\% & 86.5\% & 81.2\% & 74.3\% \\
+            \colorrowc RS &     KNN      &   2.51 s   & 85.5\% & 76.9\% &81.0\% & 78.9\% & 0.862 & 76.7\% & 80.1\% & 78.4\% & 71.6\% \\
+            \colorrowc RS &     DT      &   1.49 s  & 82.7\% & 76.9\% & 79.7\% & 77.1\% & 0.847 & 76.2\% & 88.1\% & 81.7\% & 74.7\% \\
+            \colorrowc RS  &  RF     &   36.36 s  & 85.1\% & 77.8\% & 81.2\% & 79.0\% & 0.884 & 78.9\% & 87.6\% & 83.0\% & 77.0\% \\
       \end{longtable}
 \end{center}
+\vspace{-0.8cm}
+
+从\autoref{tab:model_screen4}中可以得到以下结论：
+
+1、基于SR策略，由KNN、DT与RF等三种算法得到的模型在测试集上的性能并没有表现出明显的差异，在整体准确率、精确率等具体指标上均较为接近。
+但与\autoref{tab:model_screen3}中结果相比，三种算法在训练集与测试集上的均出现了较为明显的性能下降，在测试集上性能下降得尤为明显。
+这一现象可能与测试集中的被试的任何PPG波形从未在训练集中出现有关。
+
+2、PG时长的对齐策略并不会明显改变\autoref{tab:model_screen4}中各模型在PE识别问题上的性能，各模型在整体准确率、精确率等具体指标上变化幅度很小。
+
+与在PPGMTDS上的处理类似，在\autoref{tab:model_screen4}测试集上，将反应单个PPG波形的识别结果重新按被试统计可得到\autoref{tab:model_detail2}。
+\autoref{tab:model_detail2}额外统计了每名被试所对应的PPG波形总数与由预测模型识别判断为PE的PPG波形数目，预测比例一栏为这两个数值之比，
+而每名被试所对应的真实PE状态也在\autoref{tab:model_detail2}进行了标记。
 
 \begin{center}
       \zihao{6}
@@ -761,19 +784,12 @@ ROC曲线如\autoref{fig:model_roc}所示。其中，决策树、K近邻及随�
             \colorrowc zyy       & 1           & 89                    & 89 / 89         & 100.0\% / 100.0\%    & 89/89         & 100.0\% / 100.0\%    & 89/89         & 100.0\% / 100.0\%                                     \\    
       \end{longtable}
 \end{center}
-\noindent
-算法在训练集与测试集上的均出现了较为明显的性能下降，在测试集上性能下降得尤为明显。
-这一现象可能与测试集中的被试的任何PPG波形从未在训练集中出现有关。同时，三种模型在测试集上的性能并没有表现出明显的差异，在整体准确率、精确率等具体指标上均较为接近。
+\vspace{-1.0cm} 
 
-2、使用不同的处理PPG时长差异的策略并不会明显改变\autoref{tab:model_screen4}中各模型在PE识别问题上的性能，各模型在整体准确率、精确率等具体指标上变化幅度很小。
+同样地，若将\autoref{tab:model_detail2}中经由各模型对应的预测比例作为判断识别PE的依据，则对PE的识别分析可以转换为寻找
+能将这些预测比例进行分割的最佳阈值。\autoref{fig:model_detail2}展示了测试集每名被试的预测比例所对应的散点图，并进一步可到与经由每种算法得到的预测比例在PE识别问题上的ROC曲线，如\autoref{fig:model_roc}2所示。
+此过程中涉及的各算法最佳阈值及最佳阈值下的CM、准确率与AUC数值结果如如\autoref{tab:cm_on_best2}所示。
 
-与在PPG多维度时域特征集上的处理类似，同样\autoref{tab:model_screen4}中按照单个PPG波形统计得到的混淆矩阵进行按是否隶属同一被试分类重新统计，结果如\autoref{tab:model_detail2}所示。
-\autoref{tab:model_detail2}也统计了每名被试所对应的PPG波形总数与使用由三种算法得到的PE识别模型判断为PE的PPG波形数目，而预测比例一栏为这两个PPG波形数目的比值。另外，每名被试所对应的真
-实PE状态也在\autoref{tab:model_detail2}进行了标记。
-
-与在PPG多维度时域特征集上的处理类似，在\autoref{tab:model_detail2}的基础上，将三种算法训练所得的模型在测试集上的预测比例作为作为判断识别PE的依据，可以得到如\autoref{fig:model_detail2}所示的预测比例散点图。
-也可以得到经由三种算法得到的预测比例的最佳阈值，以及在最佳阈值下的混淆矩阵、敏感性、特异性、预测准确率与AUC等具体数值，\autoref{tab:cm_on_best2}所示。在此过程中，三种模型的预测比例
-所对应的ROC曲线如\autoref{fig:model_roc2}所示。
 \begin{figure}[htbp]
       \centering
       \subfigure[\label{fig:detail_31}对脉搏波进行补零处理得到的预测比例散点图]{
@@ -784,6 +800,18 @@ ROC曲线如\autoref{fig:model_roc}所示。其中，决策树、K近邻及随�
       \includegraphics[width=7.5cm]{results/detail_32}
       }
       \caption{\label{fig:model_detail2}基于三种算法得到的子痫前期预测比例散点图2}
+\end{figure}
+
+\begin{figure}[htbp]
+      \centering
+      \subfigure[\label{fig:roc_31}按脉搏波进行补零处理得到的预测比例得到的ROC曲线]{
+      \includegraphics[width=7.5cm]{results/roc_31}
+      }
+      \quad
+      \subfigure[\label{fig:roc_32}按脉搏波进行重采样处理得到的预测比例得到的ROC曲线]{
+      \includegraphics[width=7.5cm]{results/roc_32}
+      }
+      \caption{\label{fig:model_roc2}由子痫前期预测比例得到的 ROC 曲线2}
 \end{figure}
 
 % \vspace{-0.5cm} 
@@ -806,110 +834,119 @@ ROC曲线如\autoref{fig:model_roc}所示。其中，决策树、K近邻及随�
             \endfoot
             \bottomline
             \endlastfoot
-            \colorrowa                               &     短端补齐    & 0.864     &     $\left[ \begin{array}{cc} 7 & 2 \\ 1 & 6 \end{array} \right]$  & 81.3\% & 0.825 \\
-            \colorrowa \multirow{-2}*{决策树}        &     重采样      & 0.573     &     $\left[ \begin{array}{cc} 7 & 2 \\ 0 & 7 \end{array} \right]$  & 87.5\% & 0.905  \\
-            \colorrowc                               &     短端补齐    & 0.813     &     $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$  & 81.3\% & 0.849  \\
-            \colorrowc \multirow{-2}*{K近邻}         &     重采样      & 0.820     &     $\left[ \begin{array}{cc} 8 & 1 \\ 2 & 5 \end{array} \right]$  & 81.3\% & 0.865 \\
-            \colorrowa                               &     短端补齐    & 0.884     &     $\left[ \begin{array}{cc} 7 & 2 \\ 1 & 6 \end{array} \right]$  & 81.3\% & 0.905  \\
-            \colorrowa \multirow{-2}*{随机森林}       &     重采样      & 0.673    &     $\left[ \begin{array}{cc} 8 & 1 \\ 1 & 6 \end{array} \right]$  & 87.5\% & 0.929  \\
+            \colorrowa DT                              &     CS    & 0.864     &     $\left[ \begin{array}{cc} 7 & 2 \\ 1 & 6 \end{array} \right]$  & 81.3\% & 0.825 \\
+            \colorrowa DT       &     RS      & 0.573     &     $\left[ \begin{array}{cc} 7 & 2 \\ 0 & 7 \end{array} \right]$  & 87.5\% & 0.905  \\
+            \colorrowc KNN                              &     CS   & 0.813     &     $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$  & 81.3\% & 0.849  \\
+            \colorrowc KNN        &     RS     & 0.820     &     $\left[ \begin{array}{cc} 8 & 1 \\ 2 & 5 \end{array} \right]$  & 81.3\% & 0.865 \\
+            \colorrowa RF                              &     CS    & 0.884     &     $\left[ \begin{array}{cc} 7 & 2 \\ 1 & 6 \end{array} \right]$  & 81.3\% & 0.905  \\
+            \colorrowa RF       &     RS      & 0.673    &     $\left[ \begin{array}{cc} 8 & 1 \\ 1 & 6 \end{array} \right]$  & 87.5\% & 0.929  \\
       \end{longtable}
 \end{center}
-% \vspace{-1.0cm} 
-\begin{figure}[htbp]
-      \centering
-      \subfigure[\label{fig:roc_31}按脉搏波进行补零处理得到的预测比例得到的ROC曲线]{
-      \includegraphics[width=7.5cm]{results/roc_31}
-      }
-      \quad
-      \subfigure[\label{fig:roc_32}按脉搏波进行重采样处理得到的预测比例得到的ROC曲线]{
-      \includegraphics[width=7.5cm]{results/roc_32}
-      }
-      \caption{\label{fig:model_roc2}由子痫前期预测比例得到的 ROC 曲线2}
-\end{figure}
-% \vspace{1.5cm} 
+\vspace{-0.8cm} 
 
 从上述研究结果中可以得到以下结论：
 
-1、在研究每名所有PPG波形与PE之间关系时，利用PPG采样值时域特征集，在两种PPG对齐处理策略下，借助机器学习算法可以得到性能较好的PE识别模型。
+1、在SR策略下基于PPGSTDS，按CS与RS等两种PPG对齐处理策略，借助DT、KNN与RF算法均可以训练得到性能较好的PE识别模型。
 
-2、从识别准确率方面来看，由三种算法训练得到的模型均可达到81.3\%以上的识别准确率，其中，决策树与随机森林算法生成的模型性能接近，K近邻算法得到的模型准确率最低。从AUC数值方面来看，随机森林算法有着最佳的分类效果，AUC数值最大（0.905与0.929）。
+2、从识别准确率方面来看，三种算法训练得到的模型均可达到81.3\%以上，其中，DT与RF算法生成的模型性能接近，KNN算法得到的模型准确率最低。从AUC数值方面来看，RF算法有着最佳的分类效果，AUC数值最
 
-3、对比两种PPG对齐处理策略可以发现，在两种策略下的测试集上的混淆矩阵高度相似，识别准确率也基本保持一致。这也说明了两种处理策略本身的合理性。
+\clearpage
 
-4、从最佳分割阈值来看，在对PPG按短端补齐处理后，三种算法对应的分割阈值较大，有泛化能力不足的潜在风险；而将PPG重采样处理后，决策树与随机森林算法得到的分割阈值则明显下降（0.573与0.673）。
+\noindent
+大（0.905与0.929）。
 
-\section{综合讨论与分析}
-本小节在回顾前两节中的研究内容的基础上，进一步对以下问题进行讨论与分析。
+3、对比CS与RS等两种PPG对齐处理策略，两种策略下，三种算法在测试集上的混淆矩阵高度相似，识别准确率也基本保持一致。这也说明了两种处理策略本身的合理性。
 
-一、数据集划分方式
+4、从最佳分割阈值来看，使用CS对PPG波形对齐处理后，三种算法对应的分割阈值较大，有泛化能力不足的潜在风险；而使用RS对PPG波形对齐处理后，DT与RF算法得到的分割阈值则明显下降（0.573与0.673）。
 
-第四章已经介绍过，在将新型时域波形描述特征集及脉搏波原始采样点按照全部波形与被试进行分层抽样、划分训练集与测试集的根本目的是为了弥补
-本研究采集使用的实验数据较少。本章则在这两种数据集划分方式的基础上，分别进行了子痫前期识别模型的建立与研究。
-结果表明\textbf{通过本研究提出的新型时域波形描述特征集及脉搏波原始采样点均能构建出具体一定子痫前期识别能力的机器学习模型，也即说明新型时域波形描述特征集及脉搏波原始采样点中
-包含了能够表征子痫前期与正常妊娠孕妇形态差异的特征}。
+\section{分析与讨论}
+本小节在回顾前两节中及第四章的研究内容的基础上，从以下几个方面对上述处理分析得到的结果进行了分析与讨论。
 
-\textbf{按照全部波形进行子痫前期识别模型的研究过程，实际上基于子痫前期导致的病生理变化可以在单个波形上得到体现的假设。}在这种假设中，单个脉搏波波形也包含了
-识别子痫前期的全部信息。\textbf{按照被试人群进行子痫前期识别模型的研究过程，实际上基于子痫前期导致的病生理变化是通过被试全部脉搏波的多数波形的形态特征来反应的假设。}
-在该假设中，同一被试的全部脉搏波波形的形态整体“群体决策”了该被试的子痫前期状态。
+一、两种猜想与两种验证猜想的方式
 
-另一方面，在按全部波形进行训练集与测试集的划分时，同一被试的不同脉搏波波形可能会分别被划分至训练集与测试集。若这些波形高度相似，就可能最终的模型识别准确率较高。
-因此，有必要按被试划分训练集与测试集的划分，确保同一被试的波形数据只出现在训练集或测试集。由于测试集对最终生成的模型而言是全新的数据，这种方式下对模型的泛化能力的评估更为有效。
+本文的研究目标是探寻通过PPG识别判断PE病发的可能，而该目标本质上可以划分为ML领域内的二分类任务。而本文对PPG与PE之间的可能潜在的关系，提出了以下两种猜想。
 
-最后从数值结果来看，本章的研究结果为上述两种猜想均提供了一定支撑。基于本研究提出的新型时域波形描述特征集及脉搏波原始采样点，按照两种数据集的划分方式，使用
-多种机器学习训练得到的模型均有一定的子痫前期识别能力。
+1、单个PPG波形可以反映PE的病发状态
+
+这种猜想认为PPG的波形是孕妇PE病发状态的稳定“表达”，单个PPG波形包含了可以识别区分PE的全部信息。换言之，该猜想认为由PE导致的病生理变化可以在单个波形上得到全部体现，
+单个PPG波形能够作为分析识别PE的最小分析对象。
+
+2、被试的全部PPG波形才可以反映PE病发状态
+
+这种猜想认为PPG的单个波形是孕妇PE病发状态的不稳定“表达”，但孕妇的一段时间内采集得到的所有PPG波形包含了可以识别区分PE的全部信息。换言之，该猜想认为由PE导致的病生理变化可以在孕妇
+的多数PPG波形的形态特征上得到全部体现，需要被试的全部PPG波形进行一个类似“群体决策”的过程。
+
+针对上述两个猜想，本研究从以下两个方向展开了具体研究工作：
+
+1、基于波形的研究
+
+基于波形的研究（pulse-based research，PR）将单个PPG波形作为分析识别PE的最小分析对象，并进行ML算法模型的研究。此研究方向下，同一被试的PPG数据可能对应ML模型训练与验证阶段的多个数据样本，这种方式相对地增加了
+数据集的样本容量。
+
+2、基于被试的研究
+
+基于被试的研究（subject-based research，SR）将单个被试的所有PPG波形作为一个整体进行分析处理，并进行ML算法模型的研究。此研究方向下，同一被试的PPG波形只会出现在训练集或测试集之中，
+测试集中的数据样本对于训练得到的模型是完全陌生的未见示例，因此更考验ML模型的泛化能力。
 
 二、机器学习模型的影响
 
-本研究在经过多种机器学习算法的初筛后，着重考察了两种单模型算法决策树与K近邻算法——与一种集成算法——随机森林——构建子痫前期识别模型的效果。
-通过上述算法在本研究涉及了多种场景下的分析生成的子痫前期识别模型在测试集上性能表现（仅以准确率为例进行统计）如\autoref{tab:accuracy}所示。
+在经过多种ML算法的初筛后，前文中着重考察了通过DT、KNN与RF算法构建PE识别模型的效果。
+对本文涉及的所有研究工作中涉及的基于上述三种算法模型训练得到的PE识别模型的在测试集上的准确率进行整理，结果如\autoref{tab:accuracy}所示。
 
-\begin{table}[htbp]
+\begin{center}
       \zihao{-5}
-      \centering
-      \caption{\label{tab:accuracy}不同分析场景下通过三种算法模型在测试集上准确率对比}
-      \begin{tabular}{cccccc}
-      \topline
-      \textbf{数据集}&\textbf{抽样方式}&\textbf{随机森林}&\textbf{K近邻}&\textbf{决策树}&\textbf{备注}\\
-      \midline
-      \multirow{3}{*}{新型时域波形描述特征集} & 全部波形 & 97.0\% & 93.3\% &  88.9\%& \\
-            & 被试 & 79.1\% & 78.3\% & 66.3\% & 按波形统计\\
-            & 被试 & 93.8\% & 81.3\% & 81.3\% & 计算预测比例后按被试统计\\
-      \multirow{6}{*}{脉搏波采样点} & 全部波形 & 93.6\% & 91.4\% & 86.2\% & 脉搏波补零对齐\\
-                  & 全部波形 & 92.5\% & 91.6\% & 83.9\% & 脉搏波重采样对齐\\
-                  & 被试 & 74.3\% & 78.3\% & 67.5\% & 脉搏波补零对齐，按波形统计\\
-                  & 被试& 77.0\% & 74.7\% & 71.6\% & 脉搏波重采样对齐，按波形统计\\
-                  & 被试 & 81.3\% & 81.3\% & 81.3\% & 脉搏波补零对齐，计算预测比例后按被试统计\\
-                  & 被试& 87.5\% & 81.3\% & 87.5\% & 脉搏波重采样对齐，计算预测比例后按被试统计\\      
-      \bottomline
-      \end{tabular}%
-\end{table}%
+      % \setlength{\belowcaptionskip}{-0.5cm} 
+      \begin{longtable}{m{1.8cm}<{\centering}m{1.8cm}<{\centering}m{1.8cm}<{\centering}m{1.8cm}<{\centering}m{1.8cm}<{\centering}m{1.8cm}<{\centering}m{1.8cm}<{\centering}}
+            \caption{不同分析场景下通过三种算法模型在测试集上准确率对比}\\
+            \label{tab:accuracy}\\
+            \topline
+            \colorhead \textbf{数据集}&\textbf{抽样方式}&\textbf{PPG对齐策略}&\textbf{随机森林}&\textbf{K近邻}&\textbf{决策树}&\textbf{备注}\\
+            \midline
+            \endfirsthead
+            \caption[]{(续)}\\ 
+            \topline
+            \colorhead \textbf{数据集}&\textbf{抽样方式}&\textbf{PPG对齐策略}&\textbf{随机森林}&\textbf{K近邻}&\textbf{决策树}&\textbf{备注}\\
+            \midline
+            \endhead 
+            \midline
+            \endfoot
+            \bottomline
+            \endlastfoot
+            \colorrowa PPGMTFS & PR & / &  97.0\% & 93.3\% &  88.9\%& / \\
+            \colorrowa PPGMTFS & SR & / &  79.1\% & 78.3\% & 66.3\% & 按波形统计 \\
+            \colorrowa PPGMTFS & SR & / &  93.8\% & 81.3\% & 81.3\% & 按被试统计 \\
+            \colorrowc PPGSTFS & PR & CS &  93.6\% & 91.4\% & 86.2\% & / \\
+            \colorrowc PPGSTFS & PR & RS &  92.5\% & 91.6\% & 83.9\% & /\\
+            \colorrowc PPGSTFS & SR & CS &  74.3\% & 78.3\% & 67.5\% & 按波形统计\\
+            \colorrowc PPGSTFS & SR & RS &  77.0\% & 74.7\% & 71.6\%& 按被试统计\\
+            \colorrowc PPGSTFS & SR & CS &  81.3\% & 81.3\% & 81.3\%& 按波形统计\\
+            \colorrowc PPGSTFS & SR & RS &  87.5\% & 81.3\% & 87.5\%& 按被试统计\\
+      \end{longtable}
+\end{center}
+\vspace{-0.8cm} 
 
-从\autoref{tab:accuracy}可以发现，\textbf{随机森林算法充分体现了集成学习的优势，在本研究涉及的多种分析场景下，随机森林算法构建的模型性能均高于决策树算法与K近邻算法。
-而对于决策树与K近邻算法，在大多数分析场景下，K近邻算法的性能表现优于决策树算法。}
+从\autoref{tab:accuracy}可以发现，在本研究涉及的多种分析场景下，RF算法充分体现了集成学习的优势，构建的模型性能均高于DT与KNN算法。
+而对于DT与KNN算法而言，在大多数分析场景下，KNN算法的性能表现优于DT算法。
 
 三、特征集的影响
 
-进一步考察\autoref{tab:accuracy}中使用的数据集对最终子痫前期识别模型在测试集上准确率可以发现，\textbf{本研究提出的新型时域波形描述特征集及脉搏波原始采样点在子痫前期的识别能力上具有一致性。}
-在相同的研究场景中，使用相同算法在两类时域特征集构建的模型在测试集上的准确率数值极为接近，且均是在新型时域波形描述特征集上的构建模型性能优于在脉搏波原始采样点上构建的模型。
-这也表明，\textbf{相较而言，新型时域波形描述特征集表征子痫前期的能力要强于脉搏波原始采样点。这也说明本研究提出的新型时域波形描述特征集设计合理，有应用于与本研究类似的基于脉搏波的其他相关研究的潜力}。
+进一步考察\autoref{tab:accuracy}中使用的数据集对PE识别模型在测试集上准确率，可以发现本文提出的PPGMTFS与PPGSTFS在PE的识别能力上具有一致性，这也说明PPGMTFS的设计合理性。
+在相同的研究场景中，使用相同算法在两类特征集构建的模型在测试集上的准确率数值极为接近，且均是在PPGMTFS上的构建模型性能优于在PPGMSFS上构建的模型。
+这也表明，PPGMTFS表征PE的能力要强于PPGSTFS，换言之，PPGMTFS中包含了与PE相关性更强的描述特征。
 
 四、特征贡献与分布
 
-本研究在新型时域波形描述特征集及脉搏波原始采样点上均按全部波形进行抽样后构建了子痫前期识别模型。特别地，当使用随机森林算法构建模型时，可以评估参与模型构建的特征的贡献度。
-对比\autoref{tab:rf_dr_1}与\autoref{fig:rf_imp2}，关于
-新型时域波形描述特征集及脉搏波原始采样点在贡献度可以得到以下结论：
+使用RF算法在PPGMTFS与PPGSTFS上构建模型时，可以评估参与模型构建的特征的贡献度。
+对比\autoref{tab:rf_dr_1}与\autoref{fig:rf_imp2}，可以发现：
 
-1、新型时域波形描述特征集与脉搏波原始采样点贡献度的最大值有一定差异，前者的最大值可以到达整体平均值的13.6倍以上，而后者仅为均值的6倍左右。这说明新型时域波形描述特征集中，与子痫前期相关
-的特征更为明显。
+1、PPGMTFS与PPGSTFS中特征贡献度的最大数值有一定差异，前者可以到达整体平均值的13.6倍以上，而后者仅为均值的6倍左右。这也说明在PPGMTFS中，与PE相关的特征更为明显。
 
-2、对比两种脉搏波时域特征集上得到各特征的贡献度分布可以发现，两类时域特征集中具有子痫前期表征能力的特征出现的位置高度相似。贡献度高的特征多出现在下降支中，且集中在下降支的前端与尾端。这点在
-\autoref{fig:rf_imp2}体现得更为明显，在特征贡献度分布中，脉搏波峰值之后及尾端位置出现了两个分布高峰。\textbf{这种现象也与脉搏波
-下降支是血液回流过程的反应、下降支包含了更多的血液循环中细节信息的、子痫前期
-会影响孕妇血液循环等事实相符合。说明这些位置的脉搏波形态可能是识别子痫前期的关键。}
+2、对比两种特征集上得到各特征的贡献度分布可以发现，两类时域特征集中具有PE表征能力的特征出现的位置高度相似。贡献度高的特征多出现在下降支中，且集中在下降支的前端与尾端。这点在
+\autoref{fig:rf_imp2}体现得更为明显，在特征贡献度分布中，脉搏波峰值之后及尾端位置出现了两个分布高峰。这种现象也与PPG
+下降支是血液回流过程的反应、下降支包含了更多的血液循环中细节信息的、PE
+会影响孕妇血液循环等事实相符合。同时也表明这些位置的PPG形态可能是识别PE的关键。
 
 \section{小结}
-本小节通过新型时域波形描述特征集合与脉搏波原始采样点的基础上利用借助决策树、K近邻及随机森林等算法完成了不同分析场景下的子痫前期识别模型的构建与分析工作。
-各模型在测试集上的性能表现证明生成的机器学习模型具有一定子痫前期识别能力的，也说明新型时域波形描述特征集及脉搏波原始采样点中
-包含了能够表征子痫前期与正常妊娠孕妇形态差异的特征。而当横向对比三种机器学习算法的性能时，随机森林算法构建的子痫前期识别模型性能最好，K近邻次之，决策树最次。
-而通过脉搏波新型时域波形描述特征集合构建的机器学习模型性能也要优于使用直接使用脉搏波原始采样点构建的模型。而从特征的角度而言，新型时域波形描述特征集合与脉搏波原始采样点中
-具有子痫前期识别能力的特征出现的位置也高度相似，且与脉搏波的生理学基础有一定的对应关系。
+本章在PPGMTFS与PPPGSTFS等数据集的基础上，按照基于波形与基于被试等两个研究方向，对单个PPG波形可以反映PE的病发状态与被试的全部PPG波形才可以反映PE病发状态等两个猜想进行了验证。
+利用ML的多种监督学习算法，完成了包括多算法模型筛选、模型超参数优化、特征贡献度分析与降维处理等研究分析工作，构建了多种PE识别模型与并对结果进行了分析。
+这些结果表明，同时，本文构建的PPGMTFS与PPPGSTFS等数据集设计合理，具有能表征PE的关键特征。与此同时，基于这些PPG数据集，通过ML算法构建PE识别模型具有一定的可行性。
