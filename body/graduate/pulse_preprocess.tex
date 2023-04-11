@@ -36,7 +36,7 @@ B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和�
 \subsection{实验流程}
 被试孕妇到达数据实验采集现场后，会由实验人员登记被试人员的PE风险因子信息，包括姓名、年龄、孕产史等。接着实验人员会告知被试人员本研究的研究背景与实验过程。
 在征得被试人员同意后，采集人员会按前文操作规范为被试佩戴血氧采集探头\cite{Chen2021}。与血压采集过程类似\cite{FIGO}，被试人员需在数据采集实验全程保持坐姿，
-在被试孕妇休息至少5分钟后，PPG数据开始正式记录，单次采集时长不低于1分钟。
+在被试孕妇休息至少5分钟后，PPG数据开始正式记录，单次采集时长不低于1$min$。
 通过被试孕妇的左手食指，使用透射式血氧探头进行PPG数据采集。若被试孕妇的左手食指有损伤，则将测量部位替换为左手中指。手指在测量时需放入指套内部，
 指甲与传感器表面有指甲标记的部位正对，指尖触及但不超出指套顶端，确保发光管发出的所有光线全部通过被试的组织。使用的血氧采集探头美国泰科公司旗下的Nellcor DS-100A型血氧传感器。 
 
@@ -389,7 +389,7 @@ $x_l$为$x_s$与$x_e$中数值较小者。
 另外，时间规则也是PPG波形检测阶段得到应用的另一项重要标准。
 如波形检测阶段，搜索窗的窗长已经限定了重博波峰与主波峰间期$T_{P2R}$需要大于0.3$s$；
 完整波形在进行确认时也限定了波形周期$T_{S2E}$需要大于0.4$s$、下降支时长$P_{P2E}$需要大于0.3$s$。
-若参照心率定义，将一分钟中内有效脉搏波的数量规定为脉率(Pulse Rate，PR)。那么，原则上该算法可对$PR \le 150$的原始脉搏波数据进行波形检测。
+若参照心率定义，将1$min$内有效脉搏波的数量规定为脉率(Pulse Rate，PR)。那么，原则上该算法可对$PR \le 150$的原始脉搏波数据进行波形检测。
 
 6、有效波形判断
 
@@ -824,12 +824,12 @@ RI是由脉搏波舒张峰值或拐点处幅值与收缩谷值之比计算得到
     RI = \frac{b}{a} \cdot 100\%
 \end{equation}
 
-K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形态学特征无量纲参数，最早由罗志昌等人提出\cite{Luo1988,PPGYY}
+K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形态学特征无量纲参数，最早由罗志昌等\cite{Luo1988,PPGYY}提出
 \begin{equation}
     \label{equ:ppgk}
     K=\frac{P_m-P_d}{P_s-P_d}
 \end{equation}
-其中，$P_m=\frac{1}{T}\int_{0}^{T}P(t)dt$为一个心动周期内脉搏压力$P(t)$的平均值，$P_s$与$P_d$分别为收缩压与舒张压。罗志昌等人的研究表明，K值依赖于脉搏波的波形动态变化，
+其中，$P_m=\frac{1}{T}\int_{0}^{T}P(t)dt$为一个心动周期内脉搏压力$P(t)$的平均值，$P_s$与$P_d$分别为收缩压与舒张压。罗志昌等\cite{Luo1988,PPGYY}的研究表明，K值依赖于脉搏波的波形动态变化，
 同时能够在很大程度上反应血管外周阻力与血管壁硬化程度等生理因素的变化。
 \begin{figure}[htbp]
     \centering
@@ -840,7 +840,7 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 除上述参数外，幅值类特征参数还包括脉搏波波峰幅值、波谷幅值差值、降中峡幅值及外周阻力系数等\cite{cwl,mmt}。这些参数的具体定义参见\autoref{fig:timefeature}及\autoref{tab:heightfeature}所示。
 \begin{center}
     \zihao{-5}
-    \begin{longtable}{m{4cm}<{\centering}m{9cm}<{\centering}m{2cm}<{\centering}}
+    \begin{longtable}{m{3cm}<{\centering}m{9cm}<{\centering}m{2cm}<{\centering}}
 		\caption{常见PPG幅值类参数定义}\\
 		\label{tab:heightfeature}\\
 		\topline
@@ -859,7 +859,7 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
         \colorrowa 波峰幅值      &  主波峰幅值         &  $OP$\\
         \colorrowc 波谷幅值差值      &  相邻波谷之间的幅值之差         &  /\\
         \colorrowa 降中峡幅值      &  降中峡至基线幅值         &  $DD'$\\
-        \colorrowc 外周阻力系数      &  降中峡幅值与主波峰幅值之比         &  $\frac{DD'}{OP}$\\
+        \colorrowc 外周阻力系数      &  降中峡幅值与主波峰幅值之比         &  $\displaystyle \frac{DD'}{OP}$\\
     \end{longtable}
 \end{center}
 \vspace{-0.8cm}
@@ -894,10 +894,10 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
         \endfoot
         \bottomline
         \endlastfoot
-        \colorrowa 上升支面积      &  从波形起点至峰值点对波形曲线积分所得面积值         &  $S_r=\int_{T_S}^{T_P}P(t)dt$\\
-        \colorrowc 下降支面积      &  从波形峰值点至终点对波形曲线积分所得面积值         &  $S_f=\int_{T_P}^{T_E}P(t)dt$\\
-        \colorrowa 全周期面积      &  脉搏波波形在一个完整周期内的积分所得面积值         &  $S_t=\int_{T_S}^{T_E}P(t)dt$\\
-        \colorrowc 上升支面积比    &  上升支面积与$\triangle OPS$面积之比         &   $R_r=\frac{S_r}{S_{\triangle OPS}}$    \\
+        \colorrowa 上升支面积      &  从波形起点至峰值点对波形曲线积分所得面积值         &  $\displaystyle S_r=\int_{T_S}^{T_P}P(t)dt$\\
+        \colorrowc 下降支面积      &  从波形峰值点至终点对波形曲线积分所得面积值         &  $\scriptstyle S_f=\int_{T_P}^{T_E}P(t)dt$\\
+        \colorrowa 全周期面积      &  脉搏波波形在一个完整周期内的积分所得面积值         &  $\scriptscriptstyle S_t=\int_{T_S}^{T_E}P(t)dt$\\
+        \colorrowc 上升支面积比    &  上升支面积与$\triangle OPS$面积之比         &   $\textstyle R_r=\frac{S_r}{S_{\triangle OPS}}$    \\
         \colorrowa 下降支面积比    &  下降支面积与$\triangle OPE$面积之比        &   $R_f=\frac{S_f}{S_{\triangle OPE}}$    \\
         \colorrowc 全周期面积比    &  全周期面积与$\triangle SPE$面积之比         &   $R_t=\frac{S_t}{S_{\triangle SPE}}$    \\
         \colorrowa 下降支面积差值比&  下降支面积和$\triangle OPE$面积之差与$\triangle OPE$面积之比        &    $\Delta R_f=\frac{S_{\triangle OPE}-S_f}{S_{\triangle OPE}}=1-R_f$\\
