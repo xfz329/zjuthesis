@@ -11,24 +11,24 @@
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.75\linewidth]{pulse_preprocess/frameworks3}
-    \caption{\label{fig:frameworks3}第三章研究内容框架}
+    \caption{\label{fig:frameworks3}第三章研究内容框架图}
 \end{figure}
 \section{数据采集方案设计}
 本研究于2017年6月至2019年4月期间，于浙江大学医学院附属妇产科医院进行了数据采集实验。其中，患有PE的孕妇作为此次数据实验的实验组，而正常妊娠孕妇作为对照组。
 此次数据采集实验经浙江大学医学院附属妇产科医院医学伦理委员会的审查并被批准进行（审查编号：20170131）。所有参与实验的孕妇均知晓本研究目的及具体实验流程的情况，并签署了知情同意书。
-需特别引起注意的是，所有实验组孕妇均已确诊PE，出现不同程度的血压升高在内的临床症状。因此，\textbf{实验组所有患有PE的孕妇均已接受过药物治疗在内的临床干预以减轻其症状}。
+需特别引起注意的是，所有实验组孕妇均已确诊PE，出现不同程度的血压升高在内的临床症状。因此，实验组所有患有PE的孕妇均已接受过药物治疗在内的临床干预以减轻其症状。
 \subsection{实验设备}
-本研究对脉搏波数据采集仪器的专业性、可靠性都有较高要求。在考察实验场地（浙江大学医学院附属妇产科医院麻醉科室）的诸多临床在用设备后，选取了美国GE公司生产的GE Healthcare CARESCAPE B650 麻醉监护仪进行数据采集。
-B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和度、血压、呼出气体中$CO_{2}$与$O_{2}$成份及熵指数等专业参数进行监测，如\autoref{fig:monitor}所示。此外，B650监护仪还提供了基于PPG的表征动脉血压变化的
+本研究对脉搏波数据采集仪器的专业性、可靠性都有较高要求，最后选取了美国GE公司生产的GE Healthcare CARESCAPE B650 麻醉监护仪进行数据采集。
+B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和度、血压、呼出气体中氧气与二氧化碳及熵指数等专业参数进行监测，如\autoref{fig:monitor}所示。此外，B650监护仪还提供了基于PPG的表征动脉血压变化的
 收缩压变化参数（systolic pressure variation，SPV）和脉压变化参数（pulse pressure variation，PPV）\cite{GE2021,Michard1999}。
 \begin{figure}[htbp]
     \centering
     \subfigure[B650监护仪及其配件]{
-    \includegraphics[width=7cm]{data_plan/monitor1}
+    \includegraphics[width=7cm]{pulse_preprocess/monitor1}
     }
     \quad
     \subfigure[B650监护界面]{
-    \includegraphics[width=5.5cm]{data_plan/monitor2}
+    \includegraphics[width=5.5cm]{pulse_preprocess/monitor2}
     }
     \caption{\label{fig:monitor}GE Healthcare CARESCAPE B650监护仪}
 \end{figure}
@@ -60,7 +60,7 @@ B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和�
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.6\linewidth]{data_plan/relation}
+    \includegraphics[width=.6\linewidth]{pulse_preprocess/relation}
     \caption[二元变量之间常见的相关关系]{\label{fig:relation}二元变量之间常见的相关关系\cite{IXL2022}}
 \end{figure}
 
@@ -188,7 +188,7 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\linewidth]{pulse_preprocess/process.pdf}
-    \caption{\label{fig:process}信号预处理流程示意}
+    \caption{\label{fig:process}信号预处理流程示意图}
 \end{figure}
 
 \subsection{信号滤波}
@@ -216,7 +216,7 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
     \subfigure[平滑滤波后PPG信号]{
     \includegraphics[width=6.5cm]{pulse_preprocess/after}
     }
-    \caption{\label{fig:filter}平滑滤波前后PPG信号对比}
+    \caption{\label{fig:filter}平滑滤波前后PPG信号对比图}
 \end{figure}
 
 经滑动滤波前后的PPG信号对比如\autoref{fig:filter}所示，其中滤波阶数$N$被设置为5，对应的的截止频率约为89$Hz$。
@@ -517,11 +517,11 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
 \begin{figure}[h]
     \centering
     \subfigure[\label{fig:c_0179}编号0179原始数据波形（局部）]{
-        \includegraphics[width=7.5cm]{pulse_preprocess/check/0179}
+        \includegraphics[width=7.5cm]{pulse_preprocess/0179}
     }
     \quad
     \subfigure[\label{fig:c_0533}编号0533原始数据波形（局部）]{
-        \includegraphics[width=7.5cm]{pulse_preprocess/check/0533}
+        \includegraphics[width=7.5cm]{pulse_preprocess/0533}
     }
     \quad
     \caption{\label{fig:ucibp_abnormal}UCI-BP数据库中畸形信号示意}

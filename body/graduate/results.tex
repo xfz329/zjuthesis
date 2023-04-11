@@ -45,7 +45,7 @@ DT可以看成一个if-else规则的集合，DT的根节点到叶节点的每条
 D的学习目的就是从训练数据集中集中归纳出一组分类规则，产生一颗与训练数据的矛盾小的、泛化能力强的逻辑判断树。
 \begin{figure}[htbp]
       \centering
-      \includegraphics[width=.6\linewidth]{models/dt.png}
+      \includegraphics[width=.6\linewidth]{results/dt.png}
       \caption{\label{fig:dt}决策树模型示意}
 \end{figure}
 
@@ -122,7 +122,7 @@ RF是一种在套袋法（bagging）基础上发展起来的集成学习算法�
 由于bagging法可以获得的随机子集数量远远高于pasting法，其应用范围也更加广泛。
 \begin{figure}[htbp]
       \centering
-      \includegraphics[width=.8\linewidth]{models/bp}
+      \includegraphics[width=.8\linewidth]{results/bp}
       \caption[Bagging与pasting示意]{\label{fig:bp}Bagging与pasting示意\cite{Aurélien2018}}
 \end{figure}
 
@@ -158,7 +158,7 @@ $\lfloor \log_2m + 1 \rfloor$\cite{breiman2001}。
 
 \begin{figure}[htbp]
       \centering
-      \includegraphics[width=.8\linewidth]{models/rf}
+      \includegraphics[width=.8\linewidth]{results/rf}
       \caption{\label{fig:rf}RF示意}
 \end{figure}
 
@@ -246,7 +246,7 @@ ROC曲线是另一种常用于二分类问题的分析工具。ROC绘制的是�
 其中，虚线表示纯随机分类器的ROC曲线，理想性能的分类器应无限逼近左上角，即坐标点$(0,1)$。
 \begin{figure}[htbp]
       \centering
-      \includegraphics[width=.6\linewidth]{data_plan/roc}
+      \includegraphics[width=.6\linewidth]{results/roc}
       \caption[ROC曲线与AUC关系]{\label{fig:roc}ROC曲线与AUC关系}
 \end{figure}
 
@@ -588,7 +588,7 @@ SR使用了第四章提及的对被试分层抽样的数据作为训练集与测
 
 \begin{figure}[htbp]
       \centering
-      \includegraphics[width=.55\linewidth]{results/roc}
+      \includegraphics[width=.55\linewidth]{results/model_roc}
       \caption[由子痫前期预测比例得到的ROC曲线]{\label{fig:model_roc}由子痫前期预测比例得到的ROC曲线}
 \end{figure}
 \vspace{-1cm}
