@@ -1,25 +1,26 @@
 \chapter{脉搏波的预处理与特征参数提取}
 \section{引言}
-本章将从PPG信号的预处理的角度对本研究过程中的相关工作进行介绍。
-首先介绍所有PPG数据来源自自主实验数据，从实验设备、实验流程与数据导出等方面对数据采集方案进行了介绍。
-其次，利用常用的变量分析方法，统计分析数据实验涉及的所有被试的人口统计学特征。
-从信号滤波、波形检测、切迹检测、基线漂移处理、信号重采样与数据标准化等过程对PPG的预处理分析流程进行介绍。提出一种基于初筛-复核-决策的新型PPG波形检测算法。
+本章首先介绍所有PPG数据来源自临床实验数据，从实验设备、实验流程与数据导出等方面对数据采集方案进行了介绍。
+利用常用的变量分析方法，统计分析临床数据实验中所有被试的人口统计学特征。
+将从PPG信号的预处理的角度对本研究过程中的相关工作进行介绍。
+从信号滤波、波形检测、切迹检测、基线漂移处理、信号重采样与数据标准化等过程对PPG的预处理分析流程进行介绍。
+介绍了可在多平台、多研究背景下应用的一种基于初筛——复核——决策的新型PPG波形检测算法。
 最后，汇总介绍PPG常见的时域特征参数。
 
 本章研究内容的框架图如\autoref{fig:frameworks3}所示。
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.75\linewidth]{pulse_preprocess/frameworks3}
+    \includegraphics[width=0.85\linewidth]{pulse_preprocess/frameworks3}
     \caption{\label{fig:frameworks3}第三章研究内容框架图}
 \end{figure}
 \section{数据采集方案设计}
-本研究于2017年6月至2019年4月期间，于浙江大学医学院附属妇产科医院进行了数据采集实验。其中，患有PE的孕妇作为此次数据实验的实验组，而正常妊娠孕妇作为对照组。
+本研究于2017年6月至2019年4月期间，于浙江大学医学院附属妇产科医院进行了临床数据采集实验。其中，患有PE的孕妇作为实验组，而正常妊娠孕妇作为对照组。
 此次数据采集实验经浙江大学医学院附属妇产科医院医学伦理委员会的审查并被批准进行（审查编号：20170131）。所有参与实验的孕妇均知晓本研究目的及具体实验流程的情况，并签署了知情同意书。
-需特别引起注意的是，所有实验组孕妇均已确诊PE，出现不同程度的血压升高在内的临床症状。因此，实验组所有患有PE的孕妇均已接受过药物治疗在内的临床干预以减轻其症状。
+其中，所有实验组孕妇均已确诊PE，出现了不同程度的血压升高等PE临床症状。实验组所有孕妇均已接受过包括药物治疗在内的临床干预以减轻其症状。
 \subsection{实验设备}
-本研究对脉搏波数据采集仪器的专业性、可靠性都有较高要求，最后选取了美国GE公司生产的GE Healthcare CARESCAPE B650 麻醉监护仪进行数据采集。
-B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和度、血压、呼出气体中氧气与二氧化碳及熵指数等专业参数进行监测，如\autoref{fig:monitor}所示。此外，B650监护仪还提供了基于PPG的表征动脉血压变化的
+本研究对PPG数据采集仪器的专业性、可靠性都有较高要求，最后选取了美国GE公司生产的GE Healthcare CARESCAPE B650 麻醉监护仪进行数据采集。
+B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和度、血压、呼出气体中气体成份及熵指数等专业参数进行监测，如\autoref{fig:monitor}所示。此外，B650监护仪还提供了基于PPG的表征动脉血压变化的
 收缩压变化参数（systolic pressure variation，SPV）和脉压变化参数（pulse pressure variation，PPV）\cite{GE2021,Michard1999}。
 \begin{figure}[htbp]
     \centering
@@ -34,37 +35,37 @@ B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和�
 \end{figure}
 
 \subsection{实验流程}
-被试孕妇到达数据实验采集现场后，会由实验人员登记被试人员的PE风险因子信息，包括姓名、年龄、孕产史等。接着实验人员会告知被试人员本研究的研究背景与实验过程。
-在征得被试人员同意后，采集人员会按前文操作规范为被试佩戴血氧采集探头\cite{Chen2021}。与血压采集过程类似\cite{FIGO}，被试人员需在数据采集实验全程保持坐姿，
-在被试孕妇休息至少5分钟后，PPG数据开始正式记录，单次采集时长不低于1$min$。
-通过被试孕妇的左手食指，使用透射式血氧探头进行PPG数据采集。若被试孕妇的左手食指有损伤，则将测量部位替换为左手中指。手指在测量时需放入指套内部，
-指甲与传感器表面有指甲标记的部位正对，指尖触及但不超出指套顶端，确保发光管发出的所有光线全部通过被试的组织。使用的血氧采集探头美国泰科公司旗下的Nellcor DS-100A型血氧传感器。 
+被试人员到达数据实验采集现场后，会由实验人员登记被试人员的PE风险因子信息，包括姓名、年龄、孕产史等。接着实验人员会告知被试人员本研究的研究背景与实验过程。
+在征得被试人员同意后，采集人员会按操作规范为被试人员佩戴血氧采集探头\cite{Chen2021}。与血压采集过程类似\cite{FIGO}，被试人员需在数据采集实验全程保持坐姿，
+在被试孕妇休息至少5 $min$后，PPG数据开始正式记录，单次采集时长不低于1 $min$。
+PPG通过被试孕妇的左手食指，使用透射式血氧探头进行采集，血氧探头型号为美国泰科公司旗下的Nellcor DS-100A型血氧传感器。若被试孕妇的左手食指有损伤，则将测量部位替换为左手中指。手指在测量时需放入指套内部，
+指甲与传感器表面有指甲标记的部位正对，指尖触及但不超出指套顶端，确保发光管发出的所有光线全部通过被试的组织。
 
 \subsection{数据导出及复核}
-由于GE公司并没有公开B650数据通讯协议，无法直接获取该设备可采集的全部生理参数的原始数据信息。通过产商技术支持提供的第三方软件，可将B650监护仪采集得到的PPG数据以
-时间-相对幅值的键值对的形式以按CVS的文件格式导出，导出的PPG信号采样率为100$Hz$。
+由于美国GE公司并没有公开B650数据通讯协议，本研究无法直接获取该设备可采集的全部生理参数的原始数据信息。通过产商技术支持提供的第三方软件，最后将B650监护仪采集得到的PPG数据以
+（时间，相对幅值）的键值对形式按CVS的文件格式导出，导出的PPG信号采样率为100 $Hz$。
 
-本研究共完成了80例被试孕妇的PPG原始数据采集工作。经复核校验，有1例正常妊娠孕妇数据由于采集时间过短、信号质量过低等原因被剔除。
-剩余79例有效PPG数据作为本文后续所有分析的数据源，其中实验组数据44例，对照组数据35例。
+本研究共完成了80例被试孕妇的PPG原始数据采集工作。经复核校验，有1例正常妊娠孕妇数据由于采集时间过短、信号质量过低原因被剔除。
+剩余79例有效PPG数据作为本研究区后续所有分析的数据源，其中，实验组数据44例，对照组数据35例。
 \section{被试孕妇人口统计学特征分析}
-本节使用统计分析的方法对上述实验中被试孕妇的人口统计学特征进行了相关性分析，具体包括被试的年龄、孕周、身高、体重、BMI指数、血压及心率等。
+本节使用统计分析方法对上述实验中被试孕妇的人口统计学特征进行了相关性分析，这些人口统计学特征包括被试的年龄、孕周、身高、体重、BMI指数、血压及心率等。
 \subsection{变量分析方法}
-相关性分析时统计分析学科中最常用的工具之一。依据每种方法的适应性不同，本研究选取了其中的非参数方法对上述变量完成最后的分析。
+相关性分析和参数检验与非参数检验是统计分析学科中最常用的工具，本小节对相关性分析方法的原理进行介绍，同时着重介绍了非参数检验的原理及方法。
 
 一、相关性分析
 
-相关性分析（correlation analysis，CA）是指对两个具备相关性的变量元素进行分析，衡量两个变量因素的相关密切程度\cite{Zhang2019}。相关性的元素之间需要存在一定的联系或者概率才可以进行相关性分析。
+相关性分析（correlation analysis，CA）是对两个具备相关性的变量元素进行分析，衡量这两个变量因素的相关密切程度\cite{Zhang2019}。这两个变量元素之间需要存在一定的联系才可以进行相关性分析。
 
-统计学上引入了相关系数$r$以量化表征变量之间的密切程度。$r$的取值范围为[-1,1],其绝对值大小反映了两变量之间相关性的强弱：当$r$>0时，表明两个变量正相关；反之，则两个变量变化趋势相反，呈负相关。
-一般可以通过散点图即可直接观察变量之间的联系，如\autoref{fig:relation}所示。\autoref{fig:relation}也在每副子图中标注了对应的$r$值。
+统计学上引入了相关系数$r$以量化表征变量之间的密切程度。$r$的取值范围为[-1,1]，其绝对值大小反映了两变量之间相关性的强弱：当$r$>0时，表明两个变量正相关；反之，则两个变量变化趋势相反，呈负相关。
+可以通过散点图即可直接观察两个变量之间的联系，如\autoref{fig:relation}所示。\autoref{fig:relation}也在每副子图中标注了对应的$r$值。
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{pulse_preprocess/relation}
-    \caption[二元变量之间常见的相关关系]{\label{fig:relation}二元变量之间常见的相关关系\cite{IXL2022}}
+    \caption[二元变量之间常见的相关关系示意图]{\label{fig:relation}二元变量之间常见的相关关系示意图\cite{IXL2022}}
 \end{figure}
 
-常用的相关性分析方法有皮尔逊（Pearson）相关性分析法与斯皮尔曼（Spearman）相关性分析法，利用这两种方法计算得到的相关系数也对应被称为皮尔逊相关系数$r_p$与斯皮尔曼相关系数$r_s$:
+常用的相关性分析方法有皮尔逊（Pearson）相关性分析法与斯皮尔曼（Spearman）相关性分析法，利用这两种方法计算得到的相关系数也对应被称为皮尔逊相关系数$r_p$与斯皮尔曼相关系数$r_s$
 \begin{equation}
     \label{equ:spearman}
     r_s=1-\frac{6\sum_{i=1}^{n}(x_{i}-y_{i})^2}{n(n^2-1)}
@@ -74,104 +75,108 @@ B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和�
     r_p=\frac{\sum_{i=1}^n{(x_i- \mathop{x} \limits^-)(y_i- \mathop{y} \limits^-)}}{\sqrt{{\sum_{i=1}^n}{{(x_i- \mathop{x} \limits^-)^2\sum_{i=1}^n}{(y_i- \mathop{y} \limits^-)^2}}}}
 \end{equation}
 
-一般认为，斯皮尔曼相关性分析适用于对存在单调性关系的变量进行检测，而皮尔逊相关性分析适用于对正态分布的变量进行检测。
-由于斯皮尔曼相关系数的计算对变量的分布特性要求并不严格，应用得也更为广泛。
-为计算斯皮尔曼相关系数，需要对长度为$n$的待检二元变量$X$与$Y$按升序排列，得到原始数据在排序后的序次$x$、$y$。特别地，若出现多个数据排序相同，则用这些数据的平均序次统一表征后再进行计算，如\autoref{equ:spearman}所示。
+一般认为，斯皮尔曼相关性分析适用于对存在单调性关系的变量进行检测，而皮尔逊相关性分析适用于对满足正态分布的变量进行检测。
+相较而言，斯皮尔曼相关系数对变量的分布特性要求并不严格，应用得也更为广泛。
+
+为计算斯皮尔曼相关系数，需要对长度为$n$的待检二元变量$X$与$Y$按升序排列，得到原始数据在排序后的序次$x$、$y$，通过序次$x$、$y$完成计算。
+若出现多个数据排序相同，则用这些数据的平均序次统一表征后再进行计算，如\autoref{equ:spearman}所示。
 
 二、参数检验与非参数检验
 
-数据的集中趋势、离散程度与分布形态是对一组数据进行描述时最常用的三个角度\cite{Hu2021}。而参数检验（parametric test，PT）通常都是在假设数据总体服从正态分布、样本统计量服从T分布的前提下，对总体分布中的总体均值、方差及样本差等未知参数做出统计推断。
-而面对总体分布类型未知或分布类型已知，但不对称或变量无法精准测量的数据，或样本容量小、无法运用中心极限定理进行相关参数检验时，
+数据的集中趋势、离散程度与分布形态是对描述一组数据时最常用的三个角度\cite{Hu2021}。参数检验（parametric test，PT）通常是在假设数据总体服从正态分布、
+样本统计量服从T分布的前提下，对总体分布中的未知的总体均值、方差及样本差等参数做出统计推断。
+而面对总体分布类型未知或分布类型已知，但不对称或变量无法精准测量的数据，或样本容量小、无法运用中心极限定理，
+参数检验方法均无法处理。因此，
 另一类不以特定的总体分布为前提、不针对总体分布参数做任何推断的分析方法也发展起来，此类分析方法被统一称为非参数检验（non-parametric test，NPT）\cite{Guo2017,Hu2021,Zhang2019}。
 
 一般而言，参数检验的精确度高于非参数检验，因此在条件允许的情况下，应优先采用参数检验。若由于各种原因导致参数检验的条件不满足，可以应用非参数检验方法对数据进行分析。
 常见的非参数检验方法及其适用情形如\autoref{tab:nonparametric-test}所示。
 \begin{center}
     \zihao{-5}
-    \begin{longtable}{m{1.8cm}<{\centering}m{2cm}<{\centering}m{5cm}<{\centering}m{5cm}<{\centering}}
+    \begin{longtable}{m{1cm}<{\centering}m{1.8cm}<{\centering}m{2cm}<{\centering}m{4.5cm}<{\centering}m{4.5cm}<{\centering}}
 		\caption{常见的非参数检验方法}\\
 		\label{tab:nonparametric-test}\\
 		\topline
-        \colorhead\textbf{样本数目}&\textbf{样本相关性}&\textbf{检验方法}&\textbf{检验方法英文名}\\
+        \colorhead \textbf{序号} & \textbf{样本数目}&\textbf{样本相关性}&\textbf{检验方法}&\textbf{检验方法英文名}\\
         \midline
         \endfirsthead
         \caption[]{(续)}\\
         \topline
-        \colorhead\textbf{样本数目}&\textbf{样本相关性}&\textbf{检验方法}&\textbf{检验方法英文名}\\
+        \colorhead \textbf{序号} & \textbf{样本数目}&\textbf{样本相关性}&\textbf{检验方法}&\textbf{检验方法英文名}\\
         \midline
         \endhead 
         \hline
         \endfoot
         \bottomline
         \endlastfoot
-        \colorrowa 单样本   & /     & 卡方检验  & Chi-Squared Test \\
-        \colorrowc 单样本   & /     & 二项分布检验 & Binomial Test \\
-        \colorrowa 单样本   & /     & K-S检验 & Kolmogorov–Smirnov Test \\
-        \colorrowc 单样本   & /     & 符号秩检验 & Wilcoxon Signed-Rank Test \\
-        \colorrowa 单样本   & /     & 游程检验  & Wald–Wolfowitz runs Test \\
-        \colorrowc 两样本   & 独立    & Wilcxon W等级和检验 & Mann-Whitney U Test \\
-        \colorrowa 两样本   & 独立    & 摩西极端反映差异检验 & Moses Extreme Reaction Test \\
-        \colorrowc 两样本   & 独立    & K-S检验 & Kolmogorov–Smirnov Test \\
-        \colorrowa 两样本   & 独立    & 游程检验  & Wald–Wolfowitz runs Test \\
-        \colorrowc 两样本   & 相关    & 符号检验  & Sign Test \\
-        \colorrowa 两样本   & 相关    & 符号秩检验 & Wilcoxon Signed-Rank Test \\
-        \colorrowc 两样本   & 相关    & 变化显著性检验 & McNemar's Test \\
-        \colorrowa 两样本   & 相关    & 边缘一致性检验 & Marginal Homogeneity Test \\
-        \colorrowc 多样本   & 独立    & K-W平均秩检验 & Kruskal-Wallis H Test \\
-        \colorrowa 多样本   & 独立    & 中位数检验 & Median Test \\
-        \colorrowc 多样本   & 独立    & 分组分布检验 & Jonckheere-Terpstra Test \\
-        \colorrowa 多样本   & 相关    & 双向等级方差分析 & Friedman Test \\
-        \colorrowc 多样本   & 相关    & 肯德尔和谐系数检验 & Kendall's W Test \\
-        \colorrowa 多样本   & 相关    & 二分变量检验 & Cochran's Q Test \\
+        \colorrowa  1  & 单样本   & /     & 卡方检验  & Chi-Squared Test \\
+        \colorrowc  2  & 单样本   & /     & 二项分布检验 & Binomial Test \\
+        \colorrowa  3  & 单样本   & /     & K-S检验 & Kolmogorov–Smirnov Test \\
+        \colorrowc  4  & 单样本   & /     & 符号秩检验 & Wilcoxon Signed-Rank Test \\
+        \colorrowa  5  & 单样本   & /     & 游程检验  & Wald–Wolfowitz runs Test \\
+        \colorrowc  6  & 两样本   & 独立    & Wilcxon W等级和检验 & Mann-Whitney U Test \\
+        \colorrowa  7  & 两样本   & 独立    & 摩西极端反映差异检验 & Moses Extreme Reaction Test \\
+        \colorrowc  8  & 两样本   & 独立    & K-S检验 & Kolmogorov–Smirnov Test \\
+        \colorrowa  9  & 两样本   & 独立    & 游程检验  & Wald–Wolfowitz runs Test \\
+        \colorrowc  10  & 两样本   & 相关    & 符号检验  & Sign Test \\
+        \colorrowa  11  & 两样本   & 相关    & 符号秩检验 & Wilcoxon Signed-Rank Test \\
+        \colorrowc  12  & 两样本   & 相关    & 变化显著性检验 & McNemar's Test \\
+        \colorrowa  13  & 两样本   & 相关    & 边缘一致性检验 & Marginal Homogeneity Test \\
+        \colorrowc  14  & 多样本   & 独立    & K-W平均秩检验 & Kruskal-Wallis H Test \\
+        \colorrowa  15  & 多样本   & 独立    & 中位数检验 & Median Test \\
+        \colorrowc  16  & 多样本   & 独立    & 分组分布检验 & Jonckheere-Terpstra Test \\
+        \colorrowa  17  & 多样本   & 相关    & 双向等级方差分析 & Friedman Test \\
+        \colorrowc  18  & 多样本   & 相关    & 肯德尔和谐系数检验 & Kendall's W Test \\
+        \colorrowa  19  & 多样本   & 相关    & 二分变量检验 & Cochran's Q Test \\
     \end{longtable}
 \end{center}
 \vspace{-0.8cm}
 
 \subsection{分析结果}
-由于人口统计学特征、PE风险因子等待检参数存在样本量较小、具体分布未知等客观限制因素，满足U检验的适用条件。
-本论文最终选取\autoref{tab:nonparametric-test}中的中的Wilcxon W等级和检验，亦即Mann-Whitney U检验对被试的人口统计学特征、PE风险因子在实验室与对照组上
-是否存在分布差异进行相关性分析。
+由于3.2节中，人口统计学特征、PE风险因子等待检参数存在样本量较小、具体分布未知等客观限制因素，不满足参数检验的条件。
+本研究最终从\autoref{tab:nonparametric-test}中选取了Wilcxon W等级和检验方法，亦即Mann-Whitney U检验对被试的人口统计学特征、PE风险因子在实验室与对照组上
+是否存在分布差异进行了相关性分析。
 
 U检验的基本思想是将全部样本混合后一起求秩，然后根据两组样本的秩分情况判断是否存在差异。
-被试孕妇的人口统计学特征、PE风险因子经U检验后的统计结果如\autoref{tab:factors_res}所示，其中，所有待分析变量均以平均值±标准差的形式表征，组别之间存在分布差异的变量
+上述待检变量经U检验后的结果如\autoref{tab:factors_res}所示，其中，所有待检变量均以（平均值±标准差）的形式表征，组别之间存在分布差异的变量
 按粉红色底色、黑色加粗字体的格式进行了突出显示。
 
 \begin{center}
     \zihao{-5}
-    \begin{longtable}{m{4cm}<{\centering}m{4cm}<{\centering}m{4cm}<{\centering}m{2cm}<{\centering}}
+    \begin{longtable}{m{1cm}<{\centering}m{3.5cm}<{\centering}m{3.5cm}<{\centering}m{3.5cm}<{\centering}m{2cm}<{\centering}}
 		\caption{被试孕妇风险因子统计结果}\\
 		\label{tab:factors_res}\\
 		\topline
-        \colorhead\textbf{检验变量（单位）}      & \textbf{实验组（n=44）} & \textbf{对照组（n=35）} & \textbf{p值} \\
+        \colorhead \textbf{序号} & \textbf{检验变量（单位）}      & \textbf{实验组（n=44）} & \textbf{对照组（n=35）} & \textbf{$p$值} \\
         \midline
         \endfirsthead
         \caption[]{(续)}\\
         \topline
-        \colorhead\textbf{检验变量（单位）}      & \textbf{实验组（n=44）} & \textbf{对照组（n=35）} & \textbf{p值} \\
+        \colorhead \textbf{序号} & \textbf{检验变量（单位）}      & \textbf{实验组（n=44）} & \textbf{对照组（n=35）} & \textbf{$p$值} \\
         \midline
         \endhead 
         \hline
         \endfoot
         \bottomline
         \endlastfoot
-        \colorrowa 年龄（years） & 32.3±3.6 & 33.8±4.6 & 0.108 \\
-        \colorrowc 孕周（weeks） & 32.7±3.8 & 34.3±4.3 & 0.053 \\
-        \colorrowa 身高（cm） & 158.1±5.0 & 160.0±3.3 & 0.089 \\
-        \colorrowb \textbf{体重（kg）} &  \textbf{75.7±12.9} &  \textbf{67.1±8.2} & \textbf{0.002* }\\
-        \colorrowb \textbf{BMI（kg/cm）} &  \textbf{30.2±4.5} &  \textbf{26.2±3.3} & \textbf{<0.001*} \\
-        \colorrowb \textbf{收缩压（mmhg）} &  \textbf{160.1±19.5} &  \textbf{111.2±9.8} & \textbf{<0.001*} \\
-        \colorrowb \textbf{舒张压（mmhg）} &  \textbf{96.1±14.5} &  \textbf{66.8±10.4} & \textbf{<0.001*} \\
-        \colorrowc 心率（bpm） & 87.0±11.9 & 87.5±13.1 & 0.656 \\
+        \colorrowa 1 & 年龄（years） & 32.3±3.6 & 33.8±4.6 & 0.108 \\
+        \colorrowc 2 & 孕周（weeks） & 32.7±3.8 & 34.3±4.3 & 0.053 \\
+        \colorrowa 3 & 身高（cm） & 158.1±5.0 & 160.0±3.3 & 0.089 \\
+        \colorrowb \colorcellc 4 & \textbf{体重（kg）} &  \textbf{75.7±12.9} &  \textbf{67.1±8.2} & \textbf{0.002* }\\
+        \colorrowb \colorcella 5 & \textbf{BMI（kg/cm）} &  \textbf{30.2±4.5} &  \textbf{26.2±3.3} & \textbf{<0.001*} \\
+        \colorrowb \colorcellc 6 & \textbf{收缩压（mmhg）} &  \textbf{160.1±19.5} &  \textbf{111.2±9.8} & \textbf{<0.001*} \\
+        \colorrowb \colorcella 7 & \textbf{舒张压（mmhg）} &  \textbf{96.1±14.5} &  \textbf{66.8±10.4} & \textbf{<0.001*} \\
+        \colorrowc 8 & 心率（bpm） & 87.0±11.9 & 87.5±13.1 & 0.656 \\
     \end{longtable}
 \end{center}
-\vspace{-1cm}
+\vspace{-1.5cm}
 
 从\autoref{tab:factors_res}可以发现，实验组与对照组的被试孕妇在年龄、孕周、身高、心率等风险因子
-上均无明显统计意义上的差别（p>0.05），但在收缩压与舒张压的数值上有显著差异（p<0.001），这也与被试孕妇的PE病发状态一致，符合预期。
+上均无明显统计意义上的差别（$p$>0.05），但在收缩压与舒张压的数值上有显著差异（$p$<0.001），这也与被试孕妇的PE病发状态一致，符合预期。
 
 \section{脉搏波的预处理}
-不同硬件设备采集的PPG数据在采样率、采样精度及导出的数据格式等方面存在着不小的差异，同时这些设备对数据采集过程中出现的人体肌电、呼吸与体动以及环境工频等噪声干扰的软硬件滤波处理能力也不尽相同。
-因此，在具体的研究与应用场景下，在对PPG进行分析前，通常需要进行一定的预处理。
+不同硬件设备采集的PPG数据在采样率、采样精度及导出的数据格式等方面存在着一定的差异，同时这些设备对数据采集过程中出现的人体肌电、呼吸与体动以及环境工频等噪声干扰的软硬件滤波处理能力也不尽相同。
+因此，在具体的研究应用场景下，在对PPG进行分析前，通常需要进行一定的数据预处理。
 \autoref{fig:samplesignal}展示了此前数据实验采集得到的一段有代表性的数据波形。
 
 \begin{figure}[htbp]
@@ -180,20 +185,20 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
     \caption{\label{fig:samplesignal}一名被试实采PPG信号（片段）}
 \end{figure}
 
-从\autoref{fig:samplesignal}中可以看到，数据实验经由GE B650监护仪采集得到的PPG信号质量较高，但仍然存在着基线偏移、PPG信号重博波特征不明显等问题。这些问题可能与实验使用的传感器种类、监护仪硬件检测电路及监护仪软件处理算法等因素有关。
-除此之外，在\autoref{fig:samplesignal}中，40 s至55 s内存在着一段干扰无效数据，在进行分析前必须设法对其进行剔除。
-
-故本节对PPG信号的分析预处理过程进行介绍，包括滤波处理、波形检测、去除基线漂移、样条插值与数据标准化等，如\autoref{fig:process}所示。同时说明上述过程中涉及的具体算法方案及技术手段。
+从\autoref{fig:samplesignal}中可以看到，本次临床数据实验经由GE B650监护仪采集得到的PPG信号质量较高，但仍然存在着基线偏移、PPG信号重博波特征不明显等问题。这些问题可能与实验使用的传感器种类、监护仪硬件检测电路及监护仪软件处理算法等因素有关。
+除此之外，\autoref{fig:samplesignal}40 $s$至55 $s$内存在着一段无效干扰数据，在进行分析前必须设法对其进行剔除。
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth]{pulse_preprocess/process.pdf}
+    \includegraphics[width=0.5\linewidth]{pulse_preprocess/process}
     \caption{\label{fig:process}信号预处理流程示意图}
 \end{figure}
 
+本节将具体介绍对PPG信号的分析预处理过程，同时说明预处理各过程中使用的具体算法。PPG预处理过程包括滤波处理、波形检测、去除基线漂移、信号重采样与数据标准化等，如\autoref{fig:process}所示。
+并对一种可在多平台、多研究背景下应用的新型PPG波形检测算法进行着重介绍。
 \subsection{信号滤波}
-数字滤波可从原始信号中特定频段的成分，是信号处理的常见的处理方法。而在人体电生理信号分析领域，数字滤波更是必不可少的处理步骤。针对人体各电生理信号，此前的诸多学者们提出了多种不同的滤波算法。
-在本研究中，由于如\autoref{fig:samplesignal}所示的原始PPG信号质量高、干扰噪声较少，仅使用较为简单的滑动平均滤波器对其进行了处理。
+数字滤波可从原始信号获取特定频段的成分，是信号处理的常见的处理方法。而在人体电生理信号分析领域，数字滤波更是必不可少的处理步骤。针对人体各电生理信号，此前的诸多学者们提出了多种不同的滤波算法。
+由于如\autoref{fig:samplesignal}所示的原始PPG信号质量高、干扰噪声较少，本研究仅使用较为简单的平均滑动滤波器对其进行了处理。
 
 平滑滤波器本质上是一个低通滤波器，若以$X$表示原始信号，$Y$表示滤波后信号，$N$表示其滤波阶数，则平滑滤波过程可表示为
 \begin{equation}
@@ -219,28 +224,28 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
     \caption{\label{fig:filter}平滑滤波前后PPG信号对比图}
 \end{figure}
 
-经滑动滤波前后的PPG信号对比如\autoref{fig:filter}所示，其中滤波阶数$N$被设置为5，对应的的截止频率约为89$Hz$。
-另一方面，信噪比（signal-noise rate，SNR）与均方误差（root mean square error，RMSE）是最常用的评估滤波效果的两个指标，其定义分别为
+使用$N$=5的平滑滤波器对采集得到的PPG进行处理，滤波前后对比如\autoref{fig:filter}所示。由\autoref{equ:malpf}可知，此时滤波器对应的的截止频率约为89$Hz$。
+另一方面，信噪比（signal-noise rate，SNR）与均方误差（root mean square error，RMSE）是最常用的评估滤波效果优劣的两个指标，其定义分别为
 \begin{equation}
     \label{equ:snr}
-    SNR=10 \cdot \log_{10}\frac{\sum_{i=1}^{n}{(X_i-\mathop{X} \limits^-})^2}{\sum_{i=1}^{n}{(X_i-Y_i})^2}
+    \text{SNR}=10 \cdot \log_{10}\frac{\sum_{i=1}^{n}{(X_i-\mathop{X} \limits^-})^2}{\sum_{i=1}^{n}{(X_i-Y_i})^2}
 \end{equation}
 \begin{equation}
     \label{equ:rmse}
-    RMSE=\sqrt{\frac{\sum_{i=1}^{n}{(X_i-Y_i})^2}{n}}
+    \text{RMSE}=\sqrt{\frac{\sum_{i=1}^{n}{(X_i-Y_i})^2}{n}}
 \end{equation}
-通过SNR与RMSE评估\autoref{fig:filter}中的效果，可得$SNR=33.19$，$RMSE=6.27$。
+通过SNR与RMSE评估\autoref{fig:filter}中的效果，可得$\text{SNR}$=33.19，$\text{RMSE}$=6.27。
 这说明PPG信号波形特征已比较清晰，因此，滤波阶数$N$为5的平滑滤波器可满足后续分析需求。
 
 \subsection{波形检测}
-准确地检测PPG波形是分析研究PPG的前提。多数波形检测算法一般会一次性完成PPG波形分析与检测，而对结果的校验需全部由人工完成\cite{Zhang2010,Chen2021,Allen2007,Feng2018,FengJiang2018}。
+准确地检测PPG波形是分析研究的前提。多数PPG波形检测算法一般会一次性完成PPG波形的分析与检测，而对结果的校验需全部由人工完成\cite{Zhang2010,Chen2021,Allen2007,Feng2018,FengJiang2018}。
 在处理受到干扰或存在畸变的PPG数据时，此类算法的检测性能通常也会下降。
 为改进这些问题，在借鉴计算机科学领域的策略与机制分离思想的基础上\cite{Levin1975}，本研究对PPG波形的检测过程进行了模式设计，
 提出一种基于初筛—复核—决策（screening-checking-deciding，SCD）的新型算法，其处理流程图如\autoref{fig:detect}所示。
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.6\linewidth]{pulse_preprocess/scd}
+    \includegraphics[width=0.65\linewidth]{pulse_preprocess/scd}
     \caption{\label{fig:detect}SCD算法检测流程示意}
 \end{figure}
 
@@ -248,8 +253,8 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
 这里的机制可以理解成决定如何做（how），而策略则决定具体做什么（what）。
 SCD算法以“宽进严出”为原则，通过初筛、复核及决策等机制检测有效PPG波形。
 其中，初筛阶段可初步确定PPG波形；复核阶段利用多种形态学特征，将初筛结果定性描述为有效波形或异常干扰；决策阶段则是按照一定的策略从上述定性描述中最终确定有效波形。
-SCD算法对各机制下使用的具体策略不做过多限制，支持直接更改初筛算法，增删复核标准，切换决策策略等设置，
-保证了SCD算法的适用性与调整的灵活性，使高效准确地检测受到干扰或存在畸变的PPG数据成为可能。
+SCD算法对各机制下使用的具体策略不做过多限制，支持直接更改初筛算法，增删复核标准，切换决策策略等设置。
+这保证了SCD算法的适用性与调整的灵活性，使高效准确地检测受到干扰或存在畸变的PPG数据成为可能。
 
 另一方面，SCD算法可以视为一个广义上的监督学习模型的训练与应用过程\cite{Zhou2016}。其中，多种形态学特征的复核结果对应着模型的输入数据，决策阶段使用的策略对应着模型的训练算法，
 确定有效波形的决策过程则对应着模型在新数据集上的应用过程。而复核与决策阶段涉及的多项具体数值可以视为该模型的超参数。本研究基于自主实验数据确定了这些超参数的具体数值（参见3.2小节）。
@@ -265,30 +270,34 @@ SCD算法对各机制下使用的具体策略不做过多限制，支持直接�
 波峰是特定PPG波形内的最大值，在其左邻域内PPG幅值单调递增，右邻域内PPG幅值单调递减，则显然波峰必然是原始数据中的局部极大值。
 
 本研究使用的波峰的定位步骤如下：
-计算并遍历原始信号的一阶导数$X^{'}$，若出现$X_i^{'}\ge 0$且$X_{i+1}^{'}\le 0$，则说明出现了极大值。此时，定义时长一长一短的两个搜索窗，分别以当前数据点为窗中心，向前后双向检测并返回窗内最大值的位置。
-若两个搜索窗的返回结果一致，则说明返回值就是一个波峰点。为防止同一波峰被多次检测，只有与上一成功检测的波峰位置点不同返回值才会被加入波峰缓存数组$Peaks$中。
+
+1）计算并遍历原始信号的一阶导数$x^{'}$，若出现$x_i^{'}\ge 0$且$x_{i+1}^{'}\le 0$，则说明出现了极大值。
+
+2）定义一长一短的两个搜索窗，分别以当前数据点为窗中心，向前后双向检测并返回窗内最大值的位置。
+
+3）若两个搜索窗的返回结果一致，则说明返回值就是一个波峰点。为防止同一波峰被多次检测，只有与上一成功检测的波峰位置点不同返回值才会被加入波峰缓存数组$Peaks$中。
 
 在实际检测时，常会出现一阶导数在某邻域内多次出现过零点，导致多个局部极大值连续出现。为避免连续调用搜索窗、提高算法效率，本研究针对性进行了以下剪枝优化设计：
 
-1）、采用中心对称搜索窗
+1）采用中心对称搜索窗
 
 窗口进行最大值搜索时是以当前搜索位置中心对称前后双向搜索，当第一个过零点出现时，这一邻域内的所有极值点均已被检索过，得到的局部最值已经是该邻域内最大值。
 
-2）、合理设置搜索窗时长
+2）合理设置搜索窗时长
 
-结合正常波形的形态特点，本研究将搜索窗时长分别设置为0.1s与0.3s。前者可以直接剔除掉时间跨度过小的局部极值，后者是基于此前PPG波峰与其重博峰时间间隔的经验值，可以保证重博峰点不会被误检为整个波形的波峰。
+结合正常波形的形态特点，本研究将搜索窗时长分别设置为0.1 $s$与0.3 $s$。前者可以直接剔除掉时间跨度过小的局部极值，后者是基于此前PPG波峰与其重博峰时间间隔的经验值，可以保证重博峰点不会被误检为整个波形的波峰。
 
-3）、搜索窗步进值策略调整
+3）搜索窗步进值策略调整
 
 若长窗在当前位置$C$以中心沿时间轴延伸方向找到了局部极大值的坐标$L$后，下一次的搜索窗位置可直接从该$L$处开始。当搜索完成后，若短窗返回结果$S=L$，则返回值必然是检测得到的波峰位置$P$，下次搜索可直接从波峰后开始；若$S\ne L$，
 此时从$C$至$L$再进行搜索已经不可能再更新$L$坐标。而由于长窗搜索必然包含短窗，故下次搜索也可以同样调整检索位置从$L$处开始。
 
-2. 波谷定位
+2、波谷定位
 
-在波峰的位置确定之后，波谷的定位相对简单，一种可行的处理思路是将两个连续波峰之间的最小值定义为PPG波形的波谷。该思路已经默认波形之间有连续性，即任意两个波形之间不存在其他干扰段，
-且所有的波峰均已被正确无误地检测出来，因此对复杂信号的处理效果欠佳。
+在波峰的位置确定之后，波谷的定位相对简单，一种可行的处理思路是将两个连续波峰之间的最小值定义为PPG波形的波谷。但该思路已同时默认波形之间有连续性，即任意两个波形之间不存在其他干扰段，
+且所有的波峰均已被正确无误地检测出来。因此，这种思路无法对复杂信号进行有效处理。
 
-本研究改进上述思路，对波谷的定位按照先寻找定位再二次确认的方法进行。除满足最小值的条件下，波谷需要进一步满足其出现位置必须在这两个波峰之间的后半段。
+本研究改进了上述思路，对波谷的定位按照先寻找定位再二次确认的方法进行。除满足最小值的条件下，波谷需要进一步满足其出现位置必须在这两个波峰之间的后半段。
 此步得到的PPG波谷位置也被保存至缓存数组$Troughs$中，这一过程如\autoref{alg:troughs_detect}所示。
 \begin{breakablealgorithm}
     \caption{PPG波形波谷定位检测}
@@ -313,22 +322,22 @@ SCD算法对各机制下使用的具体策略不做过多限制，支持直接�
     \end{algorithmic}
 \end{breakablealgorithm}
 
-3. 完整波形确认
+3、完整波形确认
 
-前两步已经分别得到了原始信号中所有波峰与波谷点，此时仅需按照（波谷，波峰，下一波谷）的规则组合成完整波形即可。
+此前两步已经分别得到了原始信号中所有波峰与波谷点，此时仅需按照（波谷，波峰，下一波谷）的规则组合成完整波形即可。
 但对某些异常信号，\autoref{alg:troughs_detect}无法有效检出在两波峰的波谷。
 因此，有必要组合后的波形再次进行检查校对。
 
 参考以往研究对PPG波形对经验统计，本研究以一定的PPG波形的时间规则完成校对，以确保有效波形的必定在这些时间规则规定的间期内。
-这些时间规则包括，波形起点与波形终点间期需要$P_{S2E}$需要大于0.4$s$，波形峰值点与波形终点间期$P_{P2E}$需要大于0.3$s$。
+这些时间规则包括，波形起点与波形终点间期需要$P_{S2E}$需要大于0.4 $s$，波形峰值点与波形终点间期$P_{P2E}$需要大于0.3 $s$。
 
-4. 其他特征点定位
+4、其他特征点定位
 
 初筛阶段不做除波峰波谷外的其他特征点检测。其他特征点的定位依赖于波形的正确检测，这些检测被推迟到SCD算法检测完成后才进行。
 
 二、复核
 
-如绪论中所述，PPG是一种平稳随机信号，短时间内采样得到的数据波形理应具有较高的相似度\cite{Qiu2012}。
+由于PPG是一种平稳随机信号，短时间内采样得到的数据波形理应具有较高的相似度\cite{Qiu2012}。
 而有效PPG波形与干扰、畸变信号在形态特征、统计特征上往往存在着一定差异，存在通过软件算法进行智能识别区分的理论可行性。
 因此，SCD算法设计了PPG波形的多种形态学特征，并以这些特征为标准对初筛结果进行复核。
 
@@ -397,38 +406,38 @@ $x_l$为$x_s$与$x_e$中数值较小者。
 这是由于PPG波形个体差异性较为明显；同时，在上述特征上，同一个体的有效PPG波形与干扰、畸变信号也存在着较为显著的数值差异。
 使用具体特征标准进行复核的步骤如下：
 
-1）、计算当前个体的所有PPG波形对应的特征值。
+1）计算当前个体的所有PPG波形对应的特征值。
 
-2）、将步骤1中所有数值排序后，选取部分数值计算均值。
+2）将步骤1中所有数值排序后，选取部分数值计算均值。
 
-3）、依次将所有特征值与该均值进行比较，若特征值在均值的一定区间内，对应的波形才会被判断为有效波形（输出0）；否则会被判为异常干扰（输出1）。
+3）依次将所有特征值与该均值进行比较，若特征值在均值的一定区间内，对应的波形才会被判断为有效波形（输出0）；否则会被判为异常干扰（输出1）。
 
 复核阶段的超参数数值如\autoref{tab:checkingp}所示。
 
 \begin{center}
     \zihao{-5}
-    \begin{longtable}{m{1.8cm}<{\centering}m{4cm}<{\centering}m{4cm}<{\centering}m{3cm}<{\centering}}
+    \begin{longtable}{m{1cm}<{\centering}m{1.5cm}<{\centering}m{3.6cm}<{\centering}m{3.6cm}<{\centering}m{3cm}<{\centering}}
 		\caption{复核阶段各标准的超参数数值}\\
 		\label{tab:checkingp}\\
 		\topline
-        \colorhead\textbf{复核标准}      & \textbf{个体全部波形参与均值计算百分比区间} & \textbf{判为有效波形的均值相对区间} & \textbf{备注} \\
+        \colorhead \textbf{序号} & \textbf{复核标准}      & \textbf{个体全部波形参与均值计算百分比区间} & \textbf{判为有效波形的均值相对区间} & \textbf{备注} \\
         \midline
         \endfirsthead
         \caption[]{(续)}\\
         \topline
-        \colorhead\textbf{复核标准}      & \textbf{个体全部波形参与均值计算百分比区间} & \textbf{判为有效波形的均值相对区间} & \textbf{备注} \\
+        \colorhead \textbf{序号} & \textbf{复核标准}      & \textbf{个体全部波形参与均值计算百分比区间} & \textbf{判为有效波形的均值相对区间} & \textbf{备注} \\
         \midline
         \endhead 
         \hline
         \endfoot
         \bottomline
         \endlastfoot
-        \colorrowa $P$ & [0\%, 100\%] & [0.4, 1.8] & 无需排序 \\
-        \colorrowc $S$ & [0\%, 100\%] & [0.4, 1.8] & 无需排序 \\
-        \colorrowa $R$ & [20\%, 80\%] & [0.8, 1.2] & 需按升序排序 \\
-        \colorrowc $B_1$ & [0\%, 80\%] & [0, 8] & 需按升序排序 \\
-        \colorrowa $B_2$ & [0\%, 80\%] & [0, 10] & 需按升序排序 \\
-        \colorrowc $B_3$ & / & [0.5, 2.0] & 无需计算均值 \\
+        \colorrowa 1 & $P$ & [0\%, 100\%] & [0.4, 1.8] & 无需排序 \\
+        \colorrowc 2 & $S$ & [0\%, 100\%] & [0.4, 1.8] & 无需排序 \\
+        \colorrowa 3 & $R$ & [20\%, 80\%] & [0.8, 1.2] & 需按升序排序 \\
+        \colorrowc 4 & $B_1$ & [0\%, 80\%] & [0, 8] & 需按升序排序 \\
+        \colorrowa 5 & $B_2$ & [0\%, 80\%] & [0, 10] & 需按升序排序 \\
+        \colorrowc 6 & $B_3$ & / & [0.5, 2.0] & 无需计算均值 \\
     \end{longtable}
 \end{center}
 \vspace{-1cm}
@@ -439,11 +448,11 @@ $x_l$为$x_s$与$x_e$中数值较小者。
 
 本研究选择使用加权投票策略进行决策，具体过程如下：
 
-1）、按复核流程计算当前波形在各标准上的逻辑输出。
+1）按复核流程计算当前波形在各标准上的逻辑输出。
 
 2）将复核标准$P$与$S$的逻辑与运算结果计为$E$，将复核标准$B_1$、$B_2$与$B_3$的逻辑与计算结果计为$B$。
 
-3）、按照0.3、0.5、0.2的权重对步骤2中得到的$E$、$B$及复核标准$R$进行加权计算，将结果计为$Y$。
+3）按照0.3、0.5、0.2的权重对步骤2中得到的$E$、$B$及复核标准$R$进行加权计算，将结果计为$Y$。
 
 4）若$Y$小于0.5，当前波形会被判断为有效波形；否则，会被判为异常干扰。
 
@@ -451,7 +460,7 @@ $x_l$为$x_s$与$x_e$中数值较小者。
 
 四、检测算法性能评估
 
-本研究基于自主实验的PPG数据设计研发了SCD算法，同时利用公开数据集对算法的检测结果与性能进行了验证与评估。此外，本研究也选取了两种有代表性的PPG检测算法与SCD算法进行了横向对比验证。
+本研究基于自主实验的PPG数据设计研发了SCD算法，同时利用公开数据集对算法的检测结果与性能进行了验证与评估。此外，本研究也选取了两种有代表性的PPG检测算法与SCD算法进行了对比验证。
 
 1、自主数据实验数据
 
@@ -655,29 +664,29 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
 
 \begin{center}
     \zihao{-5}
-    \begin{longtable}{m{5cm}<{\centering}m{8cm}<{\centering}}
+    \begin{longtable}{m{1cm}<{\centering}m{5cm}<{\centering}m{7cm}<{\centering}}
 		\caption{几种常见的三次样条端点条件}\\
 		\label{tab:splinekind}\\
 		\topline
-        \colorhead \textbf{样条种类}&\textbf{端点条件}\\
+        \colorhead \textbf{序号} & \textbf{样条种类}&\textbf{端点条件}\\
         \midline
         \endfirsthead
         \caption[]{(续)}\\
         \topline
-        \colorhead \textbf{样条种类}&\textbf{端点条件}\\
+        \colorhead \textbf{序号} &  \textbf{样条种类}&\textbf{端点条件}\\
         \midline
         \endhead 
         \hline
         \endfoot
         \bottomline
         \endlastfoot
-        \colorrowa 自然三次样条&
+        \colorrowa 1 & 自然三次样条&
         $
             S_{1}^{''}(x_{1})=0,
             S_{n-1}^{''}(x_{n})=0
         $
         \\
-        \colorrowc 曲率调整三次样条&
+        \colorrowc 2 & 曲率调整三次样条&
         $\left \{
         \begin{aligned}
             &S_{1}^{''}(x_{1})=v_1,&v_{1}\neq0\\
@@ -686,7 +695,7 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
         \right.
         $
         \\
-        \colorrowa 钳制三次样条&
+        \colorrowa 3 & 钳制三次样条&
         $\left \{
         \begin{aligned}
             &S_{1}^{'}(x_{1})=v_1,&v_{1}\neq0\\
@@ -695,12 +704,12 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
         \right.
         $
         \\
-        \colorrowc 抛物线端点三次样条&
+        \colorrowc 4 & 抛物线端点三次样条&
         $
             d_1=0,d_{n-1}=0
         $
         \\
-        \colorrowa 非纽结三次样条&
+        \colorrowa 5 & 非纽结三次样条&
         $
             d_1=d_2, d_{n-2}=d_{n-1}
         $
