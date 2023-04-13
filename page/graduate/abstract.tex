@@ -1,66 +1,101 @@
 \cleardoublepage
 \chapternonum{摘要}
-子痫前期（Preeclampsia，PE）是孕妇妊娠期特有的一种多系统进展性疾病，可引起严重的母胎并发症，是孕产妇和围产儿病死率升高的主要原因。原发性高血压与蛋白尿是PE最突出的特点，此外，PE也可
-引起全身小静脉痉挛。但现阶段对PE的诊断识别主要依赖于生化标志物有创检查，受操作流程、检测场所及成本等条件制约，缺乏对PE的便捷、快速、无创、准确的临床诊断手段。
+子痫前期（preeclampsia，PE）是孕妇妊娠期特有的一种多系统进展性疾病，可引起全身小静脉痉挛，并进一步导致严重的母胎并发症，
+是孕产妇和围产儿病死率升高的主要原因之一。但现阶段对PE的诊断识别主要通过生化标志物检查，该过程受操作流程、检测场所及成本等条件制约。
+本论文基于可充分反应血液动力学变化的光电容积脉搏波（photoplethysmography, PPG）对PE的识别问题进行了研究。
+PPG是心脏周期性搏动的体现，包含了有关人体血液微循环方面的更富细节的生理信息，具有无创、便捷等优点。
 
-光电容积脉搏波（Photoplethysmography, PPG）是心脏周期性搏动的体现，包含了有关人体血液微循环方面的更富细节的生理信息，可以反应血液动力学上的变化。此外，PPG在采集测量过程中定位简单、易于操作，
-具有无创、无痛、迅速、便捷等优点，采集得到的信号质量高、稳定性强，
-在观察和评估微循环状况上具有天然优势。
-
-本文改进脉搏波的波形检测流程，提高脉搏波波形检测准确率。研发能够表征脉搏波形态学特征的多种新型时域
-特征参数，构建通用的脉搏波时域特征描述集合。对脉搏波时域特征集合进行特征筛
-选，从中选取与子痫前期相关性高的特征参数，使用多种机器学习算法构建子痫前期的
-识别模型，并验证所得模型的有效性与可靠性。
+本论文构建了包含PE孕妇与正常妊娠孕妇的PPG数据集，设计了PPG多维度时域特征集与PPG采样序列时域特征集，将
+被试PPG数据的单个波形与全波波形分别作为最小分析单位，使用决策树、K近邻与随机森林三种算法，进行了PE识别模型的研究工作。
 
 本文的主要内容及创新点如下:
 
-1、基于策略与机制分离思想，提出了脉搏波波形检测的初筛-复核-投票算法
+一、基于策略与机制分离思想，提出并实现了PPG波形检测的初筛-复核-投票算法
 
-本研究对 PPG 波形的检测过程进行了模式设计，提出了一种新型 SCD 算法，算
-法由初筛、复核与决策等三部分组成。在初筛时，通过搜索窗的方法确定波形；在复核时，
-通过功率、标准差、波峰相对位置与基线漂移程度等 PPG 形态学特征，区分有效波形与异
-常干扰；在决策时，通过加权投票的策略确定 PPG 波形是否为有效波形。SCD 算法可根据
-使用场景进行二次开发，支持更改初筛算法、增删复核标准与切换决策策略等设置。经验证，
-该算法各模块设计合理，与其他算法对比结果表明，对 PPG 波形的识别准确率高、抗干扰
-能力强。SCD 算法为多平台、多研究应用下的 PPG 分析检测的不同场景提供了一定的参考。
+本论文对PPG波形的检测过程进行了模式设计，提出了一种基于初筛-复核-投票（screening-checking-deciding，SCD）的PPG波形检测算法。
+算法在初筛时，通过搜索窗的方法确定波形；在复核时，通过功率、标准差、波峰相对位置与基线漂移程度等PPG形态学特征，区分有效波形与异常干扰；
+在决策时，通过加权投票的策略确定 PPG 波形是否为有效波形。SCD 算法可根据使用场景进行二次开发，支持更改初筛算法、增删复核标准与切换决策策略等设置。
+经验证，算法对PPG波形的识别准确率高、抗干扰能力强，可为多平台、多研究应用下的 PPG 分析检测的不同场景提供了一定的参考。
 
-2、结合PPG形态特征，从时间、幅值、角度、弧度、面积、斜率等维度设计了多种PPG新型时域特征，同时，也从
-描述多个PPG波形间的差异的角度出发，设计了三种描述PPG波形间差异时域特征参数。
-在PPG新型时域特征的基础上，构建了PPG多维度时域特征集合；同时，将PPG信号
-的原始采样序列的幅值作为特殊的描述特征，构建了PPG采样序列时域特征集合。
+二、设计了多种新型PPG时域形态特征，构建了完整的PPG时域描述特征集合
 
-3、 利用多种机器学习算法，在PPG多维度时域特征集与PPG采样序列时域特征集的基础上，分别构建了多种PE的识别模型，通过各模型在测试集上的泛化效果评估了各算法的性能，
-也对两个PPG特征集本身表征PE的能力进行了评估。
+本论文对PPG时域特征的设计过程进行了方法学的归纳，提出了PPG描述向量的概念，并从时间、幅值、角度、弧度、面积、斜率等维度设计了多种新型PPG时域特征，
+通过左视策略、中视策略与分层策略构建了PPG多维度时域特征集。
+基于PPG波形的原始采样序列，通过重采样策略、补齐策略，构建了PPG采样序列时域特征集。
+此外，也提出了描述PPG波形间差异的新型时域特征。
+这些研究工作为PPG的时域特征设计提供了新的思路，也为基于PPG的各类应用研究提供了普适通用的PPG时域特征集合。
 
-综上，本文提出了针对光电容积脉搏波的一种新型检测算法，提出了多种脉搏波时域描述特征，并建立了三两脉搏波描述特征集合。在此基础上，基于机器学习相关算法，建立了可有效识别子痫前期的分类模型，
-对于实现PE的识别判断及保障孕妇及围产儿的生命健康安全，具有重大的临床应用价值。
+三、使用多种机器学习算法构建了子痫前期的识别模型
 
+经算法初筛，本论文将决策树、K近邻与随机森林三种算法作为PE识别模型的主要研究方法。
+按照将被试PPG数据的单个波形与全波波形分别作为最小分析单位的两个研究角度，基于上述两个PPG时域特征集，使用决策树、K近邻与随机森林三种算法，进行了PE识别模型的研究。
+结果表明，将PPG单个波形作为最小分析单位时，在PPG多维度时域特征集上，由随机森林算法可训练得到最佳模型（AUC为0.99，测试集准确率97.0\%）；
+在PPG采样序列时域特征集上，由随机森林算法可得到最佳模型（AUC为0.967，测试集准确率92.5\%）。
+将被试PPG全部波形作为最小分析单位时，在PPG多维度时域特征集上，由随机森林算法可得到最佳模型（AUC为0.952，测试集准确率93.8\%）；
+在PPG采样序列时域特征集上，由随机森林算法可得到最佳模型（AUC为0.929，测试集准确率87.5\%）。
 
-\textbf{关键词}:子痫前期;识别模型；光电容积脉搏波；波形检测算法；随机森林
+以上结果表明，本文构建PPG多维度时域特征集与PPG采样序列时域特征集可作为PE识别的数据依据，其中，各算法模型在PPG多维度时域特征集效果更好。
+对比各算法模型在测试集上的准确率表明，随机森林算法性能优于决策树与K近邻算法。对两个特征集中有效特征贡献度分析表明，与PPG波形形态的对应关系的研究表明，
+两类时域特征集中对随机森林模型贡献度高的特征所对应的PPG形态位置高度相似，且集中出现在PPG主波峰后与下降支末端附近，PPG波形在这些位置的具体形态可能是识别PE的关键。
 
+\vspace{2em}
+
+\textbf{关键词}: 子痫前期； 识别模型； 光电容积脉搏波； 波形检测算法； 随机森林
 
 
 \cleardoublepage
 \chapternonum{Abstract}
 
-Preeclampsia (PE) is a multisystemic progressive disorder specific to maternal pregnancy that can cause severe maternal-fetal complications and is a major cause of increased maternal and perinatal morbidity and mortality. Primary hypertension and proteinuria are the most prominent features of PE, and in addition, PE can
-cause systemic small venous spasms. However, at this stage, the diagnosis of PE mainly relies on invasive biochemical markers, which is constrained by the operation procedure, testing site and cost, and lacks a convenient, rapid, non-invasive and accurate clinical diagnostic tool for PE.
-Photoplethysmography (PPG) is a manifestation of the periodic pulsations of the heart, which contains more detailed physiological information about the human blood microcirculation and can reflect hemodynamic changes, and has the advantages of being rapid, convenient, non-invasive, and the acquisition equipment has become popular.
+Preeclampsia (PE) is a multisystemic progressive disorder specific to maternal pregnancy that causes systemic small venous spasms 
+and further serious maternal-fetal complications and is one of the main causes of increased maternal and perinatal morbidity and mortality. 
+However, at this stage, the diagnostic identification of PE is mainly through biochemical markers, a process constrained by operational procedures, 
+testing sites, and costs. 
+This thesis investigates the identification of PE based on photoplethysmography (PPG), which is a manifestation of the periodic heartbeat and contains more 
+detailed physiological information about the human blood microcirculation and has the advantages of being non-invasive and convenient.
 
-In this thesis, a variety of novel pulse wave time domain description features are proposed from the time domain characteristics of the photoelectric volume pulse wave signal, and three types of pulse wave time domain description features (sets) are constructed. Based on this, various machine learning algorithms are integrated and applied to the study of preeclampsia recognition model.
-During this period, we also completed the dimensionality reduction and performance evaluation of the three types of pulse wave time-domain features. Finally, the pre-eclampsia recognition model obtained using random forest algorithm has a good performance.
+In this thesis we constructed a PPG dataset containing pregnant women with PE and normal pregnancy, designed a multidimensional time-domain feature set of PPG and 
+a time-domain feature set of PPG sampling sequence, and used three algorithms: decision tree (DT), K-nearest neighbor (KNN), and random forest (RF), 
+regarded the single waveform and all the waveforms of the subject PPG data as the minimum unit of analysis respectively.
 
-The main contents and innovations of this paper are as follows:
+The main contents and innovations of this thesis are as follows.
 
-1. based on the idea of separation of strategy and mechanism, a novel pulse waveform detection algorithm, namely Screen-Check-Vote algorithm, is proposed, which can detect more complex original pulse waveform and effectively improve the anti-interference capability of the waveform detection algorithm.
+I. A PPG waveform detection algorithm based on screening-checking-deciding is proposed and implemented, based on the idea of separation of strategy and mechanism.
 
-2. A variety of new pulse wave time domain description features are proposed, and three types of pulse wave time domain description features (sets) are constructed, which can be used as a general pulse wave description set to quantitatively describe the pulse waveform from the time domain perspective.
+In this thesis, we propose a PPG waveform detection algorithm based on screening-checking-deciding (SCD). The algorithm determines the waveform by searching the window 
+in the initial screening; in the checking-review, it distinguishes the valid waveform from the abnormal interference by the PPG morphological features such as power, standard deviation, 
+relative positions of wave peaks, and baseline drift; in the decision, it determines whether the PPG waveform is a valid waveform by the weighted voting strategy. 
+The SCD algorithm can be developed according to the usage scenarios and supports settings such as changing the initial screening algorithm, adding and deleting criteria, 
+and switching decision strategies. The algorithm is proven to have high accuracy and strong anti-interference capability for PPG waveform identification, 
+which can provide a reference for different scenarios of PPG analysis and detection under multi-platform and multi-study applications.
 
-3. Based on the above pulse wave time-domain description feature set, a subset of time-domain features that can effectively characterize the pre-eclampsia is selected by using various algorithmic models of machine learning. Based on this, various recognition models for preeclampsia were established, among which, the random forest-based
-Among them, the random forest-based algorithm model has the best comprehensive recognition performance.
+II. A variety of new PPG time-domain morphological features are designed to build two complete sets of PPG time-domain description features.
 
-In summary, this paper proposes a novel detection algorithm for photoelectric volume pulse wave, proposes various pulse wave time-domain descriptive features, and establishes a set of three types of pulse wave descriptive features. Based on this, a classification model that can effectively identify preeclampsia is established based on machine learning related algorithms.
-It is important for the early identification and detection of preeclampsia, and to ensure the safety of mothers and infants in the perinatal period.
+In this thesis, the design process of PPG time-domain features is summarized methodologically, the concept of PPG description vector is proposed, 
+and a variety of novel PPG time-domain features are designed in multiple dimensions such as time, amplitude, angle, radian, area, slope, etc. 
+The set of PPG multi-dimensional time-domain features is constructed by left-view strategy, middle-view strategy, and hierarchical strategy. 
+Based on the original sampling sequence of PPG waveform, the time domain feature set of PPG sampling sequence is constructed by resampling strategy and 
+complementary strategy. In addition, novel time-domain features describing the differences between PPG waveforms are also proposed. 
+These research works provide new ideas for the design of time-domain features of PPG, and also provide universal PPG time-domain feature sets for various PPG-based application studies.
 
+III. The pre-eclampsia recognition models are constructed using various machine-learning algorithms.
 
-\textbf{Key words}:preeclampsia; recognition model; photoelectric volume pulse wave; waveform detection algorithm; random forest
+After the initial screening of algorithms, three algorithms, namely DT, KNN, and RF, are used as the main research methods 
+for PE recognition models in this thesis. Based on the two PPG time-domain feature sets, decision tree, K-nearest neighbor, and RF algorithms were 
+used to study the PE recognition model from the perspective that individual waveforms and full waveforms of the subject PPG data were used as the minimum analysis unit. 
+The results show that the best model can be trained by the RF algorithm (AUC of 0.99 and test set accuracy of 97.0\%) on the PPG multidimensional time-domain 
+feature set, and the best model can be obtained by the RF algorithm (AUC of 0.967 and test set accuracy of 92.5\%) on the PPG sampling sequence time-domain 
+feature set when the single PPG waveform is used as the minimum unit of analysis. The best model can be obtained by the RF algorithm (AUC 0.952, 
+test set accuracy 93.8\%) for the PPG multidimensional time-domain feature set, and the best model can be obtained by the RF algorithm (AUC 0.929, 
+test set accuracy 87.5\%) for the PPG sampling sequence time-domain feature set when all the PPG waveforms are used as the minimum analysis unit.
+
+The above results show that the PPG multi-dimensional time-domain feature set and the PPG sampling sequence time-domain feature set constructed in this thesis 
+can be used as the data basis for PE identification, among which, each algorithmic model works better in the PPG multidimensional time-domain feature set.
+Comparing the accuracy of each algorithmic model on the test set, the RF algorithm outperforms 
+the decision tree and K-nearest neighbor algorithms. The analysis of the effective feature contributions in both feature sets showed that the correspondence 
+with the PPG waveform morphology showed that the locations of the PPG morphology corresponding to the features with high contributions to the RF 
+model in both time-domain feature sets were highly similar and concentrated near the end of the descending branch after the peak of the main PPG wave, 
+and the specific morphology of the PPG waveform at these locations may be the key to identify PE.
+
+\vspace{2em}
+
+\textbf{Keywords}: pre-eclampsia; recognition model; photoplethysmography; waveform detection algorithm; random forest
