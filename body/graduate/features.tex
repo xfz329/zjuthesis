@@ -1,9 +1,10 @@
 \chapter{脉搏波时域特征集的构建与处理}
 \section{引言}
-本章将进行PPG波形的新型时域特征设计研究，从新型时域特征的设计基础、PPG波形特征描述向量及PPG波形间描述特征等三方面进行说明。
-在此基础上，构建基于时长、角度、斜率与面积等的PPG多维度时域特征集；
+本章将进行PPG波形的新型时域特征的研究，从新型时域特征的设计基础、PPG波形特征描述向量及PPG波形间描述特征等三方面进行说明。
+在此基础上，构建基于时长、角度、斜率与面积等维度的PPG多维度时域特征集；
 同时将PPG信号的采样序列作为特殊的描述特征，构建PPG采样序列时域特征集，并详细介绍这两类特征集的构建过程。
-另外，本章提出基于波形与基于被试的两个利用PPG数据对PE识别的研究角度，按机器学习模型构建的要求，对上述两个特征集进行预处理。
+另外，将被试PPG数据的单个波形与全波波形分别作为子痫前期的最小分析单位，提出基于波形与被试的两个子痫前期识别模型的研究角度，
+并按构建机器学习模型的要求，对上述两个特征集进行预处理。
 
 本章研究内容的框架如\autoref{fig:frameworks4}所示。
 
@@ -14,13 +15,13 @@
 \end{figure}
 
 \section{脉搏波的新型时域特征参数设计}
-本研究结合PPG形态特点，设计了多种新型时域描述特征参数，从时长、角度、斜率、弧度、弧长与面积等多个角度对PPG的形态特征进行描述，并提出了脉搏波波形特征描述向量的概念。
+本研究结合PPG形态特点，设计了多种新型时域特征参数，从时长、角度、斜率、弧度、弧长与面积等多个角度对PPG的形态特征进行描述，并提出了脉搏波波形特征描述向量的概念。
 此外，也提出了三种可描述多个PPG波形间的差异的时域特征参数。
 
 \subsection{新型时域特征的设计基础}
 
-第二章已经介绍过，PPG的上升支是由于心脏收缩，血液开始进入主动脉，血管壁扩张，导致动脉血压快速上升形成的。该过程非常迅速，导致上升支大多较为陡峭，从形态上来看，PPG信号的上升支通常较下降支更为简单。
-因此，对PPG的描述可着重聚焦于对PPG下降支的描述上，如\autoref{fig:ppg_roads}所示。
+第二章已经介绍过，PPG的上升支是由于心脏收缩致使血液开始进入主动脉，并使血管壁扩张，最终导致动脉血压快速上升而形成的\cite{PPGYY}。该过程非常迅速，导致上升支大多较为陡峭，从形态上来看，PPG信号的上升支通常较下降支更为简单\cite{PPGYY,Chen2021}。
+因此，对PPG的描述可着重聚焦于PPG的下降支，如\autoref{fig:ppg_roads}所示。
 \begin{figure}[htbp]
   \centering
   \subfigure[\label{fig:pulsecontrast}同一被试的PPG的原始波形对比图]{
@@ -34,22 +35,23 @@
 \end{figure}
 
 在图\autoref{fig:pulsecontrast}中，同一被试的三个PPG波形用不同颜色进行了区分对比，可以发现三个波形在重博的显著程度、持续时长及幅值大小等方面均存在着差异。
-而图\autoref{fig:road}则是将图\autoref{fig:pulsecontrast}中波形的下降支进行双向归一化处理得到的，PPG波形的下降支被按一定比例归一化至[0,1]区间内。
+而图\autoref{fig:road}则对比了图\autoref{fig:pulsecontrast}中波形的下降支，其中，波形的下降支均进行了双向归一化处理。
 
-由信号的采样定理可知，对PPG波形下降支的描述可通过对下降支上一系列点的描述来完成。不失一般性，若将下降支的起点坐标与终点坐标分别设置为$S$$(0,1)$与$E$$(1,0)$。
+由信号的采样定理可知，对PPG波形下降支的描述可通过对下降支上一系列点的描述来完成。不失一般性，若将下降支的起点坐标与终点坐标分别设置为$S$$(0,1)$与$E$$(1,0)$，
 对于下降支上任意一点$P$，可以用原点$O$坐标$(0,0)$与路径始末点坐标$S$、$E$等为基本参照点，以及$P$
-在X轴、Y轴上的投射点$P_x$、$P_y$等衍生参照点进行对该点进行描述，如\autoref{fig:point}所示。而对PPG上升支的描述与此过程类似，不进行赘述。
-上述过程中涉及的具体指标如\autoref{tab:pointsdesc}所示，部分参数指标的归一化/类归一化无量纲形式也在\autoref{tab:pointsdesc}中进行了说明。
+在X轴、Y轴上的投射点$P_x$、$P_y$等衍生参照点对该点进行描述，如\autoref{fig:point}所示，而对PPG上升支的描述与此过程类似。
+上述过程中涉及的可用指标具体如\autoref{tab:pointsdesc}所示，部分参数指标的归一化/类归一化的无量纲形式也在\autoref{tab:pointsdesc}中进行了说明。
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=.6\linewidth]{features/point}
-  \caption{\label{fig:point}PPG波形下降支上点的描述示意图}
+  \caption{\label{fig:point}PPG波形下降支上任意点的描述示意图}
 \end{figure}
 
+\vspace{-1em}
 \begin{center}
     \zihao{-5}
-    \begin{longtable}{m{0.6cm}<{\centering}m{1.5cm}<{\centering}m{3cm}<{\centering}m{3.2cm}<{\centering}m{3cm}<{\centering}m{3.2cm}<{\centering}}
+    \begin{longtable}{m{0.6cm}<{\centering}m{1.5cm}<{\centering}m{3.2cm}<{\centering}m{3cm}<{\centering}m{3.2cm}<{\centering}m{3cm}<{\centering}}
 		\caption{PPG波形上任意一点的描述指标}\\
 		\label{tab:pointsdesc}\\
 		\topline
@@ -81,78 +83,72 @@
         \colorrowa 12 & \multirow{-3}*{斜率}        &  线段OP的斜率    &    $\displaystyle \frac{PP_y}{PP_x}$   &    /   &  /     \\
         \colorrowc 13 &                             &  $\angle SPP_y$的弧度      & $\displaystyle \arctan(\frac{SP_y}{PP_y})$     &    /  &  /   \\
         \colorrowc 14 &                             &   $\angle POE$的弧度    &  $\displaystyle \arctan(\frac{P_yP_x}{EP_x})$      &    /  &  /   \\
-        \colorrowc 15 & \multirow{-3}*{弧度（角度）}&   $\angle PEO$的弧度   &  $\displaystyle \arctan(\frac{PP_y}{PP_x})$         &    /  &  /   \\
+        \colorrowc 15 & \multirow{-3}*{\tabincell{c}{角度\\（弧度）}}&   $\angle PEO$的弧度   &  $\displaystyle \arctan(\frac{PP_y}{PP_x})$         &    /  &  /   \\
         \colorrowa 16 &                             &    坐标轴、曲线与$PP_y$以上围成的面积   &  $\displaystyle \int_{P_y}^{S}{P(t)dy} $     &   前述面积与整体面积之比    & $\displaystyle \frac{\int_{P_y}^{S}{P(t)dy}}{\int_O^E{P(t)dx}}$ \\
-        \colorrowa 17 &                             &   坐标轴、曲线与$OP$以左围成的面积   &    $\displaystyle \int_{O}^{P_x}{P(t)dx}-S_{\triangle OPP_x}$   &  前述面积与整体面积之比     & $\displaystyle \frac{\int_{O}^{P_x}{P(t)dx}-S_{\triangle OPP_x}}{\int_O^E{P(t)dx}}$ \\
+        \colorrowa 17 & 面积                            &   坐标轴、曲线与$OP$以左围成的面积   &    $\displaystyle \int_{O}^{P_x}{P(t)dx}-S_{\triangle OPP_x}$   &  前述面积与整体面积之比     & $\displaystyle \frac{\int_{O}^{P_x}{P(t)dx}-S_{\triangle OPP_x}}{\int_O^E{P(t)dx}}$ \\
         \colorrowa 18 &                             &   坐标轴、曲线与$PP_x$以左围成的面积   &   $\displaystyle \int_{O}^{P_x}{P(t)dx}$    &  前述面积与整体面积之比     & $\displaystyle \frac{\int_{O}^{P_x}{P(t)dx}}{\int_O^E{P(t)dx}}$ \\
-        \colorrowa 19 & \multirow{-4}*{面积}        &    曲线与$SP$围成的面积   &   $\displaystyle \int_{P_y}^{S}{P(t)dy}-S_{\triangle SPP_y} $    &   /    &  /\\
+        \colorrowa 19 &         &    曲线与$SP$围成的面积   &   $\displaystyle \int_{P_y}^{S}{P(t)dy}-S_{\triangle SPP_y} $    &   /    &  /\\
 	\end{longtable}
 \end{center}
 \vspace{-0.8cm}
 
-结合\autoref{tab:pointsdesc}与\autoref{fig:point}不难发现，只要在PPG波形上任意确定一点$P$，与$P$关联的线段指标、曲线长度指标、斜率指标、弧度指标及面积指标等都可以得到确定并有与之对应的唯一数值。
+结合\autoref{tab:pointsdesc}与\autoref{fig:point}可知，在PPG波形上任意确定一点$P$，与$P$关联的线段指标、曲线长度指标、斜率指标、弧度指标及面积指标等都可以得到确定并有与之对应的唯一数值。
 反之，若以\autoref{tab:pointsdesc}中某一指标为基准，并在该指标的值域内选定一具体数值，则在PPG波形上也可以确定与之对应的参考点$P'$，进一步可由$P'$得到其他描述参数的具体数值。
 
 \subsection{脉搏波波形特征描述向量}
 
-若在上一小节的方法在PPG波形上确定多个描述点，可得到基于这些点的某类指标的多个数值，本研究将这些同一指标的多个有关联性的数值称为脉搏波特征描述向量（photoplethysmographic feature vector，PPGFV）
+对于\autoref{tab:pointsdesc}的任意特征而言，若按照上一小节的方法在PPG波形上确定多个描述点，即可得到同一特征的多个有关联性的数值。本研究将这些有关联性的数值称为脉搏波特征描述向量（photoplethysmographic feature vector，PPGFV）
 \begin{equation}
   \label{equ:featurevector}
   \boldsymbol {V_n}=[v_0,v_1,\cdots,v_{n-1}]
 \end{equation}
-其中，$n$是特征描述向量的维数，可以视情况人工设定。
+其中，$v$对应\autoref{tab:pointsdesc}中的具体特征，$n$是向量的维数，可以视情况人工设定。
 
-PFV最显著的特点在于其用一组相互联系的数值来完成对PPG波形的量化描述，这与第三章中介绍过的诸多仅用一个数值来描述PPG波形特征的时域特征参数迥然不同。
-若设定原始信号某一PPG波形的采样点数为$N$，则该原始采样数据可以视为$n=N$的特殊PPFV；同理，当该波形经插值处理后的数据可以看成$n>N$的PPFV；
-最后，使用此前介绍的各类时域参数对波形进行描述时，这些参数可视为$n=1$的特殊PPFV。
+PPGFV最显著的特点在于用一组相互联系的数值来量化描述PPG波形，这与第三章中介绍的诸多通过单一数值描述PPG波形的时域特征参数迥然不同。
+若某一PPG波形的采样点数为$N$，则该波形可以视为$n=N$的特殊PPFV；同理，当该波形经插值处理后的结果可以看成$n>N$的PPFV；
+而使用第三章中介绍的时域特征描述该波形时，这些参数均可视为$n=1$的PPFV。
 
-与上述过程对应，PPFV对波形的描述能力随着其向量维数的增加而增强；而对波形的抽象与概括能力在此过程中则是削弱的。
-这一现象可以用信息论中的编码理论进行解释，即通讯过程中在信源原始符号不变的情况下，
-增加变换编码的输出符号长度可以提高系统的信息传输能力\cite{Zhao2017}。
-从这个角度理解，PPFV是在变换编码背景下一种编码长度与信息描述能力的折中与妥协。
+因此，PPFV对波形的描述能力随着其向量维数的增加而增强；而对波形的抽象与概括能力随之削弱。
+这一现象可以用信息论中的编码理论进行解释，在信源原始符号不变的情况下，
+增加变换编码的输出符号长度可以提高系统在通讯过程中的信息传输能力\cite{Zhao2017}。
+从这个角度理解，PPGFV是在变换编码背景下一种编码长度与信息描述能力的折中与妥协。
 
 \subsection{脉搏波波形间差异的描述特征}
-此前介绍的PPG时域特征参数均是对一个完整的PPG波形进行量化描述，但在某些情景下，多个PPG波形间的差异可能更需要被研究者们关注。特别地，对同一被试而言，而这种差异可以
+上文介绍的PPG时域特征参数均是对一个完整的PPG波形进行量化描述，但在某些情景下，多个PPG波形间的差异可能更需要被研究者们关注。对同一被试而言，这种波形间的差异可以
 称为PPG波形的紊乱程度，如\autoref{fig:diff_in_pulse}所示。
 
 \begin{figure}[htbp]
   \centering
-  \subfigure[\label{fig:dp0}实验组被试波形]{
+  \subfigure[\label{fig:dp0}实验组被试波形示意图]{
   \includegraphics[width=6cm]{features/cmf}
   }
   \quad
-  \subfigure[\label{fig:dp1}对照组被试波形]{
+  \subfigure[\label{fig:dp1}对照组被试波形示意图]{
     \includegraphics[width=6cm]{features/wjh}
   }
-  \caption[脉搏波波形间的差异性]{\label{fig:diff_in_pulse}脉搏波波形间的差异性}
+  \caption[脉搏波波形间的差异性]{\label{fig:diff_in_pulse}脉搏波波形间的差异性示意图}
 \end{figure}
 
-\autoref{fig:diff_in_pulse}对同一被试的检测得到的所有PPG波形按起点进行了对齐，即使对同一被试而言，其波形的形态特征、波形时长均存在一定差异，而这些差异在不同的个体之间体现的更为明显。
+\autoref{fig:diff_in_pulse}对同一被试的所有PPG波形按起点进行了对齐，即使对同一被试而言，其波形的形态特征、波形时长同样存在一定的差异，而这些差异在不同的个体之间体现得更为明显。
 
-故本小节提出通过互相关系数、弗朗明歇距离及包络面积等三种参数量化描述脉搏波波形间的差异性。
+因此，本小节提出通过相关系数、弗朗明歇距离与包络面积等三种时域参数量化描述脉搏波波形间的差异性。
 
-一、互相关系数
+一、相关系数
 
-相关系数本身就是作为衡量两个变量因素的密切程度而设计的，可衡量两个波形之间的“相似”程度。由于其概念已经在第三章中介绍过，在此不再赘述。
+本研究将统计分析中衡量两个变量因素的密切程度的相关系数引入两个波形之间的“相似”程度的衡量中。
 
-注意到，斯皮尔曼相关系数在计算时要求必须原始数据进行排序操作，这一操作会直接破坏波形的有序性。
-故本研究选取了皮尔逊相关系数$r_p$衡量波形间差异
+第三章中介绍过具有代表性的皮尔逊相关系数与斯皮尔曼相关系数。但斯皮尔曼相关系数在计算时必须对原始数据排序，会直接破坏PPG波形数据的有序性。
+因此，本研究选取了皮尔逊相关系数$r_p$衡量波形间的相似性
 \begin{equation}
     \label{equ:pearson2}
     r_p=\frac{\sum_{i=1}^n{(x_i- \mathop{x} \limits^-)(y_i- \mathop{y} \limits^-)}}{\sqrt{{\sum_{i=1}^n}{{(x_i- \mathop{x} \limits^-)^2\sum_{i=1}^n}{(y_i- \mathop{y} \limits^-)^2}}}}
 \end{equation}
-波形间相关系数值越大，两个波形越“相似”。
+
+波形间相关系数值越大，两个PPG波形越“相似”。
 
 二、弗朗明歇距离
 
-弗朗明歇距离（Fréchet distance，FD）是最早由法国数学家Maurice René Fréchet于1906年提出的一种路径空间相似形描述方法\cite{Wien1994,Kaveh2013,GN2017}。
-二维空间上的FD示意如\autoref{fig:frechet distance}所示。
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=.5\linewidth]{features/frechet_distance1}
-  \caption{\label{fig:frechet distance}二维空间上的弗朗明歇距离示意}
-\end{figure}
+弗朗明歇距离（Fréchet distance，FD）是最早由法国数学家Maurice René Fréchet于1906年提出的一种路径空间相似形描述方法\cite{Wien1994,Kaveh2013,GN2017,derohde2022}。
 
 FD的完整数学定义如下，若将曲线视为其在定义域至度量空间的一种映射关系，即$[a,b]\rightarrow V$，
 那么对曲线$f:[a,b]\rightarrow V$与曲线$g:[a',b']\rightarrow V$，两者的弗朗明歇距离为
@@ -161,21 +157,18 @@ FD的完整数学定义如下，若将曲线视为其在定义域至度量空间
     \delta_F(f,g)=\inf \max \limits_{\alpha,\beta \; t \in (0,1)} d(f(\alpha(t)), g(\beta(t)))
 \end{equation}
 其中，$\alpha$与$\beta$是满足能将$[0,1]$分别映射至$[a,b]$与$[a',b']$的任意连续非递减函数，$d$是$V$上的度量函数\cite{Wien1994}。
+二维空间上的FD如\autoref{fig:frechet distance}所示。
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.5\linewidth]{features/frechet_distance1}
+  \caption{\label{fig:frechet distance}二维空间上的弗朗明歇距离示意图}
+\end{figure}
 
-一般而言，弗朗明歇距离的计算是个递归过程，目前一些算法已可以对长度不对齐的两个序列进行计算\cite{derohde2022}。
-波形间的弗朗明歇距离值越小，两者越“相似”。
+对于两个PPG波形而言，此时的FD已经退化成在相同采样点的采样幅值之差的最大值，波形间的弗朗明歇距离值越小，两者越“相似”。
 
 三、包络面积差
 
-包络面积差（difference of envelope area ，DEA）是本研究提出的用以描述脉搏波间差异的原创指标，如\autoref{fig:dea}所示。
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.6\linewidth]{features/dea0}
-  \caption[包络面积差示意]{\label{fig:dea}包络面积差示意}
-\end{figure}
-
-EDA是两个PPG波形的幅值差值的积分结果
+包络面积差（difference of envelope area ，DEA）是本研究提出的用以描述脉搏波间差异的原创指标，两个PPG波形的幅值差值的积分结果，如\autoref{fig:dea}所示。
 \begin{equation}
     \label{equ:dea}
     \begin{aligned}
@@ -183,20 +176,26 @@ EDA是两个PPG波形的幅值差值的积分结果
         &\approx \frac{\Delta t}{2} \sum_{i=0}^{n-1}{|(P_f(i)+P_f(i+1)-(P_g(i)+P_g(i+1))|}
     \end{aligned}
 \end{equation}
-波形间包络面积差值越小，两者越“相似”。
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.6\linewidth]{features/dea0}
+  \caption[包络面积差示意图]{\label{fig:dea}包络面积差示意图}
+\end{figure}
+
+两个波形间包络面积差值越小，两者越“相似”。
 
 四、波形采样点对齐
 
-上述三个描述参数的计算过程都包含了一个隐藏的前置条件，即参与计算的两个波形的时间序列有着相等的采样点数。
-但如\autoref{fig:diff_in_pulse}与\autoref{fig:dea}所示，由于脉搏波信号本身的随机性，这样的条件在实际中几乎不可能被满足。
+上述三个描述波形间相似度（或差异度）的时域参数的计算都包含了一个隐藏的前置条件，即参与计算的两个波形的时间序列有着相等的采样点数。
+而由于PPG信号本身的随机性，这样的条件在实际中几乎不可能被满足，如\autoref{fig:diff_in_pulse}与\autoref{fig:dea}所示\cite{Qiu2012,PPGYY,Ma2015}。
 这也要求在计算这些参数时必须考虑波形的采样点数对齐问题。
 
-本研究提出了三种处理策略进行PPG波形对齐操作，分别为重采样策略（resampling strategy， RS）、补齐策略（complementary strategies，CS）
+本研究提出了将PPG波形对齐的三种处理策略，分别为重采样策略（resampling strategy， RS）、补齐策略（complementary strategies，CS）
 与截取策略（interception strategy，IS）。为说明三种策略处理思路，下面以两个PPG波形的对齐处理过程为例，记这两个波形的原始采样数分别记为$m$、$n$且$m \neq n$，不失一般性，设$m>n$。
 
 1、重采样策略（RS）
 
-重采样策略主要通过信号的插值与抽取调整数据采样率，随后将两个PPG波形的采样点数调整至相同数值$n_r$。
+重采样策略通过信号的插值与抽取调整数据采样率，随后将两个PPG波形的采样点数调整至相同数值$n_r$。
 若按RS将采样长度为$m$的波形调整至$n_r$，记$m$与$n_r$的最小公倍数为$p$，只需将原始数据均匀插值至$p$点，再按每$p/n_r$个点进行抽取即可。
 
 2、补齐策略（CS）
@@ -212,27 +211,25 @@ EDA是两个PPG波形的幅值差值的积分结果
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.75\linewidth]{features/alignment}
-  \caption{\label{fig:no_pe2}同一被试PPG波形按三种对齐策略处理效果对比}
+  \caption{\label{fig:no_pe2}同一被试PPG波形按三种对齐策略处理效果对比图}
 \end{figure}
 
-从\autoref{fig:no_pe2}可以看到，三种策略均可以完成PPG波形的对齐处理。但按截取策略处理时，出现了不可忽视的数据损失，故截取策略在后续处理中被暂时弃用。
+从\autoref{fig:no_pe2}可以看到，三种策略均可以完成PPG波形的对齐处理。但按截取策略处理时，出现了不可忽视的数据损失，因此截取策略在后续处理中被暂时弃用。
 
 五、多个波形间的差异性描述
 
-此前介绍的三种参数都是对两个波形间的差异的描述，但对更多的波形的描述也可按照这种思路进行。
+此前介绍的三种参数都是对两个波形间差异的描述，但对更多波形间差异的描述也可按照这种思路进行。
 
 若需量化\autoref{fig:diff_in_pulse}所示$n$个波形间的整体差异性，可按排列组合的方法每次从$n$个波形间
-选取两个波形，并用上述三种描述参数进行量化，得到3组描述数据，每组有$C_n^2$个具体数值。可按数理统计的一般方法，用这3组数据的平均值、方差、标准差、极值等指标进行这$n$个
+选取两个波形，并用上述三种描述参数进行量化，得到3组描述数据，每组有$C_n^2$个具体数值。可按数理统计的一般方法，用这3组数据的平均值、方差、标准差、极值等指标对这$n$个
 波形的差异进行整体性描述。
 
 \section{脉搏波时域特征集的构建}
 作为后续章节PE的ML模型的数据准备，本小节在前文新型时域特征的设计基础上，本小节完成了\textbf{脉搏波多维度时域特征集}（photoplethysmographic multidimensional time-domain feature set，PPGMTFS）
 与\textbf{脉搏波采样序列时域特征集}（photoplethysmographic sampling series time-domain feature set，PPGSSTFS）的构建工作。
 
-其中，脉搏波多维度时域特征集是在4.2.1小节介绍的新型时域特征基础上，通过具体策略确定得到了对应的脉搏波特征描述向量（PPGFV），最终得到了基于时长、角度、斜率与面积等维度的新型特征集合。
-而脉搏波采样序列时域特征集则是将PPG的原始采样序列视为一种特殊的描述特征。由于设计理念不同，本论文并未将以上两个特征集进行合并或交叉处理，这两个特征集合各自被\textbf{独立地}用作后续PE识别分析阶段的输入数据。
-
-由于在预研究中，4.2.3小节提出的PPG波形间时域特征参数未能构建出效果较好的PE识别模型，故将其未作为后续分析的输入使用。
+由于设计理念不同，本论文并未将以上两个特征集进行合并或交叉处理，这两个特征集合各自被\textbf{独立地}用作后续PE识别分析阶段的输入数据。
+而在预研究中，4.2.3小节提出的PPG波形间时域特征参数未能构建出效果较好的PE识别模型，故将其未作为后续分析的输入使用。
 
 \subsection{脉搏波多维度时域特征集}
 
@@ -240,35 +237,35 @@ EDA是两个PPG波形的幅值差值的积分结果
 
 一、基准点的确定策略
 
-在PPG波形上选取并确定基准点的过程，是通过PPGFV对PPG进行描述的关键。本研究共使用了三种策略，分别为左视策略（left view strategy，LVS）、中视策略（center view strategy，CVS）与分层策略（scaled view strategy，SVS）。
+在PPG波形上选取并确定基准点的过程，是通过PPGFV对PPG进行描述的关键。本研究共使用了三种策略，分别为左视策略（left-view strategy，LVS）、中视策略（middle-view strategy，MVS）与分层策略（hierarchical strategy，HS）。
 这三种策略的概念图如\autoref{fig:all_views}所示。
 
 1、左视策略（LVS）
 
 左视策略以PPG上升支起点为原点$T$，同时将PPG波峰设为$P$，将线段$TP$与水平基线$TT'$所构成的夹角$\angle PTT'$等分成若干份。这些等分线与PPG的交点${Q'}_i$被确定为参考基准点，这一过程如图\autoref{fig:lv}所示。
 
-2、中视策略（CVS）
+2、中视策略（MVS）
 
-中视策略以PPG波峰$P$在水平线$TT'$上的映射点$O$为原点，将线段$OP$与水平基线构成的两个夹角$\angle POT$与$\angle POT'$等分成若干份。将这些等分线与PPG的上升支、下降支的交点计为参考基准点${Q'}_i$，这一过程如图\autoref{fig:cv}所示。
+中视策略以PPG波峰$P$在水平线$TT'$上的映射点$O$为原点，将线段$OP$与水平基线构成的两个夹角$\angle POT$与$\angle POT'$等分成若干份。将这些等分线与PPG的上升支、下降支的交点计为参考基准点${Q'}_i$，这一过程如图\autoref{fig:mv}所示。
 
-3、分层策略（SVS）
+3、分层策略（HS）
 
-分层策略将PPG波峰$P$在水平线$TT'$上的映射点计为$O$，作线段$OP$的水平垂线将$OP$等分为若干份。将这些等分线与PPG的上升支、下降支的交点计为参考基准点${Q'}_i$，这一过程如图\autoref{fig:sv}所示。
+分层策略将PPG波峰$P$在水平线$TT'$上的映射点计为$O$，作线段$OP$的水平垂线将$OP$等分为若干份。将这些等分线与PPG的上升支、下降支的交点计为参考基准点${Q'}_i$，这一过程如图\autoref{fig:hv}所示。
 
 \begin{figure}[htbp]
   \centering
-  \subfigure[\label{fig:lv}左视类指标示意]{
+  \subfigure[\label{fig:lv}左视类指标示意图]{
   \includegraphics[width=6cm]{features/lv}
   }
   \quad
-  \subfigure[\label{fig:cv}中视类指标示意]{
-  \includegraphics[width=6cm]{features/cv}
+  \subfigure[\label{fig:mv}中视类指标示意图]{
+  \includegraphics[width=6cm]{features/mv}
   }
   \quad
-  \subfigure[\label{fig:sv}分层类指标示意]{
-  \includegraphics[width=6cm]{features/sv}
+  \subfigure[\label{fig:hv}分层类指标示意图]{
+  \includegraphics[width=6cm]{features/hv}
   }
-  \caption{\label{fig:all_views}确定基准点的三种策略示意}
+  \caption{\label{fig:all_views}确定基准点的三种策略示意图}
 \end{figure}
 
 二、基准点的维数
@@ -277,21 +274,21 @@ EDA是两个PPG波形的幅值差值的积分结果
 在4.2.2小节已经阐述过，脉搏波特征描述向量（PPGFV）是在变换编码背景下一种编码长度与信息描述能力的折中与妥协。
 
 本研究通过前期预研究，最终确定了上述三种确定基准点策略下的具体维数。
-其中，分层策略的维数为10；而左视策略与中视策略下的基准点确定都需要对角度进行处理，为使与$\pi$相关的计算方便，其维数都被确定为12。
+其中，分层策略的维数为10；而左视策略与中视策略下的基准点确定都涉及了角度处理（需要对$\pi$进行处理），为简化计算过程，其维数都被确定为12。
 
 故在分层策略下的新型时域特征的下标为0至9，左视策略与中视策略下的新型时域特征的下标为0至11。其中，下标数值越小，代表该特征在对应的PPG波形中越接近波峰；反之，则越远离波峰（更加接近波形的起点或终点）。
 
 三、脉搏波多维度时域特征集具体包含特征
 
-由于在计算PPG的时域特征之前，需要将PPG波形进行了标准化设置，使其幅值被调整缩放至[0,1000]区间内。
-在此过程中，PPG波形的上升支与下降支分别按第三章的介绍过的线性变换思想进行了处理。
-而线性变换过程中的截距与斜率本身也是多维度特征的一种，因此，本研究也将上升支与下降支标准化过程中的4个参数作为第4类标准化参数，纳入进PPG多维度时域特征集中。
+由于在计算PPG的时域特征之前，需要将PPG波形进行了标准化处理，使其幅值被调整缩放至[0,1000]区间内。
+在此过程中，PPG波形的上升支与下降支分别按3.4.4小节中的线性变换思想进行了处理。
+而线性变换过程中的截距与斜率本身也是多维度特征的一种，因此，本研究也这4个参数作为第4类标准化参数，纳入进PPG多维度时域特征集中。
 
 \autoref{tab:allfeatures}中展示了上述标准化参数与经由左视策略、中视策略与分层策略确定得到的多维度时域特征。
-
+\vspace{2em}
 \begin{center}
-  \zihao{5}
-  \begin{longtable}{m{1cm}<{\centering}m{1.5cm}<{\centering}m{3cm}<{\centering}m{2cm}<{\centering}m{8cm}<{\centering}}
+  \zihao{-5}
+  \begin{longtable}{m{1cm}<{\centering}m{1.4cm}<{\centering}m{3.3cm}<{\centering}m{1.5cm}<{\centering}m{7.5cm}<{\centering}}
     \caption{PPG多维度时域特征集合}\\
     \label{tab:allfeatures}\\
         \topline
@@ -322,12 +319,12 @@ EDA是两个PPG波形的幅值差值的积分结果
         \colorrowc 13 & &     中视上升支交点坐标 & CVLR & 等分线与PPG波形上升支交点横坐标 \\
         \colorrowc 14 & &     中视下降支交点坐标 & CVLF & 等分线与PPG波形下降支交点横坐标 \\
         \colorrowc 15 & &     中视上升支交点距离 & CVRR & 等分线与PPG波形上升支交点与峰值水平映射点距离 \\
-        \colorrowc 16 & \multirow{-4}*{中视策略}&     中视下降支交点距离 & CVRF & 等分线与PPG波形下降支交点与峰值水平映射点距离 \\
+        \colorrowc 16 & &     中视下降支交点距离 & CVRF & 等分线与PPG波形下降支交点与峰值水平映射点距离 \\
         \colorrowc 17 & &     中视交点坐标差 & CVD & 中视上升支交点坐标与中视下降支交点坐标之差 \\
         \colorrowc 18 & &     中视上升支弧长 & CVALR & PPG波形上升支被等分线分割的各区间弧长 \\
         \colorrowc 19 & &     中视下降支弧长 & CVALF & PPG波形下降支被等分线分割的各区间弧长 \\
         \colorrowc 20 & &     中视上升支面积 & CVAR & PPG波形上升支被等分线分割的各区域面积 \\
-        \colorrowc 21 & \multirow{-5}*{中视策略} &     中视下降支面积 & CVAF & PPG波形下降支被等分线分割的各区域面积 \\
+        \colorrowc 21 & \multirow{-9}*{中视策略} &     中视下降支面积 & CVAF & PPG波形下降支被等分线分割的各区域面积 \\
         \colorrowa 22 & &     分层上升支交点坐标 & SVLR & 等分线与PPG波形上升支交点横坐标 \\
         \colorrowa 23 & &     分层下降支交点坐标 & SVLF & 等分线与PPG波形下降支交点横坐标 \\
         \colorrowa 24 & &     分层上升支面积 & SVAR & PPG波形上升支被等分线分割的各区域面积 \\
@@ -338,22 +335,22 @@ EDA是两个PPG波形的幅值差值的积分结果
         \colorrowa 29 & &     分层交点坐标差 & SVD &  分层上升支交点坐标与分层下降支交点坐标之差\\
         \colorrowa 30 & &     分层上升支弧长 & SVALR & PPG波形上升支被等分线分割的各区间弧长 \\
         \colorrowa 31 & &     分层下降支弧长 & SVALF & PPG波形下降支被等分线分割的各区间弧长 \\
-        \colorrowa 32 & &     分层上升支斜率 & SVSR & 等分线与PPG波形上升支交点与PPG峰值水平映射点所形成直线的斜率\\
-        \colorrowa 33 & \multirow{-12}*{分层策略} & 分层下降支斜率 & SVSF & 等分线与PPG波形下降支交点与PPG峰值水平映射点所形成直线的斜率 \\
+        \colorrowa 32 & &     分层上升支斜率 & SVSR & \tabincell{c}{等分线与PPG波形上升支交点与PPG\\峰值水平映射点所形成直线的斜率}\\
+        \colorrowa 33 & \multirow{-12}*{分层策略} & 分层下降支斜率 & SVSF & \tabincell{c}{等分线与PPG波形下降支交点与PPG\\峰值水平映射点所形成直线的斜率} \\
   \end{longtable}
 \end{center}
 \vspace{-1.2cm} 
 
 在\autoref{tab:allfeatures}中，左视策略下确定了8种脉搏波特征描述向量（PPGFV），中视策略下
-确定了9种PPGFV，分层策略下确定了12种PPGFV。而上小节已经对各策略下的维数进行过说明，其中，分层策略下的新型时域特征的下标为0至9，左视策略与中视策略下的新型时域特征的下标为0至11。
-故PPG多维度时域特征集一共包含$4+12 \times 8+ 12 \times 9 + 10 \times 12$=328种特征值，而对这328特征值进行分析，剔除了部分数值始终为0的特征后（通常这是由于该特征对应着PPG波形的起点），
-共有有效特征294个。
+确定了9种PPGFV，分层策略下确定了12种PPGFV。而上小节已经对各策略下的维数进行过说明，
+故PPG多维度时域特征集一共包含$4+12 \times 8+ 12 \times 9 + 10 \times 12$=328种特征值。对这328个特征的取值范围进行分析，可发现部分数值始终为0（通常这是由于该特征总对应着PPG波形的起点），
+将这部分特征剔除后，脉搏波多维度时域特征集（PPGMTFS）共有有效特征294个。
 
 \subsection{脉搏波采样序列时域特征集}
 
 前文中介绍的所有PPG特征均是在原始采样值的基础上，经一定的数学处理后，间接对PPG波形进行描述的。由于PPG信号的原始采样序列本身就是一种量化描述，
-故本文将其作为一种特殊的直接描述PPG波形的特征，即为脉搏波采样序列时域特征集（PPGSSTFS）。
-从这个角度而言，一个完整波形的所有采样序列的幅值可视为向量维数与采样数相等的特殊PPGFV。
+因此，本研究基于原始采样序列的幅值构建了PPG采样序列时域特征集（PPGSSTFS）。
+从这个角度而言，一个完整波形的所有采样序列的幅值可视为向量维数与采样数相等的特殊脉搏波特征向量（PPGFV）。
 
 \autoref{fig:no_pe}对比展示了四例被试的PPG波形的采样值差异，其中，各子图在同一坐标系下绘制了同一被试的所有PPG波形，这些波形均按起点进行了对齐，波形的采样值经标准化后被调整至[0,1]区间。
 
