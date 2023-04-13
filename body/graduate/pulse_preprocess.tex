@@ -1,11 +1,10 @@
 \chapter{脉搏波的预处理与特征参数提取}
 \section{引言}
-本章首先介绍所有PPG数据来源自临床实验数据，从实验设备、实验流程与数据导出等方面对数据采集方案进行了介绍。
-利用常用的变量分析方法，统计分析临床数据实验中所有被试的人口统计学特征。
-将从PPG信号的预处理的角度对本研究过程中的相关工作进行介绍。
-从信号滤波、波形检测、切迹检测、基线漂移处理、信号重采样与数据标准化等过程对PPG的预处理分析流程进行介绍。
-介绍了可在多平台、多研究背景下应用的一种基于初筛——复核——决策的新型PPG波形检测算法。
-最后，汇总介绍PPG常见的时域特征参数。
+本介绍使用的PPG数据来源自自主进行的临床实验，本章从实验设备、实验流程与数据导出等方面对其进行介绍。
+利用常用的变量分析方法，对临床实验被试的人口统计学特征进行统计分析。
+介绍PPG的预处理分析中的信号滤波、波形检测、切迹检测、基线漂移处理、信号重采样与数据标准化等步骤。
+提出一种可应用于多平台、多研究背景的基于初筛—复核—决策的新型PPG波形检测算法。
+最后，汇总介绍常见的PPG时域特征参数。
 
 本章研究内容的框架图如\autoref{fig:frameworks3}所示。
 
@@ -14,14 +13,15 @@
     \includegraphics[width=0.85\linewidth]{pulse_preprocess/frameworks3}
     \caption{\label{fig:frameworks3}第三章研究内容框架图}
 \end{figure}
-\section{数据采集方案设计}
-本研究于2017年6月至2019年4月期间，于浙江大学医学院附属妇产科医院进行了临床数据采集实验。其中，患有PE的孕妇作为实验组，而正常妊娠孕妇作为对照组。
-此次数据采集实验经浙江大学医学院附属妇产科医院医学伦理委员会的审查并被批准进行（审查编号：20170131）。所有参与实验的孕妇均知晓本研究目的及具体实验流程的情况，并签署了知情同意书。
-其中，所有实验组孕妇均已确诊PE，出现了不同程度的血压升高等PE临床症状。实验组所有孕妇均已接受过包括药物治疗在内的临床干预以减轻其症状。
+\section{临床数据实验}
+本研究于2017年6月至2019年4月期间在浙江大学医学院附属妇产科医院进行了临床数据采集实验。其中，实验组为确诊PE的孕妇，对照组为正常妊娠孕妇。
+由于实验组孕妇均已确诊PE，不同程度地出现了血压升高等症状，因此实验组孕妇均已接受过药物治疗等临床干预。
+本实验已通过浙江大学医学院附属妇产科医院医学伦理委员会的审查（审查编号：20170131），所有被试孕妇均知晓研究目的及具体实验流程，并签署了知情同意书。
+
 \subsection{实验设备}
-本研究对PPG数据采集仪器的专业性、可靠性都有较高要求，最后选取了美国GE公司生产的GE Healthcare CARESCAPE B650 麻醉监护仪进行数据采集。
-B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和度、血压、呼出气体中气体成份及熵指数等专业参数进行监测，如\autoref{fig:monitor}所示。此外，B650监护仪还提供了基于PPG的表征动脉血压变化的
-收缩压变化参数（systolic pressure variation，SPV）和脉压变化参数（pulse pressure variation，PPV）\cite{GE2021,Michard1999}。
+本研究对PPG数据采集仪器的专业性、可靠性有较高要求，最终选择了美国GE公司生产的GE Healthcare CARESCAPE B650型麻醉监护仪进行数据采集，如\autoref{fig:monitor}所示。
+B650型监护仪可对包括12导联心电、脑电、心输出量、血氧饱和度、血压、呼出气体中气体成份及熵指数等专业参数进行监测，并提供了表征PPG动脉血压变化的
+收缩压变化度（systolic pressure variation，SPV）和脉压变化度（pulse pressure variation，PPV）的参数监测\cite{GE2021,Michard1999}。
 \begin{figure}[htbp]
     \centering
     \subfigure[B650监护仪及其配件]{
@@ -34,21 +34,31 @@ B650监护仪可对包括12导联心电、脑电、心输出量、血氧饱和�
     \caption{\label{fig:monitor}GE Healthcare CARESCAPE B650监护仪}
 \end{figure}
 
+此外，本研究选择了美国泰科公司旗下的Nellcor DS-100A型透射式血氧传感器作为B650型的配套组件，如\autoref{fig:ds100a}所示。
+该传感器一般佩戴在被试左手食指上，若被试的左手食指有损伤，则将测量部位替换为左手中指。
+在测量时，手指需放入传感器指套内部，使指甲与传感器表面有指甲标记的部位正对，指尖触及但不超出指套顶端，以确保发光管发出的所有光线全部通过被试的组织。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\linewidth]{pulse_preprocess/ds100a}
+    \caption{\label{fig:ds100a}Nellcor DS-100A型血氧传感器}
+\end{figure}
+
 \subsection{实验流程}
-被试人员到达数据实验采集现场后，会由实验人员登记被试人员的PE风险因子信息，包括姓名、年龄、孕产史等。接着实验人员会告知被试人员本研究的研究背景与实验过程。
-在征得被试人员同意后，采集人员会按操作规范为被试人员佩戴血氧采集探头\cite{Chen2021}。与血压采集过程类似\cite{FIGO}，被试人员需在数据采集实验全程保持坐姿，
-在被试孕妇休息至少5 $min$后，PPG数据开始正式记录，单次采集时长不低于1 $min$。
-PPG通过被试孕妇的左手食指，使用透射式血氧探头进行采集，血氧探头型号为美国泰科公司旗下的Nellcor DS-100A型血氧传感器。若被试孕妇的左手食指有损伤，则将测量部位替换为左手中指。手指在测量时需放入指套内部，
-指甲与传感器表面有指甲标记的部位正对，指尖触及但不超出指套顶端，确保发光管发出的所有光线全部通过被试的组织。
+被试到达实验场地后，由实验人员登记其PE风险因子信息，包括姓名、年龄、孕产史等。接着实验人员会告知被试本研究的研究目的与具体实验流程。
+在征得被试同意后，实验人员按操作规范为被试佩戴血氧采集探头\cite{Chen2021}。
+在被试休息至少5min后，开始进行PPG数据采集，单次采集时长不少于1min。被试需在实验全程中保持坐姿，禁止发声或进行较大的肢体动作。
 
 \subsection{数据导出及复核}
-由于美国GE公司并没有公开B650数据通讯协议，本研究无法直接获取该设备可采集的全部生理参数的原始数据信息。通过产商技术支持提供的第三方软件，最后将B650监护仪采集得到的PPG数据以
-（时间，相对幅值）的键值对形式按CVS的文件格式导出，导出的PPG信号采样率为100 $Hz$。
+由于美国GE公司未公开B650型监护仪的数据通讯协议，本研究无法直接获取该设备全部生理参数的原始数据。最后通过技术产商提供的第三方软件，将PPG原始数据以
+（时间，相对幅值）的键值对的形式以CVS文件格式导出，导出的PPG信号采样率为100Hz。
 
-本研究共完成了80例被试孕妇的PPG原始数据采集工作。经复核校验，有1例正常妊娠孕妇数据由于采集时间过短、信号质量过低原因被剔除。
-剩余79例有效PPG数据作为本研究区后续所有分析的数据源，其中，实验组数据44例，对照组数据35例。
+本研究共采集得到了80例被试的PPG原始数据。经复核校验，1例正常妊娠的被试数据因采集时间过短、信号质量过低被剔除，
+剩余79例为有效数据，包括44例实验组数据和35例对照组数据。
+
 \section{被试孕妇人口统计学特征分析}
-本节使用统计分析方法对上述实验中被试孕妇的人口统计学特征进行了相关性分析，这些人口统计学特征包括被试的年龄、孕周、身高、体重、BMI指数、血压及心率等。
+本节使用统计分析方法对上述实验中被试的年龄、孕周、身高、体重、BMI指数、血压及心率等人口统计学特征进行了相关性分析。
+
 \subsection{变量分析方法}
 相关性分析和参数检验与非参数检验是统计分析学科中最常用的工具，本小节对相关性分析方法的原理进行介绍，同时着重介绍了非参数检验的原理及方法。
 
@@ -56,16 +66,16 @@ PPG通过被试孕妇的左手食指，使用透射式血氧探头进行采集�
 
 相关性分析（correlation analysis，CA）是对两个具备相关性的变量元素进行分析，衡量这两个变量因素的相关密切程度\cite{Zhang2019}。这两个变量元素之间需要存在一定的联系才可以进行相关性分析。
 
-统计学上引入了相关系数$r$以量化表征变量之间的密切程度。$r$的取值范围为[-1,1]，其绝对值大小反映了两变量之间相关性的强弱：当$r$>0时，表明两个变量正相关；反之，则两个变量变化趋势相反，呈负相关。
-可以通过散点图即可直接观察两个变量之间的联系，如\autoref{fig:relation}所示。\autoref{fig:relation}也在每副子图中标注了对应的$r$值。
-
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{pulse_preprocess/relation}
     \caption[二元变量之间常见的相关关系示意图]{\label{fig:relation}二元变量之间常见的相关关系示意图\cite{IXL2022}}
 \end{figure}
 
-常用的相关性分析方法有皮尔逊（Pearson）相关性分析法与斯皮尔曼（Spearman）相关性分析法，利用这两种方法计算得到的相关系数也对应被称为皮尔逊相关系数$r_p$与斯皮尔曼相关系数$r_s$
+统计学上引入了相关系数$r$以量化表征变量之间的密切程度。$r$的取值范围为[-1,1]，其绝对值大小反映了两变量之间相关性的强弱：当$r$>0时，表明两个变量正相关；反之，则两个变量变化趋势相反，呈负相关。
+可以通过散点图直接观察两个变量之间的联系，如\autoref{fig:relation}所示，两个变量的$r$值也在每副子图中进行了标注。
+
+常用的相关性分析方法有皮尔逊（Pearson）相关性分析法与斯皮尔曼（Spearman）相关性分析法，利用这两种方法可分别得到皮尔逊相关系数$r_p$与斯皮尔曼相关系数$r_s$
 \begin{equation}
     \label{equ:spearman}
     r_s=1-\frac{6\sum_{i=1}^{n}(x_{i}-y_{i})^2}{n(n^2-1)}
@@ -91,6 +101,7 @@ PPG通过被试孕妇的左手食指，使用透射式血氧探头进行采集�
 
 一般而言，参数检验的精确度高于非参数检验，因此在条件允许的情况下，应优先采用参数检验。若由于各种原因导致参数检验的条件不满足，可以应用非参数检验方法对数据进行分析。
 常见的非参数检验方法及其适用情形如\autoref{tab:nonparametric-test}所示。
+\vspace{-1em}
 \begin{center}
     \zihao{-5}
     \begin{longtable}{m{1cm}<{\centering}m{1.8cm}<{\centering}m{2cm}<{\centering}m{4.5cm}<{\centering}m{4.5cm}<{\centering}}
@@ -181,12 +192,12 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth]{pulse_preprocess/samplesignal}
-    \caption{\label{fig:samplesignal}一名被试实采PPG信号（片段）}
+    \includegraphics[width=0.8\linewidth]{pulse_preprocess/samplesignal}
+    \caption{\label{fig:samplesignal}一名被试实采PPG信号示意图}
 \end{figure}
 
-从\autoref{fig:samplesignal}中可以看到，本次临床数据实验经由GE B650监护仪采集得到的PPG信号质量较高，但仍然存在着基线偏移、PPG信号重博波特征不明显等问题。这些问题可能与实验使用的传感器种类、监护仪硬件检测电路及监护仪软件处理算法等因素有关。
-除此之外，\autoref{fig:samplesignal}40 $s$至55 $s$内存在着一段无效干扰数据，在进行分析前必须设法对其进行剔除。
+从\autoref{fig:samplesignal}中可以看到，本次临床数据实验经由GE B650型监护仪采集得到的PPG信号质量较高，但仍然存在着基线偏移、PPG信号重博波特征不明显等问题。这些问题可能与实验使用的传感器种类、监护仪硬件检测电路及监护仪软件处理算法等因素有关。
+除此之外，如\autoref{fig:samplesignal}框选所示，40s至55s内存在着一段无效干扰数据，在进行分析前必须设法对其进行剔除。
 
 \begin{figure}[htbp]
     \centering
@@ -214,17 +225,17 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
 
 \begin{figure}[htbp]
     \centering
-    \subfigure[原始PPG信号]{
-    \includegraphics[width=6.5cm]{pulse_preprocess/before}
+    \subfigure[原始PPG信号示意图]{
+    \includegraphics[width=6.5cm]{pulse_preprocess/before_filter}
     }
     \quad
-    \subfigure[平滑滤波后PPG信号]{
-    \includegraphics[width=6.5cm]{pulse_preprocess/after}
+    \subfigure[平滑滤波后PPG信号示意图]{
+    \includegraphics[width=6.5cm]{pulse_preprocess/after_filter}
     }
     \caption{\label{fig:filter}平滑滤波前后PPG信号对比图}
 \end{figure}
 
-使用$N$=5的平滑滤波器对采集得到的PPG进行处理，滤波前后对比如\autoref{fig:filter}所示。由\autoref{equ:malpf}可知，此时滤波器对应的的截止频率约为89$Hz$。
+使用$N$=5的平滑滤波器对采集得到的PPG进行处理，滤波前后对比如\autoref{fig:filter}所示。由\autoref{equ:malpf}可知，此时滤波器对应的的截止频率约为89Hz。
 另一方面，信噪比（signal-noise rate，SNR）与均方误差（root mean square error，RMSE）是最常用的评估滤波效果优劣的两个指标，其定义分别为
 \begin{equation}
     \label{equ:snr}
@@ -246,7 +257,7 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\linewidth]{pulse_preprocess/scd}
-    \caption{\label{fig:detect}SCD算法检测流程示意}
+    \caption{\label{fig:detect}SCD算法检测流程示意图}
 \end{figure}
 
 机制与策略分离是计算机系统领域的一项重要设计原则，被广泛应用于一系列资源分配问题（如CPU调度、内存分配、服务质量）以及软件抽象的设计等问题中\cite{Wulf1974,Levin1975,Brinch2001}。
@@ -285,7 +296,7 @@ SCD算法对各机制下使用的具体策略不做过多限制，支持直接�
 
 2）合理设置搜索窗时长
 
-结合正常波形的形态特点，本研究将搜索窗时长分别设置为0.1 $s$与0.3 $s$。前者可以直接剔除掉时间跨度过小的局部极值，后者是基于此前PPG波峰与其重博峰时间间隔的经验值，可以保证重博峰点不会被误检为整个波形的波峰。
+结合正常波形的形态特点，本研究将搜索窗时长分别设置为0.1s与0.3s。前者可以直接剔除掉时间跨度过小的局部极值，后者是基于此前PPG波峰与其重博峰时间间隔的经验值，可以保证重博峰点不会被误检为整个波形的波峰。
 
 3）搜索窗步进值策略调整
 
@@ -329,7 +340,7 @@ SCD算法对各机制下使用的具体策略不做过多限制，支持直接�
 因此，有必要组合后的波形再次进行检查校对。
 
 参考以往研究对PPG波形对经验统计，本研究以一定的PPG波形的时间规则完成校对，以确保有效波形的必定在这些时间规则规定的间期内。
-这些时间规则包括，波形起点与波形终点间期需要$P_{S2E}$需要大于0.4 $s$，波形峰值点与波形终点间期$P_{P2E}$需要大于0.3 $s$。
+这些时间规则包括，波形起点与波形终点间期需要$P_{S2E}$需要大于0.4s，波形峰值点与波形终点间期$P_{P2E}$需要大于0.3s。
 
 4、其他特征点定位
 
@@ -395,10 +406,10 @@ $x_l$为$x_s$与$x_e$中数值较小者。
 由于不同人群、不同采集设备、不同采集环境下采集得到的PPG信号可能形态上千差万别，与之对应的干扰信号也往往不尽相同。上述标准仍有不足以甄别区分有效信号与无效干扰的可能。
 故SCD算法允许根据实际分析需要，自习定义新的复核标准或只使用以上部分复核标准。
 
-另外，时间规则也是PPG波形检测阶段得到应用的另一项重要标准。
-如波形检测阶段，搜索窗的窗长已经限定了重博波峰与主波峰间期$T_{P2R}$需要大于0.3$s$；
-完整波形在进行确认时也限定了波形周期$T_{S2E}$需要大于0.4$s$、下降支时长$P_{P2E}$需要大于0.3$s$。
-若参照心率定义，将1$min$内有效脉搏波的数量规定为脉率(Pulse Rate，PR)。那么，原则上该算法可对$PR \le 150$的原始脉搏波数据进行波形检测。
+另外，与PPG波形相关的时间标准也多次在SCD算法中得到应用。
+在初筛时，搜索窗的窗长已经限定了重博波峰与主波峰间期$T_{P2R}$需要大于0.3s；
+完整波形在进行确认时也限定了波形周期$T_{S2E}$需要大于0.4s、下降支时长$P_{P2E}$需要大于0.3s。
+若参照心率定义，将每分钟内有效脉搏波的数量规定为脉率（pulse rate，PR），原则上SCD算法可对$PR \le$150的PPG数据进行波形检测。
 
 6、有效波形判断
 
@@ -414,6 +425,7 @@ $x_l$为$x_s$与$x_e$中数值较小者。
 
 复核阶段的超参数数值如\autoref{tab:checkingp}所示。
 
+\vspace{-1em}
 \begin{center}
     \zihao{-5}
     \begin{longtable}{m{1cm}<{\centering}m{1.5cm}<{\centering}m{3.6cm}<{\centering}m{3.6cm}<{\centering}m{3cm}<{\centering}}
@@ -469,10 +481,11 @@ $x_l$为$x_s$与$x_e$中数值较小者。
 2、 公开数据集
 
 重症监护医疗信息数据库（medical information mart for intensive care，MIMIC）是生物医学工程领域开源社区PhysioNet上最为知名的一个大型公开数据库\cite{mit2022,Goldberger2000,johnson2018mimic,mimic4}。该数据库记录了2001年
-至2019年期间贝斯以色列女狄肯斯医疗中心重症监护病房患者的相关数据，拥有超过40000名患者的医疗健康数据记录\cite{johnson2018mimic}。
+至2019年期间贝斯以色列女狄肯斯医疗中心重症监护病房患者的相关数据，拥有超过4万名患者的医疗健康数据记录\cite{johnson2018mimic}。
 无袖带血压估计验证数据集（cuffless blood pressure estimation data set，CBPEDS）是Kachuee Mohamad等\cite{Kachuee2015,ucibp2022}于2015年在MIMIC的基础上，
 进行了一定的预处理与数据清洗二次开发而来。CBPEDS目前在美国加州大学欧文分校机器学习数据库上公开，由于其出色的易用性而被广泛使用。
-CBPEDS一共包含12000条数据记录，每条记录包含PPG、有创动脉血压与心电等三通道数据，采样率均为125 $Hz$，单条数据记录时长范围是1至10 $min$不等。
+
+CBPEDS一共包含1.2万条数据记录，每条记录包含PPG、有创动脉血压与心电等三通道数据，采样率均为125 Hz，单条数据记录时长范围是1$\sim$10min不等。
 由于CBPEDS数据记录量较大，本研究仅以其中前50条数据记录为代表进行PPG检波算法的性能评估，这部分数据共有有效PPG波形计17562个。
 
 3、其他PPG检波算法
@@ -483,58 +496,70 @@ CBPEDS一共包含12000条数据记录，每条记录包含PPG、有创动脉血
 
 4、对比与分析
 
-SCD算法较DMTW算法与HeartPy算法的优势主要体现在对包含噪声干扰与畸变的PPG信号的准确识别上。使用这三种算法检测自主实验数据与CBPEDS数据的结果存在一定的差异，如\autoref{fig:scd_detect}所示。
-由于HeartPy算法的本身输出限制，\autoref{fig:scd_detect}只标注了HeartPy算法检测出的PPG波形的波峰位置，有效波峰与异常波峰分别用黑色与红色进行了标注。
-而SCD算法与DMTW算法检测出的有效PPG波形均在\autoref{fig:scd_detect}中用虚线进行了框选，其中黑色虚线表示两种算法对PPG波形的识别判断完全一致，红色虚线表示两种算法的检测结果出现了分歧。
+SCD算法较DMTW算法与HeartPy算法的优势主要体现在对包含噪声干扰与畸变的PPG信号的准确识别上。使用这三种算法检测自主实验数据与CBPEDS数据的结果存在一定的差异，如\autoref{fig:scd_detect1}与\autoref{fig:scd_detect2}所示。
+由于HeartPy算法的本身输出限制，\autoref{fig:scd_detect1}与\autoref{fig:scd_detect2}只标注了HeartPy算法检测出的PPG波形的波峰位置，有效波峰与异常波峰分别用黑色与红色进行了标注。
+而SCD算法与DMTW算法检测出的有效PPG波
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth]{pulse_preprocess/scd3}
-    \caption{\label{fig:scd_detect}三种PPG检波算法性能对比}
+    \includegraphics[width=0.9\linewidth]{pulse_preprocess/scd1}
+    \caption{\label{fig:scd_detect1}三种PPG检波算法对自主实验数据的检测效果对比图}
 \end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{pulse_preprocess/scd2}
+    \caption{\label{fig:scd_detect2}三种PPG检波算法对CBPEDS中数据的检测效果对比图}
+\end{figure}
+\noindent
+形均在\autoref{fig:scd_detect1}与\autoref{fig:scd_detect2}中用虚线进行了框选，其中黑色虚线表示两种算法对PPG波形的识别判断完全一致，红色虚线表示两种算法的检测结果出现了分歧。
 
 从整体检测准确率来看，SCD算法较另外两种算法也具有一定的性能优势。统计三种算法在自主实验数据与CBPEDS数据上的错检波形数目，可得到对应算法的整体检测准确率，如\autoref{tab:scd}所示，其中需要注意的信息
 已用粉红色底色、黑色字体加粗突出显示。从\autoref{tab:scd}可以发现，三种算法中，SCD算法的错检波形数目最少，识别的准确率最高。
 
+\vspace{-1em}
 \begin{center}
     \zihao{-5}
-    \begin{longtable}{m{2cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1cm}<{\centering}m{1.5cm}<{\centering}m{1cm}<{\centering}m{1.5cm}<{\centering}m{1cm}<{\centering}}
+    \begin{longtable}{m{1cm}<{\centering}m{2cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1cm}<{\centering}m{1.5cm}<{\centering}m{1cm}<{\centering}m{1.5cm}<{\centering}m{1cm}<{\centering}}
 		\caption{三种PPG检波算法性能对比统计明细}\\
 		\label{tab:scd}\\
 		\topline
-        \colorhead      &  & \multicolumn{2}{c}{\textbf{SCD算法}} & \multicolumn{2}{c}{\textbf{DMTW算法}} & \multicolumn{2}{c}{\textbf{HeartPy算法}}  \\
-        \colorhead \multirow{-2}{*}{\textbf{数据源}}      & \multirow{-2}{*}{\textbf{波形总数/个}} & \textbf{错检数/个}      & \textbf{准确率} & \textbf{错检数/个}      & \textbf{准确率} & \textbf{错检数/个}      & \textbf{准确率} \\
+        \colorhead    &  &  & \multicolumn{2}{c}{\textbf{SCD算法}} & \multicolumn{2}{c}{\textbf{DMTW算法}} & \multicolumn{2}{c}{\textbf{HeartPy算法}}  \\
+        \colorhead \multirow{-2}{*}{\textbf{序号}} & \multirow{-2}{*}{\textbf{数据源}}      & \multirow{-2}{*}{\textbf{波形总数/个}} & \textbf{错检数/个}      & \textbf{准确率} & \textbf{错检数/个}      & \textbf{准确率} & \textbf{错检数/个}      & \textbf{准确率} \\
         \endfirsthead
         \caption[]{(续)}\\
         \topline
-        \colorhead\textbf{复核标准}      & \textbf{个体全部波形参与均值计算百分比区间} & \textbf{判为有效波形的均值相对区间} & \textbf{备注} \\
+        \colorhead    &  &  & \multicolumn{2}{c}{\textbf{SCD算法}} & \multicolumn{2}{c}{\textbf{DMTW算法}} & \multicolumn{2}{c}{\textbf{HeartPy算法}}  \\
+        \colorhead \multirow{-2}{*}{\textbf{序号}} & \multirow{-2}{*}{\textbf{数据源}}      & \multirow{-2}{*}{\textbf{波形总数/个}} & \textbf{错检数/个}      & \textbf{准确率} & \textbf{错检数/个}      & \textbf{准确率} & \textbf{错检数/个}      & \textbf{准确率} \\
         \midline
         \endhead 
         \hline
         \endfoot
         \bottomline
         \endlastfoot
-        \colorrowa 自主实验数据 & 7864 & \colorcellb \textbf{26} &  \colorcellb \textbf{99.6\%} & 112 & 98.6\% & 97 & 98.7\% \\
-        \colorrowc CBPEDS & 17562 &  \colorcellb \textbf{50} &  \colorcellb \textbf{99.7\%} & 182 & 99.0\% & 168 & 99.0\% \\
+        \colorrowa 1 & 自主实验数据 & 7864 & \colorcellb \textbf{26} &  \colorcellb \textbf{99.6\%} & 112 & 98.6\% & 97 & 98.7\% \\
+        \colorrowc 2 & CBPEDS & 17562 &  \colorcellb \textbf{50} &  \colorcellb \textbf{99.7\%} & 182 & 99.0\% & 168 & 99.0\% \\
     \end{longtable}
 \end{center}
-\vspace{-1cm}
+\vspace{-0.8cm}
 
 此外，由于CBPEDS本身是重症监护患者的临床医学数据记录，部分患者的PPG数据波形畸变严重，显著异于常人，如\autoref{fig:ucibp_abnormal}所示。
 SCD算法可以准确地识别这些异常波形，不进行波形标注。由于如\autoref{fig:ucibp_abnormal}所示的异常数据不在本研究选作算法性能评估的50条数据内，SCD算法的检测结果未能在\autoref{tab:scd}所示的统计值中得以体现。
 
+\vspace{1em}
 \begin{figure}[h]
     \centering
-    \subfigure[\label{fig:c_0179}编号0179原始数据波形（局部）]{
+    \subfigure[\label{fig:c_0179}畸变信号示意图（一）]{
         \includegraphics[width=7.5cm]{pulse_preprocess/0179}
     }
     \quad
-    \subfigure[\label{fig:c_0533}编号0533原始数据波形（局部）]{
+    \subfigure[\label{fig:c_0533}畸变信号示意图（二）]{
         \includegraphics[width=7.5cm]{pulse_preprocess/0533}
     }
     \quad
-    \caption{\label{fig:ucibp_abnormal}UCI-BP数据库中畸形信号示意}
+    \caption{\label{fig:ucibp_abnormal}CBPEDS中畸变信号示意图}
 \end{figure}
+\vspace{1em}
 
 五、讨论
 
@@ -549,14 +574,14 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
 
 \begin{figure}[htbp]
     \centering
-    \subfigure[重博波明显的PPG波形]{
+    \subfigure[重博波明显的PPG波形示意图]{
     \includegraphics[width=5.5cm]{pulse_preprocess/ri1}
     }
     \quad
-    \subfigure[重博波不明显的PPG波形]{
+    \subfigure[重博波不明显的PPG波形示意图]{
     \includegraphics[width=5.5cm]{pulse_preprocess/ri2}
     }
-    \caption[重搏波及切迹定位原理]{\label{fig:incisura}重搏波及切迹定位原理\cite{Wang2012,Su2014}}
+    \caption[重搏波及切迹定位原理示意图]{\label{fig:incisura}重搏波及切迹定位原理示意图\cite{Wang2012,Su2014}}
 \end{figure}
 
 本研究借鉴了王选等\cite{Wang2012}于2012年提出的一种基于曲率$K$（curvature）的定位算法对切迹进行检测，该算法的核心思想是PPG信号在切迹退化成的变形点的邻域内具有最大的曲率值，如\autoref{alg:incisuras_detect}所示。
@@ -599,7 +624,7 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{pulse_preprocess/baselineadjust}
-    \caption{\label{fig:drift}基线漂移去除原理示意及处理前后对比}
+    \caption{\label{fig:drift}基线漂移去除原理示意及处理前后对比图}
 \end{figure}
 
 本研究借助一种基于线性变换的思路完成了基线漂移处理。将一个包含$n$个采样点的PPG波形的幅值表示为序列$x_i$，其中$0 \le i \le n-1$。
@@ -628,14 +653,14 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
 可以通过调整抽取与插值的数值对原始信号的采样率进行任意的调整。
 \begin{figure}[htbp]
     \centering
-    \subfigure[经过点(1,2)，(2,1)，(4,4)和(5,3)的线性样条]{
+    \subfigure[经过点(1,2)，(2,1)，(4,4)和(5,3)的线性样条示意图]{
     \includegraphics[width=5.5cm]{pulse_preprocess/spline1}
     }
     \quad
-    \subfigure[经过相同点的一种可能的三次样条插值]{
+    \subfigure[经过相同点的一种可能的三次样条插值示意图]{
     \includegraphics[width=5.5cm]{pulse_preprocess/spline2}
     }
-    \caption{\label{fig:spline}经过4点的线性样条插值与三次样条插值对比}
+    \caption{\label{fig:spline}经过4点的线性样条插值与三次样条插值对比图}
 \end{figure}
 
 多项值插值与样条插值是插值最常用的两种算法\cite{Timothy2018,Carl2008}。多项式插值给出满足所有原始数据点的单一公式，由于此过程中仅涉及浮点数加法与乘法，可以很方便的在PC及嵌入式设备上实现，因而得到广泛应用。
@@ -718,8 +743,8 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
 \end{center}
 \vspace{-0.8cm}
 
-由于3.1节中数据实验所采用的设备GE B450设备的采样率仅为100$Hz$，为计算本研究后续章节提出的多种PPG时域特征，本研究使用了基于自然边界条件的三次样条算法对PPG信号进行均匀插值\cite{ttk2021}，
-重采样处理后的PPG数据采样率被提高至2000$Hz$。
+由于3.1节中数据实验所采用的设备GE B450设备的采样率仅为100Hz，为计算本研究后续章节提出的多种PPG时域特征，本研究使用了基于自然边界条件的三次样条算法对PPG信号进行均匀插值\cite{ttk2021}，
+重采样处理后的PPG数据采样率被提高至2000Hz。
 \subsection{数据标准化}
 在上述各项预处理过程完成后，PPG波形在幅值上仍然有很大的个体差异，即使对同一被试对象，其波形在幅值上也会有一定的波动。为消除个体差异对特定波形特征计算的影响，需要对PPG波形进行归一化处理。
 
@@ -750,14 +775,14 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
 如\autoref{fig:ri}所示，PTT是对脉搏波主波峰与重博波波峰或反射波导致的拐点之间的时间间隔的量化描述。
 \begin{figure}[htbp]
     \centering
-    \subfigure[\label{fig:ri1}重博波明显的PPG波形]{
+    \subfigure[\label{fig:ri1}重博波明显的PPG波形示意图]{
     \includegraphics[width=6cm]{pulse_preprocess/ri1}
     }
     \quad
-    \subfigure[\label{fig:ri2}重博波不明显的PPG波形]{
+    \subfigure[\label{fig:ri2}重博波不明显的PPG波形示意图]{
     \includegraphics[width=6cm]{pulse_preprocess/ri2}
     }
-    \caption[PTT及RI计算原理示意]{\label{fig:ri}PTT及RI计算原理示意\cite{Su2014}}
+    \caption[PTT及RI计算原理示意图]{\label{fig:ri}PTT及RI计算原理示意图\cite{Su2014}}
 \end{figure}
 
 除PTT外，时间类特征参数还包含脉搏波脉动周期、上升支间期、下降支间期等。2016年，王梦婷\cite{mmt}提出了一种描述动脉内高压力水平维持的时间参数，并在此基础上归一化处理后得到了多项衍生参数，
@@ -766,7 +791,7 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.55\linewidth]{pulse_preprocess/timefeature}
-    \caption[PPG时间及幅值类参数示意]{\label{fig:timefeature}PPG时间及幅值类参数示意}
+    \caption[常见的PPG时间及幅值类参数示意图]{\label{fig:timefeature}PPG时间及幅值类参数示意图}
 \end{figure}
 
 以上参数的定义参见\autoref{fig:timefeature}及\autoref{tab:timefeature}所示，
@@ -774,31 +799,31 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
 
 \begin{center}
     \zihao{-5}
-    \begin{longtable}{m{4cm}<{\centering}m{9cm}<{\centering}m{2cm}<{\centering}}
-		\caption{常见PPG时间类参数定义}\\
+    \begin{longtable}{m{1cm}<{\centering}m{4cm}<{\centering}m{8cm}<{\centering}m{2cm}<{\centering}}
+		\caption{常见的PPG时间类参数定义}\\
 		\label{tab:timefeature}\\
 		\topline
-        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
         \midline
         \endfirsthead
         \caption[]{(续)}\\
         \topline
-        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
         \midline
         \endhead 
         \hline
         \endfoot
         \bottomline
         \endlastfoot
-        \colorrowa 脉动周期      &  相邻两个波谷之间的时间间隔         &  $SE$\\
-        \colorrowc 上升支间期      &  从波形起点（波谷）至主波峰之间的时间间隔         &  $SO$\\
-        \colorrowa 下降支间期      &  从主波峰至波形终点（波谷）之间的时间间隔        &  $OE$\\
-        \colorrowc 动脉高压力持续时间    &  主波维持在峰值幅值2/3高度的时间间隔         &    $A'B'$   \\
-        \colorrowa 血管硬度指数    &  动脉高压力持续时间与脉动周期的比值         &   $\frac{A'B'}{SE}$    \\
-        \colorrowc 心肌收缩系数    &  上升支间期与脉动周期的比值         &  $\frac{SO}{SE}$    \\
-        \colorrowa 心搏出系数      &   从波峰至降中峡的时间间隔与脉动周期的比值       &   $\frac{OB'}{SE}$\\
-        \colorrowc 上升支最大斜率间期      &   上升支波谷与上升支斜率最大点之间的时间间隔      &   /    \\
-        \colorrowa 下降支最大斜率间期      &   下降支斜率最小点与下降支波谷之间的时间间隔      &    /  \\
+        \colorrowa 1 & 脉动周期      &  相邻两个波谷之间的时间间隔         &  $SE$\\
+        \colorrowc 2 & 上升支间期      &  从波形起点（波谷）至主波峰之间的时间间隔         &  $SO$\\
+        \colorrowa 3 & 下降支间期      &  从主波峰至波形终点（波谷）之间的时间间隔        &  $OE$\\
+        \colorrowc 4 & 动脉高压力持续时间    &  主波维持在峰值幅值2/3高度的时间间隔         &    $A'B'$   \\
+        \colorrowa 5 & 血管硬度指数    &  动脉高压力持续时间与脉动周期的比值         &   $\displaystyle \frac{A'B'}{SE}$    \\
+        \colorrowc 6 & 心肌收缩系数    &  上升支间期与脉动周期的比值         &  $\displaystyle \frac{SO}{SE}$    \\
+        \colorrowa 7 & 心搏出系数      &   从波峰至降中峡的时间间隔与脉动周期的比值       &   $\displaystyle \frac{OB'}{SE}$\\
+        \colorrowc 8 & 上升支最大斜率间期      &   上升支波谷与上升支斜率最大点之间的时间间隔      &   /    \\
+        \colorrowa 9 & 下降支最大斜率间期      &   下降支斜率最小点与下降支波谷之间的时间间隔      &    /  \\
     \end{longtable}
 \end{center}
 \vspace{-0.8cm}
@@ -808,29 +833,31 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
 幅值类特征参数描述了PPG波形中某个时刻的幅值高度或多个幅值高度之间的比例关系。在各项研究中得到普遍应用的脉搏波增强指数（augmentation index，AIX）、反射指数（reflection index，RI）及K值等
 均属于幅值类参数。
 
-AIX指心脏收缩期早期与晚期拐点之间的差值与峰值之比，计算的关键需要先找到表征脉搏波反射波上升冲程（up-stroke）的拐点$P1$，如\autoref{fig:aix}所示\cite{Su2014}。
+AIX指心脏收缩期早期与晚期拐点之间的差值与峰值之比，计算的关键需要先找到表征脉搏波反射波上升冲程（up-stroke）的拐点$P_1$，如\autoref{fig:aix}所示\cite{Su2014}。
 \begin{equation}
     \label{equ:aix}
-    AIX = \pm \frac{\Delta P}{PP}
+    \text{AIX} = \pm \frac{\Delta P}{PP}
 \end{equation}
-特别地，\autoref{equ:character}中$\pm$的取值视拐点$P1$与峰值点的相对位置而定。当拐点在脉搏波波峰点左侧时，AIX符号取正，表示主波峰是经过叠加得到的，如图\autoref{fig:aix1}所示；反之，
+
+\clearpage
+特别地，\autoref{equ:character}中$\pm$的取值视拐点$P_1$与峰值点的相对位置而定，当拐点在脉搏波波峰点左侧时，AIX符号取正，表示主波峰是经过叠加得到的，如图\autoref{fig:aix1}所示；反之，
 当拐点在脉搏波波峰点右侧时，AIX符号取负，表明主波峰未得到“增强”，如图\autoref{fig:aix2}所示。
 \begin{figure}[htbp]
     \centering
-    \subfigure[\label{fig:aix1}拐点在波峰左侧]{
+    \subfigure[\label{fig:aix1}拐点在PPG波峰左侧示意图]{
     \includegraphics[width=6cm]{pulse_preprocess/aix1}
     }
     \quad
-    \subfigure[\label{fig:aix2}拐点在波峰右侧]{
+    \subfigure[\label{fig:aix2}拐点在PPG波峰右侧示意图]{
     \includegraphics[width=6cm]{pulse_preprocess/aix2}
     }
-    \caption[AIX计算原理示意]{\label{fig:aix}AIX计算原理示意\cite{Su2014}}
+    \caption[AIX计算原理示意图]{\label{fig:aix}AIX计算原理示意图\cite{Su2014}}
 \end{figure}
 
 RI是由脉搏波舒张峰值或拐点处幅值与收缩谷值之比计算得到的，如\autoref{fig:ri}所示\cite{Su2014,Elgendi2012}
 \begin{equation}
     \label{equ:ri}
-    RI = \frac{b}{a} \cdot 100\%
+    \text{RI} = \frac{b}{a} \cdot 100\%
 \end{equation}
 
 K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形态学特征无量纲参数，最早由罗志昌等\cite{Luo1988,PPGYY}提出
@@ -840,38 +867,42 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 \end{equation}
 其中，$P_m=\frac{1}{T}\int_{0}^{T}P(t)dt$为一个心动周期内脉搏压力$P(t)$的平均值，$P_s$与$P_d$分别为收缩压与舒张压。罗志昌等\cite{Luo1988,PPGYY}的研究表明，K值依赖于脉搏波的波形动态变化，
 同时能够在很大程度上反应血管外周阻力与血管壁硬化程度等生理因素的变化。
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.55\linewidth]{pulse_preprocess/k}
-    \caption{\label{fig:k}K值的计算原理示意}
-\end{figure}
 
-除上述参数外，幅值类特征参数还包括脉搏波波峰幅值、波谷幅值差值、降中峡幅值及外周阻力系数等\cite{cwl,mmt}。这些参数的具体定义参见\autoref{fig:timefeature}及\autoref{tab:heightfeature}所示。
+除上述参数外，幅值类特征参数还包括脉搏波波峰幅值、波谷幅值差值、降中峡幅值及外周阻力系数等\cite{cwl,mmt}。这些参数的具体定义参见\autoref{tab:heightfeature}及\autoref{fig:timefeature}所示。
+
+\vspace{-2em}
 \begin{center}
     \zihao{-5}
-    \begin{longtable}{m{3cm}<{\centering}m{9cm}<{\centering}m{2cm}<{\centering}}
-		\caption{常见PPG幅值类参数定义}\\
+    \begin{longtable}{m{1cm}<{\centering}m{3cm}<{\centering}m{7cm}<{\centering}m{2cm}<{\centering}}
+		\caption{常见的PPG幅值类参数定义}\\
 		\label{tab:heightfeature}\\
 		\topline
-        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
         \midline
         \endfirsthead
         \caption[]{(续)}\\
         \topline
-        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
         \midline
         \endhead 
         \hline
         \endfoot
         \bottomline
         \endlastfoot
-        \colorrowa 波峰幅值      &  主波峰幅值         &  $OP$\\
-        \colorrowc 波谷幅值差值      &  相邻波谷之间的幅值之差         &  /\\
-        \colorrowa 降中峡幅值      &  降中峡至基线幅值         &  $DD'$\\
-        \colorrowc 外周阻力系数      &  降中峡幅值与主波峰幅值之比         &  $\displaystyle \frac{DD'}{OP}$\\
+        \colorrowa 1 & 波峰幅值      &  主波峰幅值         &  $OP$\\
+        \colorrowc 2 & 波谷幅值差值      &  相邻波谷之间的幅值之差         &  /\\
+        \colorrowa 3 & 降中峡幅值      &  降中峡至基线幅值         &  $DD'$\\
+        \colorrowc 4 & 外周阻力系数      &  降中峡幅值与主波峰幅值之比         &  $\displaystyle \frac{DD'}{OP}$\\
     \end{longtable}
 \end{center}
-\vspace{-0.8cm}
+
+\vspace{-2em}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.55\linewidth]{pulse_preprocess/k}
+    \caption{\label{fig:k}K值的计算原理示意图}
+\end{figure}
+\vspace{-1em}
 
 \subsection{面积类特征参数}
 
@@ -887,29 +918,29 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 
 \begin{center}
     \zihao{-5}
-	\begin{longtable}{m{3.5cm}<{\centering}m{6.5cm}<{\centering}m{4.5cm}<{\centering}}
-		\caption{PPG面积类参数示意}\\
+	\begin{longtable}{m{1cm}<{\centering}m{3cm}<{\centering}m{6.5cm}<{\centering}m{4.5cm}<{\centering}}
+		\caption{常见的PPG面积类参数定义}\\
 		\label{tab:areafeature}\\
         \topline
-        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
         \midline
         \endfirsthead
         \caption[]{(续)}\\
         \topline
-        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
         \midline
         \endhead 
         \midline
         \endfoot
         \bottomline
         \endlastfoot
-        \colorrowa 上升支面积      &  从波形起点至峰值点对波形曲线积分所得面积值         &  $\displaystyle S_r=\int_{T_S}^{T_P}P(t)dt$\\
-        \colorrowc 下降支面积      &  从波形峰值点至终点对波形曲线积分所得面积值         &  $\scriptstyle S_f=\int_{T_P}^{T_E}P(t)dt$\\
-        \colorrowa 全周期面积      &  脉搏波波形在一个完整周期内的积分所得面积值         &  $\scriptscriptstyle S_t=\int_{T_S}^{T_E}P(t)dt$\\
-        \colorrowc 上升支面积比    &  上升支面积与$\triangle OPS$面积之比         &   $\textstyle R_r=\frac{S_r}{S_{\triangle OPS}}$    \\
-        \colorrowa 下降支面积比    &  下降支面积与$\triangle OPE$面积之比        &   $R_f=\frac{S_f}{S_{\triangle OPE}}$    \\
-        \colorrowc 全周期面积比    &  全周期面积与$\triangle SPE$面积之比         &   $R_t=\frac{S_t}{S_{\triangle SPE}}$    \\
-        \colorrowa 下降支面积差值比&  下降支面积和$\triangle OPE$面积之差与$\triangle OPE$面积之比        &    $\Delta R_f=\frac{S_{\triangle OPE}-S_f}{S_{\triangle OPE}}=1-R_f$\\
+        \colorrowa 1 & 上升支面积      &  从波形起点至峰值点对波形曲线积分所得面积         &  $\displaystyle S_r=\int_{T_S}^{T_P}P(t)dt$\\
+        \colorrowc 2 & 下降支面积      &  从波形峰值点至终点对波形曲线积分所得面积         &  $\displaystyle S_f=\int_{T_P}^{T_E}P(t)dt$\\
+        \colorrowa 3 & 全周期面积      &  脉搏波波形在一个完整周期内的积分所得面积         &  $\displaystyle S_t=\int_{T_S}^{T_E}P(t)dt$\\
+        \colorrowc 4 & 上升支面积比    &  上升支面积与$\triangle OPS$面积之比         &   $\displaystyle R_r=\frac{S_r}{S_{\triangle OPS}}$    \\
+        \colorrowa 5 & 下降支面积比    &  下降支面积与$\triangle OPE$面积之比        &   $\displaystyle R_f=\frac{S_f}{S_{\triangle OPE}}$    \\
+        \colorrowc 6 & 全周期面积比    &  全周期面积与$\triangle SPE$面积之比         &   $\displaystyle R_t=\frac{S_t}{S_{\triangle SPE}}$    \\
+        \colorrowa 7 & 下降支面积差值比&  \tabincell{c}{下降支面积和$\triangle OPE$面积之差\\ 与$\triangle OPE$面积之比}      &    $\displaystyle \Delta R_f=\frac{S_{\triangle OPE}-S_f}{S_{\triangle OPE}}=1-R_f$\\
 	\end{longtable}
 \end{center}
 \vspace{-0.8cm}
@@ -917,44 +948,44 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{pulse_preprocess/areafeature}
-    \caption{\label{fig:areafeature}PPG面积及斜率类参数示意}
+    \caption{\label{fig:areafeature}常见的PPG面积及斜率类参数示意图}
 \end{figure}
 
 \subsection{斜率类特征参数}
 
-斜率类参数是对PPG波形在一段时间内幅值的上升/下降速率的量化描述，反应了血液容积在这段时间内的平均流速。
+斜率类参数是对PPG波形在一段时间内幅值的上升或下降速率的量化描述，反应了血液容积在这段时间内的平均流速。
 
 陈婉琳等\cite{Chen2019}提出的光电容积斜率指数（photoplethysmography slope index，PSI）是斜率类参数中比较有代表性的一种，其计算的基本思想是将PPG波形分段后再描述各段之间的幅值变化，
 如\autoref{fig:psi}所示。同时，陈婉琳等研究发现PSI可以在一定程度上对PE患者进行识别\cite{Chen2019}。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.7\linewidth]{pulse_preprocess/psi}
-    \caption[PSI计算原理示意]{\label{fig:psi}PSI计算原理示意\cite{Chen2019}}
+    \caption[PSI计算原理示意图]{\label{fig:psi}PSI计算原理示意图\cite{Chen2019}}
 \end{figure}
 
 此外，常见的斜率参数还包括上升支平均斜率、上升支最大斜率、下降支平均斜率、下降支最大斜率等。这些参数的具体定义参见\autoref{fig:areafeature}及\autoref{tab:slopefeature}所示。
 \begin{center}
     \zihao{-5}
-    \begin{longtable}{m{4cm}<{\centering}m{9cm}<{\centering}m{2cm}<{\centering}}
-		\caption{常见PPG斜率类参数定义}\\
+    \begin{longtable}{m{1cm}<{\centering}m{3cm}<{\centering}m{6.5cm}<{\centering}m{2cm}<{\centering}}
+		\caption{常见的PPG斜率类参数定义}\\
 		\label{tab:slopefeature}\\
 		\topline
-        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
         \midline
         \endfirsthead
         \caption[]{(续)}\\
         \topline
-        \colorhead \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
+        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
         \midline
         \endhead 
         \hline
         \endfoot
         \bottomline
         \endlastfoot
-        \colorrowa 上升支平均斜率      &  主波峰值与上升支时间之比         &  $\frac{OP}{SO}$\\
-        \colorrowc 下降支平均斜率      &  主波峰值与下降支时间之比         &  $-\frac{OP}{OE}$\\
-        \colorrowa 上升支最大斜率      &  上升支一阶导数的最大值        &  /\\
-        \colorrowc 下降支最小斜率      &  下升支一阶导数的最小值         &   /    \\
+        \colorrowa 1 & 上升支平均斜率      &  主波峰值与上升支时间之比         &  $\displaystyle \frac{OP}{SO}$\\
+        \colorrowc 2 & 下降支平均斜率      &  主波峰值与下降支时间之比         &  $\displaystyle -\frac{OP}{OE}$\\
+        \colorrowa 3 & 上升支最大斜率      &  上升支一阶导数的最大值        &  /\\
+        \colorrowc 4 & 下降支最小斜率      &  下升支一阶导数的最小值         &   /    \\
     \end{longtable}
 \end{center}
 \vspace{-0.8cm}
@@ -966,7 +997,7 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 SI被定义为是被试身高$h$与PPG的主波峰值降中峡的时间间隔$\Delta T$的比值\cite{Elgendi2012,Millasseau2002,Brumfield2005}，即
 \begin{equation}
     \label{equ:si}
-    SI = \frac{h}{\Delta T}
+    \text{SI} = \frac{h}{\Delta T}
 \end{equation}
 Millasseau等\cite{Elgendi2012,Millasseau2002,Brumfield2005}的研究表明随着大动脉硬度增加、主动脉和大动脉中压力波的脉搏波速度增加，
 收缩和舒张峰值之间的时间延迟也会随着年龄的增长而减少，导致SI也会随着年龄增长而增长，如\autoref{fig:si}所示。
@@ -976,21 +1007,21 @@ Millasseau等\cite{Elgendi2012,Millasseau2002,Brumfield2005}的研究表明随�
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.4\linewidth]{pulse_preprocess/si}
-    \caption[SI计算原理示意]{\label{fig:si}SI计算原理示意\cite{Elgendi2012,Millasseau2002,Brumfield2005}}
+    \caption[SI计算原理示意图]{\label{fig:si}SI计算原理示意图\cite{Elgendi2012,Millasseau2002,Brumfield2005}}
 \end{figure}
 \noindent
 动脉壁传播的压力波传导速度\cite{Van2012}。在计算PWV时，需要在人体两部位分别测量脉搏波信号。
 若记两测量部位的直线距离的80\%为$d$，两部位之间的脉搏波传导时间差为$t$，则有
 \begin{equation}
     \label{equ:pwv}
-    PWV = \frac{d}{t}
+    \text{PWV} = \frac{d}{t}
 \end{equation}
 PWV已被证实与动脉扩张性、僵硬度、管壁厚度和血液黏稠度密切相关。
 特别地，PWV已经在子痫前期的诸多研究中得到应用\cite{Tomsin2012,Katsipi2014,VivianaIvan2018,Ira2014}。
-但由于PWV的测量依赖于在人体不同部位测量脉搏波（且测量多利用压力传感器完成），故\textbf{不适用}单点测量的光电容积脉搏波研究。
+但由于PWV的测量依赖于在人体不同部位测量脉搏波，且测量多利用压力传感器完成，故\textbf{不适用}单点测量的光电容积脉搏波研究。
 
 \section{小结}
 本章主要对PPG的信号预处理过程与时域参数描述进行了详细的介绍说明。针对PPG的预处理，对信号滤波、波型检测、重博波检测、基线漂移去除、重采样及标准化过程进行了介绍，并重点介绍
-了一种新型模块化PPG波形检测的SCD算法。该算法具有检测准确度高、抗干扰能力强、可拓展性强等优点。
+了一种新型模块化PPG波形检测的SCD算法，该算法具有检测准确度高、抗干扰能力强、可拓展性强等优点。
 针对PPG的时域特征参数，从时间类参数、幅度类参数、面积类参数与斜率类参数等方面分别介绍了这些特征参数的定义过程与其可能的生理学意义。
 本章的研究内容是后续研究的准备与铺垫。
