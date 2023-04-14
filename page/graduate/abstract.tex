@@ -1,21 +1,21 @@
 \cleardoublepage
 \chapternonum{摘要}
-子痫前期（preeclampsia，PE）是孕妇妊娠期特有的一种多系统进展性疾病，可引起全身小静脉痉挛，并进一步导致严重的母胎并发症，
+子痫前期（preeclampsia，PE）是孕妇妊娠期特有的一种多系统进展性疾病，可引起全身小静脉痉挛，导致严重的母胎并发症，
 是孕产妇和围产儿病死率升高的主要原因之一。但现阶段对PE的诊断识别主要通过生化标志物检查，该过程受操作流程、检测场所及成本等条件制约。
-本论文基于可充分反应血液动力学变化的光电容积脉搏波（photoplethysmography, PPG）对PE的识别问题进行了研究。
-PPG是心脏周期性搏动的体现，包含了有关人体血液微循环方面的更富细节的生理信息，具有无创、便捷等优点。
+本论文基于光电容积脉搏波（photoplethysmography, PPG）对PE的识别进行了研究。
+PPG是心脏周期性搏动的体现，包含了人体血液微循环方面的丰富细节，具有无创、便捷等优点。
 
 本论文构建了包含PE孕妇与正常妊娠孕妇的PPG数据集，设计了PPG多维度时域特征集与PPG采样序列时域特征集，将
 被试PPG数据的单个波形与全波波形分别作为最小分析单位，使用决策树、K近邻与随机森林三种算法，进行了PE识别模型的研究工作。
 
-本文的主要内容及创新点如下:
+本论文的主要内容及创新点如下:
 
 一、基于策略与机制分离思想，提出并实现了PPG波形检测的初筛-复核-投票算法
 
 本论文对PPG波形的检测过程进行了模式设计，提出了一种基于初筛-复核-投票（screening-checking-deciding，SCD）的PPG波形检测算法。
 算法在初筛时，通过搜索窗的方法确定波形；在复核时，通过功率、标准差、波峰相对位置与基线漂移程度等PPG形态学特征，区分有效波形与异常干扰；
 在决策时，通过加权投票的策略确定 PPG 波形是否为有效波形。SCD 算法可根据使用场景进行二次开发，支持更改初筛算法、增删复核标准与切换决策策略等设置。
-经验证，算法对PPG波形的识别准确率高、抗干扰能力强，可为多平台、多研究应用下的 PPG 分析检测的不同场景提供了一定的参考。
+经验证，该算法对PPG波形的识别准确率高、抗干扰能力强，可为多平台、多研究应用下的 PPG 分析检测的不同场景提供参考。
 
 二、设计了多种新型PPG时域形态特征，构建了完整的PPG时域描述特征集合
 
@@ -23,7 +23,7 @@ PPG是心脏周期性搏动的体现，包含了有关人体血液微循环方�
 通过左视策略、中视策略与分层策略构建了PPG多维度时域特征集。
 基于PPG波形的原始采样序列，通过重采样策略、补齐策略，构建了PPG采样序列时域特征集。
 此外，也提出了描述PPG波形间差异的新型时域特征。
-这些研究工作为PPG的时域特征设计提供了新的思路，也为基于PPG的各类应用研究提供了普适通用的PPG时域特征集合。
+这些研究工作为PPG的时域特征分析提供了新的思路，也为基于PPG的各类应用研究提供了普适通用的PPG时域特征集合。
 
 三、使用多种机器学习算法构建了子痫前期的识别模型
 
@@ -34,7 +34,7 @@ PPG是心脏周期性搏动的体现，包含了有关人体血液微循环方�
 将被试PPG全部波形作为最小分析单位时，在PPG多维度时域特征集上，由随机森林算法可得到最佳模型（AUC为0.952，测试集准确率93.8\%）；
 在PPG采样序列时域特征集上，由随机森林算法可得到最佳模型（AUC为0.929，测试集准确率87.5\%）。
 
-以上结果表明，本文构建PPG多维度时域特征集与PPG采样序列时域特征集可作为PE识别的数据依据，其中，各算法模型在PPG多维度时域特征集效果更好。
+以上结果表明，本论文构建的PPG多维度时域特征集与PPG采样序列时域特征集可作为PE识别的数据基础，其中，各算法模型在PPG多维度时域特征集效果更好。
 对比各算法模型在测试集上的准确率表明，随机森林算法性能优于决策树与K近邻算法。对两个特征集中有效特征贡献度分析表明，与PPG波形形态的对应关系的研究表明，
 两类时域特征集中对随机森林模型贡献度高的特征所对应的PPG形态位置高度相似，且集中出现在PPG主波峰后与下降支末端附近，PPG波形在这些位置的具体形态可能是识别PE的关键。
 
@@ -47,11 +47,11 @@ PPG是心脏周期性搏动的体现，包含了有关人体血液微循环方�
 \chapternonum{Abstract}
 
 Preeclampsia (PE) is a multisystemic progressive disorder specific to maternal pregnancy that causes systemic small venous spasms 
-and further serious maternal-fetal complications and is one of the main causes of increased maternal and perinatal morbidity and mortality. 
+leading to severe maternal-fetal complications. It is one of the major causes of increased maternal and perinatal morbidity and mortality.  
 However, at this stage, the diagnostic identification of PE is mainly through biomarkers, a process constrained by operational procedures, 
 testing sites, and costs. 
-This thesis investigates the identification of PE based on photoplethysmography (PPG), which is a manifestation of the periodic heartbeat and contains more 
-detailed physiological information about the human blood microcirculation and has the advantages of being non-invasive and convenient.
+This thesis investigates the identification of PE based on photoplethysmography (PPG). PPG is a manifestation of the periodic pulsations 
+of the heart and contains a wealth of details about the microcirculation of human blood, which has the advantages of being non-invasive and convenient.
 
 In this thesis we constructed a PPG dataset containing pregnant women with PE and normal pregnancy, designed a multidimensional time-domain feature set of PPG and 
 a time-domain feature set of PPG sampling sequence, and used three algorithms: decision tree (DT), K-nearest neighbor (KNN), and random forest (RF), 
@@ -75,7 +75,7 @@ and a variety of novel PPG time-domain features are designed in multiple dimensi
 The set of PPG multi-dimensional time-domain features is constructed by left-view strategy, middle-view strategy, and hierarchical strategy. 
 Based on the original sampling sequence of PPG waveform, the time domain feature set of PPG sampling sequence is constructed by resampling strategy and 
 complementary strategy. In addition, novel time-domain features describing the differences between PPG waveforms are also proposed. 
-These research works provide new ideas for the design of time-domain features of PPG, and also provide universal PPG time-domain feature sets for various PPG-based application studies.
+These research works provide new ideas for the anlysis of time-domain features of PPG, and also provide universal PPG time-domain feature sets for various PPG-based application studies.
 
 III. The pre-eclampsia recognition models are constructed using various machine-learning algorithms.
 
