@@ -1,8 +1,8 @@
 \chapter{脉搏波的预处理与特征参数提取}
 \section{引言}
-本介绍使用的PPG数据来源自自主进行的临床实验，本章从实验设备、实验流程与数据导出等方面对其进行介绍。
-利用常用的变量分析方法，对临床实验被试的人口统计学特征进行统计分析。
-介绍PPG的预处理分析中的信号滤波、波形检测、切迹检测、基线漂移处理、信号重采样与数据标准化等步骤。
+本研究使用的PPG数据来源自自主进行的临床实验，本章从实验设备、实验流程与数据导出等方面对其进行介绍。
+利用常用的统计分析方法，对临床实验被试的人口统计学特征进行分析。
+介绍PPG的预处理涉及的信号滤波、波形检测、切迹检测、基线漂移处理、信号重采样与数据标准化等过程。
 提出一种可应用于多平台、多研究背景的基于初筛—复核—决策的新型PPG波形检测算法。
 最后，汇总介绍常见的PPG时域特征参数。
 
@@ -16,10 +16,10 @@
 \section{临床数据实验}
 本研究于2017年6月至2019年4月期间在浙江大学医学院附属妇产科医院进行了临床数据采集实验。其中，实验组为确诊PE的孕妇，对照组为正常妊娠孕妇。
 由于实验组孕妇均已确诊PE，不同程度地出现了血压升高等症状，因此实验组孕妇均已接受过药物治疗等临床干预。
-本实验已通过浙江大学医学院附属妇产科医院医学伦理委员会的审查（审查编号：20170131），所有被试孕妇均知晓研究目的及具体实验流程，并签署了知情同意书。
+本实验通过了浙江大学医学院附属妇产科医院医学伦理委员会的审查（审查编号：20170131），所有被试孕妇均知晓研究目的及具体实验流程，并签署了知情同意书。
 
 \subsection{实验设备}
-本研究对PPG数据采集仪器的专业性、可靠性有较高要求，最终选择了美国GE公司生产的GE Healthcare CARESCAPE B650型麻醉监护仪进行数据采集，如\autoref{fig:monitor}所示。
+本研究对PPG数据采集仪器的专业性、可靠性有较高要求，最终选择了美国GE公司生产的Healthcare CARESCAPE B650型麻醉监护仪进行数据采集，如\autoref{fig:monitor}所示。
 B650型监护仪可对包括12导联心电、脑电、心输出量、血氧饱和度、血压、呼出气体中气体成份及熵指数等专业参数进行监测，并提供了表征PPG动脉血压变化的
 收缩压变化度（systolic pressure variation，SPV）和脉压变化度（pulse pressure variation，PPV）的参数监测\cite{GE2021,Michard1999}。
 \begin{figure}[htbp]
@@ -31,21 +31,21 @@ B650型监护仪可对包括12导联心电、脑电、心输出量、血氧饱�
     \subfigure[B650监护界面]{
     \includegraphics[width=5.5cm]{pulse_preprocess/monitor2}
     }
-    \caption{\label{fig:monitor}GE Healthcare CARESCAPE B650监护仪}
+    \caption{\label{fig:monitor}美国GE公司的Healthcare CARESCAPE B650监护仪}
 \end{figure}
 
-此外，本研究选择了美国泰科公司旗下的Nellcor DS-100A型透射式血氧传感器作为B650型的配套组件，如\autoref{fig:ds100a}所示。
+此外，本研究选择了美国Tyco公司的Nellcor DS-100A型透射式血氧传感器作为B650型的配套组件，如\autoref{fig:ds100a}所示。
 该传感器一般佩戴在被试左手食指上，若被试的左手食指有损伤，则将测量部位替换为左手中指。
 在测量时，手指需放入传感器指套内部，使指甲与传感器表面有指甲标记的部位正对，指尖触及但不超出指套顶端，以确保发光管发出的所有光线全部通过被试的组织。
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.5\linewidth]{pulse_preprocess/ds100a}
-    \caption{\label{fig:ds100a}Nellcor DS-100A型血氧传感器}
+    \includegraphics[width=0.4\linewidth]{pulse_preprocess/ds100a}
+    \caption{\label{fig:ds100a}美国Tyco公司的Nellcor DS-100A型血氧传感器}
 \end{figure}
 
 \subsection{实验流程}
-被试到达实验场地后，由实验人员登记其PE风险因子信息，包括姓名、年龄、孕产史等。接着实验人员会告知被试本研究的研究目的与具体实验流程。
+被试到达实验场地后，由实验人员登记其PE风险因子信息，包括姓名、年龄、孕产史等。接着实验人员会告知被试本实验的研究目的与具体实验流程。
 在征得被试同意后，实验人员按操作规范为被试佩戴血氧采集探头\cite{Chen2021}。
 在被试休息至少5min后，开始进行PPG数据采集，单次采集时长不少于1min。被试需在实验全程中保持坐姿，禁止发声或进行较大的肢体动作。
 
@@ -69,7 +69,7 @@ B650型监护仪可对包括12导联心电、脑电、心输出量、血氧饱�
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{pulse_preprocess/relation}
-    \caption[二元变量之间常见的相关关系示意图]{\label{fig:relation}二元变量之间常见的相关关系示意图\cite{IXL2022}}
+    \caption[二元变量相关关系示意图]{\label{fig:relation}二元变量相关关系示意图\cite{IXL2022}}
 \end{figure}
 
 统计学上引入了相关系数$r$以量化表征变量之间的密切程度。$r$的取值范围为[-1,1]，其绝对值大小反映了两变量之间相关性的强弱：当$r$>0时，表明两个变量正相关；反之，则两个变量变化趋势相反，呈负相关。
@@ -144,7 +144,7 @@ B650型监护仪可对包括12导联心电、脑电、心输出量、血氧饱�
 \vspace{-0.8cm}
 
 \subsection{分析结果}
-由于3.2节中，人口统计学特征、PE风险因子等待检参数存在样本量较小、具体分布未知等客观限制因素，不满足参数检验的条件。
+由于通过临床数据实验得到的被试人口统计学特征、PE风险因子等待检参数存在样本量较小、具体分布未知等客观限制因素，不满足参数检验的条件。
 本研究最终从\autoref{tab:nonparametric-test}中选取了Wilcxon W等级和检验方法，亦即Mann-Whitney U检验对被试的人口统计学特征、PE风险因子在实验室与对照组上
 是否存在分布差异进行了相关性分析。
 
@@ -188,25 +188,25 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
 \section{脉搏波的预处理}
 不同硬件设备采集的PPG数据在采样率、采样精度及导出的数据格式等方面存在着一定的差异，同时这些设备对数据采集过程中出现的人体肌电、呼吸与体动以及环境工频等噪声干扰的软硬件滤波处理能力也不尽相同。
 因此，在具体的研究应用场景下，在对PPG进行分析前，通常需要进行一定的数据预处理。
-\autoref{fig:samplesignal}展示了此前数据实验采集得到的一段有代表性的数据波形。
+\autoref{fig:samplesignal}展示了本研究临床数据实验采集得到的一段有代表性的PPG数据波形。
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\linewidth]{pulse_preprocess/samplesignal}
-    \caption{\label{fig:samplesignal}一名被试实采PPG信号示意图}
+    \caption{\label{fig:samplesignal}临床数据实验采集得到的PPG信号示意图}
 \end{figure}
 
 从\autoref{fig:samplesignal}中可以看到，本次临床数据实验经由GE B650型监护仪采集得到的PPG信号质量较高，但仍然存在着基线偏移、PPG信号重博波特征不明显等问题。这些问题可能与实验使用的传感器种类、监护仪硬件检测电路及监护仪软件处理算法等因素有关。
 除此之外，如\autoref{fig:samplesignal}框选所示，40s至55s内存在着一段无效干扰数据，在进行分析前必须设法对其进行剔除。
 
+本节将具体介绍对PPG信号的分析预处理过程，同时说明预处理各过程中使用的具体算法。PPG预处理过程包括滤波处理、波形检测、去除基线漂移、信号重采样与数据标准化等，如\autoref{fig:process}所示。
+并对一种可在多平台、多研究背景下应用的新型PPG波形检测算法进行着重介绍。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.5\linewidth]{pulse_preprocess/process}
-    \caption{\label{fig:process}信号预处理流程示意图}
+    \caption{\label{fig:process}PPG预处理流程示意图}
 \end{figure}
 
-本节将具体介绍对PPG信号的分析预处理过程，同时说明预处理各过程中使用的具体算法。PPG预处理过程包括滤波处理、波形检测、去除基线漂移、信号重采样与数据标准化等，如\autoref{fig:process}所示。
-并对一种可在多平台、多研究背景下应用的新型PPG波形检测算法进行着重介绍。
 \subsection{信号滤波}
 数字滤波可从原始信号获取特定频段的成分，是信号处理的常见的处理方法。而在人体电生理信号分析领域，数字滤波更是必不可少的处理步骤。针对人体各电生理信号，此前的诸多学者们提出了多种不同的滤波算法。
 由于如\autoref{fig:samplesignal}所示的原始PPG信号质量高、干扰噪声较少，本研究仅使用较为简单的平均滑动滤波器对其进行了处理。
@@ -216,7 +216,7 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
     \label{equ:filter}
     Y(k)=\frac{1}{N}\sum_{i=0}^{N-1}X(k+i)
 \end{equation}
-而该滤波器的截止频率（cut-off frequency，CF）与滤波阶数$N$存在以下关系\cite{malp2011,malp2022}
+而该滤波器的截止频率（cutoff frequency，CF）与滤波阶数$N$存在以下关系\cite{malp2011,malp2022}
 \begin{equation}
     \label{equ:malpf}
     f_{co} \approx 0.443 \cdot \frac{f_s}{N}    
@@ -235,7 +235,7 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
     \caption{\label{fig:filter}平滑滤波前后PPG信号对比图}
 \end{figure}
 
-使用$N$=5的平滑滤波器对采集得到的PPG进行处理，滤波前后对比如\autoref{fig:filter}所示。由\autoref{equ:malpf}可知，此时滤波器对应的的截止频率约为89Hz。
+使用$N$=5的平滑滤波器对原始PPG信号进行处理，滤波前后对比如\autoref{fig:filter}所示。由\autoref{equ:malpf}可知，此时滤波器对应的的截止频率约为89Hz。
 另一方面，信噪比（signal-noise rate，SNR）与均方误差（root mean square error，RMSE）是最常用的评估滤波效果优劣的两个指标，其定义分别为
 \begin{equation}
     \label{equ:snr}
@@ -252,7 +252,7 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
 准确地检测PPG波形是分析研究的前提。多数PPG波形检测算法一般会一次性完成PPG波形的分析与检测，而对结果的校验需全部由人工完成\cite{Zhang2010,Chen2021,Allen2007,Feng2018,FengJiang2018}。
 在处理受到干扰或存在畸变的PPG数据时，此类算法的检测性能通常也会下降。
 为改进这些问题，在借鉴计算机科学领域的策略与机制分离思想的基础上\cite{Levin1975}，本研究对PPG波形的检测过程进行了模式设计，
-提出一种基于初筛—复核—决策（screening-checking-deciding，SCD）的新型算法，其处理流程图如\autoref{fig:detect}所示。
+提出一种基于初筛—复核—决策（screening-checking-deciding，SCD）的新型算法，其处理流程如\autoref{fig:detect}所示。
 
 \begin{figure}[htbp]
     \centering
@@ -429,7 +429,7 @@ $x_l$为$x_s$与$x_e$中数值较小者。
 \begin{center}
     \zihao{-5}
     \begin{longtable}{m{1cm}<{\centering}m{1.5cm}<{\centering}m{3.6cm}<{\centering}m{3.6cm}<{\centering}m{3cm}<{\centering}}
-		\caption{复核阶段各标准的超参数数值}\\
+		\caption{SCD算法复核阶段各标准的超参数数值}\\
 		\label{tab:checkingp}\\
 		\topline
         \colorhead \textbf{序号} & \textbf{复核标准}      & \textbf{个体全部波形参与均值计算百分比区间} & \textbf{判为有效波形的均值相对区间} & \textbf{备注} \\
@@ -624,7 +624,7 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{pulse_preprocess/baselineadjust}
-    \caption{\label{fig:drift}基线漂移去除原理示意及处理前后对比图}
+    \caption{\label{fig:drift}基线漂移去除原理示意图}
 \end{figure}
 
 本研究借助一种基于线性变换的思路完成了基线漂移处理。将一个包含$n$个采样点的PPG波形的幅值表示为序列$x_i$，其中$0 \le i \le n-1$。
@@ -660,7 +660,7 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
     \subfigure[经过相同点的一种可能的三次样条插值示意图]{
     \includegraphics[width=5.5cm]{pulse_preprocess/spline2}
     }
-    \caption{\label{fig:spline}经过4点的线性样条插值与三次样条插值对比图}
+    \caption{\label{fig:spline}两种样条插值方法示意图}
 \end{figure}
 
 多项值插值与样条插值是插值最常用的两种算法\cite{Timothy2018,Carl2008}。多项式插值给出满足所有原始数据点的单一公式，由于此过程中仅涉及浮点数加法与乘法，可以很方便的在PC及嵌入式设备上实现，因而得到广泛应用。
@@ -900,7 +900,7 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.55\linewidth]{pulse_preprocess/k}
-    \caption{\label{fig:k}K值的计算原理示意图}
+    \caption{\label{fig:k}K值计算原理示意图}
 \end{figure}
 \vspace{-1em}
 

@@ -10,9 +10,9 @@ PPG是心脏周期性搏动的体现，包含了人体血液微循环方面的�
 
 本论文的主要内容及创新点如下:
 
-一、基于策略与机制分离思想，提出并实现了PPG波形检测的初筛-复核-投票算法
+一、基于策略与机制分离思想，提出并实现了PPG波形检测的初筛—复核—投票算法
 
-本论文对PPG波形的检测过程进行了模式设计，提出了一种基于初筛-复核-投票（screening-checking-deciding，SCD）的PPG波形检测算法。
+本论文对PPG波形的检测过程进行了模式设计，提出了一种基于初筛—复核—投票（screening-checking-deciding，SCD）的PPG波形检测算法。
 算法在初筛时，通过搜索窗的方法确定波形；在复核时，通过功率、标准差、波峰相对位置与基线漂移程度等PPG形态学特征，区分有效波形与异常干扰；
 在决策时，通过加权投票的策略确定 PPG 波形是否为有效波形。SCD 算法可根据使用场景进行二次开发，支持更改初筛算法、增删复核标准与切换决策策略等设置。
 经验证，该算法对PPG波形的识别准确率高、抗干扰能力强，可为多平台、多研究应用下的 PPG 分析检测的不同场景提供参考。
@@ -72,7 +72,7 @@ II. A variety of new PPG time-domain morphological features are designed to buil
 
 In this thesis, the design process of PPG time-domain features is summarized methodologically, the concept of PPG description vector is proposed, 
 and a variety of novel PPG time-domain features are designed in multiple dimensions such as time, amplitude, angle, radian, area, slope, etc. 
-The set of PPG multi-dimensional time-domain features is constructed by left-view strategy, middle-view strategy, and hierarchical strategy. 
+The set of PPG multi-dimensional time-domain features is constructed by left-view strategy, center-view strategy, and scaled-view strategy. 
 Based on the original sampling sequence of PPG waveform, the time domain feature set of PPG sampling sequence is constructed by resampling strategy and 
 complementary strategy. In addition, novel time-domain features describing the differences between PPG waveforms are also proposed. 
 These research works provide new ideas for the anlysis of time-domain features of PPG, and also provide universal PPG time-domain feature sets for various PPG-based application studies.

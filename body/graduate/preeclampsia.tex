@@ -78,8 +78,8 @@ PE引起的基本的病理生理变化包括全身小动脉痉挛、血管内皮
 根据检测方式的不同，可将脉搏波分为压力脉搏波和容积脉搏波两类。压力脉搏波主要表征血管内血液压力的传输，容积脉搏波主要表征外周血管与微循环中等微血管血液容积的脉动性变化。
 其中，光电容积脉搏波（photoplethysmography，PPG）最早于1937年由Hertzman等\cite{Hertzman1937}提出，是利用光电转换方法检测组织中血液容积变化的一种技术。
 
-PPG的检测可依据光的接收方式分为透射式与反射式两种\cite{THOCBPM}，透射式PPG采集原理是使用一定波长光源照射在人体组织表面，由于皮肤、血液、肌肉等各组织的吸收，一部分光发生漫反射，
-一部分透过组织被传感器接收，其中光源与传感器对称分布；反射式PPG采集原理与透射式基本相同，区别在于反射式下传感器被放置在光源同侧以接收漫反射回来的光\cite{THOCBPM,mmt}，如\autoref{fig:led}所示。
+PPG的检测可依据光的接收方式分为透射式与反射式两种\cite{THOCBPM}，透射式PPG采集时，光源与传感器对称分布，其原理是使用一定波长光源照射在人体组织表面，由于皮肤、血液、肌肉等各组织的吸收作用，一部分光发生漫反射，
+一部分光透过组织被传感器接收。反射式PPG采集原理与透射式基本相同，区别在于反射式下传感器被放置在光源同侧以接收漫反射回来的光\cite{THOCBPM,mmt}，如\autoref{fig:led}所示。
 透射式PPG检测一般多用于人体耳垂、指端等部位，反射式PPG一般多用于手腕、
 胸部等其他表层血管发达区域\cite{THOCBPM}。一般认为，透射式检测更方便指示心率的时间关系，而反射式则对于血管容积变化的检测更有优势\cite{mmt}。
 \begin{figure}[htbp]
@@ -110,8 +110,8 @@ PPG的检测可依据光的接收方式分为透射式与反射式两种\cite{TH
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.7\linewidth]{pe/absorb}
-    \caption{\label{fig:absorb}PPG信号的光吸收示意图}
+    \includegraphics[width=.6\linewidth]{pe/absorb}
+    \caption{\label{fig:absorb}PPG的光吸收示意图}
 \end{figure}
 
 其中，下标$t$、$v$、$a$分别代表皮肤肌肉组织、静脉血液、动脉血液等成分。学者们已经证实皮肤肌肉组织、静脉血液等组织对光的吸收是恒定不变的\cite{1980Spectrophotometric,4122392}，如\autoref{fig:absorb}所示。
@@ -133,7 +133,12 @@ PPG的检测可依据光的接收方式分为透射式与反射式两种\cite{TH
     \frac{I+\Delta I}{I}=\frac{I_{0}e^{-C_{a}\varepsilon _{a}(V_{a}+\Delta V_{a})}}{I_{0}e^{-C_{a}\varepsilon _{a}V_{a}}}=e^{-C_{a}\varepsilon _{a}\Delta V_{a}} 
 \end{equation}
 
-进一步，对\autoref{equ:AF4}两边同时取对数，并根据数学近似关系，若$x\rightarrow 0$,则$\ln(1+x)\approx x$,可得：
+进一步，对\autoref{equ:AF4}两边同时取对数，并根据数学近似关系
+\begin{equation}
+    \label{equ:lnx}
+    \ln(1+x)\approx x,x\rightarrow 0
+\end{equation}
+可得：
 \begin{equation}
     \label{equ:AF5}
     \frac{\Delta I}{I}=-C_{a}\varepsilon _{a}\Delta V_{a}
@@ -153,7 +158,7 @@ PPG的检测可依据光的接收方式分为透射式与反射式两种\cite{TH
 
 一、共性特征
 
-PPG信号也是平稳随机信号的一种，和其他人体内源信号类似，有着医学信号的以下特点\cite{Ma2015,Qiu2012,Naraharisetti2011,Miao2020,LMX2019}。
+PPG信号是一种平稳随机信号，和其他人体内源信号类似，有着医学信号的以下特点\cite{Ma2015,Qiu2012,Naraharisetti2011,Miao2020,LMX2019}。
 
 1、信号弱
 
@@ -165,7 +170,7 @@ PPG以低频信号为主，频谱范围是0.1$\sim$40Hz，其信号能量主要�
 
 3、易受干扰
 
-由于PPG信号弱、频率低，在检测时极易收到各种噪声干扰。工频干扰是最常见的噪声信号源，采集过程中被试发生体动也很容易干扰检测结果。此外，由于PPG信号光电采集的特殊性，环境光亮度等因素也会影响最终的结果。
+由于PPG信号弱、频率低，在检测时极易受到各种噪声干扰。工频干扰是最常见的噪声信号源，采集过程中被试发生体动也很容易干扰检测结果。此外，由于PPG信号光电采集的特殊性，环境光亮度等因素也会影响最终的结果。
 
 4、随机性强
 
@@ -183,7 +188,7 @@ B为潮波（重搏前波），C为重搏波波谷，D为重搏波波峰，E为�
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{pe/ppg} 
-    \caption{\label{fig:ppg}典型的PPG波形示意图}
+    \caption{\label{fig:ppg}PPG波形示意图}
 \end{figure}
 
 \subsection{生理参数与非生理参数建立的微循环模型}
@@ -233,12 +238,12 @@ B为潮波（重搏前波），C为重搏波波谷，D为重搏波波峰，E为�
     =\frac{\mathrm{d} V_{2}}{\mathrm{d} p_{2}}\frac{\mathrm{d} p_{2}}{\mathrm{d} t}
     =c_{2}\frac{\mathrm{d} p_{2}}{\mathrm{d} t}
 \end{equation}
-不失一般性，设腔体1、2之间的血液流淌在长度为$l$,截面积为$A$的刚性管道之中。依据动量守恒，则有：
+不失一般性，设腔体1、2之间的血液流淌在长度为$l$，截面积为$A$的刚性管道之中。依据动量守恒，则有：
 \begin{equation}
     \label{equ:QM}
     \frac{\mathrm{d}}{\mathrm{d} t}\left ( \rho Al\frac{q}{A} \right )=p_{1}A-p_{2}A
 \end{equation}
-其中,$\rho$为血液密度，$q$为容积流量，$q/A$为血流速度。
+其中，$\rho$为血液密度，$q$为容积流量，$q/A$为血流速度。
 \autoref{equ:QM}可进一步简化为
 \begin{equation}
     \left \{
@@ -332,7 +337,7 @@ B为潮波（重搏前波），C为重搏波波谷，D为重搏波波峰，E为�
 非生理参数模型使用黑箱方法，不追求任何细节，仅通过输入输出信息来研究推导心血管系统模型，具有建立模型过程简单与不破坏系统任何原有结构等优势。
 
 由于PPG信号具有较强的随机性，且其时变特性符合平稳随机信号的定义，可以采用平稳随机信号的线性模型对PPG进行建模分析\cite{Qiu2012,PPGYY,Ma2015}。因此，PPG信号$X(n)$可以看作是某一线性系统在
-白噪声$W(n)$的激励下而得到的响应。只要确定了白噪声的相关参数，我们便可以将对平稳随机信号PPG的研究转换成对随机信号的线性系统的研究，典型的随机信号参数模型如\autoref{fig:eq}所示。
+白噪声$W(n)$的激励下而得到的响应，典型的随机信号参数模型如\autoref{fig:eq}所示。因此，只要确定了白噪声的相关参数，便可以将对PPG的研究转换成对随机信号的线性系统的研究。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.5\linewidth]{pe/eq}
@@ -350,7 +355,7 @@ ARMA模型是AR模型与MA模型的组合，表示脉搏波信号$X(n)$是由自
     \label{equ:ARMAH}
     H(Z)=\frac{X(Z)}{W(Z)}=\frac{\sum_{k=0}^{q}b_{k}Z^{-k}}{1+\sum_{k=1}^{p}a_{k}Z^{-k}}=\frac{B(Z)}{A(Z)}
 \end{equation}
-可知，ARMA模型既有零点，也有极点，是零极点模型，一般记作$ARMA_{(p,q)}$，其中$p$与$q$分别是AR模型与MA模型的阶次。
+由\autoref{equ:ARMAH}可知，ARMA模型既有零点，也有极点，是零极点模型。一般将ARMA模型记作$ARMA_{(p,q)}$，其中$p$与$q$分别是AR模型与MA模型的阶次。
 对\autoref{equ:ARMA}进行傅里叶变换，可进一步得到ARMA模型的功率谱估计为\cite{Qiu2012}：
 \begin{equation}
     \label{equ:ARMAP}
@@ -359,7 +364,7 @@ ARMA模型是AR模型与MA模型的组合，表示脉搏波信号$X(n)$是由自
     =\delta _{\omega}^2\left |  \frac{\hat{B(e^{j\omega} )}}{\hat{A}(e^{j\omega} )}\right |^2
 \end{equation}
 
-与上小节中的双弹性腔三阶模型类似，实际证明当采用ARMA的三阶模型$ARMA_{(3,2)}$来拟合实际PPG波形时，模型输出与实测波形拟合度高、误差小\cite{PPGYY}。在此情形下，PPG波形可由源自\autoref{equ:ARMA}的
+与上小节中的双弹性腔三阶模型类似，实际证明，当采用ARMA的三阶模型$ARMA_{(3,2)}$来拟合实际PPG波形时，模型输出与实测波形拟合度高、误差小\cite{PPGYY}。在此情形下，PPG波形可由源自\autoref{equ:ARMA}的
 \begin{equation}
     \label{equ:ARMA32}
     \begin{aligned}
@@ -367,7 +372,7 @@ ARMA模型是AR模型与MA模型的组合，表示脉搏波信号$X(n)$是由自
         &+b_{0}W(n)+b_{1}X(n-1)+b_{2}W(n-2)
     \end{aligned}
 \end{equation}
-来表征。则模型的传递函数为
+来表征。模型对应的传递函数为
 \begin{equation}
     \label{equ:ARMAH32}
     \begin{aligned}
@@ -376,25 +381,26 @@ ARMA模型是AR模型与MA模型的组合，表示脉搏波信号$X(n)$是由自
     \end{aligned}
 \end{equation}
 其中，$g_{i}$为PPG实际采样数值，$N$为采样点数。
-此时，求解模型则转换成求解\autoref{equ:ARMA32}中相应的$a_{i}$、$b_{i}$，使模型拟合曲线与原曲线均方差和最小，即满足：
+此时，求解模型则转换成求解\autoref{equ:ARMA32}中相应的$a_{i}$、$b_{i}$系数，使模型拟合曲线与原曲线均方差和最小，即满足：
 \begin{equation}
     \label{equ:MeanSum}
     \Delta_{min}=\sum_{i=1}^{N}\left |  (g_i-g'_i)^2\right |
 \end{equation}
 其中$g'_i$为模型拟合数值。
 
-\subsection{脉搏波的量化描述本质}
+\subsection{脉搏波的通讯模型}
 通信工程中认为，信息是事物运动状态或存在方式的不确定性描述，是通信的内涵；消息是能够被人体感觉器官所感知的物理现象，是信息的外在表现形式；信号则是消息的物理表现形式，是消息的载体\cite{Shannon1948,Liu2019,Zhao2017}。
-通讯系统的抽象模型示意图如\autoref{fig:communication}所示。
+通讯系统的抽象模型如\autoref{fig:communication}所示。
+
+在\autoref{fig:communication}中，信源是产生消息的源头，是通信的起点。信道是信息的传输媒介，是对实际传输过程的抽象。由于信息的传输过程中会难以避免的引入噪声与干扰，
+一般将通讯系统各部分所受到的干扰与噪声折合成信道干扰。为保证传输质量与通讯稳定，编码与解码过程是按照预设的规则对消息符号进行加密和解密的处理过程。
+而信宿则是信息传输的目的地，也是接收消息的对象，是本次通信的终点\cite{Zhao2017}。
+
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\linewidth]{pe/communication}
     \caption[通讯系统的抽象模型示意图]{\label{fig:communication}通讯系统的抽象模型示意图\cite{Zhao2017,Liu2019}}
 \end{figure}
-
-在\autoref{fig:communication}中，信源是产生消息的源头，是通信的起点。信道是信息的传输媒介，是对实际传输过程的抽象。由于信息的传输过程中会难以避免的引入噪声与干扰，
-一般将通讯系统各部分所受到的干扰与噪声折合成信道干扰。为保证传输质量与通讯稳定，编码与解码过程是按照预设的规则对消息符号进行加密和解密的处理过程。
-而信宿则是信息传输的目的地，也是接收消息的对象，是本次通信的终点\cite{Zhao2017}。
 
 \begin{figure}[htbp]
     \centering
@@ -408,9 +414,9 @@ ARMA模型是AR模型与MA模型的组合，表示脉搏波信号$X(n)$是由自
 在此基础上，\textbf{PPG的描述过程可视为在编码规则不明确（黑箱模型）的前提下对其携带的生理信息进行译码解码的过程。}
 
 另一方面，在对PPG信号分析时，其输入均是以数值形式的采样值序列。不论是类似“该波形周期较长”、“该波形重播波潮波不明显”等自然语言描述，
-还是以“下降支时长为0.43s”、“该波形波峰幅值为1351”等绝对量化的数值描述，均是以较少的数值去完成PPG信号的描述与评估过程。因此，\textbf{对PPG信号的数字量化过程也是一个信息压缩过程，其本质是降维处理。}
+还是以“下降支时长为0.43s”、“该波形波峰幅值为1351”等绝对量化的数值描述，均是以较少的数值去完成PPG信号的描述与评估过程。因此，\textbf{对PPG信号的数字量化过程也是一个信息压缩过程。}
 
 \section{小结}
-本章内容对PE的生理学特性进行了介绍，也介绍了PE病发的孕妇可能出现的病生理变化。此外，详细介绍了从PPG信号的产生原理与采集原理，从人体电生理信号的共性特征与PPG信号的个性特征对PPG的特征进行了说明。
+本章内容对PE的生理学特性进行了介绍，也介绍了PE病发的孕妇可能出现的病生理变化。介绍了PPG信号的产生原理与采集原理，从人体电生理信号的共性特征与PPG信号的个性特征对PPG的特征进行了说明。
 也对PPG分析过程中常使用的生理参数模型与非生理参数模型进行了说明。
-最后，按方法论的观点从通讯原理的角度，概括介绍了PPG信号的量化描述本质。本章的研究为后续研究提供了理论基础。
+最后，按方法论的观点从通讯原理的角度，概括PPG的通讯模型。本章的研究为后续研究提供了理论基础。
