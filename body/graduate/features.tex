@@ -126,7 +126,7 @@ PPGFV最显著的特点在于用一组相互联系的数值来量化描述PPG波
   \subfigure[\label{fig:dp1}对照组被试波形示意图]{
     \includegraphics[width=6cm]{features/wjh}
   }
-  \caption[脉搏波波形间的差异性]{\label{fig:diff_in_pulse}脉搏波波形间的差异性示意图}
+  \caption[脉搏波波形间的差异性示意图]{\label{fig:diff_in_pulse}脉搏波波形间的差异性示意图}
 \end{figure}
 
 \autoref{fig:diff_in_pulse}对同一被试的所有PPG波形按起点进行了对齐，即使对同一被试而言，其波形的形态特征、波形时长同样存在一定的差异，而这些差异在不同的个体之间体现得更为明显。
@@ -237,18 +237,18 @@ FD的完整数学定义如下，若将曲线视为其在定义域至度量空间
 
 一、基准点的确定策略
 
-在PPG波形上选取并确定基准点的过程，是通过PPGFV对PPG进行描述的关键。本研究共使用了三种策略，分别为左视策略（left-view strategy，LVS）、中视策略（middle-view strategy，MVS）与分层策略（hierarchical strategy，HS）。
+在PPG波形上选取并确定基准点的过程，是通过PPGFV对PPG进行描述的关键。本研究共使用了三种策略，分别为左视策略（left-view strategy，LVS）、中视策略（center view strategy，CVS）与分层策略（scaled view strategy，SVS）。
 这三种策略的概念图如\autoref{fig:all_views}所示。
 
 1、左视策略（LVS）
 
 左视策略以PPG上升支起点为原点$T$，同时将PPG波峰设为$P$，将线段$TP$与水平基线$TT'$所构成的夹角$\angle PTT'$等分成若干份。这些等分线与PPG的交点${Q'}_i$被确定为参考基准点，这一过程如图\autoref{fig:lv}所示。
 
-2、中视策略（MVS）
+2、中视策略（CVS）
 
 中视策略以PPG波峰$P$在水平线$TT'$上的映射点$O$为原点，将线段$OP$与水平基线构成的两个夹角$\angle POT$与$\angle POT'$等分成若干份。将这些等分线与PPG的上升支、下降支的交点计为参考基准点${Q'}_i$，这一过程如图\autoref{fig:mv}所示。
 
-3、分层策略（HS）
+3、分层策略（SVS）
 
 分层策略将PPG波峰$P$在水平线$TT'$上的映射点计为$O$，作线段$OP$的水平垂线将$OP$等分为若干份。将这些等分线与PPG的上升支、下降支的交点计为参考基准点${Q'}_i$，这一过程如图\autoref{fig:hv}所示。
 

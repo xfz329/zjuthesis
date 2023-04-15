@@ -139,7 +139,7 @@ UTPI本质上也是一种血液动力学参数，其基本定义与MAP类似\cit
 \end{equation}
 其中，$A$为子宫动脉收缩期血液峰值流量，$B$为子宫动脉舒张末期血液流量，$M$为该期间内的血液平均流量。
 
-常与UTPI一起使用的检测参数还包括子宫阻力指数（uterine artery resistance index，UTRI）、子宫动脉收缩压/舒张压比（systolic to diastolic ratio，SDR）及切迹相关参数等\cite{Cnossen2008}。
+常与UTPI一起使用的检测参数还包括子宫动脉阻力指数（uterine artery resistance index，UTRI）、子宫动脉收缩压/舒张压比（systolic to diastolic ratio，SDR）及切迹相关参数等\cite{Cnossen2008}。
 \autoref{fig:utpi}展示了一例孕早期经腹多普勒超声检查子宫动脉的结果\cite{Sotiriadis2019}。
 \begin{figure}[htbp]
     \centering
@@ -232,7 +232,7 @@ sFlt-1、uE3等在内的多种PE生物标志物进行检测标定。此外，该
 近年来随着移动智能医疗和可穿戴式设备的发展，通过微型智能设备实现对PE相关指标的实时、动态、多场景检测也逐渐成为了新的研究热点。
 但整体而言，PE的微型智能检测设备仍处于研发阶段，能真正实现多场景检测的成熟产品尚未出现。
 
-2019年，Iuliana Marin等\cite{Marin2019,Marin2020}通过一款智能腕部血压检测穿戴设备对孕妇的血压数据进行了监测。他们在综合考虑孕妇的年龄、体重等风险因素的基础上，通过维特比动态规划算法（Viterbi algorithm），分析孕妇的PE
+2019年，Iuliana Marin等\cite{Marin2019,Marin2020}通过一款智能腕部血压检测穿戴设备对孕妇的血压数据进行了监测。他们在综合考虑孕妇的年龄、体重等风险因素的基础上，通过维特比动态规划算法（Viterbi algorithm，VB），分析孕妇的PE
 病发可能，该分析系统原理框架图如\autoref{fig:mobile}所示。Iuliana Marin团队利用该设备
 对多名孕妇进行了测试（$N$=105）。结果显示，最终的生成模型可以达到总体准确率80.0\%，其中敏感性为92.5\%，特异性为72.0\%\cite{Marin2019}。
 \begin{figure}[htbp]
@@ -254,7 +254,7 @@ sFlt-1、uE3等在内的多种PE生物标志物进行检测标定。此外，该
 ，他们通过GP算法训练得到了仅使用三种代谢物峰值变量的PE预测模型。经验证，该模型可以较好地区分PE病发孕妇与正常孕妇，其灵敏度高达100.0\%，特异性高达98.0\%。
 
 2018年，Liron Yoffe等\cite{Yoffe2018}为寻找能有效区分识别PE的转录RNA，对孕妇妊娠前三个月的血浆中的非编码循环RNA丰度进行了分析（$N_{PE}$=75，$N_{Control}$=75）。在对非编码RNA测序后，他们确定了实验组与对照组
-之间差异表达的25个RNA，并基于该结果训练生成了一个逻辑回归预测模型。经验证，该模型的曲线下面积（area under curve，AUC）数值可达0.86。
+之间差异表达的25个RNA，并基于该结果训练生成了一个逻辑回归预测模型。经验证，通过受试者工作特征曲线（receiver operating characteristic，ROC）得到该模型的曲线下面积（area under curve，AUC）数值可达0.86。
 
 2018年，Muhlis Tahir等\cite{Tahir2018,Tahir2018-2}对比了神经网络（neural networks, NN）和深度学习（deep learning, DL）两类算法预测妊娠期孕妇PE病发风险水平的结果（$N$=1077）。
 他们使用粒子群优化（particle swarm optimization, PSO）算法进行特征选择，将原始数据集的17个参数缩减至9个。
@@ -297,8 +297,6 @@ AUC高达0.89，真阳性率为72.3\%，假阳性率为8.8\%。
 使用了梯度增强树（gradient-boosted tree，GBT）与随机森林算法进行了PE识别模型的构建。结果表明，梯度增强树模型的阳性预测值为88.0\%±6.0\%，阴性预测值为89.0\%±3.0\%，灵敏度为66.0\%±5.0\%，特异性为97.0\%±2.0\%，
 总体准确度为89.0\%±3.0\%；而随机森林模型的阳性预测值为88.0\%±6.0\%，特异性为97.0\%±1.0\%，其他指标表现稍差。
 
-2022年，Ansbacher-Feldman等\cite{Ansbacher2022}分析了孕妇的风险因子、疾病史与UTPI、MAP、
-
 \begin{landscape}
     \zihao{6}
 	\begin{longtable}{m{0.8cm}<{\centering}m{0.8cm}<{\centering}m{3.5cm}<{\centering}m{3cm}<{\centering}m{5cm}<{\centering}m{5cm}<{\centering}m{2cm}<{\centering}}
@@ -338,7 +336,7 @@ AUC高达0.89，真阳性率为72.3\%，假阳性率为8.8\%。
 	\end{longtable}
 \end{landscape}
 
-\noindent
+2022年，Ansbacher-Feldman等\cite{Ansbacher2022}分析了孕妇的风险因子、疾病史与UTPI、MAP、
 PlGF及PAPP-A等四种生物标志物的检查结果，对孕妇的PE病发风险进行了预测（$N$=60789）。他们使用神经网络算法构建了PE识别模型，
 仅通过孕妇的风险因子筛查时，PE检出率为53.3\%，相应的AUC为0.82；而将生物标志物加入模型后，这些数据分别增加到75.3\%和0.91。
 
@@ -403,13 +401,13 @@ PlGF及PAPP-A等四种生物标志物的检查结果，对孕妇的PE病发风�
 发现这些参数随着妊娠进行在孕期内均有统计意义上的明显改变。
 
 2014年，Nan Han等\cite{Han2014}研究孕妇心血管系统与子宫动脉血流系统的一致性也得到了与Kathleen Tomsin等\cite{Tomsin2012}类似的结论。他们以三个月为单位对子宫动脉多普勒超声与指端PPG的检测结
-果进行了对比分析（$N_{PE}=$10，$N_{Control}=$80）。结果显示，正常孕妇的子宫动脉阻力指数（uterine artery resistance index，UTRI）与反射指数均随妊娠进行而显著降低，且趋势基本一致。而PE患者的两项参数数值均明显高于正常孕妇。
+果进行了对比分析（$N_{PE}=$10，$N_{Control}=$80）。结果显示，正常孕妇的UTRI与RI均随妊娠进行而显著降低，且趋势基本一致。而PE患者的两项参数数值均明显高于正常孕妇。
 
 2018年，Tammy Y. Euliano等\cite{Euliano2018}通过心电与PPG对识别PE患者（$N_{PE}$=37，$N_{Control}$=43）进行了研究。他们发现PE患者的相邻PPG波峰间期较正常孕妇长、弹性系数较正常孕妇小。
 
 二、新型指标
 
-2018年，Ying Feng等\cite{Feng2018}提出了PPG的差异面积比参数（Area Difference Ratio，ADR），并对72例孕妇（$N_{PE}$=36，$N_{Control}$=36）的PPG数据进行了评估。
+2018年，Ying Feng等\cite{Feng2018}提出了PPG的差异面积比参数（area difference ratio，ADR），并对72例孕妇（$N_{PE}$=36，$N_{Control}$=36）的PPG数据进行了评估。
 结果表明，PE病发孕妇的ADR数值较正常妊娠孕妇低。
 
 2019年，陈婉琳等\cite{Chen2019}提出了PPG的光电容积斜率指数（photoplethysmography slope index，PSI），并对50例孕妇（$N_{PE}$=23，$N_{Control}$=27）的PPG数据使用PSI进行了检验。
