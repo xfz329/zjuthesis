@@ -68,34 +68,33 @@
     \caption[英国胎儿医学基金会使用的PE风险因子评估量表]{\label{fig:risk}英国胎儿医学基金会使用的PE风险因子评估量表\cite{risks}}
 \end{figure}
 
-\begin{center}
-    \zihao{5}
-	\begin{longtable}{m{2.5cm}<{\centering}m{13cm}<{\centering}}
-		\caption{\label{tab:riskfactors}常见的PE风险因子}\\
-        \topline
-        \colorhead\textbf{风险因子} & \textbf{可能的影响}\\
-        \midline
-        \endfirsthead
-        \caption[]{(续)}\\
-        \midline
-        \colorhead\textbf{风险因子} & \textbf{可能的影响}\\
-        \midline
-        \endhead 
-        \midline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowa 妊娠年龄    &  PE的病发可能随妊娠年龄升高而增加\cite{Duckitt2005,FIGO,Yogev2010,Poon2010}。    \\
-        \colorrowc 胎产次/既往史&    首次分娩孕妇的PE病发可能比无PE既往史的二胎孕妇大\cite{Lee2000,Duckitt2005,Coonrod1995,Robillard1993,Sonia2009}。   \\
-        \colorrowa 妊娠间隔 & 多次妊娠的间隔时间过长或过短都会在一定程度上增加PE发生的风险\cite{Rousso2002,Duckitt2005,Conde2007,Mignini2016,Rolv2002}。\\
-        \colorrowc 辅助生殖 & 通过辅助生殖技术受孕的孕妇的PE病发可能增加\cite{Jackson2004,Trogstad2009,Martin2016}。\\
-        \colorrowa 家族史 & PE在一定程度上显现出家族性易感性\cite{ARNGRIMSSON1990,OAG9,Williams2011,Cincotta1998,FIGO}。\\
-        \colorrowc 肥胖 & 若孕妇出现肥胖症状（BMI>30$kg/m^2$），其PE病发风险会增加\cite{Duckitt2005,Williams2011,FIGO,Zintzaras2006,Sebire2001}。\\
-        \colorrowa 种族&不同民族、区域、肤色的孕妇的PE病发可能存在一定的差异\cite{Ghosh2014,Khalil2013}。\\
-        \colorrowc 并发症 & 当孕妇已患有某些疾病或感染某些症状时，其PE病发可能也会增加\cite{FIGO,Ray2016,OAG9,Lee2000,Garner1990,Martinell1990,Stamilio2000,Dreyfus2001,Marchetti2016}。\\
-	\end{longtable}
-\end{center}
-\vspace{-1cm} 
+\begin{longtblr}
+    [
+        theme          = {zju},
+        caption        = {常见的PE风险因子},
+        label          = {tab:riskfactors},
+    ]
+    {
+        colspec        = {X[1,c,m]X[2.5,c,m]X[12,c,m]},
+        hline{1,Z}     = {\thickline},
+        hline{2}       = {\thinline},
+        rowhead        = 1,
+        row{odd}       = {bg=\oddcolor}, 
+        row{even}      = {bg=\evencolor},
+        row{1}         = {font=\headfont,bg=\headcolor},
+        row{2-Z}       = {font=\nonheadfont},
+    }
+    序号 & 风险因子    & 可能的影响 \\
+    1   & 妊娠年龄    &  PE的病发可能随妊娠年龄升高而增加\cite{Duckitt2005,FIGO,Yogev2010,Poon2010}。    \\
+    2   & 胎产次/既往史&    首次分娩孕妇的PE病发可能比无PE既往史的二胎孕妇大\cite{Lee2000,Duckitt2005,Coonrod1995,Robillard1993,Sonia2009}。   \\
+    3   & 妊娠间隔 & 多次妊娠的间隔时间过长或过短都会在一定程度上增加PE发生的风险\cite{Rousso2002,Duckitt2005,Conde2007,Mignini2016,Rolv2002}。\\
+    4   & 辅助生殖 & 通过辅助生殖技术受孕的孕妇的PE病发可能增加\cite{Jackson2004,Trogstad2009,Martin2016}。\\
+    5   & 家族史 & PE在一定程度上显现出家族性易感性\cite{ARNGRIMSSON1990,OAG9,Williams2011,Cincotta1998,FIGO}。\\
+    6   & 肥胖 & 若孕妇出现肥胖症状（BMI>30$kg/m^2$），其PE病发风险会增加\cite{Duckitt2005,Williams2011,FIGO,Zintzaras2006,Sebire2001}。\\
+    7   & 种族&不同民族、区域、肤色的孕妇的PE病发可能存在一定的差异\cite{Ghosh2014,Khalil2013}。\\
+    8   & 并发症 & 当孕妇已患有某些疾病或感染某些症状时，其PE病发可能也会增加\cite{FIGO,Ray2016,OAG9,Lee2000,Garner1990,Martinell1990,Stamilio2000,Dreyfus2001,Marchetti2016}。\\
+\end{longtblr}
+
 二、生物标志物筛查
 
 除上述量表外，另一种筛查PE的方法将孕妇的PE风险因子、特定病史的先验风险及其多项生物物理、生物化学检测结果相结合，基于贝叶斯定理估计该孕妇的PE病发风险\cite{FIGO}。
@@ -297,47 +296,50 @@ AUC高达0.89，真阳性率为72.3\%，假阳性率为8.8\%。
 使用了梯度增强树（gradient-boosted tree，GBT）与随机森林算法进行了PE识别模型的构建。结果表明，梯度增强树模型的阳性预测值为88.0\%±6.0\%，阴性预测值为89.0\%±3.0\%，灵敏度为66.0\%±5.0\%，特异性为97.0\%±2.0\%，
 总体准确度为89.0\%±3.0\%；而随机森林模型的阳性预测值为88.0\%±6.0\%，特异性为97.0\%±1.0\%，其他指标表现稍差。
 
+2022年，Ansbacher-Feldman等\cite{Ansbacher2022}分析了孕妇的风险因子、疾病史与UTPI、MAP、
+PlGF及PAPP-A等四种生物标志物的检查结果，对孕妇的PE病发风险进行了预测（$N$
 \begin{landscape}
-    \zihao{6}
-	\begin{longtable}{m{0.8cm}<{\centering}m{0.8cm}<{\centering}m{3.5cm}<{\centering}m{3cm}<{\centering}m{5cm}<{\centering}m{5cm}<{\centering}m{2cm}<{\centering}}
-		\caption{人工智能检测技术在PE领域的研究小结}\\
-		\label{tab:AIinPE}\\
-		\topline
-        \colorhead \textbf{序号} & \textbf{时间}&\textbf{研究者}&\textbf{主要任务}&\textbf{涉及的机器学习方法}&\textbf{涉及参数}&\textbf{数据规模}\\
-        \midline
-        \endfirsthead
-        \caption[]{(续)}\\
-        \midline
-        \colorhead \textbf{序号} &\textbf{时间}&\textbf{研究者}&\textbf{主要任务}&\textbf{涉及的机器学习方法}&\textbf{涉及参数}&\textbf{数据规模}\\
-        \midline
-        \endhead 
-        \midline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowa  1 & 2005&Louise C. Kenny\cite{Kenny2005}&降维、分类&基因遗传算法&多种血浆代谢物&174\\
-        \colorrowc  2 & 2009&Costas K. Neocleous\cite{Neocleous2009}&降维、分类&神经网络&PE风险因子及生化指标&6838\\
-        \colorrowc  3 & 2016&Mário W. L. Moreira\cite{Moreira2016}&降维、分类&贝叶斯网络&PE风险因子及多项生理症状&164\\
-        \colorrowa  4 & 2017&Pia M. Villa\cite{Villa2017}&聚类分析&贝叶斯聚类算法&PE风险因子&903\\
-        \colorrowc  5 & 2018&Muhlis Tahir\cite{Tahir2018,Tahir2018-2}&降维、分类&粒子群优化算法&PE风险因子&1077\\
-        \colorrowa  6 & 2018&Liron Yoffe\cite{Yoffe2018}&降维、分类&逻辑回归&非编码循环RNA&150\\
-        \colorrowc  7 & 2018&Antonieta Martínez-Velasco\cite{Martinez2018}&分类&多种ML算法&PE风险因子及多项其他指标&1634\\
-        \colorrowa  8 & 2019&Jong Hyun Jhee\cite{Jhee2019}&模式识别、聚类分析&\tabincell{c}{逻辑回归、决策树、\\朴素贝叶斯、随机森林等}&PE风险因子及多项其他指标&11006\\
-        \colorrowc  9 & 2020&Jose F Carre˜no\cite{Carreno2020}&降维、分类&\tabincell{c}{帝国竞争算法、基因集簇算法、\\时间序列总结算法}&多种蛋白质组学物质&202\\
-        \colorrowa  10 & 2020&Ivana Mari{\'{c}}\cite{Maric2020}&分类&弹性网算法&PE风险因子&16370\\
-        \colorrowc  11 & 2020&Oknalita Simbolon\cite{Simbolon2020}&分类&投票&PE风险因子&402\\
-        \colorrowa  12 & 2020&Herdiantri Sufriyana\cite{Sufriyana2020-1}&分类&决策树&PE风险因子及生化指标&95\\
-        \colorrowc  13 & 2020&Herdiantri Sufriyana\cite{Sufriyana2020}&降维、分类&随机森林算法&PE风险因子及多项其他指标&23201\\
-        \colorrowa  14 & 2021&Rong Guo\cite{Guo2021}&降维、分类&\tabincell{c}{集成学习、 决策树、\\自适应增强、多层感知机}&胎盘mRNA&330\\
-        \colorrowc  15 & 2021&Yixin Li\cite{LI2021102}&降维、分类&\tabincell{c}{逻辑回归、 随机森林、\\支持向量机、极限梯度提升}&PE风险因子及多项其他指标&3759\\
-        \colorrowa  16 & 2022&Leon J. Schmidt\cite{SCHMIDT202277}&降维、分类&梯度增强树、随机森林算法&sFlt-1、PlGF与多项超声检测数据&2472\\
-        \colorrowc  17 & 2022&Ansbacher-Feldman\cite{Ansbacher2022}&降维、分类&随机森林算法&PE风险因子、疾病史与生物标志物&60789\\
-        \colorrowa  18 & 2023&Hao Wang\cite{HW2023}&降维、分类&极限梯度提升&单细胞转录组&15148\\
-	\end{longtable}
+    \begin{longtblr}
+        [
+            theme          = {zju},
+            caption        = {人工智能检测技术在PE领域的研究小结},
+            label          = {tab:AIinPE},
+            note{*}        = {由于篇幅限制，该研究未在正文中进行介绍，具体研究内容请参阅原文。},
+        ]
+        {
+            colspec        = {X[0.8,c,m]X[0.8,c,m]X[4.5,c,m]X[2,c,m]X[5,c,m]X[5,c,m]X[2,c,m]},
+            hline{1,Z}     = {\thickline},
+            hline{2}       = {\thinline},
+            rowhead        = 1,
+            row{odd}       = {bg=\oddcolor}, 
+            row{even}      = {bg=\evencolor},
+            row{1}         = {font=\headfont,bg=\headcolor},
+            row{2-Z}       = {font=\nonheadfont},
+        }
+        序号 & 时间 & 研究者 & 主要任务 & 涉及的机器学习方法 & 涉及参数 & 数据规模 \\
+        1 & 2005&Louise C. Kenny\cite{Kenny2005}&降维、分类&基因遗传算法&多种血浆代谢物&174\\
+        2 & 2009&Costas K. Neocleous\cite{Neocleous2009}&降维、分类&神经网络&PE风险因子及生化指标&6838\\
+        3 & 2016&Mário W. L. Moreira\cite{Moreira2016}&降维、分类&贝叶斯网络&PE风险因子及多项生理症状&164\\
+        4 & 2017&Pia M. Villa\cite{Villa2017}&聚类分析&贝叶斯聚类算法&PE风险因子&903\\
+        5 & 2018&Muhlis Tahir\cite{Tahir2018,Tahir2018-2}&降维、分类&粒子群优化算法&PE风险因子&1077\\
+        6 & 2018&Liron Yoffe\cite{Yoffe2018}&降维、分类&逻辑回归&非编码循环RNA&150\\
+        7 & 2018&Antonieta Martínez-Velasco\cite{Martinez2018}\TblrNote{*} &分类&多种ML算法&PE风险因子及多项其他指标&1634\\
+        8 & 2019&Jong Hyun Jhee\cite{Jhee2019}\TblrNote{*}&{模式识别、\\聚类分析}&{逻辑回归、决策树、\\朴素贝叶斯、随机森林等}&PE风险因子及多项其他指标&11006\\
+        9 & 2020&Jose F Carre˜no\cite{Carreno2020}&降维、分类&{帝国竞争算法、基因集簇算法、\\时间序列总结算法}&多种蛋白质组学物质&202\\
+        10 & 2020&Ivana Mari{\'{c}}\cite{Maric2020}&分类&弹性网算法&PE风险因子&16370\\
+        11 & 2020&Oknalita Simbolon\cite{Simbolon2020}&分类&投票&PE风险因子&402\\
+        12 & 2020&Herdiantri Sufriyana\cite{Sufriyana2020-1}&分类&决策树&PE风险因子及生化指标&95\\
+        13 & 2020&Herdiantri Sufriyana\cite{Sufriyana2020}&降维、分类&随机森林算法&PE风险因子及多项其他指标&23201\\
+        14 & 2021&Rong Guo\cite{Guo2021} \TblrNote{*} &降维、分类&{集成学习、 决策树、\\自适应增强、多层感知机}&胎盘mRNA&330\\
+        15 & 2021&Yixin Li\cite{LI2021102}&降维、分类&{逻辑回归、 随机森林、\\支持向量机、极限梯度提升}&PE风险因子及多项其他指标&3759\\
+        16 & 2022&Leon J. Schmidt\cite{SCHMIDT202277}&降维、分类&梯度增强树、随机森林算法&sFlt-1、PlGF与多项超声检测数据&2472\\
+        17 & 2022&Ansbacher-Feldman\cite{Ansbacher2022}&降维、分类&随机森林算法&PE风险因子、疾病史与生物标志物&60789\\
+        18 & 2023&Hao Wang\cite{HW2023}&降维、分类&极限梯度提升&单细胞转录组&15148\\
+    \end{longtblr}
 \end{landscape}
 
-2022年，Ansbacher-Feldman等\cite{Ansbacher2022}分析了孕妇的风险因子、疾病史与UTPI、MAP、
-PlGF及PAPP-A等四种生物标志物的检查结果，对孕妇的PE病发风险进行了预测（$N$=60789）。他们使用神经网络算法构建了PE识别模型，
+\noindent
+=60789）。他们使用神经网络算法构建了PE识别模型，
 仅通过孕妇的风险因子筛查时，PE检出率为53.3\%，相应的AUC为0.82；而将生物标志物加入模型后，这些数据分别增加到75.3\%和0.91。
 
 \autoref{tab:AIinPE}总结了近年来使用ML技术对PE相关问题的多项研究。从\autoref{tab:AIinPE}可以发现，
@@ -415,38 +417,35 @@ PlGF及PAPP-A等四种生物标志物的检查结果，对孕妇的PE病发风�
 
 综上，基于机器学习的PE研究可总结为\autoref{tab:PPGinPE}所示。
 
-\begin{center}
-    \zihao{-5}
-	\begin{longtable}{m{1cm}<{\centering}m{1cm}<{\centering}m{3cm}<{\centering}m{2cm}<{\centering}m{7.5cm}<{\centering}}
-		\caption{基于PPG的PE研究小结}\\
-		\label{tab:PPGinPE}\\
-        \topline
-        \colorhead \textbf{序号}& \textbf{时间}&\textbf{研究者}&\textbf{PPG参数}&\textbf{主要研究结论}\\
-        \midline
-        \endfirsthead
-        \caption[]{(续)}\\
-        \midline
-        \colorhead \textbf{序号}& \textbf{时间}&\textbf{研究者}&\textbf{PPG参数}&\textbf{主要研究结论}\\
-        \midline
-        \endhead 
-        \midline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowa 1  & 2008    &   Karlijn Vollebregt\cite{KARLIJN2008}    &   AIX     &   AIX对PE预测模型有明显影响。\\
-        \colorrowc 2  & 2012    &   Kathleen Tomsin\cite{Tomsin2012}    &   PWV     &   PE患者的PWV数值较正常孕妇数值更低。 \\
-        \colorrowa 3  & 2013    &   Maximilian B. Franz\cite{Franz2013}    &   AIX     &   PE患者与正常孕妇的AIX数值在孕期内规律不一致。 \\
-        \colorrowc 4  & 2014    &   Ira Bernstein\cite{Ira2014}     &   PWV &  PE患者的PWV数值较正常孕妇数值更低。 \\
-        \colorrowa 5  & 2014    &   Irene Katsipi\cite{Katsipi2014}     &   PWV &  PWV是预测PE的一个潜在的有利因素。 \\
-        \colorrowc 6  & 2014    &   Nan Han\cite{Han2014}     &   UTRI &  PE患者的UTRI数值明显高于正常孕妇。 \\
-        \colorrowa 7  & 2014    &   Su Fangming\cite{Su2014}    &   AIX、RI、PTT    &   这些参数在孕期内有统计意义上的明显改变。\\
-        \colorrowc 8  & 2018    &   Mihaela Viviana Ivan\cite{VivianaIvan2018}     &   PWV &  PWV数值与PE之前间存在正相关。 \\
-        \colorrowa 9  & 2018    &   Tammy Y. Euliano\cite{Euliano2018}     &   PPG波峰间期、弹性系数 &   \tabincell{c}{PE患者的PPG波峰间期较正常孕妇长、\\弹性系数较正常孕妇小。}\\
-        \colorrowc 10  & 2018    &   Ying Feng\cite{Feng2018}    &   ADR &  PE患者的ADR数值较正常孕妇数值更低。 \\
-        \colorrowa 11  & 2019    &   陈婉琳\cite{Chen2019}     &   PSI & PSI可在一定程度上识别PE。  \\
-	\end{longtable}
-\end{center}
-\vspace{-0.8cm}
+\begin{longtblr}
+    [
+        theme          = {zju},
+        caption        = {基于PPG的PE研究小结},
+        label          = {tab:PPGinPE},
+    ]
+    {
+        colspec        = {X[0.8,c,m]X[0.8,c,m]X[3.4,c,m]X[1.8,c,m]X[7.7,c,m]},
+        hline{1,Z}     = {\thickline},
+        hline{2}       = {\thinline},
+        rowhead        = 1,
+        row{odd}       = {bg=\oddcolor}, 
+        row{even}      = {bg=\evencolor},
+        row{1}         = {font=\headfont,bg=\headcolor},
+        row{2-Z}       = {font=\nonheadfont},
+    }
+    序号 & 时间 & 研究者 & PPG参数 & 主要研究结论 \\
+    1  & 2008    &   Karlijn Vollebregt\cite{KARLIJN2008}    &   AIX     &   AIX对PE预测模型有明显影响。\\
+    2  & 2012    &   Kathleen Tomsin\cite{Tomsin2012}    &   PWV     &   PE患者的PWV数值较正常孕妇数值更低。 \\
+    3  & 2013    &   Maximilian B. Franz\cite{Franz2013}    &   AIX     &   PE患者与正常孕妇的AIX数值在孕期内规律不一致。 \\
+    4  & 2014    &   Ira Bernstein\cite{Ira2014}     &   PWV &  PE患者的PWV数值较正常孕妇数值更低。 \\
+    5  & 2014    &   Irene Katsipi\cite{Katsipi2014}     &   PWV &  PWV是预测PE的一个潜在的有利因素。 \\
+    6  & 2014    &   Nan Han\cite{Han2014}     &   UTRI &  PE患者的UTRI数值明显高于正常孕妇。 \\
+    7  & 2014    &   Su Fangming\cite{Su2014}    &   {AIX、RI、\\PTT}    &   这些参数在孕期内有统计意义上的明显改变。\\
+    8  & 2018    &   Mihaela Viviana Ivan\cite{VivianaIvan2018}     &   PWV &  PWV数值与PE之前间存在正相关。 \\
+    9  & 2018    &   Tammy Y. Euliano\cite{Euliano2018}     &   {PPG波峰\\间期、弹性\\系数} &   {PE患者的PPG波峰间期较正常孕妇长、\\弹性系数较正常孕妇小。}\\
+    10  & 2018    &   Ying Feng\cite{Feng2018}    &   ADR &  PE患者的ADR数值较正常孕妇数值更低。 \\
+    11  & 2019    &   陈婉琳\cite{Chen2019}     &   PSI & PSI可在一定程度上识别PE。  \\
+\end{longtblr}
 
 从\autoref{tab:PPGinPE}可知，PE患者的血流动力学变化与PPG之间确实存在着一定的联系，但此前的各项研究在使用的PPG特征指标与分析方法上均有一定的局限性。
 除AIX、PTT、PWV等传统参数之外，更多PPG特征参数有待进一步挖掘；而此前介绍过的各项机器学习算法在PPG与PE的研究上也有待开展探索。

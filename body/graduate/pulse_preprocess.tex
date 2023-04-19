@@ -101,47 +101,43 @@ B650型监护仪可对包括12导联心电、脑电、心输出量、血氧饱�
 
 一般而言，参数检验的精确度高于非参数检验，因此在条件允许的情况下，应优先采用参数检验。若由于各种原因导致参数检验的条件不满足，可以应用非参数检验方法对数据进行分析。
 常见的非参数检验方法及其适用情形如\autoref{tab:nonparametric-test}所示。
-\vspace{-1em}
-\begin{center}
-    \zihao{-5}
-    \begin{longtable}{m{1cm}<{\centering}m{1.8cm}<{\centering}m{2cm}<{\centering}m{4.5cm}<{\centering}m{4.5cm}<{\centering}}
-		\caption{常见的非参数检验方法}\\
-		\label{tab:nonparametric-test}\\
-		\topline
-        \colorhead \textbf{序号} & \textbf{样本数目}&\textbf{样本相关性}&\textbf{检验方法}&\textbf{检验方法英文名}\\
-        \midline
-        \endfirsthead
-        \caption[]{(续)}\\
-        \topline
-        \colorhead \textbf{序号} & \textbf{样本数目}&\textbf{样本相关性}&\textbf{检验方法}&\textbf{检验方法英文名}\\
-        \midline
-        \endhead 
-        \hline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowa  1  & 单样本   & /     & 卡方检验  & Chi-Squared Test \\
-        \colorrowc  2  & 单样本   & /     & 二项分布检验 & Binomial Test \\
-        \colorrowa  3  & 单样本   & /     & K-S检验 & Kolmogorov–Smirnov Test \\
-        \colorrowc  4  & 单样本   & /     & 符号秩检验 & Wilcoxon Signed-Rank Test \\
-        \colorrowa  5  & 单样本   & /     & 游程检验  & Wald–Wolfowitz runs Test \\
-        \colorrowc  6  & 两样本   & 独立    & Wilcxon W等级和检验 & Mann-Whitney U Test \\
-        \colorrowa  7  & 两样本   & 独立    & 摩西极端反映差异检验 & Moses Extreme Reaction Test \\
-        \colorrowc  8  & 两样本   & 独立    & K-S检验 & Kolmogorov–Smirnov Test \\
-        \colorrowa  9  & 两样本   & 独立    & 游程检验  & Wald–Wolfowitz runs Test \\
-        \colorrowc  10  & 两样本   & 相关    & 符号检验  & Sign Test \\
-        \colorrowa  11  & 两样本   & 相关    & 符号秩检验 & Wilcoxon Signed-Rank Test \\
-        \colorrowc  12  & 两样本   & 相关    & 变化显著性检验 & McNemar's Test \\
-        \colorrowa  13  & 两样本   & 相关    & 边缘一致性检验 & Marginal Homogeneity Test \\
-        \colorrowc  14  & 多样本   & 独立    & K-W平均秩检验 & Kruskal-Wallis H Test \\
-        \colorrowa  15  & 多样本   & 独立    & 中位数检验 & Median Test \\
-        \colorrowc  16  & 多样本   & 独立    & 分组分布检验 & Jonckheere-Terpstra Test \\
-        \colorrowa  17  & 多样本   & 相关    & 双向等级方差分析 & Friedman Test \\
-        \colorrowc  18  & 多样本   & 相关    & 肯德尔和谐系数检验 & Kendall's W Test \\
-        \colorrowa  19  & 多样本   & 相关    & 二分变量检验 & Cochran's Q Test \\
-    \end{longtable}
-\end{center}
-\vspace{-0.8cm}
+\begin{longtblr}
+    [
+        theme          = {zju},
+        caption        = {常见的非参数检验方法},
+        label          = {tab:nonparametric-test},
+    ]
+    {
+        colspec        = {X[1,c,m]X[1.8,c,m]X[2,c,m]X[4.5,c,m]X[4.5,c,m]},
+        hline{1,Z}     = {\thickline},
+        hline{2}       = {\thinline},
+        rowhead        = 1,
+        row{odd}       = {bg=\oddcolor}, 
+        row{even}      = {bg=\evencolor},
+        row{1}         = {font=\headfont,bg=\headcolor},
+        row{2-Z}       = {font=\nonheadfont},
+    }
+    序号 & 样本数目 & 样本相关性 & 检验方法 & 检验方法英文名 \\
+    1  & 单样本   & /     & 卡方检验  & Chi-Squared Test \\
+    2  & 单样本   & /     & 二项分布检验 & Binomial Test \\
+    3  & 单样本   & /     & K-S检验 & Kolmogorov–Smirnov Test \\
+    4  & 单样本   & /     & 符号秩检验 & Wilcoxon Signed-Rank Test \\
+    5  & 单样本   & /     & 游程检验  & Wald–Wolfowitz runs Test \\
+    6  & 两样本   & 独立    & Wilcxon W等级和检验 & Mann-Whitney U Test \\
+    7  & 两样本   & 独立    & 摩西极端反映差异检验 & Moses Extreme Reaction Test \\
+    8  & 两样本   & 独立    & K-S检验 & Kolmogorov–Smirnov Test \\
+    9  & 两样本   & 独立    & 游程检验  & Wald–Wolfowitz runs Test \\
+    10  & 两样本   & 相关    & 符号检验  & Sign Test \\
+    11  & 两样本   & 相关    & 符号秩检验 & Wilcoxon Signed-Rank Test \\
+    12  & 两样本   & 相关    & 变化显著性检验 & McNemar's Test \\
+    13  & 两样本   & 相关    & 边缘一致性检验 & Marginal Homogeneity Test \\
+    14  & 多样本   & 独立    & K-W平均秩检验 & Kruskal-Wallis H Test \\
+    15  & 多样本   & 独立    & 中位数检验 & Median Test \\
+    16  & 多样本   & 独立    & 分组分布检验 & Jonckheere-Terpstra Test \\
+    17  & 多样本   & 相关    & 双向等级方差分析 & Friedman Test \\
+    18  & 多样本   & 相关    & 肯德尔和谐系数检验 & Kendall's W Test \\
+    19  & 多样本   & 相关    & 二分变量检验 & Cochran's Q Test \\
+\end{longtblr}
 
 \subsection{分析结果}
 由于通过临床数据实验得到的被试人口统计学特征、PE风险因子等待检参数存在样本量较小、具体分布未知等客观限制因素，不满足参数检验的条件。
@@ -152,35 +148,34 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
 上述待检变量经U检验后的结果如\autoref{tab:factors_res}所示，其中，所有待检变量均以（平均值±标准差）的形式表征，组别之间存在分布差异的变量
 按粉红色底色、黑色加粗字体的格式进行了突出显示。
 
-\begin{center}
-    \zihao{-5}
-    \begin{longtable}{m{1cm}<{\centering}m{3.5cm}<{\centering}m{3.5cm}<{\centering}m{3.5cm}<{\centering}m{2cm}<{\centering}}
-		\caption{被试孕妇风险因子统计结果}\\
-		\label{tab:factors_res}\\
-		\topline
-        \colorhead \textbf{序号} & \textbf{检验变量（单位）}      & \textbf{实验组（n=44）} & \textbf{对照组（n=35）} & \textbf{$p$值} \\
-        \midline
-        \endfirsthead
-        \caption[]{(续)}\\
-        \topline
-        \colorhead \textbf{序号} & \textbf{检验变量（单位）}      & \textbf{实验组（n=44）} & \textbf{对照组（n=35）} & \textbf{$p$值} \\
-        \midline
-        \endhead 
-        \hline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowa 1 & 年龄（years） & 32.3±3.6 & 33.8±4.6 & 0.108 \\
-        \colorrowc 2 & 孕周（weeks） & 32.7±3.8 & 34.3±4.3 & 0.053 \\
-        \colorrowa 3 & 身高（cm） & 158.1±5.0 & 160.0±3.3 & 0.089 \\
-        \colorrowb \colorcellc 4 & \textbf{体重（kg）} &  \textbf{75.7±12.9} &  \textbf{67.1±8.2} & \textbf{0.002* }\\
-        \colorrowb \colorcella 5 & \textbf{BMI（kg/cm）} &  \textbf{30.2±4.5} &  \textbf{26.2±3.3} & \textbf{<0.001*} \\
-        \colorrowb \colorcellc 6 & \textbf{收缩压（mmhg）} &  \textbf{160.1±19.5} &  \textbf{111.2±9.8} & \textbf{<0.001*} \\
-        \colorrowb \colorcella 7 & \textbf{舒张压（mmhg）} &  \textbf{96.1±14.5} &  \textbf{66.8±10.4} & \textbf{<0.001*} \\
-        \colorrowc 8 & 心率（bpm） & 87.0±11.9 & 87.5±13.1 & 0.656 \\
-    \end{longtable}
-\end{center}
-\vspace{-1.5cm}
+\begin{longtblr}
+    [
+        theme          = {zju},
+        caption        = {被试孕妇风险因子统计结果},
+        label          = {tab:factors_res},
+        note{*}        = {有统计意义上的显著性区别。},
+    ]
+    {
+        colspec        = {X[1,c,m]X[3.5,c,m]X[3.5,c,m]X[3.5,c,m]X[2,c,m]},
+        hline{1,Z}     = {\thickline},
+        hline{2}       = {\thinline},
+        rowhead        = 1,
+        row{odd}       = {bg=\oddcolor}, 
+        row{even}      = {bg=\evencolor},
+        row{1}         = {font=\headfont,bg=\headcolor},
+        row{2-Z}       = {font=\nonheadfont},
+        row{5-8}       = {font=\headfont,bg=\emphacolor} 
+    }
+    序号 & 检验变量（单位） & 实验组（n=44） & 对照组（n=35） & $p$值 \\
+    1 & 年龄（years） & 32.3±3.6 & 33.8±4.6 & 0.108 \\
+    2 & 孕周（weeks） & 32.7±3.8 & 34.3±4.3 & 0.053 \\
+    3 & 身高（cm） & 158.1±5.0 & 160.0±3.3 & 0.089 \\
+    4 & 体重（kg） &  75.7±12.9 &  67.1±8.2 & 0.002\TblrNote{*} \\
+    5 & BMI（kg/cm） &  30.2±4.5 &  26.2±3.3 & <0.001\TblrNote{*}\\
+    6 & 收缩压（mmhg） &  160.1±19.5 &  111.2±9.8 & <0.001\TblrNote{*} \\
+    7 & 舒张压（mmhg） &  96.1±14.5 &  66.8±10.4 & <0.001\TblrNote{*} \\
+    8 & 心率（bpm） & 87.0±11.9 & 87.5±13.1 & 0.656 \\
+\end{longtblr}
 
 从\autoref{tab:factors_res}可以发现，实验组与对照组的被试孕妇在年龄、孕周、身高、心率等风险因子
 上均无明显统计意义上的差别（$p$>0.05），但在收缩压与舒张压的数值上有显著差异（$p$<0.001），这也与被试孕妇的PE病发状态一致，符合预期。
@@ -425,34 +420,30 @@ $x_l$为$x_s$与$x_e$中数值较小者。
 
 复核阶段的超参数数值如\autoref{tab:checkingp}所示。
 
-\vspace{-1em}
-\begin{center}
-    \zihao{-5}
-    \begin{longtable}{m{1cm}<{\centering}m{1.5cm}<{\centering}m{3.6cm}<{\centering}m{3.6cm}<{\centering}m{3cm}<{\centering}}
-		\caption{SCD算法复核阶段各标准的超参数数值}\\
-		\label{tab:checkingp}\\
-		\topline
-        \colorhead \textbf{序号} & \textbf{复核标准}      & \textbf{个体全部波形参与均值计算百分比区间} & \textbf{判为有效波形的均值相对区间} & \textbf{备注} \\
-        \midline
-        \endfirsthead
-        \caption[]{(续)}\\
-        \topline
-        \colorhead \textbf{序号} & \textbf{复核标准}      & \textbf{个体全部波形参与均值计算百分比区间} & \textbf{判为有效波形的均值相对区间} & \textbf{备注} \\
-        \midline
-        \endhead 
-        \hline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowa 1 & $P$ & [0\%, 100\%] & [0.4, 1.8] & 无需排序 \\
-        \colorrowc 2 & $S$ & [0\%, 100\%] & [0.4, 1.8] & 无需排序 \\
-        \colorrowa 3 & $R$ & [20\%, 80\%] & [0.8, 1.2] & 需按升序排序 \\
-        \colorrowc 4 & $B_1$ & [0\%, 80\%] & [0, 8] & 需按升序排序 \\
-        \colorrowa 5 & $B_2$ & [0\%, 80\%] & [0, 10] & 需按升序排序 \\
-        \colorrowc 6 & $B_3$ & / & [0.5, 2.0] & 无需计算均值 \\
-    \end{longtable}
-\end{center}
-\vspace{-1cm}
+\begin{longtblr}
+    [
+        theme          = {zju},
+        caption        = {SCD算法复核阶段各标准的超参数数值},
+        label          = {tab:checkingp},
+    ]
+    {
+        colspec        = {X[1,c,m]X[1.5,c,m]X[3.6,c,m]X[3.6,c,m]X[3,c,m]},
+        hline{1,Z}     = {\thickline},
+        hline{2}       = {\thinline},
+        rowhead        = 1,
+        row{odd}       = {bg=\oddcolor}, 
+        row{even}      = {bg=\evencolor},
+        row{1}         = {font=\headfont,bg=\headcolor},
+        row{2-Z}       = {font=\nonheadfont},
+    }
+    序号 & 复核标准 & {个体全部波形参与均\\值计算百分比区间} & {判为有效波形的\\均值相对区间} & 备注 \\
+    1 & $P$ & [0\%, 100\%] & [0.4, 1.8] & 无需排序 \\
+    2 & $S$ & [0\%, 100\%] & [0.4, 1.8] & 无需排序 \\
+    3 & $R$ & [20\%, 80\%] & [0.8, 1.2] & 需按升序排序 \\
+    4 & $B_1$ & [0\%, 80\%] & [0, 8] & 需按升序排序 \\
+    5 & $B_2$ & [0\%, 80\%] & [0, 10] & 需按升序排序 \\
+    6 & $B_3$ & / & [0.5, 2.0] & 无需计算均值 \\
+\end{longtblr}
 
 三、决策
 
@@ -491,15 +482,7 @@ CBPEDS一共包含1.2万条数据记录，每条记录包含PPG、有创动脉�
 3、其他PPG检波算法
 
 差分法、阈值法、移动窗法、数字滤波法及由这些方法的组合构成的新方法常用于PPG波形检测过程之中\cite{Chen2019,cwl,Chen2021,ChenH2019,QYY2008,SJ2007,van2019,van20192}。
-本研究选取了两种有代表性并提供完整代码的PPG检波算法与SCD算法进行对比分析，包括陈婉琳等\cite{Chen2019,cwl}此前提出的双移动时间窗算法（dual moving time-window, DMTW）
-与Paul van Gent等\cite{van2019,van20192}提出的一种基于数字滤波器与离群点检测的PPG检波算法HeartPy。
-
-4、对比与分析
-
-SCD算法较DMTW算法与HeartPy算法的优势主要体现在对包含噪声干扰与畸变的PPG信号的准确识别上。使用这三种算法检测自主实验数据与CBPEDS数据的结果存在一定的差异，如\autoref{fig:scd_detect1}与\autoref{fig:scd_detect2}所示。
-由于HeartPy算法的本身输出限制，\autoref{fig:scd_detect1}与\autoref{fig:scd_detect2}只标注了HeartPy算法检测出的PPG波形的波峰位置，有效波峰与异常波峰分别用黑色与红色进行了标注。
-而SCD算法与DMTW算法检测出的有效PPG波
-
+本研究选取了两种有代表性并提供完整代码的
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\linewidth]{pulse_preprocess/scd1}
@@ -512,41 +495,53 @@ SCD算法较DMTW算法与HeartPy算法的优势主要体现在对包含噪声干
     \caption{\label{fig:scd_detect2}三种PPG检波算法对CBPEDS中数据的检测效果对比图}
 \end{figure}
 \noindent
-形均在\autoref{fig:scd_detect1}与\autoref{fig:scd_detect2}中用虚线进行了框选，其中黑色虚线表示两种算法对PPG波形的识别判断完全一致，红色虚线表示两种算法的检测结果出现了分歧。
+PPG检波算法与SCD算法进行对比分析，包括陈婉琳等\cite{Chen2019,cwl}此前提出的双移动时间窗算法（dual moving time-window, DMTW）
+与Paul van Gent等\cite{van2019,van20192}提出的一种基于数字滤波器与离群点检测的PPG检波算法HeartPy。
+
+4、对比与分析
+
+SCD算法较DMTW算法与HeartPy算法的优势主要体现在对包含噪声干扰与畸变的PPG信号的准确识别上。使用这三种算法检测自主实验数据与CBPEDS数据的结果存在一定的差异，如\autoref{fig:scd_detect1}与\autoref{fig:scd_detect2}所示。
+由于HeartPy算法的本身输出限制，\autoref{fig:scd_detect1}与\autoref{fig:scd_detect2}只标注了HeartPy算法检测出的PPG波形的波峰位置，有效波峰与异常波峰分别用黑色与红色进行了标注。
+而SCD算法与DMTW算法检测出的有效PPG波形均在\autoref{fig:scd_detect1}与\autoref{fig:scd_detect2}中用虚线进行了框选，其中黑色虚线表示两种算法对PPG波形的识别判断完全一致，红色虚线表示两种算法的检测结果出现了分歧。
 
 从整体检测准确率来看，SCD算法较另外两种算法也具有一定的性能优势。统计三种算法在自主实验数据与CBPEDS数据上的错检波形数目，可得到对应算法的整体检测准确率，如\autoref{tab:scd}所示，其中需要注意的信息
 已用粉红色底色、黑色字体加粗突出显示。从\autoref{tab:scd}可以发现，三种算法中，SCD算法的错检波形数目最少，识别的准确率最高。
 
-\vspace{-1em}
-\begin{center}
-    \zihao{-5}
-    \begin{longtable}{m{1cm}<{\centering}m{2cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1cm}<{\centering}m{1.5cm}<{\centering}m{1cm}<{\centering}m{1.5cm}<{\centering}m{1cm}<{\centering}}
-		\caption{三种PPG检波算法性能对比统计明细}\\
-		\label{tab:scd}\\
-		\topline
-        \colorhead    &  &  & \multicolumn{2}{c}{\textbf{SCD算法}} & \multicolumn{2}{c}{\textbf{DMTW算法}} & \multicolumn{2}{c}{\textbf{HeartPy算法}}  \\
-        \colorhead \multirow{-2}{*}{\textbf{序号}} & \multirow{-2}{*}{\textbf{数据源}}      & \multirow{-2}{*}{\textbf{波形总数/个}} & \textbf{错检数/个}      & \textbf{准确率} & \textbf{错检数/个}      & \textbf{准确率} & \textbf{错检数/个}      & \textbf{准确率} \\
-        \endfirsthead
-        \caption[]{(续)}\\
-        \topline
-        \colorhead    &  &  & \multicolumn{2}{c}{\textbf{SCD算法}} & \multicolumn{2}{c}{\textbf{DMTW算法}} & \multicolumn{2}{c}{\textbf{HeartPy算法}}  \\
-        \colorhead \multirow{-2}{*}{\textbf{序号}} & \multirow{-2}{*}{\textbf{数据源}}      & \multirow{-2}{*}{\textbf{波形总数/个}} & \textbf{错检数/个}      & \textbf{准确率} & \textbf{错检数/个}      & \textbf{准确率} & \textbf{错检数/个}      & \textbf{准确率} \\
-        \midline
-        \endhead 
-        \hline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowa 1 & 自主实验数据 & 7864 & \colorcellb \textbf{26} &  \colorcellb \textbf{99.6\%} & 112 & 98.6\% & 97 & 98.7\% \\
-        \colorrowc 2 & CBPEDS & 17562 &  \colorcellb \textbf{50} &  \colorcellb \textbf{99.7\%} & 182 & 99.0\% & 168 & 99.0\% \\
-    \end{longtable}
-\end{center}
-\vspace{-0.8cm}
+\begin{longtblr}
+    [
+        theme          = {zju},
+        caption        = {三种PPG检波算法性能对比统计明细},
+        label          = {tab:scd},
+    ]
+    {
+        colspec        = {X[0.9,c,m]X[2,c,m]X[1.9,c,m]X[1.45,c,m]X[0.95,c,m]X[1.45,c,m]X[0.94,c,m]X[1.45,c,m]X[0.95,c,m]},
+        hline{1,Z}     = {\thickline},
+        hline{3}       = {\thinline},
+        rowhead        = 2,
+        row{odd}       = {bg=\oddcolor}, 
+        row{even}      = {bg=\evencolor},
+        row{1-2}       = {font=\headfont,bg=\headcolor},
+        row{3-Z}       = {font=\nonheadfont},
+        cell{1}{1-3}   = {r=2,c=1}{c,m},
+        cell{1}{4,6,8} = {r=1,c=2}{c,m},
+        cell{3-4}{4-5} = {font=\headfont,bg=\emphacolor}
+    }
+    序号 & 数据源 & 波形总数/个 & SCD算法 & & DMTW算法 & & HeartPy算法 & \\
+    &  &  & 错检数/个 & 准确率 & 错检数/个 & 准确率 & 错检数/个 & 准确率  \\
+    1 & 自主实验数据 & 7864 & 26 &  99.6\% & 112 & 98.6\% & 97 & 98.7\% \\
+    2 & CBPEDS & 17562 &  50 &  99.7\% & 182 & 99.0\% & 168 & 99.0\% \\
+\end{longtblr}
 
 此外，由于CBPEDS本身是重症监护患者的临床医学数据记录，部分患者的PPG数据波形畸变严重，显著异于常人，如\autoref{fig:ucibp_abnormal}所示。
 SCD算法可以准确地识别这些异常波形，不进行波形标注。由于如\autoref{fig:ucibp_abnormal}所示的异常数据不在本研究选作算法性能评估的50条数据内，SCD算法的检测结果未能在\autoref{tab:scd}所示的统计值中得以体现。
 
-\vspace{1em}
+五、讨论
+
+本研究对PPG波形的检测过程进行了模式设计，提出了一种新型SCD算法，算法由初筛、复核与决策等三部分组成。
+在初筛时，通过搜索窗的方法确定波形；在复核时，通过功率、标准差、波峰相对位置与基线漂移程度等PPG形态学特征，区分有效波形与异常干扰
+；在决策时，通过加权投票的策略确定PPG波形是否为有效波形。SCD算法可根据使用场景进行二次开发，支持更改初筛算法、增删复核标准与切换决策策略等设置。
+经验证，该算法各模块设计合理，与其他算法对比结果表明，对PPG波形的识别准确率高、抗干扰能力强。SCD算法为多平台、多研究应用下的PPG分析检测的不同场景提供了一定的参考。
+
 \begin{figure}[h]
     \centering
     \subfigure[\label{fig:c_0179}畸变信号示意图（一）]{
@@ -559,18 +554,18 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
     \quad
     \caption{\label{fig:ucibp_abnormal}CBPEDS中畸变信号示意图}
 \end{figure}
-\vspace{1em}
-
-五、讨论
-
-本研究对PPG波形的检测过程进行了模式设计，提出了一种新型SCD算法，算法由初筛、复核与决策等三部分组成。
-在初筛时，通过搜索窗的方法确定波形；在复核时，通过功率、标准差、波峰相对位置与基线漂移程度等PPG形态学特征，区分有效波形与异常干扰
-；在决策时，通过加权投票的策略确定PPG波形是否为有效波形。SCD算法可根据使用场景进行二次开发，支持更改初筛算法、增删复核标准与切换决策策略等设置。
-经验证，该算法各模块设计合理，与其他算法对比结果表明，对PPG波形的识别准确率高、抗干扰能力强。SCD算法为多平台、多研究应用下的PPG分析检测的不同场景提供了一定的参考。
 
 \subsection{重搏波与切迹检测}
 重博波是PPG最具标志性的波形特征之一，其波峰与切迹的检测是一个完整的PPG检测算法必不可少的定位项之一\cite{Wang2012}。但在实际应用中，并不是每个人的PPG信号都有着明显的重搏波，特别是当被试出现外周阻力增加、血管壁弹性下降的情况后\cite{mmt}。
 此时，随着PPG波形向外周传播，尖锐的重搏波切迹（incisura）常会变形甚至丢失，退变成一简单拐点，甚至重搏波波峰都会在下降支中不显著，导致最后无法从采集得到的信号中对两者直接进行精准定位，如\autoref{fig:incisura}所示。
+
+本研究借鉴了王选等\cite{Wang2012}于2012年提出的一种基于曲率$K$（curvature）的定位算法对切迹进行检测，该算法的核心思想是PPG信号在切迹退化成的变形点的邻域内具有最大的曲率值，如\autoref{alg:incisuras_detect}所示。
+数学中，将一般曲线函数在点$(x,y)$处的曲率$K$定义为
+\begin{equation}
+    \label{equ:curvature}
+    K=\frac{|y^{''}|}{{(1+{y^{'}}^2)}^{3/2}}
+\end{equation}
+其中，$y^{'}$与$y^{''}$分别是曲线函数在该点的一阶导数与二阶导数。
 
 \begin{figure}[htbp]
     \centering
@@ -583,14 +578,6 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
     }
     \caption[重搏波及切迹定位原理示意图]{\label{fig:incisura}重搏波及切迹定位原理示意图\cite{Wang2012,Su2014}}
 \end{figure}
-
-本研究借鉴了王选等\cite{Wang2012}于2012年提出的一种基于曲率$K$（curvature）的定位算法对切迹进行检测，该算法的核心思想是PPG信号在切迹退化成的变形点的邻域内具有最大的曲率值，如\autoref{alg:incisuras_detect}所示。
-数学中，将一般曲线函数在点$(x,y)$处的曲率$K$定义为
-\begin{equation}
-    \label{equ:curvature}
-    K=\frac{|y^{''}|}{{(1+{y^{'}}^2)}^{3/2}}
-\end{equation}
-其中，$y^{'}$与$y^{''}$分别是曲线函数在该点的一阶导数与二阶导数。
 
 \begin{breakablealgorithm}
     \caption{PPG波形切迹定位检测算法}
@@ -687,61 +674,57 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
 因此，需要添加额外的方程对样条曲线进行约束，一般的约束条件都是对样条左右端点处进行限定，常见的附加边界条件如\autoref{tab:splinekind}所示\cite{Timothy2018}。
 在补充\autoref{tab:splinekind}中的两个端点条件公式后，即可完成上述方程组求解，从而确定唯一的三次样条插值曲线。
 
-\begin{center}
-    \zihao{-5}
-    \begin{longtable}{m{1cm}<{\centering}m{5cm}<{\centering}m{7cm}<{\centering}}
-		\caption{常见的三次样条端点条件}\\
-		\label{tab:splinekind}\\
-		\topline
-        \colorhead \textbf{序号} & \textbf{样条种类}&\textbf{端点条件}\\
-        \midline
-        \endfirsthead
-        \caption[]{(续)}\\
-        \topline
-        \colorhead \textbf{序号} &  \textbf{样条种类}&\textbf{端点条件}\\
-        \midline
-        \endhead 
-        \hline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowa 1 & 自然三次样条&
-        $
-            S_{1}^{''}(x_{1})=0,
-            S_{n-1}^{''}(x_{n})=0
-        $
-        \\
-        \colorrowc 2 & 曲率调整三次样条&
-        $\left \{
-        \begin{aligned}
-            &S_{1}^{''}(x_{1})=v_1,&v_{1}\neq0\\
-            &S_{n-1}^{''}(x_{n})=v_n,&v_{n}\neq0
-        \end{aligned}
-        \right.
-        $
-        \\
-        \colorrowa 3 & 钳制三次样条&
-        $\left \{
-        \begin{aligned}
-            &S_{1}^{'}(x_{1})=v_1,&v_{1}\neq0\\
-            &S_{n-1}^{'}(x_{n})=v_n,&v_{n}\neq0
-        \end{aligned}
-        \right.
-        $
-        \\
-        \colorrowc 4 & 抛物线端点三次样条&
-        $
-            d_1=0,d_{n-1}=0
-        $
-        \\
-        \colorrowa 5 & 非纽结三次样条&
-        $
-            d_1=d_2, d_{n-2}=d_{n-1}
-        $
-        \\
-    \end{longtable}
-\end{center}
-\vspace{-0.8cm}
+\begin{longtblr}
+    [
+        theme          = {zju},
+        caption        = {常见的三次样条端点条件},
+        label          = {tab:splinekind},
+    ]
+    {
+        colspec        = {X[1,c,m]X[5,c,m]X[7,c,m]},
+        hline{1,Z}     = {\thickline},
+        hline{2}       = {\thinline},
+        rowhead        = 1,
+        row{odd}       = {bg=\oddcolor}, 
+        row{even}      = {bg=\evencolor},
+        row{1}         = {font=\headfont,bg=\headcolor},
+        row{2-Z}       = {font=\nonheadfont},
+    }
+    序号 & 样条种类 & 端点条件 \\
+    1 & 自然三次样条&
+    $   S_{1}^{''}(x_{1})=0,
+        S_{n-1}^{''}(x_{n})=0
+    $
+    \\
+    2 & 曲率调整三次样条&
+    $\left \{
+    \begin{aligned}
+        &S_{1}^{''}(x_{1})=v_1,&v_{1}\neq0\\
+        &S_{n-1}^{''}(x_{n})=v_n,&v_{n}\neq0
+    \end{aligned}
+    \right.
+    $
+    \\
+    3 & 钳制三次样条&
+    $\left \{
+    \begin{aligned}
+        &S_{1}^{'}(x_{1})=v_1,&v_{1}\neq0\\
+        &S_{n-1}^{'}(x_{n})=v_n,&v_{n}\neq0
+    \end{aligned}
+    \right.
+    $
+    \\
+    4 & 抛物线端点三次样条&
+    $
+        d_1=0,d_{n-1}=0
+    $
+    \\
+    5 & 非纽结三次样条&
+    $
+        d_1=d_2, d_{n-2}=d_{n-1}
+    $
+    \\
+\end{longtblr}
 
 由于3.1节中数据实验所采用的设备GE B450设备的采样率仅为100Hz，为计算本研究后续章节提出的多种PPG时域特征，本研究使用了基于自然边界条件的三次样条算法对PPG信号进行均匀插值\cite{ttk2021}，
 重采样处理后的PPG数据采样率被提高至2000Hz。
@@ -797,36 +780,33 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
 以上参数的定义参见\autoref{fig:timefeature}及\autoref{tab:timefeature}所示，
 \autoref{fig:timefeature}中$AA'$的幅值为主波峰值的2/3，$D$点为降中峡\cite{mmt}；\autoref{tab:timefeature}则给出了各特征的定义及在\autoref{fig:timefeature}中的对应表达式。
 
-\begin{center}
-    \zihao{-5}
-    \begin{longtable}{m{1cm}<{\centering}m{4cm}<{\centering}m{8cm}<{\centering}m{2cm}<{\centering}}
-		\caption{常见的PPG时间类参数定义}\\
-		\label{tab:timefeature}\\
-		\topline
-        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-        \midline
-        \endfirsthead
-        \caption[]{(续)}\\
-        \topline
-        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-        \midline
-        \endhead 
-        \hline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowa 1 & 脉动周期      &  相邻两个波谷之间的时间间隔         &  $SE$\\
-        \colorrowc 2 & 上升支间期      &  从波形起点（波谷）至主波峰之间的时间间隔         &  $SO$\\
-        \colorrowa 3 & 下降支间期      &  从主波峰至波形终点（波谷）之间的时间间隔        &  $OE$\\
-        \colorrowc 4 & 动脉高压力持续时间    &  主波维持在峰值幅值2/3高度的时间间隔         &    $A'B'$   \\
-        \colorrowa 5 & 血管硬度指数    &  动脉高压力持续时间与脉动周期的比值         &   $\displaystyle \frac{A'B'}{SE}$    \\
-        \colorrowc 6 & 心肌收缩系数    &  上升支间期与脉动周期的比值         &  $\displaystyle \frac{SO}{SE}$    \\
-        \colorrowa 7 & 心搏出系数      &   从波峰至降中峡的时间间隔与脉动周期的比值       &   $\displaystyle \frac{OB'}{SE}$\\
-        \colorrowc 8 & 上升支最大斜率间期      &   上升支波谷与上升支斜率最大点之间的时间间隔      &   /    \\
-        \colorrowa 9 & 下降支最大斜率间期      &   下降支斜率最小点与下降支波谷之间的时间间隔      &    /  \\
-    \end{longtable}
-\end{center}
-\vspace{-0.8cm}
+\begin{longtblr}
+    [
+        theme          = {zju},
+        caption        = {常见的PPG时间类参数定义},
+        label          = {tab:timefeature},
+    ]
+    {
+        colspec        = {X[1,c,m]X[4,c,m]X[8,c,m]X[2,c,m]},
+        hline{1,Z}     = {\thickline},
+        hline{3}       = {\thinline},
+        rowhead        = 1,
+        row{odd}       = {bg=\oddcolor}, 
+        row{even}      = {bg=\evencolor},
+        row{1}         = {font=\headfont,bg=\headcolor},
+        row{2-Z}       = {font=\nonheadfont},
+    }
+    序号 & 参数 & 物理意义 & 表达式 \\
+    1 & 脉动周期      &  相邻两个波谷之间的时间间隔         &  $SE$\\
+    2 & 上升支间期      &  从波形起点（波谷）至主波峰之间的时间间隔         &  $SO$\\
+    3 & 下降支间期      &  从主波峰至波形终点（波谷）之间的时间间隔        &  $OE$\\
+    4 & 动脉高压力持续时间    &  主波维持在峰值幅值2/3高度的时间间隔         &    $A'B'$   \\
+    5 & 血管硬度指数    &  动脉高压力持续时间与脉动周期的比值         &   $\displaystyle \frac{A'B'}{SE}$    \\
+    6 & 心肌收缩系数    &  上升支间期与脉动周期的比值         &  $\displaystyle \frac{SO}{SE}$    \\
+    7 & 心搏出系数      &   从波峰至降中峡的时间间隔与脉动周期的比值       &   $\displaystyle \frac{OB'}{SE}$\\
+    8 & 上升支最大斜率间期      &   上升支波谷与上升支斜率最大点之间的时间间隔      &   /    \\
+    9 & 下降支最大斜率间期      &   下降支斜率最小点与下降支波谷之间的时间间隔      &    /  \\
+\end{longtblr}
 
 \subsection{幅值类特征参数}
 
@@ -839,7 +819,6 @@ AIX指心脏收缩期早期与晚期拐点之间的差值与峰值之比，计�
     \text{AIX} = \pm \frac{\Delta P}{PP}
 \end{equation}
 
-\clearpage
 特别地，\autoref{equ:character}中$\pm$的取值视拐点$P_1$与峰值点的相对位置而定，当拐点在脉搏波波峰点左侧时，AIX符号取正，表示主波峰是经过叠加得到的，如图\autoref{fig:aix1}所示；反之，
 当拐点在脉搏波波峰点右侧时，AIX符号取负，表明主波峰未得到“增强”，如图\autoref{fig:aix2}所示。
 \begin{figure}[htbp]
@@ -870,31 +849,28 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 
 除上述参数外，幅值类特征参数还包括脉搏波波峰幅值、波谷幅值差值、降中峡幅值及外周阻力系数等\cite{cwl,mmt}。这些参数的具体定义参见\autoref{tab:heightfeature}及\autoref{fig:timefeature}所示。
 
-\vspace{-2em}
-\begin{center}
-    \zihao{-5}
-    \begin{longtable}{m{1cm}<{\centering}m{3cm}<{\centering}m{7cm}<{\centering}m{2cm}<{\centering}}
-		\caption{常见的PPG幅值类参数定义}\\
-		\label{tab:heightfeature}\\
-		\topline
-        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-        \midline
-        \endfirsthead
-        \caption[]{(续)}\\
-        \topline
-        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-        \midline
-        \endhead 
-        \hline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowa 1 & 波峰幅值      &  主波峰幅值         &  $OP$\\
-        \colorrowc 2 & 波谷幅值差值      &  相邻波谷之间的幅值之差         &  /\\
-        \colorrowa 3 & 降中峡幅值      &  降中峡至基线幅值         &  $DD'$\\
-        \colorrowc 4 & 外周阻力系数      &  降中峡幅值与主波峰幅值之比         &  $\displaystyle \frac{DD'}{OP}$\\
-    \end{longtable}
-\end{center}
+\begin{longtblr}
+    [
+        theme          = {zju},
+        caption        = {常见的PPG幅值类参数定义},
+        label          = {tab:heightfeature},
+    ]
+    {
+        colspec        = {X[1,c,m]X[4,c,m]X[8,c,m]X[2,c,m]},
+        hline{1,Z}     = {\thickline},
+        hline{3}       = {\thinline},
+        rowhead        = 1,
+        row{odd}       = {bg=\oddcolor}, 
+        row{even}      = {bg=\evencolor},
+        row{1}         = {font=\headfont,bg=\headcolor},
+        row{2-Z}       = {font=\nonheadfont},
+    }
+    序号 & 参数 & 物理意义 & 表达式 \\
+    1 & 波峰幅值      &  主波峰幅值         &  $OP$\\
+    2 & 波谷幅值差值      &  相邻波谷之间的幅值之差         &  /\\
+    3 & 降中峡幅值      &  降中峡至基线幅值         &  $DD'$\\
+    4 & 外周阻力系数      &  降中峡幅值与主波峰幅值之比         &  $\displaystyle \frac{DD'}{OP}$\\
+\end{longtblr}
 
 \vspace{-2em}
 \begin{figure}[htbp]
@@ -916,34 +892,31 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 值得一提的是，Feng等\cite{Feng2018}已经将ADR应用于PE的研究中，其研究结果显示患有PE的孕妇与正常孕妇在PPG信号的ADR参数上具有统计意义上的显著差异（0.752 VS 0.723，$p$<0.01）。
 以上参数的具体定义参见\autoref{fig:areafeature}及\autoref{tab:areafeature}。
 
-\begin{center}
-    \zihao{-5}
-	\begin{longtable}{m{1cm}<{\centering}m{3cm}<{\centering}m{6.5cm}<{\centering}m{4.5cm}<{\centering}}
-		\caption{常见的PPG面积类参数定义}\\
-		\label{tab:areafeature}\\
-        \topline
-        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-        \midline
-        \endfirsthead
-        \caption[]{(续)}\\
-        \topline
-        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-        \midline
-        \endhead 
-        \midline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowa 1 & 上升支面积      &  从波形起点至峰值点对波形曲线积分所得面积         &  $\displaystyle S_r=\int_{T_S}^{T_P}P(t)dt$\\
-        \colorrowc 2 & 下降支面积      &  从波形峰值点至终点对波形曲线积分所得面积         &  $\displaystyle S_f=\int_{T_P}^{T_E}P(t)dt$\\
-        \colorrowa 3 & 全周期面积      &  脉搏波波形在一个完整周期内的积分所得面积         &  $\displaystyle S_t=\int_{T_S}^{T_E}P(t)dt$\\
-        \colorrowc 4 & 上升支面积比    &  上升支面积与$\triangle OPS$面积之比         &   $\displaystyle R_r=\frac{S_r}{S_{\triangle OPS}}$    \\
-        \colorrowa 5 & 下降支面积比    &  下降支面积与$\triangle OPE$面积之比        &   $\displaystyle R_f=\frac{S_f}{S_{\triangle OPE}}$    \\
-        \colorrowc 6 & 全周期面积比    &  全周期面积与$\triangle SPE$面积之比         &   $\displaystyle R_t=\frac{S_t}{S_{\triangle SPE}}$    \\
-        \colorrowa 7 & 下降支面积差值比&  \tabincell{c}{下降支面积和$\triangle OPE$面积之差\\ 与$\triangle OPE$面积之比}      &    $\displaystyle \Delta R_f=\frac{S_{\triangle OPE}-S_f}{S_{\triangle OPE}}=1-R_f$\\
-	\end{longtable}
-\end{center}
-\vspace{-0.8cm}
+\begin{longtblr}
+    [
+        theme          = {zju},
+        caption        = {常见的PPG面积类参数定义},
+        label          = {tab:areafeature},
+    ]
+    {
+        colspec        = {X[1,c,m]X[3,c,m]X[6.5,c,m]X[4.5,c,m]},
+        hline{1,Z}     = {\thickline},
+        hline{3}       = {\thinline},
+        rowhead        = 1,
+        row{odd}       = {bg=\oddcolor}, 
+        row{even}      = {bg=\evencolor},
+        row{1}         = {font=\headfont,bg=\headcolor},
+        row{2-Z}       = {font=\nonheadfont},
+    }
+    序号 & 参数 & 物理意义 & 表达式 \\
+    1 & 上升支面积      &  从波形起点至峰值点对波形曲线积分所得面积         &  $\displaystyle S_r=\int_{T_S}^{T_P}P(t)dt$\\
+    2 & 下降支面积      &  从波形峰值点至终点对波形曲线积分所得面积         &  $\displaystyle S_f=\int_{T_P}^{T_E}P(t)dt$\\
+    3 & 全周期面积      &  脉搏波波形在一个完整周期内的积分所得面积         &  $\displaystyle S_t=\int_{T_S}^{T_E}P(t)dt$\\
+    4 & 上升支面积比    &  上升支面积与$\triangle OPS$面积之比         &   $\displaystyle R_r=\frac{S_r}{S_{\triangle OPS}}$    \\
+    5 & 下降支面积比    &  下降支面积与$\triangle OPE$面积之比        &   $\displaystyle R_f=\frac{S_f}{S_{\triangle OPE}}$    \\
+    6 & 全周期面积比    &  全周期面积与$\triangle SPE$面积之比         &   $\displaystyle R_t=\frac{S_t}{S_{\triangle SPE}}$    \\
+    7 & 下降支面积差值比 & {下降支面积和$\triangle OPE$面积之差\\ 与$\triangle OPE$面积之比}      &    $\displaystyle \Delta R_f=\frac{S_{\triangle OPE}-S_f}{S_{\triangle OPE}}=1-R_f$\\
+\end{longtblr}
 
 \begin{figure}[htbp]
     \centering
@@ -964,31 +937,28 @@ K值是另一种在临床得到广泛应用的基于脉搏波面积变化的形�
 \end{figure}
 
 此外，常见的斜率参数还包括上升支平均斜率、上升支最大斜率、下降支平均斜率、下降支最大斜率等。这些参数的具体定义参见\autoref{fig:areafeature}及\autoref{tab:slopefeature}所示。
-\begin{center}
-    \zihao{-5}
-    \begin{longtable}{m{1cm}<{\centering}m{3cm}<{\centering}m{6.5cm}<{\centering}m{2cm}<{\centering}}
-		\caption{常见的PPG斜率类参数定义}\\
-		\label{tab:slopefeature}\\
-		\topline
-        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-        \midline
-        \endfirsthead
-        \caption[]{(续)}\\
-        \topline
-        \colorhead \textbf{序号} & \textbf{参数} & \textbf{物理意义} & \textbf{表达式} \\
-        \midline
-        \endhead 
-        \hline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowa 1 & 上升支平均斜率      &  主波峰值与上升支时间之比         &  $\displaystyle \frac{OP}{SO}$\\
-        \colorrowc 2 & 下降支平均斜率      &  主波峰值与下降支时间之比         &  $\displaystyle -\frac{OP}{OE}$\\
-        \colorrowa 3 & 上升支最大斜率      &  上升支一阶导数的最大值        &  /\\
-        \colorrowc 4 & 下降支最小斜率      &  下升支一阶导数的最小值         &   /    \\
-    \end{longtable}
-\end{center}
-\vspace{-0.8cm}
+\begin{longtblr}
+    [
+        theme          = {zju},
+        caption        = {常见的PPG斜率类参数定义},
+        label          = {tab:slopefeature},
+    ]
+    {
+        colspec        = {X[1,c,m]X[4,c,m]X[8,c,m]X[2,c,m]},
+        hline{1,Z}     = {\thickline},
+        hline{3}       = {\thinline},
+        rowhead        = 1,
+        row{odd}       = {bg=\oddcolor}, 
+        row{even}      = {bg=\evencolor},
+        row{1}         = {font=\headfont,bg=\headcolor},
+        row{2-Z}       = {font=\nonheadfont},
+    }
+    序号 & 参数 & 物理意义 & 表达式 \\
+    1 & 上升支平均斜率      &  主波峰值与上升支时间之比         &  $\displaystyle \frac{OP}{SO}$\\
+    2 & 下降支平均斜率      &  主波峰值与下降支时间之比         &  $\displaystyle -\frac{OP}{OE}$\\
+    3 & 上升支最大斜率      &  上升支一阶导数的最大值        &  /\\
+    4 & 下降支最小斜率      &  下升支一阶导数的最小值         &   /    \\
+\end{longtblr}
 
 \subsection{其他特征}
 
@@ -1001,15 +971,13 @@ SI被定义为是被试身高$h$与PPG的主波峰值降中峡的时间间隔$\D
 \end{equation}
 Millasseau等\cite{Elgendi2012,Millasseau2002,Brumfield2005}的研究表明随着大动脉硬度增加、主动脉和大动脉中压力波的脉搏波速度增加，
 收缩和舒张峰值之间的时间延迟也会随着年龄的增长而减少，导致SI也会随着年龄增长而增长，如\autoref{fig:si}所示。
-
-脉搏波波形速度（Pulse Wave Velocity，PWV）是指心脏每次搏动射血产生的沿大
-\clearpage
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.4\linewidth]{pulse_preprocess/si}
     \caption[SI计算原理示意图]{\label{fig:si}SI计算原理示意图\cite{Elgendi2012,Millasseau2002,Brumfield2005}}
 \end{figure}
-\noindent
+
+脉搏波波形速度（Pulse Wave Velocity，PWV）是指心脏每次搏动射血产生的沿大
 动脉壁传播的压力波传导速度\cite{Van2012}。在计算PWV时，需要在人体两部位分别测量脉搏波信号。
 若记两测量部位的直线距离的80\%为$d$，两部位之间的脉搏波传导时间差为$t$，则有
 \begin{equation}
