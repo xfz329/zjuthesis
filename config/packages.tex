@@ -18,8 +18,6 @@
 ]{biblatex}
 \usepackage{siunitx}
 \usepackage{caption}
-\DeclareCaptionLabelSeparator{twospace}{\ ~} 
-\captionsetup{labelsep=twospace}
 \usepackage{color}
 \usepackage{chngcntr}
 \usepackage{enumitem}
@@ -30,85 +28,18 @@
 \usepackage{xparse}
 \usepackage{bookmark}
 \usepackage{calc}
-\usepackage{booktabs}
-\usepackage{threeparttable}
 \usepackage{amsmath}
+% memoir宏包与subfigure宏包冲突。
 \makeatletter
 \let\c@lofdepth\relax
 \let\c@lotdepth\relax
 \makeatother
 \usepackage{subfigure}
-\usepackage{rotating}
-\usepackage{longtable}
 \usepackage{lscape}
-\usepackage{listings}
 \usepackage{xcolor}
 \usepackage{colortbl}
-\definecolor{dkgreen}{rgb}{0,0.6,0}
-\definecolor{gray}{rgb}{0.5,0.5,0.5}
-\definecolor{mauve}{rgb}{0.58,0,0.82}
-\lstdefinestyle{myJava}{
-    frame=none,
-    language=Java,
-    aboveskip=3mm,
-    belowskip=3mm,
-    showstringspaces=false,
-    columns=flexible,
-    basicstyle = \ttfamily\small,
-    numbers=none,
-    numberstyle=\tiny\color{gray},
-    keywordstyle=\color{blue},
-    commentstyle=\color{dkgreen},
-    stringstyle=\color{mauve},
-    backgroundcolor=\color{gray!10!},
-    captionpos=t,
-    breaklines=true,
-    breakatwhitespace=true,
-    tabsize=3
-}
-\lstdefinestyle{myPython}{
-	frame=none,
-	language=Python,
-	aboveskip=3mm,
-	belowskip=3mm,
-	showstringspaces=false,
-	columns=flexible,
-	numberstyle=\small\color{red},
-	basicstyle={\small\ttfamily},
-	keywordstyle=\color{blue},
-	commentstyle=\color{dkgreen},
-	stringstyle=\color{mauve},
-	breaklines=true,
-	breakatwhitespace=true,
-	tabsize=3
-}
 \usepackage{algorithm}
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
-\usepackage{amsmath}
-\renewcommand{\algorithmicrequire}{\textbf{输入:}}
-\renewcommand{\algorithmicensure}{\textbf{输出:}}
-\makeatletter
-\newenvironment{breakablealgorithm}
-{% \begin{breakablealgorithm}
-\begin{center}
-    \refstepcounter{algorithm}% New algorithm
-    \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled 画线
-    \renewcommand{\caption}[2][\relax]{% Make a new \caption
-    {\raggedright\textbf{\ALG@name~\thealgorithm} ##2\par}%
-    \ifx\relax##1\relax % #1 is \relax
-        \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##2}%
-    \else % #1 is not \relax
-        \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##1}%
-    \fi
-    \kern2pt\hrule\kern2pt
-    }
-}{% \end{breakablealgorithm}
-    \kern2pt\hrule\relax% \@fs@post for \@fs@ruled 画线
-\end{center}
-}
-\makeatother
 \usepackage{url}
-\usepackage{colortbl}
-\usepackage{xcolor}
 \usepackage{tabularray}
