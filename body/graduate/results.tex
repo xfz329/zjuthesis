@@ -7,9 +7,9 @@
 本章研究内容的框架图如\autoref{fig:frameworks5}所示。
 
 \begin{figure}[htbp]
-      \centering
-      \includegraphics[width=0.9\linewidth]{results/frameworks5}
-      \caption{\label{fig:frameworks5}第五章研究内容框架图}
+    \centering
+    \includegraphics[width=0.9\linewidth]{results/frameworks5}
+    \caption{\label{fig:frameworks5}第五章研究内容框架图}
 \end{figure}
 \vspace{-0.8cm} 
 
@@ -41,9 +41,9 @@ DT是对实例进行分类的树形结构的描述，由结点和有向边组成
 DT可以看成一个if-else规则的集合，DT的根节点到叶节点的每条路径分别对应着一条规则：路径上的内部结点集合构成了规则的判断条件，而叶节点所属的具体类则对应着该规则的结论。
 DT的学习目的就是从训练数据集中集中归纳出一组分类规则，产生一颗与训练数据的矛盾小的、泛化能力强的逻辑判断树。
 \begin{figure}[htbp]
-      \centering
-      \includegraphics[width=.6\linewidth]{results/dt.png}
-      \caption{\label{fig:dt}决策树模型示意图}
+    \centering
+    \includegraphics[width=.6\linewidth]{results/dt.png}
+    \caption{\label{fig:dt}决策树模型示意图}
 \end{figure}
 
 2、DT的特征选择
@@ -52,23 +52,23 @@ DT的学习目的就是从训练数据集中集中归纳出一组分类规则，
 
 GI也称为基尼不纯度，其定义为
 \begin{equation}
-      \label{equ:gini}
-      G_i = 1 - \sum_{k=1}^n{p_{i,k}}^2
+    \label{equ:gini}
+    G_i = 1 - \sum_{k=1}^n{p_{i,k}}^2
 \end{equation}
 其中，$p_{i,k}$是第$i$个节点上，类别为$k$的训练实例占比。GI数值越大，样本集合的不确定性也越大。特别地，对于样本集合$D$，根据特征$A$是否取某一具体可能值$a$，将$D$分割成$D_1$和$D_2$两部分，即
 \begin{equation}
-      \label{equ:daset}
-      \left \{
-      \begin{aligned}
-            D_1 &= \{ (x,y) \in D \mid A(x) = a\} \\
-            D_2 &= D - D_1
-      \end{aligned}
-      \right.
-      \end{equation}
+    \label{equ:daset}
+    \left \{
+    \begin{aligned}
+        D_1 &= \{ (x,y) \in D \mid A(x) = a\} \\
+        D_2 &= D - D_1
+    \end{aligned}
+    \right.
+    \end{equation}
 那么，在特征$A$的条件下，样本集合的GI可以表示为
 \begin{equation}
-      \label{equ:ginia}
-      G(D,A) = \frac{|D_1|}{|D|}G(D_1) + \frac{|D_2|}{|D|}G(D_2)
+    \label{equ:ginia}
+    G(D,A) = \frac{|D_1|}{|D|}G(D_1) + \frac{|D_2|}{|D|}G(D_2)
 \end{equation}
 其中，$|D|$表示样本集合$D$的样本数量。\autoref{equ:ginia}描述了$D$经特征$A=a$分割后的不确定性。此时，筛选最佳特征可以转换为寻找使\autoref{equ:ginia}取值最小的特征$A$的具体数值。
 
@@ -82,24 +82,24 @@ DT的生成构建过程就是递归地选择最优特征，并根据最优特征
 
 CART算法采用最小GI来选择特征，生成的决策树为二叉树，其工作的基本原理如\autoref{alg:cart}所示。
 \begin{breakablealgorithm}
-      \caption[CART生成算法]{CART递归生成算法\cite{Li2017}}
-      \label{alg:cart}
-      \begin{algorithmic}[1] %每行显示行号
-            \Require 训练数据集$D$。
-            \Ensure 分类回归树CART。
-            \State 建立一颗空树$\text{CART}$，设该树的根结点为$root$。
-            \Function{GenerateCart}{$\text{CART},D_c,root$}
-                  \State $D_c$为当前结点的训练数据集，计算现有特征对该数据集的GI。对每一个特征$A$，对其可能取的每个值$a$，根据样本点对$A=a$的测试为“是”或“否”将$D_c$分割成$D_l$与$D_r$两部分，使用\autoref{equ:ginia}计算$A=a$时的GI。
-                  \State 在所有可能的特征$A$以及它们所有可能的切分点$a$中，选择GI最小的特征及其对应的切分点作为最有特征与最优切分点。
-                  \State 依最优特征与最优切分点，从现结点生成两个子节点$left$与$right$，将训练数据集依特征分配到两个子节点中去，即$D_l$与$D_r$。更新当前$\text{CART}$。
-                  \If {结点中的样本个数小于预定阈值 \textbf{or} 样本集的GI小于预定阈值 \textbf{or} 没有更多特征}
-                  \State \Return{$\text{CART}$}
-                  \Else    
-                  \State \Call{GenerateCart}{$\text{CART},D_l,left$}
-                  \State \Call{GenerateCart}{$\text{CART},D_r,right$}
-                  \EndIf
-            \EndFunction
-      \end{algorithmic}
+    \caption[CART生成算法]{CART递归生成算法\cite{Li2017}}
+    \label{alg:cart}
+    \begin{algorithmic}[1] %每行显示行号
+        \Require 训练数据集$D$。
+        \Ensure 分类回归树CART。
+        \State 建立一颗空树$\text{CART}$，设该树的根结点为$root$。
+        \Function{GenerateCart}{$\text{CART},D_c,root$}
+                \State $D_c$为当前结点的训练数据集，计算现有特征对该数据集的GI。对每一个特征$A$，对其可能取的每个值$a$，根据样本点对$A=a$的测试为“是”或“否”将$D_c$分割成$D_l$与$D_r$两部分，使用\autoref{equ:ginia}计算$A=a$时的GI。
+                \State 在所有可能的特征$A$以及它们所有可能的切分点$a$中，选择GI最小的特征及其对应的切分点作为最有特征与最优切分点。
+                \State 依最优特征与最优切分点，从现结点生成两个子节点$left$与$right$，将训练数据集依特征分配到两个子节点中去，即$D_l$与$D_r$。更新当前$\text{CART}$。
+                \If {结点中的样本个数小于预定阈值 \textbf{or} 样本集的GI小于预定阈值 \textbf{or} 没有更多特征}
+                \State \Return{$\text{CART}$}
+                \Else    
+                \State \Call{GenerateCart}{$\text{CART},D_l,left$}
+                \State \Call{GenerateCart}{$\text{CART},D_r,right$}
+                \EndIf
+        \EndFunction
+    \end{algorithmic}
 \end{breakablealgorithm}
 
 4、DT的剪枝
@@ -118,32 +118,32 @@ RF是一种在套袋法（bagging）基础上发展起来的集成学习算法�
 在上述过程的随机子集的建立过程中，若对原始数据样本的采样后放回，这种方法即为bagging；与之对应的，采样后不放回的方法称为粘贴法（pasting）\cite{Aurélien2018,Zhou2016}。
 由于bagging法可以获得的随机子集数量远远高于pasting法，其应用范围也更加广泛。
 \begin{figure}[htbp]
-      \centering
-      \includegraphics[width=.8\linewidth]{results/bp}
-      \caption[套袋法与粘贴法示意图]{\label{fig:bp}套袋法与粘贴法示意图\cite{Aurélien2018}}
+    \centering
+    \includegraphics[width=.8\linewidth]{results/bp}
+    \caption[套袋法与粘贴法示意图]{\label{fig:bp}套袋法与粘贴法示意图\cite{Aurélien2018}}
 \end{figure}
 
 当使用有采样后即放回的方法从包含$m$个原始样本的训练集$D$抽取出$m$个新的样本构成此次训练数据集$D_{bs}$时，显然，$D$有部分数据样本在$D_{bs}$重复出现，部分数据则从未被抽样过。
 由概率与统计知识可知，特定样本在$m$次抽取后，从未被抽中的概率为$(1-\frac{1}{m})^m$。当$m \to \infty$时，可得
 \begin{equation}
-      \label{equ:me}
-      \lim_{m \to \infty}{(1-\frac{1}{m})}^m = \frac{1}{e} \approx 0.368
+    \label{equ:me}
+    \lim_{m \to \infty}{(1-\frac{1}{m})}^m = \frac{1}{e} \approx 0.368
 \end{equation}
 这说明约有36.8\%的原始样本未出现在采样集$D_{bs}$中，这部分数据可以作为当前训练算法的测试集。
 
 按上述思想，可从原始样本训练集$D$采样得到$T$个包含$m$个训练样本的采样集，基于这些采样集，使用特定的机器学习算法可以训练得到$T$个基学习器，结合这些基学习器的输出即为bagging算法
 的基本流程，如\autoref{alg:bagging}所示。投票法和平均法是bagging在进行基学习器的输出时常采用的策略。
 \begin{breakablealgorithm}
-      \caption[Bagging算法]{Bagging算法\cite{Zhou2016}}
-      \label{alg:bagging}
-      \begin{algorithmic}[1] %每行显示行号
-            \Require 训练集$D=\{(x_1,y_1),(x_2,y_2),\dots,(x_m,y_m)\}$；基学习算法$\xi$；训练轮数$T$。
-            \Ensure $H(x)=\arg \max \limits_{y \in Y} \sum_{t=1}^T \mathbb{I}(h_t(x)=y)$，其中$\mathbb{I}(.)$为指示函数，在$.$为真或假时函数值分别为1或0。
-            \For {$t=1,2,\dots,T$}
-                  \State 从原始训练集$D$自助采样得到此次的样本分布$D_{bs}$
-                  \State $h_t=\xi (D,D_{bs})$
-            \EndFor
-      \end{algorithmic}
+    \caption[Bagging算法]{Bagging算法\cite{Zhou2016}}
+    \label{alg:bagging}
+    \begin{algorithmic}[1] %每行显示行号
+        \Require 训练集$D=\{(x_1,y_1),(x_2,y_2),\dots,(x_m,y_m)\}$；基学习算法$\xi$；训练轮数$T$。
+        \Ensure $H(x)=\arg \max \limits_{y \in Y} \sum_{t=1}^T \mathbb{I}(h_t(x)=y)$，其中$\mathbb{I}(.)$为指示函数，在$.$为真或假时函数值分别为1或0。
+        \For {$t=1,2,\dots,T$}
+                \State 从原始训练集$D$自助采样得到此次的样本分布$D_{bs}$
+                \State $h_t=\xi (D,D_{bs})$
+        \EndFor
+    \end{algorithmic}
 \end{breakablealgorithm}
 
 2、RF
@@ -154,9 +154,9 @@ RF是由多棵DT构成，这些DT一般都是经过充分生长的、未经剪�
 $\lfloor \log_2m + 1 \rfloor$\cite{breiman2001}。
 
 \begin{figure}[htbp]
-      \centering
-      \includegraphics[width=.8\linewidth]{results/rf}
-      \caption{\label{fig:rf}随机森林示意图}
+    \centering
+    \includegraphics[width=.8\linewidth]{results/rf}
+    \caption{\label{fig:rf}随机森林示意图}
 \end{figure}
 
 对回归问题而言，RF的输出是其中所有DT的输出的均值；而对分类任务而言，RF的输出是所有DT输出的投票结果。RF在树的生长过程中的两次随机使DT具有更大的多样性，相当于用更高的偏差换取更低的方差。因此，
@@ -175,44 +175,44 @@ CM是评估分类器分类效果优劣的常用工具\cite{Zhou2016,Aurélien201
 
 对二分类任务对应的CM而言，人们习惯将样例依据其真实所属类别与分类器预测类别的四种组合结果进行命名，即真阳性（true positive，TP）、假阳性（false positive，FP）、真阴性（true negative，TN）
 及假阴性（false negative，TN），如\autoref{tab:cm}所示。显然，TP+FP+TN+FN=样例总数。
-\begin{center}
-      \zihao{-5}
-      \begin{longtable}{m{3cm}<{\centering}m{3cm}<{\centering}m{3cm}<{\centering}}
-      \caption{二分类任务的混淆矩阵}\\
-      \label{tab:cm}\\
-      \topline
-      \colorhead  & \multicolumn{2}{c}{\textbf{预测结果}} \\
-      \colorhead \multirow{-2}{*}{\textbf{真实情况}}  & 阳性（1） & 阴性（0）\\
-      \midline
-      \endfirsthead
-      \caption[]{(续)}\\
-      \topline
-      \colorhead  & \multicolumn{2}{c}{\textbf{预测结果}} \\
-      \colorhead \multirow{-2}{*}{\textbf{真实情况}}  & 阳性（1） & 阴性（0）\\
-      \midline
-      \endhead 
-      \hline
-      \endfoot
-      \bottomline
-      \endlastfoot
-      \colorrowa 阳性（1） & 真阳性（TP） & 假阴性（FN） \\
-      \colorrowc 阴性（0） & 假阳性（FP） & 真阴性（TN） \\
-\end{longtable}
-\end{center}
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {二分类任务的混淆矩阵},
+        label                   = {tab:cm},
+        % note{*}                 = {有统计意义上的显著性区别。},
+    ]
+    {
+        width                   = 0.6\linewidth,
+        colspec                 = {X[1,c,m]X[1,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{3}                = {\thinline},
+        rowhead                 = 2,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1-2}                = {font=\headfont,bg=\headcolor},
+        row{3-Z}                = {font=\nonheadfont},
+        cell{1}{1}              = {r=2,c=1}{c,m},
+        cell{1}{2}              = {r=1,c=2}{c,m},
+    }
+    真实情况 & 预测结果 & 预测结果 \\
+    真实情况 & 阳性（1） & 阴性（0） \\
+    阳性（1） & 真阳性（TP） & 假阴性（FN） \\
+    阴性（0） & 假阳性（FP） & 真阴性（TN） \\   
+\end{longtblr}
 
-\vspace{-0.8cm}
 由于CM是按类型进行统计的绝对数值，为量化分类器的具体性能，人们在CM的基础上衍生定义了一系列数字指标，包括查全率（recall）、查准率（precison）、准确率（accuracy）及特异性（specificity）等，
 如\autoref{equ:measures}所示。
 \begin{equation}
-      \label{equ:measures}
-      \left \{
-      \begin{aligned}
-            \text{Recall}      &=\frac{\text{TP}}{\text{TP+FN}}         \\
-            \text{Precison}    &=\frac{\text{TP}}{\text{TP+FP}}          \\
-            \text{Accuracy}    &=\frac{\text{TP+TN}}{\text{TP+FP+TN+FN}} \\
-            \text{Specificity} &=\frac{\text{TN}}{\text{TN+FP}}       \\
-      \end{aligned}
-      \right.
+    \label{equ:measures}
+    \left \{
+    \begin{aligned}
+        \text{Recall}      &=\frac{\text{TP}}{\text{TP+FN}}         \\
+        \text{Precison}    &=\frac{\text{TP}}{\text{TP+FP}}          \\
+        \text{Accuracy}    &=\frac{\text{TP+TN}}{\text{TP+FP+TN+FN}} \\
+        \text{Specificity} &=\frac{\text{TN}}{\text{TN+FP}}       \\
+    \end{aligned}
+    \right.
 \end{equation}
 
 查全率亦称召回率、灵敏性（sensitivity）或真阳性率（true positive rate，TPR），查准率亦称精准率，特异性亦称真阴性率。查全率与查准率是应用的最广泛的两个指标\cite{Zhou2016,Aurélien2018}。
@@ -221,12 +221,12 @@ CM是评估分类器分类效果优劣的常用工具\cite{Zhou2016,Aurélien201
 
 为评估查全率与查准率均不相等的分类器性能，人们进一步定义了$F_1$值
 \begin{equation}
-      \label{equ:f1}
-      \begin{aligned}
-            F_1   &= \frac{2}{\frac{1}{\text{Precison}}+\frac{1}{\text{Recall}}}         \\
-                  &=\frac{2\cdot \text{Precison}\cdot \text{Recall}}{\text{Precison+Recall}}          \\
-                  % &=\frac{TP}{TP+\frac{FN+FP}{2}} \\
-      \end{aligned}
+    \label{equ:f1}
+    \begin{aligned}
+        F_1   &= \frac{2}{\frac{1}{\text{Precison}}+\frac{1}{\text{Recall}}}         \\
+                &=\frac{2\cdot \text{Precison}\cdot \text{Recall}}{\text{Precison+Recall}}          \\
+                % &=\frac{TP}{TP+\frac{FN+FP}{2}} \\
+    \end{aligned}
 \end{equation}
 $F_1$值是召回率与精准率的谐波均值，召回率与精准率相近的分类器易获得更高的$F_1$值。
 
@@ -236,15 +236,15 @@ $F_1$值是召回率与精准率的谐波均值，召回率与精准率相近的
 
 ROC是另一种常用于二分类问题的分析工具。ROC绘制的是真阳性率和假阳性率（false positive rate，FPR）之间的变化关系，其中
 \begin{equation}
-      \label{equ:fpr}
-      \text{FPR}=\frac{\text{TN}}{\text{TN+FP}}=1-\text{Specificity}
+    \label{equ:fpr}
+    \text{FPR}=\frac{\text{TN}}{\text{TN+FP}}=1-\text{Specificity}
 \end{equation}
 因此，ROC也被称为灵敏度与1$-$特异性曲线。绘制曲线时，以分类器的预测结果对样例进行升序排列，依次将样本作为阳性进行预测，计算此时对应的TPR与FPR后，将其作为一坐标点$(\text{FPR},\text{TPR})$进行绘制，
 最后将所有坐标点连线即可，如\autoref{fig:roc}所示。
 \begin{figure}[htbp]
-      \centering
-      \includegraphics[width=.6\linewidth]{results/roc_df}
-      \caption[ROC曲线与AUC关系示意图]{\label{fig:roc}ROC与AUC关系示意图}
+    \centering
+    \includegraphics[width=.6\linewidth]{results/roc_df}
+    \caption[ROC曲线与AUC关系示意图]{\label{fig:roc}ROC与AUC关系示意图}
 \end{figure}
 
 在衡量多个分类器性能优劣时，常将与分类器ROC对应的AUC作为判据。
@@ -254,11 +254,11 @@ ROC是另一种常用于二分类问题的分析工具。ROC绘制的是真阳�
 
 YI也是用来评价分类器效果的一个指标。若在评估分类器性能时，给予将分类器假阴性和假阳性以相同权重，即可应用YI
 \begin{equation}
-      \label{equ:yi}
-      \begin{aligned}
-            \text{YI}&=\text{Sensitivity}-(1-\text{Specificity})\\
-            &=\text{Sensitivity}+\text{Specificity}-1
-      \end{aligned}
+    \label{equ:yi}
+    \begin{aligned}
+        \text{YI}&=\text{Sensitivity}-(1-\text{Specificity})\\
+        &=\text{Sensitivity}+\text{Specificity}-1
+    \end{aligned}
 \end{equation}
 一般认为，当YI取值最大时，此时对应的分类阈值为最佳阈值\cite{cwl}。
 
@@ -279,39 +279,42 @@ C-支持向量机（C-support vector machines，CSVM）及多层感知机（mult
 前期研究未对上述算法的超参数进行调整，全部使用默认数值或推荐数值\cite{scikit-learn}。
 通过这些算法训练得到的ML模型在训练集与测试集上的结果如\autoref{tab:model_screen}所示，其中训练集的统计结果是经5层交叉验证处理后得到的，而一些需要注意的数据信息也在\autoref{tab:model_screen}
 用粉色底色进行了突出显示。
-\vspace{-1em}
-\begin{center}
-      \zihao{-5}
-      \begin{longtable}{m{0.6cm}<{\centering}m{2cm}<{\centering}m{0.8cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}}
-            \caption{基于PPG多维度时域特征集的PE识别模型初筛结果}\\
-            \label{tab:model_screen}\\
-            \topline
-            \colorhead & &  & \multicolumn{5}{c}{\textbf{训练集}} & \multicolumn{4}{c}{\textbf{测试集}}                                                                                                                                                                                                      \\
-            \colorhead \multirow{-2}{*}{\textbf{序号}} & \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\tabincell{c}{\textbf{训练}\\ \textbf{时间}}} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC}  &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
-            \midline
-            \endfirsthead
-            \caption[]{(续)}\\
-            \midline
-            \colorhead & &  & \multicolumn{5}{c}{\textbf{训练集}} & \multicolumn{4}{c}{\textbf{测试集}}                                                                                                                                                                                                      \\
-            \colorhead \multirow{-2}{*}{\textbf{序号}} & \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\tabincell{c}{\textbf{训练}\\ \textbf{时间}}} &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC}  &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
-            \midline
-            \endhead 
-            \midline
-            \endfoot
-            \bottomline
-            \endlastfoot
-            \colorrowa 1 & 随机梯度下降        &   6.17 s   & 87.2\% & 68.9\% & 77.0\% & 75.5\% & 0.876 & \cellcolor{pink} 74.8\% & 97.7\% & 84.7\% & 79.0\% \\
-            \colorrowc 2 & 决策树             &   5.24 s  & 91.1\% & 83.0\% & 86.9\% & 85.1\% & 0.907 & 93.6\% & 81.4\% & 87.1\% & 85.6\% \\
-            \colorrowa 3 & K近邻              &   3.08 s    & \cellcolor{pink} 94.7\% & \cellcolor{pink} 93.7\% & \cellcolor{pink} 94.2\% & \cellcolor{pink} 93.1\% & \cellcolor{pink} 0.974  & 95.4\% & 93.3\% & 94.3\% & 93.3\% \\
-            \colorrowc 4 & \tabincell{c}{高斯朴素\\贝叶斯 }     &   \cellcolor{pink}1.22 s  & 87.9\% & 63.9\% & 74.0\% & 73.2\% & \cellcolor{pink}0.838  & 90.1\% & \cellcolor{pink} 65.0\% & 75.5\% & 74.9\% \\
-            \colorrowa 5 & 逻辑回归           &   \cellcolor{pink}203.00 s  & 90.2\% & 90.7\% & 90.4\% & 88.6\% & 0.950 & 93.3\% & 93.0\% & 93.1\% & 91.8\% \\
-            \colorrowc 6 & \tabincell{c}{线性支持\\向量机}     &   47.22 s  & 79.7\% & 93.2\% & 86.0\% & 81.9\% & 0.917 & 95.9\% & 81.9\% & 88.3\% & 87.1\% \\
-            \colorrowa 7 & 核支持向量机       &   60.28 s  & 82.5\% & 90.3\% & 86.2\% & 82.8\% & 0.916 & 84.9\% & 91.4\% & 88.0\% & 85.2\% \\
-            \colorrowc 8 & C-支持向量机       &   42.47 s  & 84.3\% & 90.5\% & 87.3\% & 84.3\% & 0.929 & 87.1\% & 90.8\% & 88.9\% & 86.5\% \\
-            \colorrowa 9 & 多层感知机         &   26.8 s  & 83.5\% & 75.8\% & 79.5\% & 76.6\% & 0.905 & 89.3\% & 91.1\% & 90.2\% & 88.2\% \\
-      \end{longtable}
-\end{center}
-\vspace{-2em}
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {基于PPG多维度时域特征集的PE识别模型初筛结果},
+        label                   = {tab:model_screen},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[0.8,c,m]X[2,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{3}                = {\thinline},
+        rowhead                 = 2,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1-2}                = {font=\headfonttiny,bg=\headcolor},
+        row{3-Z}                = {font=\nonheadfont},
+        cell{1}{1-3}            = {r=2,c=1}{c,m},
+        cell{1}{4}              = {r=1,c=5}{c,m},
+        cell{1}{9}              = {r=1,c=4}{c,m},
+        cell{3}{9}              = {font=\headfont,bg=\emphacolor},
+        cell{5}{4-8}            = {font=\headfont,bg=\emphacolor},
+        cell{6}{3,8,10}         = {font=\headfont,bg=\emphacolor},
+        cell{7}{3}              = {font=\headfont,bg=\emphacolor},
+    }
+    序号 & {模型\\类型} & {训练\\时间\\/s} & 训练集 & & & 测试集 & 测试集 & 测试集& & \\
+    序号 & {模型\\类型} & {训练\\时间\\/s} & 精确率 & 召回率 & $F_1$值 & 准确率 & AUC & 精确率 & 召回率 &  $F_1$值 & 准确率 \\
+    1 & {随机梯\\度下降}        &   6.17   & 87.2\% & 68.9\% & 77.0\% & 75.5\% & 0.876 &  74.8\% & 97.7\% & 84.7\% & 79.0\% \\
+    2 & 决策树             &   5.24  & 91.1\% & 83.0\% & 86.9\% & 85.1\% & 0.907 & 93.6\% & 81.4\% & 87.1\% & 85.6\% \\
+    3 & K近邻              &   3.08    &  94.7\% &  93.7\% &  94.2\% &  93.1\% &  0.974  & 95.4\% & 93.3\% & 94.3\% & 93.3\% \\
+    4 & {高斯朴素\\贝叶斯 }     &   1.22  & 87.9\% & 63.9\% & 74.0\% & 73.2\% & 0.838  & 90.1\% &  65.0\% & 75.5\% & 74.9\% \\
+    5 & 逻辑回归           &   203.00  & 90.2\% & 90.7\% & 90.4\% & 88.6\% & 0.950 & 93.3\% & 93.0\% & 93.1\% & 91.8\% \\
+    6 & {线性支持\\向量机}     &   47.22  & 79.7\% & 93.2\% & 86.0\% & 81.9\% & 0.917 & 95.9\% & 81.9\% & 88.3\% & 87.1\% \\
+    7 & {核支持\\向量机}       &   60.28  & 82.5\% & 90.3\% & 86.2\% & 82.8\% & 0.916 & 84.9\% & 91.4\% & 88.0\% & 85.2\% \\
+    8 & {C-支持\\向量机}       &   42.47  & 84.3\% & 90.5\% & 87.3\% & 84.3\% & 0.929 & 87.1\% & 90.8\% & 88.9\% & 86.5\% \\
+    9 & 多层感知机         &   26.8  & 83.5\% & 75.8\% & 79.5\% & 76.6\% & 0.905 & 89.3\% & 91.1\% & 90.2\% & 88.2\% \\   
+\end{longtblr}
 
 从\autoref{tab:model_screen}可以得到以下结论:
 
@@ -345,43 +348,54 @@ C-支持向量机等算法得到的模型在精确率与召回率可以达到90.
 \autoref{tab:super_para}给出了上述四种算法在进行网格搜索时各超参数的值域组合与最优超参数数值。其中，超参数组合值域一栏加粗显示了各模型的超参数的默认数值，而最优超参数是以各模型在测试集上的AUC取值为衡量标准得到的。
 与此同时，\autoref{fig:contrast_model}也对比展示了在超参数优化前后，各模型在训练集上的AUC数值及在测试集上准确率变化情况，其中，AUC数值是在测试集上进行5层交叉验证后求均值得到的。
 
-\vspace{-1em}
-\begin{center}
-      \zihao{-5}
-      \begin{longtable}{m{1cm}<{\centering}m{4cm}<{\centering}m{6.5cm}<{\centering}m{4cm}<{\centering}}
-            \caption{基于PPG多维度时域特征集的PE识别模型的超参数优化}\\
-            \label{tab:super_para}\\
-            \topline
-            \colorhead \textbf{序号} & \textbf{模型类型} & \textbf{超参数组合值域}     &     \textbf{最优超参数}\\
-            \midline
-            \endfirsthead
-            \caption[]{(续)}\\ 
-            \midline
-            \colorhead \textbf{序号} & \textbf{模型类型} & \textbf{超参数组合值域}     &     \textbf{最优超参数}\\
-            \endhead 
-            \midline
-            \endfoot
-            \bottomline
-            \endlastfoot
-            \colorrowa 1 & 随机梯度下降    & \begin{tabular}[c]{@{}l@{}}loss:{[}\textbf{hinge}, log\_loss,   \\ log, modified\_huber, \\ squared\_hinge, perceptron, \\ squared\_error,  huber,\\  epsilon\_insensitive, \\ squared\_epsilon\_insensitive{]},\\    penalty:{[}\textbf{l2},l1,elasticnet{]},\\   alpha:{[}0.001,\textbf{0.0001},0.00001{]}\end{tabular} &  \begin{tabular}[c]{@{}l@{}}alpha=0.001, \\ loss=squared\_hinge,   \\ penalty=elasticnet\end{tabular}     \\
-            \colorrowc 2 & 高斯朴素贝叶斯   & var\_smoothing:{[}1e-5,1e-7,\textbf{1e-9},1e-11{]}             & var\_smoothing=1e-7                     \\
-            \colorrowa 3 & 决策树           & \begin{tabular}[c]{@{}l@{}}criterion:{[}\textbf{gini},entropy,log\_loss{]},\\  splitter:{[}\textbf{best},random{]},\\     max\_depth:{[}\textbf{3},4,5{]},\\  max\_features:{[}sqrt,log2,\textbf{None}{]}\end{tabular}        & \begin{tabular}[c]{@{}l@{}}criterion=entropy,\\ splitter=random,\\ max\_depth=5, \\ max\_features=None\end{tabular}         \\
-            \colorrowc 4 & K近邻            & \begin{tabular}[c]{@{}l@{}}n\_neighbors:{[}3,\textbf{5},7,9{]},\\    weights:{[}\textbf{uniform},distance{]}\end{tabular}       & \begin{tabular}[c]{@{}l@{}}n\_neighbors=9,\\  weights=distance\end{tabular}             \\
-      \end{longtable}
-\end{center}
-\vspace{-0.8cm}
-
 \begin{figure}[htbp]
-      \centering
-      \subfigure[\label{fig:cmdl1}四种模型在超参数优化前后在训练集上的AUC对比]{
-      \includegraphics[width=7.5cm]{results/contrast_auc}
-      }
-      \quad
-      \subfigure[\label{fig:cmdl2}四种算法模型在超参数优化前后的在测试集上的准确率对比图]{
-      \includegraphics[width=7.5cm]{results/contrast_acc}
-      }
-      \caption{\label{fig:contrast_model}四种算法模型在超参数优化前后的性能对比图}
+    \centering
+    \subfigure[\label{fig:cmdl1}四种模型在超参数优化前后在训练集上的AUC对比]{
+    \includegraphics[width=7.5cm]{results/contrast_auc}
+    }
+    \quad
+    \subfigure[\label{fig:cmdl2}四种算法模型在超参数优化前后的在测试集上的准确率对比图]{
+    \includegraphics[width=7.5cm]{results/contrast_acc}
+    }
+    \caption{\label{fig:contrast_model}四种算法模型在超参数优化前后的性能对比图}
 \end{figure}
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {基于PPG多维度时域特征集的PE识别模型的超参数优化},
+        label                   = {tab:super_para},
+        note{*}                 = {由于篇幅所限，本论文不对这些超参数名称及取值具体含义进行介绍，请参阅scikit-learn官方网站及文档\cite{scikit-learn}。},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[2,c,m]X[2,c,m]X[1,c,m]X[4,c,m]X[2,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{3}                = {\thinline},
+        rowhead                 = 2,
+        row{3-5,7-10}           = {bg=\oddcolor}, 
+        row{6,11-12}            = {bg=\evencolor},
+        row{1-2}                = {font=\headfont,bg=\headcolor},
+        row{3-Z}                = {font=\nonheadfont},
+        cell{1}{1-2}            = {r=2,c=1}{c,m},
+        cell{1}{3}              = {r=1,c=4}{c,m},
+        cell{3}{1-2}            = {r=3,c=1}{c,m},
+        cell{7}{1-2}            = {r=4,c=1}{c,m},
+        cell{11}{1-2}           = {r=2,c=1}{c,m},
+    }
+    序号 & 模型使用的算法 & 超参数优化 &  & 搜索值 & 最优值 \\
+    序号 & 算法 & 超参数名称\TblrNote{*} & 默认值\TblrNote{*}& 搜索值\TblrNote{*}& 最优值\TblrNote{*} \\
+    1 & 随机梯度下降     &  loss & hinge & {hinge, log\_loss, log,\\ modified\_huber, \\ squared\_hinge, \\perceptron, squared\_error,  huber,\\  epsilon\_insensitive, \\ squared\_epsilon\_insensitive} & squared\_hinge \\
+    2 &                 &  penalty & l2 & l1,l2,elasticnet & elasticnet\\
+    3 &                 &   alpha  & 0.0001 & 0.001,0.0001,0.00001 & 0.001 \\
+    2 & 高斯朴素贝叶斯   & var\_smoothing & 1e-9 & 1e-5,1e-7,1e-9,1e-11  & 1e-7    \\
+    3 & 决策树           & criterion & gini & gini,entropy,log\_loss & entropy\\
+    6 &                 & splitter & best & best,random & random \\
+    7 &                 & max\_depth & 3 & 3,4,5 & 5\\
+    8 &                 & max\_features & None & sqrt,log2,None & None \\
+    4 & K近邻           & n\_neighbors & 5 & 3,5,7,9 & 9 \\
+    4 & K近邻                & weights & uniform & uniform,distance & distance \\
+\end{longtblr}
 
 从\autoref{fig:contrast_model}展现的数值上看，由于测试集上AUC是作为超参数调优的衡量标准，四种模型的AUC数值按预期有一定的数值提升；但从测试集上的准确率来看，只有决策树与K近邻算法
 延续了初筛时较为优秀的性能表现，经由超参数调优后的模型在测试集上的准确率有一定的提升，这也进一步佐证了初筛时得到的各项结论。
@@ -395,101 +409,114 @@ PPG多维度时域特征集中各特征的贡献度分析。
 其在训练集上的AUC面积为0.990，在训练集与测试集上的准确率更是分别达到了95.2\%与97.0\%。
 这些数值均高于此前任一单算法模型的结果，体现了集成学习的优势。
 
-\begin{figure}[htbp]
-      \centering
-      \includegraphics[width=\linewidth]{results/rfdt}
-      \caption{\label{fig:dt_clf}由随机森林算法构建得到的决策树示意图}
-\end{figure}
-
-\begin{center}
-      \zihao{-5}
-      \begin{longtable}{m{1cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}}
-            \caption[参与构建随机森林的特征贡献度（部分）]{参与构建随机森林的特征贡献度（部分）}\\
-            \label{tab:rf_dr_1}\\
-            \topline
-            \colorhead \textbf{序号}&\textbf{特征名}&\textbf{贡献度}&\textbf{特征名}&\textbf{序号}&\textbf{贡献度}&\textbf{序号}&\textbf{特征名}&\textbf{贡献度}\\
-            \midline
-            \endfirsthead
-            \caption[]{(续)}\\
-            \midline
-            \colorhead \textbf{序号}&\textbf{特征名}&\textbf{贡献度}&\textbf{特征名}&\textbf{序号}&\textbf{贡献度}&\textbf{序号}&\textbf{特征名}&\textbf{贡献度}\\
-            \midline
-            \endhead 
-            \midline
-            \endfoot
-            \bottomline
-            \endlastfoot
-            \colorrowc 1 & \cellcolor{cyan}CVALF\_9                         & \cellcolor{cyan}4.6\%                           &    2   & \cellcolor{cyan}LVRF\_9                          & \cellcolor{cyan}3.4\%                 &      3           & SVD\_10                          & 3.0\%                            \\
-            \colorrowc 4 & \cellcolor{cyan}SVAF\_10                         & \cellcolor{cyan}2.5\%                           &    5   & \cellcolor{cyan}LVALF\_7                         & \cellcolor{cyan}2.4\%                 &      6           & SVAT\_10                         & 2.3\%                            \\
-            \colorrowc 7 & \cellcolor{cyan}CVRF\_11                         & \cellcolor{cyan}2.1\%                           &    8   & \cellcolor{pink}SVAR\_10                         & \cellcolor{pink}1.8\%                 &      9           & STDZ\_3                          & 1.6\%                            \\
-            \colorrowc 10 & \cellcolor{cyan}LVRF\_8                          & \cellcolor{cyan}1.6\%                          &    11    & \cellcolor{cyan}LVALF\_6                         & \cellcolor{cyan}1.6\%                &      12            & CVD\_11                          & 1.6\%                            \\
-            \colorrowc 13 & STDZ\_1                                          & 1.5\%                                          &    14    & \cellcolor{cyan}CVALF\_8                         & \cellcolor{cyan}1.5\%                &      15            & SVD\_9                           & 1.4\%                            \\
-            \colorrowc 16 & \cellcolor{pink}SVAAR\_10                        & \cellcolor{pink}1.4\%                          &    17    & \cellcolor{cyan}CVALF\_1                         & \cellcolor{cyan}1.4\%                &      18            & \cellcolor{pink}SVAAR\_8                         & \cellcolor{pink}1.3\%                            \\
-            \colorrowc 19 & SVD\_8                                           & 1.1\%                                          &    20    & \cellcolor{pink}SVAR\_9                          & \cellcolor{pink}1.0\%                &      21            & \cellcolor{cyan}SVAF\_9                          & \cellcolor{cyan}1.0\%                            \\
-            \colorrowc 22 & \cellcolor{cyan}CVAAF\_1                         & \cellcolor{cyan}1.0\%                          &    23    & \cellcolor{cyan}LVLF\_8                          & \cellcolor{cyan}0.9\%                &      24            & SVAT\_8                          & 0.9\%                            \\
-            \colorrowc 25 & \cellcolor{cyan}CVRF\_1                          & \cellcolor{cyan}0.9\%                          &    26    & \cellcolor{cyan}CVAAF\_2                         & \cellcolor{cyan}0.9\%                &      27            & \cellcolor{pink}SVAR\_8                          & \cellcolor{pink}0.8\%                            \\
-            \colorrowc 28 & \cellcolor{cyan}SVAF\_2                          & \cellcolor{cyan}0.8\%                          &    29    & \cellcolor{pink}CVRR\_11                         & \cellcolor{pink}0.8\%                &      30            & \cellcolor{cyan}LVRF\_1                          & \cellcolor{cyan}0.7\%                            \\
-            \colorrowc 31 & \cellcolor{pink}SVSR\_7                          & \cellcolor{pink}0.7\%                          &    32    & \cellcolor{cyan}CVRF\_3                          & \cellcolor{cyan}0.7\%                &      33            & \cellcolor{pink}CVALR\_10                        & \cellcolor{pink}0.7\%                            \\
-            \colorrowc 34 & \cellcolor{cyan}CVALF\_7                         & \cellcolor{cyan}0.7\%                          &    35    & \cellcolor{pink}CVAAR\_5                         & \cellcolor{pink}0.7\%                &      36            & \cellcolor{cyan}LVRF\_2                          & \cellcolor{cyan}0.6\%                           
-      \end{longtable}
-\end{center}
-\vspace{-0.8cm}
-
 利用随机森林算法构成多棵决策树形成森林之后，可以得到每棵决策树中使用的特征及其相对深度。\autoref{fig:dt_clf}则给出了此随机森林中一棵具体的决策树结构，其中每个节点均给出用于判断的关键特征及其数值、
 GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测类别，节点的深浅颜色也代表了实际所属类别的比值大小。
 对统计随机森林中所有决策树的特征及其相对深度进行统计，可得各特征在随机森林中的平均深度，该值可应用于各特征对最终PE识别模型的贡献度的分析，其结果如\autoref{tab:rf_dr_1}。
 
-\autoref{tab:rf_dr_1}列举了PPG多维度时域特征集的286个时域特征对随机森林累计贡献度排名靠前的36个特征，这些特征的累计贡献度为51.9\%。其中，基于PPG上升支的特征使用了粉红色背景填充，基于PPG下降支的特征为蓝色背景填充；特征名后的数字下标代表了
-特征所对应的PPG位置，越靠近峰值的位置下标值越小。若以\autoref{tab:rf_dr_1}中的贡献度最大的特征CVALF\_9（4.6\%）为基准，可以得到所有特征对RF模型的相对贡献度如\autoref{fig:rf_importance_pulse}所示。
+\autoref{tab:rf_dr_1}列举了PPG多维度时域特征集的286个时域特征对随机森林累计贡献度排名靠前的36个特征，这些特征的累计贡献度为51.9\%。其中，基于PPG上升支的特征使用了粉红色背景填充，基于PPG下降支的特征为蓝色背景填充；特征名后的数字下标
 
 \begin{figure}[htbp]
-      \centering
-      \includegraphics[width=0.8\linewidth]{results/rf_ip_pulse_0.52}
-      \caption[PPG多维度时域特征集中各特征对随机森林模型的相对贡献度示意图（局部）]{\label{fig:rf_importance_pulse}PPG多维度时域特征集中各特征对随机森林模型的相对贡献度示意图（局部）}
+    \centering
+    \includegraphics[width=\linewidth]{results/rfdt}
+    \caption{\label{fig:dt_clf}由随机森林算法构建得到的决策树示意图}
 \end{figure}
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {参与构建随机森林的特征贡献度（部分）},
+        label                   = {tab:rf_dr_1},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[2,c,m]X[2,c,m]X[1,c,m]X[2,c,m]X[2,c,m]X[1,c,m]X[2,c,m]X[2,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{2-Z}                = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+        cell{2-3,5-6}{2-3}      = {bg=\contrastcolor},
+        cell{8,11-12}{2-3}      = {bg=\contrastcolor},
+        cell{3,6,10-12}{5-6}    = {bg=\contrastcolor},
+        cell{2-3,5-6}{2-3}      = {bg=\contrastcolor},
+        cell{2-13}{8-9}         = {bg=\contrastcolor},
+        cell{9}{2-3}            = {bg=\emphacolor},
+        cell{5,7,9}{5-6}        = {bg=\emphacolor},
+        cell{4,6,8}{8-9}        = {bg=\emphacolor},
+        cell{10,12}{8-9}        = {bg=\emphacolor},
+    }
+    序号 & 特征名 & 贡献度 & 序号 & 特征名 & 贡献度 & 序号 & 特征名 & 贡献度 \\
+    1	&   CVALF\_9	& 4.6\%	&   13   &	STDZ\_1	    &   1.5\%   &	25	&   CVRF\_1	    &   0.9\%   \\
+    2	&   LVRF\_9	& 3.4\%	&   14   &	CVALF\_8	    &   1.5\%   &	26	&   CVAAF\_2     &   0.9\%    \\
+    3	&   SVD\_10	& 3.0\%	&   15   &	SVD\_9	    &   1.4\%   &	27	&   SVAR\_8	    &   0.8\%   \\
+    4	&   SVAF\_10	& 2.5\%	&   16   &	SVAAR\_10    &   1.4\%   &	28	&   SVAF\_2	    &   0.8\%   \\
+    5	&   LVALF\_7	& 2.4\%	&   17   &	CVALF\_1	    &   1.4\%   &	29	&   CVRR\_11     &   0.8\%   \\
+    6	&   SVAT\_10	& 2.3\%	&   18   &	SVAAR\_8	    &   1.3\%   &	30	&   LVRF\_1	    &   0.7\%   \\
+    7	&   CVRF\_11	& 2.1\%	&   19   &	SVD\_8	    &   1.1\%   &	31	&   SVSR\_7	    &   0.7\%   \\
+    8	&   SVAR\_10	& 1.8\%	&   20   &	SVAR\_9	    &   1.0\%   &	32	&   CVRF\_3	    &   0.7\%   \\
+    9	&   STDZ\_3	& 1.6\%	&   21   &	SVAF\_9	    &   1.0\%   &	33	&   CVALR\_10    &   0.7\%   \\
+    10	&   LVRF\_8	& 1.6\%	&   22   &	CVAAF\_1	    &   1.0\%   &	34	&   CVALF\_7     &   0.7\%   \\
+    11	&   LVALF\_6	& 1.6\%	&   23   &	LVLF\_8	    &   0.9\%   &	35	&   CVAAR\_5     &   0.7\%    \\
+    12	&   CVD\_11	& 1.6\%	&   24   &	SVAT\_8	    &   0.9\%   &	36	&   LVRF\_2	    &   0.6\%   \\
+\end{longtblr}
+\vspace{2em}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth]{results/rf_ip_pulse_0.52}
+    \caption[PPG多维度时域特征集中各特征对随机森林模型的相对贡献度示意图（局部）]{\label{fig:rf_importance_pulse}PPG多维度时域特征集中各特征对随机森林模型的相对贡献度示意图（局部）}
+\end{figure}
+
+\noindent
+代表了特征所对应的PPG位置，越靠近峰值的位置下标值越小。若以\autoref{tab:rf_dr_1}中的贡献度最大的特征CVALF\_9（4.6\%）为基准，可以得到所有特征对RF模型的相对贡献度如\autoref{fig:rf_importance_pulse}所示。
 
 另一方面，在获取各特征对PE识别模型的贡献度后，可按照贡献度按从高到低的顺序进行特征筛选。
 本研究按10\%为梯度，完成了从贡献度100\%到40\%的特征筛选过程，基于每个梯度下筛选出的特征子集也使用随机森林算法
 训练了PE识别模型，该过程中各项具体数值结果如\autoref{tab:rf_dr_2}所示。
 
-\begin{center}
-      \zihao{-5}
-      \begin{longtable}{m{0.8cm}<{\centering}m{2cm}<{\centering}m{1.3cm}<{\centering}m{1.3cm}<{\centering}m{1.6cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}}
-            \caption{随机森林对PPG多维度时域特征集的降维效果}\\
-            \label{tab:rf_dr_2}\\
-            \topline
-            \colorhead & \multicolumn{3}{c}{\textbf{随机森林特征输入}}              &  &  & \multicolumn{4}{c}{\textbf{测试集}}                                          \\
-            \colorhead \multirow{-2}{*}{\textbf{序号}}&\textbf{贡献度比例} & \textbf{特征数量} & \textbf{数量比例} & \multirow{-2}{*}{\textbf{训练时间}}  & \multirow{-2}{*}{\textbf{AUC}}   & \textbf{精确率} & \textbf{召回率} & \textbf{F1值} & \textbf{准确率} \\
-            \midline
-            \endfirsthead
-            \caption[]{(续)}\\
-            \midline
-            \colorhead & \multicolumn{3}{c}{\textbf{随机森林特征输入}}              &  &  & \multicolumn{4}{c}{\textbf{测试集}}                                          \\
-            \colorhead \multirow{-2}{*}{\textbf{序号}}&\textbf{贡献度比例} & \textbf{特征数量} & \textbf{数量比例} & \multirow{-2}{*}{\textbf{训练时间}}  & \multirow{-2}{*}{\textbf{AUC}}   & \textbf{精确率} & \textbf{召回率} & \textbf{F1值} & \textbf{准确率} \\
-            \midline
-            \endhead 
-            \midline
-            \endfoot
-            \bottomline
-            \endlastfoot
-            \colorrowa 1 & 100.0\%        & 286           & 100.0\%       & 41.30    & 0.990      & 98.0\%       & 97.0\%       & 97.5\%       & 97.0\%       \\
-            \colorrowc 2 & 90.0\%         & 162           & 56.6\%        & 38.11    & 0.991      & 98.1\%       & 97.3\%       & 97.8\%       & 97.3\%       \\
-            \colorrowa 3 & 80.0\%         & 108           & 37.8\%        & 29.33    & 0.993      & 97.7\%       & 97.2\%       & 97.5\%       & 97.0\%       \\
-            \colorrowc 4 & 70.0\%         & 74            & 25.9\%        & 23.67    & 0.993      & 98.1\%       & 97.5\%       & 97.8\%       & 97.4\%       \\
-            \colorrowa 5 & 60.0\%         & 51            & 17.8\%        & 20.91    & 0.994      & 98.3\%       & 97.1\%       & 97.7\%       & 97.3\%       \\
-            \colorrowc 6 & 50.0\%         & 34            & 11.9\%        & 15.17    & 0.993      & 97.8\%       & 97.0\%       & 97.4\%       & 97.0\%       \\
-            \colorrowa 7 & 40.0\%         & 21            & 7.3\%         & 11.90    & 0.993      & 97.7\%       & 96.8\%       & 97.3\%       & 96.8\%       \\
-      \end{longtable}
-\end{center}
-\vspace{-0.8cm}
-
-分析上述特征降维处理过程中\autoref{tab:rf_dr_2}、\autoref{tab:rf_dr_2}与\autoref{fig:rf_importance_pulse}，可以得到以下结论:
+分析上述特征降维处理过程中\autoref{tab:rf_dr_1}、\autoref{tab:rf_dr_2}与\autoref{fig:rf_importance_pulse}，可以得到以下结论:
 
 1、PPG多维度时域特征集包含了与PE相关性较强的特征。从数值上来看，特征集的286个特征的平均贡献度为0.34\%，而对由随机森林算法得到的贡献度最高的单特征CVALF\_9的贡献度为4.6\%，该值为平均值的13.5倍。
 而从\autoref{tab:rf_dr_2}的特征贡献度来看，PPG多维度时域特征集的286个特征中与PE相关性较强的特征较少，存在着无PE相关性较低的冗余特征。在保留原始特征集90\%的贡献度的条件下，就可以
 在几乎不损失模型预测能力的条件下排除约43.4\%的无关特征。
 
-2、从\autoref{tab:rf_dr_1}中特征种类来看，与PPG下降支相关的特征要远多于PPG上升支的特征，这可能与PPG下降支是血液回流过程的反应、下降支包含了更多的血液循环中细节信息的事实有关。同时，\autoref{tab:rf_dr_1}中
+2、从\autoref{tab:rf_dr_1}中特征种类来看，与PPG下降支相关的特征要远多于PPG上升支的特
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {随机森林对PPG多维度时域特征集的降维效果},
+        label                   = {tab:rf_dr_2},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[0.5,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{3}                = {\thinline},
+        rowhead                 = 2,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1-2}                = {font=\headfonttiny,bg=\headcolor},
+        row{3-Z}                = {font=\nonheadfont},
+        cell{1}{1}              = {r=2,c=1}{c,m},
+        cell{1}{5-6}            = {r=2,c=1}{c,m},
+        cell{1}{2}              = {r=1,c=3}{c,m},
+        cell{1}{7}              = {r=1,c=4}{c,m},
+    }
+    序号 & 随机森林算法的输入特征 & & & {训练\\时间/s} & {训练集\\AUC} & 测试集 & & & \\
+    序号 & 贡献度比例 & 特征数量 & 数量比例 & {训练\\时间/s} & {训练集\\AUC} & 精确率 & 召回率 & $F_1$值 & 准确率 \\
+    1 & 100.0\%        & 286           & 100.0\%       & 41.30    & 0.990      & 98.0\%       & 97.0\%       & 97.5\%       & 97.0\%       \\
+    2 & 90.0\%         & 162           & 56.6\%        & 38.11    & 0.991      & 98.1\%       & 97.3\%       & 97.8\%       & 97.3\%       \\
+    3 & 80.0\%         & 108           & 37.8\%        & 29.33    & 0.993      & 97.7\%       & 97.2\%       & 97.5\%       & 97.0\%       \\
+    4 & 70.0\%         & 74            & 25.9\%        & 23.67    & 0.993      & 98.1\%       & 97.5\%       & 97.8\%       & 97.4\%       \\
+    5 & 60.0\%         & 51            & 17.8\%        & 20.91    & 0.994      & 98.3\%       & 97.1\%       & 97.7\%       & 97.3\%       \\
+    6 & 50.0\%         & 34            & 11.9\%        & 15.17    & 0.993      & 97.8\%       & 97.0\%       & 97.4\%       & 97.0\%       \\
+    7 & 40.0\%         & 21            & 7.3\%         & 11.90    & 0.993      & 97.7\%       & 96.8\%       & 97.3\%       & 96.8\%       \\  
+\end{longtblr}
+
+\noindent
+征，这可能与PPG下降支是血液回流过程的反应、下降支包含了更多的血液循环中细节信息的事实有关。同时，\autoref{tab:rf_dr_1}中
 贡献度较高的特征的下标主要集中在前端（1、2、3）与尾端（8、9、10），这说明PPG下降支的前端与尾端可能包含了更多与PE相关的生理学信息。
 
 3、从\autoref{tab:rf_dr_2}的特征降维过程来看，随着特征数量的减少，随机森林模型的训练速度大大加快，新生成的随机森林模型在训练集与测试集上均出现了性能小幅提高再下降的整体趋势，
@@ -503,32 +530,32 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 
 \autoref{tab:model_screen2}给出了K近邻、决策树与随机森林三种算法训练得到的模型的具体表现，其中，训练集上的AUC数值是在进行5层交叉验证后得到的。
 
-\begin{center}
-      \zihao{-5}
-      \begin{longtable}{m{0.8cm}<{\centering}m{1.5cm}<{\centering}m{1.1cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}}
-            \caption{几种机器学习模型在被试人员分层抽样的数据集上的表现}\\
-            \label{tab:model_screen2}\\
-            \topline
-            \colorhead & &  & \multicolumn{5}{c}{\textbf{训练集}} & \multicolumn{4}{c}{\textbf{测试集}}                                                                                                                                                                                                      \\
-            \colorhead \multirow{-2}{*}{\textbf{序号}} & \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}}  &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC}  &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
-            \midline
-            \endfirsthead
-            \caption[]{(续)}\\
-            \midline
-            \colorhead & &  & \multicolumn{5}{c}{\textbf{训练集}} & \multicolumn{4}{c}{\textbf{测试集}}                                                                                                                                                                                                      \\
-            \colorhead \multirow{-2}{*}{\textbf{序号}} & \multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}}  &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC}  &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
-            \midline
-            \endhead 
-            \midline
-            \endfoot
-            \bottomline
-            \endlastfoot
-            \colorrowa 1 & K近邻      &   4.08 s   & 88.0\% & 76.0\% &81.6\% & 80.0\% & 0.870 & 81.5\% & 85.6\% & 83.5\% & 78.3\% \\
-            \colorrowc 2 & 决策树      &   1.44 s  & 84.0\% & 80.9\% & 82.4\% & 79.8\% & 0.862 & 69.0\% & 86.1\% & 76.6\% & 66.3\% \\
-            \colorrowa 3 & 随机森林      &   50.03 s  & 90.6\% & 80.6\% & 85.3\% & 83.8\% & 0.929 & 79.5\% & 90.9\% & 84.8\% & 79.1\% \\
-      \end{longtable}
-\end{center}
-\vspace{-0.8cm}
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {几种机器学习模型在被试人员分层抽样的数据集上的表现},
+        label                   = {tab:model_screen2},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[1.8,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{3}                = {\thinline},
+        rowhead                 = 2,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1-2}                = {font=\headfonttiny,bg=\headcolor},
+        row{3-Z}                = {font=\nonheadfont},
+        cell{1}{1-3}            = {r=2,c=1}{c,m},
+        cell{1}{4}              = {r=1,c=5}{c,m},
+        cell{1}{9}              = {r=1,c=4}{c,m},
+    }
+    序号 & 算法模型 & {训练\\时间/s} & 训练集 & & & & & 测试集 & & &  \\
+    序号 & 算法模型 & {训练\\时间/s} & 精确率 & 召回率 & $F_1$值 & 准确率 & AUC & 精确率 & 召回率 & $F_1$值 & 准确率 \\
+    1 & K近邻      &   4.08   & 88.0\% & 76.0\% &81.6\% & 80.0\% & 0.870 & 81.5\% & 85.6\% & 83.5\% & 78.3\% \\
+    2 & 决策树      &   1.44  & 84.0\% & 80.9\% & 82.4\% & 79.8\% & 0.862 & 69.0\% & 86.1\% & 76.6\% & 66.3\% \\
+    3 & 随机森林      &   50.03  & 90.6\% & 80.6\% & 85.3\% & 83.8\% & 0.929 & 79.5\% & 90.9\% & 84.8\% & 79.1\% \\  
+\end{longtblr}
 
 从\autoref{tab:model_screen2}可以发现，由随机森林与K近邻算法训练所得的模型的性能接近，在测试集上F1值可达到83\%以上，准确率也在78\%以上；而决策树算法生成的模型性能最差，其F1值与准确率分别仅为76.6\%与66.3\%。
 将\autoref{tab:model_screen2}的数值结果与此前的\autoref{tab:model_screen}及\autoref{tab:rf_dr_2}中结果对比可得，在按被试分割数据再按波形进行研究时，K近邻、决策树与随机森林三种算法在训练集与测试集上均出现了
@@ -540,45 +567,44 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 在\autoref{tab:model_screen2}测试集中，将反应单个PPG波形的识别结果重新按被试统计可得到\autoref{tab:model_detail}。
 \autoref{tab:model_detail}还统计了每名被试所对应的原始数据中的PPG波形总数与由预测模型识别判断为PE的PPG波形数目，预测比例一栏为这两个数值之比，
 而每名被试所对应的真实PE状态也在\autoref{tab:model_detail}进行了标记。
-\begin{center}
-      \zihao{-5}
-      \begin{longtable}{m{0.8cm}<{\centering}m{1.2cm}<{\centering}m{1cm}<{\centering}m{1.2cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1cm}<{\centering}}
-            \caption{几种机器学习模型按被试统计后的性能表现}\\
-            \label{tab:model_detail}\\
-            \topline
-            \colorhead &  &  & & \multicolumn{2}{c}{\textbf{K近邻算法}} & \multicolumn{2}{c}{\textbf{决策树}} & \multicolumn{2}{c}{\textbf{随机森林}}  \\
-            \colorhead \multirow{-2}{*}{\textbf{序号}}  & \multirow{-2}{*}{\textbf{被试孕妇}}  &     \multirow{-2}{*}{\textbf{PE状态}} &   \multirow{-2}{*}{\textbf{波形总数}}   & \textbf{预测数目}     & \textbf{预测比例}       & \textbf{预测数目}     & \textbf{预测比例}       & \textbf{预测数目}     & \textbf{预测比例}             \\
-            \midline
-            \endfirsthead
-            \caption[]{(续)}\\
-            \midline
-            \colorhead & &  & & \multicolumn{2}{c}{\textbf{K近邻算法}} & \multicolumn{2}{c}{\textbf{决策树}} & \multicolumn{2}{c}{\textbf{随机森林}}  \\
-            \colorhead \multirow{-2}{*}{\textbf{序号}}  & \multirow{-2}{*}{\textbf{被试孕妇}}  &     \multirow{-2}{*}{\textbf{PE状态}} &   \multirow{-2}{*}{\textbf{波形总数}}   & \textbf{预测数目}     & \textbf{预测比例}       & \textbf{预测数目}     & \textbf{预测比例}       & \textbf{预测数目}     & \textbf{预测比例}             \\
-            \midline
-            \endhead 
-            \midline
-            \endfoot
-            \bottomline
-            \endlastfoot
-            \colorrowa  1 & cmf       & 0           & 88                    & 54         & 61.4\%     & 85         & 96.6\%     & 53         & 60.2\%                                                                            \\
-            \colorrowc  2 & lxx       & 0           & 63                    & 32         & 50.8\%     & 53         & 84.1\%     & 34         & 54.0\%                                                                            \\
-            \colorrowa  3 & shs       & 0           & 112                   & 37         & 33.0\%     & 105        & 93.8\%     & 55         & 49.1\%                                                                            \\
-            \colorrowc  4 & sxh       & 0           & 95                    & 27         & 28.4\%     & 64         & 67.4\%     & 21         & 22.1\%                                                                            \\
-            \colorrowa  5 & wdq       & 0           & 36                    & 0          & 0.0\%      & 0          & 0.0\%      & 0          & 0.0\%                                                                             \\
-            \colorrowc  6 & wsj       & 0           & 78                    & 0          & 0.0\%      & 2          & 2.6\%      & 0          & 0.0\%                                                                             \\
-            \colorrowa  7 & ygy       & 0           & 75                    & 40         & 53.3\%     & 70         & 93.3\%     & 67         & 89.3\%                                                                            \\
-            \colorrowc  8 & gmn       & 1           & 139                   & 106        & 76.3\%     & 135        & 97.1\%     & 109        & 78.4\%                                                                            \\
-            \colorrowa  9 & ty        & 1           & 98                    & 97         & 99.0\%     & 97         & 99.0\%     & 97         & 99.0\%                                                                            \\
-            \colorrowc  10 & wjh       & 1           & 86                    & 86         & 100.0\%    & 86         & 100.0\%    & 86         & 100.0\%                                                                           \\
-            \colorrowa  11 & xjf       & 1           & 106                   & 23         & 21.7\%     & 59         & 55.7\%     & 87         & 82.1\%                                                                            \\
-            \colorrowc  12 & ywy       & 1           & 111                   & 110        & 99.1\%     & 111        & 100.0\%    & 111        & 100.0\%                                                                           \\
-            \colorrowa  13 & yxl       & 1           & 110                   & 110        & 100.0\%    & 108        & 98.2\%     & 110        & 100.0\%                                                                           \\
-            \colorrowc  14 & zdq       & 1           & 89                    & 81         & 91.0\%     & 84         & 94.4\%     & 82         & 92.1\%                                                                            \\
-            \colorrowa  15 & zl        & 1           & 152                   & 137        & 90.1\%     & 75         & 49.3\%     & 120        & 78.9\%                                                                            \\
-            \colorrowc  16 & zyy       & 1           & 89                    & 89         & 100.0\%    & 89         & 100.0\%    & 89         & 100.0\%                                                                            \\    
-      \end{longtable}
-\end{center}
-\vspace{-0.8cm}
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {几种机器学习模型按被试统计后的性能表现},
+        label                   = {tab:model_detail},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1.5,c,m]X[1.5,c,m]X[1.5,c,m]X[1.5,c,m]X[1.5,c,m]X[1.5,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{3}                = {\thinline},
+        rowhead                 = 2,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1-2}                = {font=\headfont,bg=\headcolor},
+        row{3-Z}                = {font=\nonheadfont},
+        cell{1}{1-4}            = {r=2,c=1}{c,m},
+        cell{1}{5,7,9}          = {r=1,c=2}{c,m},
+    }
+    序号 & 被试 & {PE\\状态} & {波形\\总数} & K近邻 & & 决策树 & & 随机森林 & \\
+    序号 & 被试 & {PE\\状态} & {波形\\总数} & 预测数目 & 预测比例 & 预测数目 & 预测比例 & 预测数目 & 预测比例 \\
+    1 & cmf       & 0           & 88            & 54         & 61.4\%     & 85         & 96.6\%     & 53         & 60.2\%        \\
+    2 & lxx       & 0           & 63            & 32         & 50.8\%     & 53         & 84.1\%     & 34         & 54.0\%        \\
+    3 & shs       & 0           & 112           & 37         & 33.0\%     & 105        & 93.8\%     & 55         & 49.1\%        \\
+    4 & sxh       & 0           & 95            & 27         & 28.4\%     & 64         & 67.4\%     & 21         & 22.1\%        \\
+    5 & wdq       & 0           & 36            & 0          & 0.0\%      & 0          & 0.0\%      & 0          & 0.0\%         \\
+    6 & wsj       & 0           & 78            & 0          & 0.0\%      & 2          & 2.6\%      & 0          & 0.0\%         \\
+    7 & ygy       & 0           & 75            & 40         & 53.3\%     & 70         & 93.3\%     & 67         & 89.3\%        \\
+    8 & gmn       & 1           & 139           & 106        & 76.3\%     & 135        & 97.1\%     & 109        & 78.4\%        \\
+    9 & ty        & 1           & 98            & 97         & 99.0\%     & 97         & 99.0\%     & 97         & 99.0\%        \\
+    10 & wjh       & 1           & 86            & 86         & 100.0\%    & 86         & 100.0\%    & 86         & 100.0\%       \\
+    11 & xjf       & 1           & 106           & 23         & 21.7\%     & 59         & 55.7\%     & 87         & 82.1\%        \\
+    12 & ywy       & 1           & 111           & 110        & 99.1\%     & 111        & 100.0\%    & 111        & 100.0\%       \\
+    13 & yxl       & 1           & 110           & 110        & 100.0\%    & 108        & 98.2\%     & 110        & 100.0\%       \\
+    14 & zdq       & 1           & 89            & 81         & 91.0\%     & 84         & 94.4\%     & 82         & 92.1\%        \\
+    15 & zl        & 1           & 152           & 137        & 90.1\%     & 75         & 49.3\%     & 120        & 78.9\%        \\
+    16 & zyy       & 1           & 89            & 89         & 100.0\%    & 89         & 100.0\%    & 89         & 100.0\%        \\     
+\end{longtblr}
 
 若将\autoref{tab:model_detail}中经由各模型对应的预测比例作为判断识别PE的依据，则对PE的识别分析可以转换为寻找
 能将这些预测比例进行分割的最佳阈值。由5.2.2小节介绍的绘制ROC曲线的方法，将各模型下所有预测比例的数值排序后，依次计算该数值对应的真阳性率与假阳性率数值，即可得到与模型对应的ROC曲线，
@@ -589,50 +615,45 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 \clearpage
 
 \begin{figure}[htbp]
-      \centering
-      \includegraphics[width=.55\linewidth]{results/pr/roc_3}
-      \caption[基于三种算法模型得到的PE预测比例的ROC示意图]{\label{fig:model_roc}基于三种算法模型得到的PE预测比例的ROC示意图}
+    \centering
+    \includegraphics[width=.55\linewidth]{results/pr/roc_3}
+    \caption[基于三种算法模型得到的PE预测比例的ROC示意图]{\label{fig:model_roc}基于三种算法模型得到的PE预测比例的ROC示意图}
 \end{figure}
 
 \begin{figure}[htbp]
-      \centering
-      \subfigure[\label{fig:pr_model_detail}基于三种算法得到的PE预测比例散点图]{
-      \includegraphics[width=7.5cm]{results/pr/detail}
-      }
-      \quad
-      \subfigure[\label{fig:pr_model_split}由随机森林算法得到的PE预测比例散点与最佳分割阈值示意图]{
-      \includegraphics[width=7.5cm]{results/pr/split}
-      }
-      \caption{\label{fig:pr_model}基于三种算法得到的PE预测比例散点与最佳分割阈值示意图}
+    \centering
+    \subfigure[\label{fig:pr_model_detail}基于三种算法得到的PE预测比例散点图]{
+    \includegraphics[width=7.5cm]{results/pr/detail}
+    }
+    \quad
+    \subfigure[\label{fig:pr_model_split}由随机森林算法得到的PE预测比例散点与最佳分割阈值示意图]{
+    \includegraphics[width=7.5cm]{results/pr/split}
+    }
+    \caption{\label{fig:pr_model}基于三种算法得到的PE预测比例散点与最佳分割阈值示意图}
 \end{figure}
-
-\vspace{-1cm}
-
-\begin{center}
-      \zihao{-5}
-      % \setlength{\belowcaptionskip}{-0.5cm} 
-      \begin{longtable}{m{1cm}<{\centering}m{2.8cm}<{\centering}m{2cm}<{\centering}m{1.5cm}<{\centering}m{1.8cm}<{\centering}m{1.8cm}<{\centering}}
-            \caption{三种模型在最佳分割阈值下的混淆矩阵}\\
-            \label{tab:cm_on_best}\\
-            \topline
-            \colorhead \textbf{序号} & \textbf{机器学习算法}&\textbf{最佳阈值}&\textbf{混淆矩阵}&\textbf{准确率}&\textbf{AUC}\\
-            \midline
-            \endfirsthead
-            \caption[]{(续)}\\ 
-            \topline
-            \colorhead \textbf{序号} & \textbf{机器学习算法}&\textbf{最佳阈值}&\textbf{混淆矩阵}&\textbf{准确率}&\textbf{AUC}\\
-            \midline
-            \endhead 
-            \midline
-            \endfoot
-            \bottomline
-            \endlastfoot
-            \colorrowa 1 & 决策树       & 0.969    &     $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$  & 81.3\% & 0.825  \\
-            \colorrowc 2 & K近邻       & 0.907     &     $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$  & 81.3\% & 0.921 \\
-            \colorrowa 3 & 随机森林     & 0.688    &     $\left[ \begin{array}{cc} 9 & 0 \\ 1 & 6 \end{array} \right]$  & 93.8\% & 0.952  \\
-      \end{longtable}
-\end{center}
-\vspace{-1.4cm}
+% TODO 排版问题
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {三种模型在最佳分割阈值下的混淆矩阵},
+        label                   = {tab:cm_on_best},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[0.5,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+    }
+    序号 & 机器学习算法 & 最佳分割阈值 & 混淆矩阵 & 准确率 & AUC \\
+    1 & 决策树       & 0.969    &     $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$  & 81.3\% & 0.825  \\
+    2 & K近邻       & 0.907     &     $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$  & 81.3\% & 0.921 \\
+    3 & 随机森林     & 0.688    &     $\left[ \begin{array}{cc} 9 & 0 \\ 1 & 6 \end{array} \right]$  & 93.8\% & 0.952  \\
+\end{longtblr}
 
 从上述研究结果中可以发现，将被试的全部PPG波形作为分析识别PE的最小分析对象进行分析时，通过K近邻、决策树与随机森林算法得到的每名被试的预测比例，这一数值可较好地区分PE。
 通过ROC与AUC分析可知，在K近邻、决策树与随机森林三种算法中，由随机森林算法得到的预测比例有着最佳的分类效果，其AUC数值最大（0.952）、识别准确率最高
@@ -650,35 +671,36 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 一、模型初筛与调优
 
 模型初筛选用此前综合性能较好的DT、KNN及RF等三种算法，这三种算法在全局最优超参数下的综合表现如\autoref{tab:model_screen3}所示，其中各模型训练集的统计结果是经5层交叉验证处理后得到的。
-\begin{center}
-      \zihao{-5}
-      \begin{longtable}{m{0.4cm}<{\centering}m{0.6cm}<{\centering}m{1.2cm}<{\centering}m{0.6cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{0.9cm}<{\centering}m{1cm}<{\centering}m{0.9cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{0.9cm}<{\centering}m{1cm}<{\centering}}
-            \caption{基于脉搏波原始采样点的识别模型的初筛结果}\\
-            \label{tab:model_screen3}\\
-            \topline
-            \colorhead    &   & \multicolumn{1}{c}{}   & \multicolumn{1}{c}{}  & \multicolumn{5}{c}{\textbf{训练集（5层交叉验证）}}   & \multicolumn{4}{c}{\textbf{验证集}}     \\
-            \colorhead \multirow{-2}{*}{\textbf{序号}}  &\multirow{-2}{*}{\tabincell{c}{\textbf{对齐}\\\textbf{方式}}} &\multirow{-2}{*}{\tabincell{c}{\textbf{模型}\\\textbf{类型}}}&\multirow{-2}{*}{\tabincell{c}{\textbf{训练}\\\textbf{时间}}}  & \textbf{精确率} & \textbf{召回率}& \textbf{F1值} & \textbf{准确率}& \textbf{AUC} & \textbf{精确率} & \textbf{召回率} & \textbf{F1值}& \textbf{准确率} \\
-            \midline
-            \endfirsthead
-            \caption[]{(续)}\\
-            \midline
-            \colorhead    &   & \multicolumn{1}{c}{}   & \multicolumn{1}{c}{}  & \multicolumn{5}{c}{\textbf{训练集（5层交叉验证）}}   & \multicolumn{4}{c}{\textbf{验证集}}                                                                                                                                                                                                    \\
-            \colorhead \multirow{-2}{*}{\textbf{序号}}  &\multirow{-2}{*}{\tabincell{c}{\textbf{对齐}\\\textbf{方式}}} &\multirow{-2}{*}{\tabincell{c}{\textbf{模型}\\\textbf{类型}}} &\multirow{-2}{*}{\tabincell{c}{\textbf{训练}\\\textbf{时间}}}  & \textbf{精确率} & \textbf{召回率}& \textbf{F1值} & \textbf{准确率}& \textbf{AUC} & \textbf{精确率} & \textbf{召回率} & \textbf{F1值}& \textbf{准确率} \\
-            \midline
-            \endhead 
-            \midline
-            \endfoot
-            \bottomline
-            \endlastfoot
-            \colorrowa 1 & CS & 决策树      & 4.13    & 83.9\%  & 88.6\%  & 86.1\% & 83.0\% & 0.914   & 86.6\%  & 90.9\%  & 88.7\% & 86.2\% \\
-            \colorrowc 2 & CS & K近邻     & 2.81     & 93.4\%  & 90.0\%  & 91.4\% & 90.0\%   & 0.967  & 94.5\%   & 90.7\%   & 92.6\% & 91.4\% \\
-            \colorrowa 3 & CS & \tabincell{c}{随机\\森林}   & 23.23   & 93.3\%  & 92.8\% & 93.0\% & 91.7\%  & 0.977 & 94.8\% & 94.5\%   & 94.6\% & 93.6\% \\
-            \colorrowc 4 & RS & 决策树     & 6.77   & 85.6\%  & 85.2\%  & 85.4\% & 82.6\% & 0.902    & 88.3\%  & 84.1\%  & 86.2\% & 83.9\% \\
-            \colorrowa 5 & RS & K近邻     & 3.90    & 91.5\%  & 89.5\%  & 90.5\% & 88.8\%   & 0.957  & 94.2\%   & 91.2\%   & 92.9\% & 91.6\% \\
-            \colorrowc 6 & RS & \tabincell{c}{随机\\森林}    & 51.57    & 91.4\%  & 91.9\% & 91.6\% & 90.0\%  & 0.967  & 93.4\% & 94.0\%   & 93.7\% & 92.5\% \\
-      \end{longtable}
-\end{center}
-\vspace{-0.8cm}
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {基于脉搏波原始采样点的识别模型的初筛结果},
+        label                   = {tab:model_screen3},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[0.8,c,m]X[1.5,c,m]X[1,c,m]X[1.5,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{3}                = {\thinline},
+        rowhead                 = 2,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1-2}                = {font=\headfonttiny,bg=\headcolor},
+        row{3-Z}                = {font=\nonheadfont},
+        cell{1}{1-4}            = {r=2,c=1}{c,m},
+        cell{1}{5}              = {r=1,c=5}{c,m},
+        cell{1}{10}             = {r=1,c=4}{c,m},
+        cell{2}{5-Z}            = {font=\headfonttinym}
+    }
+    序号 & {对齐\\策略} & {算法\\模型} & {训练\\时间\\/s} & 训练集 & & & & & 测试集 & & &  \\
+    序号 & & 算法模型 & {训练\\时间/s} & 精确率 & 召回率 & $F_1$值 & 准确率 & AUC & 精确率 & 召回率 & $F_1$值 & 准确率 \\
+    1 & 补齐 & 决策树      & 4.13    & 83.9\%  & 88.6\%  & 86.1\% & 83.0\% & 0.914   & 86.6\%  & 90.9\%  & 88.7\% & 86.2\% \\
+    2 & 补齐 & K近邻     & 2.81     & 93.4\%  & 90.0\%  & 91.4\% & 90.0\%   & 0.967  & 94.5\%   & 90.7\%   & 92.6\% & 91.4\% \\
+    3 & 补齐 & {随机\\森林}   & 23.23   & 93.3\%  & 92.8\% & 93.0\% & 91.7\%  & 0.977 & 94.8\% & 94.5\%   & 94.6\% & 93.6\% \\
+    4 & 重采样 & 决策树     & 6.77   & 85.6\%  & 85.2\%  & 85.4\% & 82.6\% & 0.902    & 88.3\%  & 84.1\%  & 86.2\% & 83.9\% \\
+    5 & 重采样 & K近邻     & 3.90    & 91.5\%  & 89.5\%  & 90.5\% & 88.8\%   & 0.957  & 94.2\%   & 91.2\%   & 92.9\% & 91.6\% \\
+    6 & 重采样 & {随机\\森林}    & 51.57    & 91.4\%  & 91.9\% & 91.6\% & 90.0\%  & 0.967  & 93.4\% & 94.0\%   & 93.7\% & 92.5\% \\   
+\end{longtblr}
 
 从\autoref{tab:model_screen3}中可以得到以下结论：
 
@@ -703,9 +725,9 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 为直观显现各采样点贡献度与PPG波形的对应关系，\autoref{fig:rf_imp2}也同时绘制了在两种策略下的“平均”PPG波形，即所有PPG波形按采样点对齐再计算算术平均值的归一化结果。
 
 \begin{figure}[htbp]
-      \centering
-      \includegraphics[width=.6\linewidth]{results/rf_imp2}
-      \caption{\label{fig:rf_imp2}脉搏波采样点对随机森林的贡献度示意图}
+    \centering
+    \includegraphics[width=.6\linewidth]{results/rf_imp2}
+    \caption{\label{fig:rf_imp2}脉搏波采样点对随机森林的贡献度示意图}
 \end{figure}
 
 从\autoref{fig:rf_imp2}可以得到以下结论：
@@ -727,35 +749,36 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 
 \autoref{tab:model_screen4}给出了由这三种算法训练得到的模型的具体表现，其中，训练集上的AUC数值是在进行5层交叉验证后得到的，CS与RS分别对应将PPG波形对齐时使用的补齐策略与重采样策略。
 
-\begin{center}
-      \zihao{6}
-      \begin{longtable}{m{1.3cm}<{\centering}m{1.3cm}<{\centering}m{1.3cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}m{0.9cm}<{\centering}}
-            \caption{几种机器学习模型在被试人员分层抽样的数据集上的表现}\\
-            \label{tab:model_screen4}\\
-            \topline
-            \colorhead &     &  & \multicolumn{5}{c}{\textbf{训练集}} & \multicolumn{4}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
-            \colorhead \multirow{-2}{*}{\textbf{处理方式}}&\multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}}  &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC}  &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
-            \midline
-            \endfirsthead
-            \caption[]{(续)}\\
-            \midline
-            \colorhead &     &  & \multicolumn{5}{c}{\textbf{训练集}} & \multicolumn{4}{c}{\textbf{验证集}}                                                                                                                                                                                                      \\
-            \colorhead \multirow{-2}{*}{\textbf{处理方式}}&\multirow{-2}{*}{\textbf{模型类型}} & \multirow{-2}{*}{\textbf{训练时间}}  &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率} &  \textbf{AUC}  &  \textbf{精确率} &  \textbf{召回率} &  \textbf{F1值} &  \textbf{准确率}    \\
-            \midline
-            \endhead 
-            \midline
-            \endfoot
-            \bottomline
-            \endlastfoot
-            \colorrowa CS &     KNN      &   3.12 s  & 86.0\% & 73.7\% &79.4\% & 77.6\% & 0.863 & 81.5\% & 85.6\% & 83.5\% & 78.3\% \\
-            \colorrowa CS &     DT      &   3.62 s  & 84.0\% & 82.2\% & 83.1\% & 80.5\% & 0.880 & 70.6\% & 84.6\% & 77.0\% & 67.5\% \\
-            \colorrowa CS  & RF      &   23.18 s  & 87.0\% & 81.5\% & 84.2\% & 82.1\% & 0.909 & 76.5\% & 86.5\% & 81.2\% & 74.3\% \\
-            \colorrowc RS &     KNN      &   2.51 s   & 85.5\% & 76.9\% &81.0\% & 78.9\% & 0.862 & 76.7\% & 80.1\% & 78.4\% & 71.6\% \\
-            \colorrowc RS &     DT      &   1.49 s  & 82.7\% & 76.9\% & 79.7\% & 77.1\% & 0.847 & 76.2\% & 88.1\% & 81.7\% & 74.7\% \\
-            \colorrowc RS  &  RF     &   36.36 s  & 85.1\% & 77.8\% & 81.2\% & 79.0\% & 0.884 & 78.9\% & 87.6\% & 83.0\% & 77.0\% \\
-      \end{longtable}
-\end{center}
-\vspace{-0.8cm}
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {几种机器学习模型在被试人员分层抽样的数据集上的表现},
+        label                   = {tab:model_screen4},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[0.8,c,m]X[1.5,c,m]X[1.5,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{3}                = {\thinline},
+        rowhead                 = 2,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1-2}                = {font=\headfonttiny,bg=\headcolor},
+        row{3-Z}                = {font=\nonheadfont},
+        cell{1}{1-4}            = {r=2,c=1}{c,m},
+        cell{1}{5}              = {r=1,c=5}{c,m},
+        cell{1}{10}             = {r=1,c=4}{c,m},
+        cell{2}{5-Z}            = {font=\headfonttinym}
+    }
+    序号 & {对齐\\策略} & {算法\\模型} & {训练\\时间\\/s} & 训练集 & & & & & 测试集 & & &  \\
+    序号 & & 算法模型 & {训练\\时间/s} & 精确率 & 召回率 & $F_1$值 & 准确率 & AUC & 精确率 & 召回率 & $F_1$值 & 准确率 \\
+    1 & 补齐 & 决策树               & 3.62   & 84.0\% & 82.2\% & 83.1\% & 80.5\% & 0.880 & 70.6\% & 84.6\% & 77.0\% & 67.5\% \\
+    2 & 补齐 & K近邻                & 3.12   & 86.0\% & 73.7\% &79.4\% & 77.6\% & 0.863 & 81.5\% & 85.6\% & 83.5\% & 78.3\% \\
+    3 & 补齐 & {随机\\森林}          & 23.18  & 87.0\% & 81.5\% & 84.2\% & 82.1\% & 0.909 & 76.5\% & 86.5\% & 81.2\% & 74.3\% \\
+    4 & 重采样 & 决策树             & 1.49    & 82.7\% & 76.9\% & 79.7\% & 77.1\% & 0.847 & 76.2\% & 88.1\% & 81.7\% & 74.7\% \\
+    5 & 重采样 & K近邻              &  2.51   & 85.5\% & 76.9\% &81.0\% & 78.9\% & 0.862 & 76.7\% & 80.1\% & 78.4\% & 71.6\% \\
+    6 & 重采样 & {随机\\森林}       & 36.36   & 85.1\% & 77.8\% & 81.2\% & 79.0\% & 0.884 & 78.9\% & 87.6\% & 83.0\% & 77.0\% \\  
+\end{longtblr}
 
 从\autoref{tab:model_screen4}中可以得到以下结论：
 
@@ -769,115 +792,120 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 
 与此前处理类似，在\autoref{tab:model_screen4}测试集上，将反应单个PPG波形的识别结果重新按被试统计可得到\autoref{tab:model_detail2}。
 \autoref{tab:model_detail2}额外统计了每名被试所对应的PPG波形总数与由预测模型识别判断为PE的PPG波形数目，预测比例一栏为这两个数值之比，
-而每名被试所对应的真实PE状态也在\autoref{tab:model_detail2}进行了标记。
+而每名被试所对应的真实PE状态也在\autoref{tab:model_detail2}进行了标记。\autoref{tab:model_detail2}中各算法下的预测数目与预测比例均有两个数值，
+分别为按补齐与重采样策略进行对齐处理后的统计值。若两种策略得到预测数目相差20个及以上，\autoref{tab:model_detail2}会用深蓝底色突出显示；
+若两种策略得到的预测比例相差15\%及以上，\autoref{tab:model_detail2}会用粉红底色突出显示。
 
-\begin{center}
-      \zihao{6}
-      \begin{longtable}{m{1cm}<{\centering}m{1cm}<{\centering}m{1cm}<{\centering}m{1.5cm}<{\centering}m{2cm}<{\centering}m{1.5cm}<{\centering}m{2cm}<{\centering}m{1.5cm}<{\centering}m{2cm}<{\centering}}
-            \caption[几种机器学习模型按被试统计后的性能表现]{几种机器学习模型按被试统计后的性能表现}\\
-            \label{tab:model_detail2}\\
-            \topline
-            \colorhead  &  &  & \multicolumn{2}{c}{\textbf{K近邻算法}} & \multicolumn{2}{c}{\textbf{决策树}} & \multicolumn{2}{c}{\textbf{随机森林}}  \\
-            \colorhead \multirow{-2}{*}{\textbf{被试孕妇}}  &     \multirow{-2}{*}{\textbf{PE状态}} &   \multirow{-2}{*}{\textbf{波形总数}}   & \textbf{预测数目}     & \textbf{预测比例}       & \textbf{预测数目}     & \textbf{预测比例}       & \textbf{预测数目}     & \textbf{预测比例}             \\
-            \midline
-            \endfirsthead
-            \caption[]{(续)}\\
-            \midline
-            \colorhead  &  &  & \multicolumn{2}{c}{\textbf{K近邻算法}} & \multicolumn{2}{c}{\textbf{决策树}} & \multicolumn{2}{c}{\textbf{随机森林}}  \\
-            \colorhead \multirow{-2}{*}{\textbf{被试孕妇}}  &     \multirow{-2}{*}{\textbf{PE状态}} &   \multirow{-2}{*}{\textbf{波形总数}}   & \textbf{预测数目}     & \textbf{预测比例}       & \textbf{预测数目}     & \textbf{预测比例}       & \textbf{预测数目}     & \textbf{预测比例}             \\
-            \midline
-            \endhead 
-            \midline
-            \endfoot
-            \bottomline
-            \endlastfoot
-            \colorrowa cmf       & 0           & 88                    & 66 / 59         & 75.0\% / 67.0\%     & 75 / 60         & \textbf{85.2\% / 68.2\%}    & 61 / 49         & 69.3\% / 55.7\%                                     \\
-            \colorrowc lxx       & 0           & 63                    & 32 / 35         & 50.8\% / 55.6\%    & 50 / 38         & \textbf{79.4\% / 60.3\%}     & 37 / 42         & 58.7\% / 66.7\%                                            \\
-            \colorrowa shs       & 0           & 112                   & \textbf{32 / 58}         & \textbf{28.6\% / 51.8\%}     & 102 / 88        & 91.1\% / 78.6\%     & 57 / 47         & 50.1\% / 42.0\%                                                               \\
-            \colorrowc sxh       & 0           & 95                    & 31 / 24         & 32.6\% / 25.3\%     & \textbf{52 / 27}         & \textbf{54.7\% / 28.4\%}     & 39 / 21         & \textbf{41.1\% / 22.1\%}                                                               \\
-            \colorrowa wdq       & 0           & 36                    & 0 / 0          & 0.0\% / 0.0\%      & 2 / 0          & 5.6\% / 0.0\%      & 0 / 0          & 0.0\% / 0.0\%                                              \\
-            \colorrowc wsj       & 0           & 78                    & 0 / 1          & 0.0\% / 0.0\%      & 1 / 0          & 1.3\% / 0.0\%     & 0 / 0          & 0.0\% / 0.0\%                                              \\
-            \colorrowa ygy       & 0           & 75                    & 57 / 61         & 76.0\% / 81.3\%     & 63 / 56         & 84.0\% / 74.7\%    & 66 / 70         & 88.0\% / 93.3\%                                                      \\
-            \colorrowc gmn       & 1           & 139                   & \textbf{51 / 82}        & \textbf{36.7\% / 59.0\%}     & 131 / 131        & 94.2\% /94.2\%    & 107 / 112        & 77.0\% / 80.6\%                                  \\
-            \colorrowa ty        & 1           & 98                    & 98 / 98         & 100.0\% / 100.0\%     & 97 / 96         & 99.0\% / 98.0\%     & 97 / 97         & 99.0\% / 99.0\%                                                        \\
-            \colorrowc wjh       & 1           & 86                    & 86 / 86         & 100.0\% / 100.0\%    & 83 / 86         & 96.5\% / 100.0\%    & 86 / 86         & 100.0\% / 100.0\%                            \\
-            \colorrowa xjf       & 1           & 106                   & \textbf{13 / 71}         & \textbf{12.3\% / 67.0\%}     & \textbf{29 / 76}         & \textbf{27.4\% / 71.7\%}    & \textbf{36 / 72}         & \textbf{34.0\% / 67.9\%}                    \\
-            \colorrowc ywy       & 1           & 111                   & \textbf{111 / 42}        & 100.0\% / 37.8\%     & \textbf{110 / 65}        & \textbf{99.1\% / 58.6\%}    & \textbf{110 / 66}        & \textbf{99.1\% / 59.5\%}                                 \\
-            \colorrowa yxl       & 1           & 110                   & 107 / 107        & 97.3\% / 97.3\%   & 100 / 105        & 90.9\% / 95.5\%    & 108 / 110        & 98.2\% / 100.0\%                                      \\
-            \colorrowc zdq       & 1           & 89                    & 77 / 70         & 86.5\% / 78.7\%     & 78 / 76         & 87.6\% / 85.4\%     & 79 / 83         & 88.8\% / 93.3\%                                       \\
-            \colorrowa zl        & 1           & 152                   & \textbf{114 / 140}        & \textbf{75.0\% / 92.1\%}     & \textbf{112 / 139}         & \textbf{73.7\% / 91.4\%}     & 136 / 143        & 89.5\% / 94.1\%                                    \\
-            \colorrowc zyy       & 1           & 89                    & 89 / 89         & 100.0\% / 100.0\%    & 89/89         & 100.0\% / 100.0\%    & 89/89         & 100.0\% / 100.0\%                                     \\    
-      \end{longtable}
-\end{center}
-\vspace{-1.0cm} 
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {几种机器学习模型按被试统计后的性能表现},
+        label                   = {tab:model_detail2},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1.5,c,m]X[1.5,c,m]X[1.5,c,m]X[1.5,c,m]X[1.5,c,m]X[1.5,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{3}                = {\thinline},
+        rowhead                 = 2,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1-2}                = {font=\headfont,bg=\headcolor},
+        row{3-Z}                = {font=\nonheadfont},
+        cell{1}{1-4}            = {r=2,c=1}{c,m},
+        cell{1}{5,7,9}          = {r=1,c=2}{c,m},
+        cell{5,10,13,14,17}{5}  = {bg=\contrastcolor},
+        cell{5,10,13,14,17}{6}  = {bg=\emphacolor},
+        cell{6,13,14,17}{7}     = {bg=\contrastcolor},
+        cell{3,4,6,13,14,17}{8} = {bg=\emphacolor},
+        cell{13,14}{9}          = {bg=\contrastcolor},
+        cell{6,13,14}{10}       = {bg=\emphacolor},
+    }
+    序号 & 被试 & {PE\\状态} & {波形\\总数} & K近邻 & & 决策树 & & 随机森林 & \\
+    序号 & 被试 & {PE\\状态} & {波形\\总数} & 预测数目 & 预测比例 & 预测数目 & 预测比例 & 预测数目 & 预测比例 \\    
+    1  &     cmf       & 0           & 88      & {66 \\ 59}         & {75.0\% \\ 67.0\%}     & {75 \\ 60}         & {85.2\% \\ 68.2\%}   & {61 \\ 49}         & {69.3\% \\ 55.7\%}              \\
+    2  &     lxx       & 0           & 63      & { 32 \\ 35 }         & {50.8\% \\ 55.6\%}    & {50 \\ 38}         & {79.4\% \\ 60.3\%}    & {37 \\ 42}         & {58.7\% \\ 66.7\%}              \\
+    3  &     shs       & 0           & 112     & { 32 \\ 58 }        & {28.6\% \\ 51.8\%}    & {102 \\ 88}        & {91.1\% \\ 78.6\%}     & {57 \\ 47}         & {50.1\% \\ 42.0\%}               \\
+    4  &     sxh       & 0           & 95      & { 31 \\ 24 }        & {32.6\% \\ 25.3\%}     & {52 \\ 27}        & {54.7\% \\ 28.4\%}    & {39 \\ 21}         & {41.1\% \\ 22.1\%}               \\
+    5  &     wdq       & 0           & 36      & { 0 \\ 0  }         & {0.0\% \\ 0.0\%}      & {2 \\ 0}          & {5.6\% \\ 0.0\%}      & {0 \\ 0}          & {0.0\% \\ 0.0\%}                    \\
+    6  &     wsj       & 0           & 78      & { 0 \\ 1 }         & {0.0\% \\ 1.3\%}      & {1 \\ 0}          & {1.3\% \\ 0.0\%}     & {0 \\ 0}          & {0.0\% \\ 0.0\%}                     \\
+    7  &     ygy       & 0           & 75      & { 57 \\ 61 }         & {76.0\% \\ 81.3\%}     & {63 \\ 56}      & {84.0\% \\ 74.7\%}    & {66 \\ 70}         & {88.0\% \\ 93.3\%}              \\
+    8  &     gmn       & 1           & 139     & { 51 \\ 82}       & {36.7\% \\ 59.0\%}    & {131 \\ 131}        & {94.2\% \\94.2\%}    & {107 \\ 112}        & {77.0\% \\ 80.6\%}                \\
+    9  &     ty        & 1           & 98      & { 98 \\ 98 }         & {100.0\% \\ 100.0\%}     & {97 \\ 96}         & {99.0\% \\ 98.0\%}     & {97 \\ 97}         & {99.0\% \\ 99.0\%}           \\
+    10 &     wjh       & 1           & 86      & { 86 \\ 86 }         & {100.0\% \\ 100.0\%}    & {83 \\ 86}         & {96.5\% \\ 100.0\%}    & {86 \\ 86}         & {100.0\% \\ 100.0\%}          \\
+    11 &     xjf       & 1           & 106     & { 13 \\ 71 }       & {12.3\% \\ 67.0\%}    & {29 \\ 76}        & {27.4\% \\ 71.7\%}   & {36 \\ 72}        & {34.0\% \\ 67.9\%}                   \\
+    12 &     ywy       & 1           & 111     & { 111 \\ 42 }       & {100.0\% \\ 37.8\%}     & {110 \\ 65}       & {99.1\% \\ 58.6\%}   & {110 \\ 66}       & {99.1\% \\ 59.5\%}                   \\
+    13 &     yxl       & 1           & 110     & { 107 \\ 107 }        & {97.3\% \\ 97.3\%}   & {100 \\ 105}        & {90.9\% \\ 95.5\%}    & {108 \\ 110}        & {98.2\% \\ 100.0\%}              \\
+    14 &     zdq       & 1           & 89      & { 77 \\ 70 }        & {86.5\% \\ 78.7\%}     & {78 \\ 76 }         & {87.6\% \\ 85.4\%}     & {79 \\ 83}         & {88.8\% \\ 93.3\%}                \\
+    15 &     zl        & 1           & 152     & { 114 \\ 140 }       & {75.0\% \\ 92.1\%}    & {112 \\ 139}        & {73.7\% \\ 91.4\%}    & {136 \\ 143}        & {89.5\% \\ 94.1\%}                \\
+    16 &     zyy       & 1           & 89      & { 89 \\ 89 }         & {100.0\% \\ 100.0\%}    & {89\\89}         & {100.0\% \\ 100.0\%}    & {89\\89}         & {100.0\% \\ 100.0\%}                \\    
+\end{longtblr}
 
 同样地，若将\autoref{tab:model_detail2}中经由各模型对应的预测比例作为判断识别PE的依据，则对PE的识别分析可以转换为寻找
 能将这些预测比例进行分割的最佳阈值。由三种算法在两种对齐策略下生成的对应的ROC曲线，如\autoref{fig:model_roc2}所示。
 在此过程中，借助约登指数，也可得到各模型对应的最佳分割阈值，如\autoref{fig:pr_model}所示。
 
+\begin{figure}[htbp]
+    \centering
+    \subfigure[\label{fig:roc_31}补齐策略下模型得到的PE预测比例的ROC示意图]{
+    \includegraphics[width=5.5cm]{results/roc_31}
+    }
+    \quad
+    \subfigure[\label{fig:roc_32}重采样策略下模型得到的PE预测比例的ROC示意图]{
+    \includegraphics[width=5.5cm]{results/roc_32}
+    }
+    \caption{\label{fig:model_roc2}基于三种算法模型得到的PE预测比例的ROC示意图}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \subfigure[\label{fig:detail_31}补齐策略下基于三种算法得到的PE预测比例散点图]{
+        \includegraphics[width=6cm]{results/detail_31}
+        }
+    \quad
+    \subfigure[\label{fig:pr_model_split1}补齐策略下由随机森林算法得到的PE预测比例散点与最佳分割阈值示意图]{
+    \includegraphics[width=6cm]{results/split1}
+    }
+    \quad
+    \subfigure[\label{fig:detail_32}重采样策略下基于三种算法得到的PE预测比例散点图]{
+    \includegraphics[width=6cm]{results/detail_32}
+    }
+    \quad
+    \subfigure[\label{fig:pr_model_split2}重采样策略下由随机森林算法得到的PE预测比例散点与最佳分割阈值示意图]{
+    \includegraphics[width=6cm]{results/split2}
+    }
+    \caption{\label{fig:pr_model2}基于三种算法得到的PE预测比例散点与最佳分割阈值示意图}
+\end{figure}
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {三种模型在最佳分割阈值下的混淆矩阵},
+        label                   = {tab:cm_on_best2},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[0.5,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{2-3,6-7}            = {bg=\oddcolor}, 
+        row{4-5}                = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+        cell{2,4,6}{2}          = {r=2,c=1}{c,m},
+    }
+    序号 & 机器学习算法 & 波形对齐策略 & 最佳分割阈值 & 混淆矩阵 & 准确率 & AUC \\
+    1 & 决策树    & 补齐   &   0.864     &     $\left[ \begin{array}{cc} 7 & 2 \\ 1 & 6 \end{array} \right]$  & 81.3\% & 0.825 \\
+    2 & 决策树    & 重采样 &    0.573     &     $\left[ \begin{array}{cc} 7 & 2 \\ 0 & 7 \end{array} \right]$  & 87.5\% & 0.905  \\
+    3 & K近邻     & 补齐   &    0.813     &     $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$  & 81.3\% & 0.849  \\
+    4 & K近邻     & 重采样 &    0.820     &     $\left[ \begin{array}{cc} 8 & 1 \\ 2 & 5 \end{array} \right]$  & 81.3\% & 0.865 \\
+    5 & 随机森林   & 补齐  &    0.884     &     $\left[ \begin{array}{cc} 7 & 2 \\ 1 & 6 \end{array} \right]$  & 81.3\% & 0.905  \\
+    6 & 随机森林   & 重采样 &   0.673    &     $\left[ \begin{array}{cc} 8 & 1 \\ 1 & 6 \end{array} \right]$  & 87.5\% & 0.929  \\
+\end{longtblr}
+
 图\autoref{fig:pr_model_detail}对比展示了\autoref{tab:model_detail}中各模型的得到的每名被试预测比例数值分布，图\autoref{fig:pr_model_split}进一步展示了随机森林模型得到的预测比例与
 最佳分割阈值的数值关系。上述过程中涉及的各算法最佳阈值及最佳阈值下的CM、准确率与AUC数值结果如\autoref{tab:cm_on_best2}所示。
-
-\begin{figure}[htbp]
-      \centering
-      \subfigure[\label{fig:roc_31}补齐策略下模型得到的PE预测比例的ROC示意图]{
-      \includegraphics[width=5.5cm]{results/roc_31}
-      }
-      \quad
-      \subfigure[\label{fig:roc_32}重采样策略下模型得到的PE预测比例的ROC示意图]{
-      \includegraphics[width=5.5cm]{results/roc_32}
-      }
-      \caption{\label{fig:model_roc2}基于三种算法模型得到的PE预测比例的ROC示意图}
-\end{figure}
-
-\begin{figure}[htbp]
-      \centering
-      \subfigure[\label{fig:detail_31}补齐策略下基于三种算法得到的PE预测比例散点图]{
-            \includegraphics[width=6cm]{results/detail_31}
-            }
-      \quad
-      \subfigure[\label{fig:pr_model_split1}补齐策略下由随机森林算法得到的PE预测比例散点与最佳分割阈值示意图]{
-      \includegraphics[width=6cm]{results/split1}
-      }
-      \quad
-      \subfigure[\label{fig:detail_32}重采样策略下基于三种算法得到的PE预测比例散点图]{
-      \includegraphics[width=6cm]{results/detail_32}
-      }
-      \quad
-      \subfigure[\label{fig:pr_model_split2}重采样策略下由随机森林算法得到的PE预测比例散点与最佳分割阈值示意图]{
-      \includegraphics[width=6cm]{results/split2}
-      }
-      \caption{\label{fig:pr_model2}基于三种算法得到的PE预测比例散点与最佳分割阈值示意图}
-\end{figure}
-
-\begin{center}
-      \zihao{-5}
-      % \setlength{\belowcaptionskip}{-0.5cm} 
-      \begin{longtable}{m{2.8cm}<{\centering}m{2.8cm}<{\centering}m{2cm}<{\centering}m{1.5cm}<{\centering}m{1.8cm}<{\centering}m{1.8cm}<{\centering}}
-            \caption{三种模型在最佳分割阈值下的混淆矩阵}\\
-            \label{tab:cm_on_best2}\\
-            \topline
-            \colorhead \textbf{机器学习算法}&\textbf{PPG对齐策略}&\textbf{最佳阈值}&\textbf{混淆矩阵}&\textbf{准确率}&\textbf{AUC}\\
-            \midline
-            \endfirsthead
-            \caption[]{(续)}\\ 
-            \topline
-            \colorhead \textbf{机器学习算法}&\textbf{PPG对齐策略}&\textbf{最佳阈值}&\textbf{混淆矩阵}&\textbf{准确率}&\textbf{AUC}\\
-            \midline
-            \endhead 
-            \midline
-            \endfoot
-            \bottomline
-            \endlastfoot
-            \colorrowa DT                              &     CS    & 0.864     &     $\left[ \begin{array}{cc} 7 & 2 \\ 1 & 6 \end{array} \right]$  & 81.3\% & 0.825 \\
-            \colorrowa DT       &     RS      & 0.573     &     $\left[ \begin{array}{cc} 7 & 2 \\ 0 & 7 \end{array} \right]$  & 87.5\% & 0.905  \\
-            \colorrowc KNN                              &     CS   & 0.813     &     $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$  & 81.3\% & 0.849  \\
-            \colorrowc KNN        &     RS     & 0.820     &     $\left[ \begin{array}{cc} 8 & 1 \\ 2 & 5 \end{array} \right]$  & 81.3\% & 0.865 \\
-            \colorrowa RF                              &     CS    & 0.884     &     $\left[ \begin{array}{cc} 7 & 2 \\ 1 & 6 \end{array} \right]$  & 81.3\% & 0.905  \\
-            \colorrowa RF       &     RS      & 0.673    &     $\left[ \begin{array}{cc} 8 & 1 \\ 1 & 6 \end{array} \right]$  & 87.5\% & 0.929  \\
-      \end{longtable}
-\end{center}
-\vspace{-0.8cm} 
 
 从上述研究结果中可以得到以下结论：
 
@@ -899,37 +927,39 @@ AUC数值最大（0.905与0.929）。
 对此前两小节中所有研究角度下的模型构建进行回顾整理，可得到三种算法模型在整个研究过程中的性能如\autoref{tab:accuracy}所示，
 \autoref{tab:accuracy}仅统计了各情景下三种算法在测试集上准确率。
 
-\begin{center}
-      \zihao{-5}
-      % \setlength{\belowcaptionskip}{-0.5cm} 
-      \begin{longtable}{m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{2cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{2cm}<{\centering}}
-            \caption{不同分析场景下通过三种算法模型在测试集上准确率对比}\\
-            \label{tab:accuracy}\\
-            \topline
-            \colorhead \textbf{数据集}&\textbf{抽样方式}&\textbf{PPG对齐策略}&\textbf{随机森林}&\textbf{K近邻}&\textbf{决策树}&\textbf{备注}\\
-            \midline
-            \endfirsthead
-            \caption[]{(续)}\\ 
-            \topline
-            \colorhead \textbf{数据集}&\textbf{抽样方式}&\textbf{PPG对齐策略}&\textbf{随机森林}&\textbf{K近邻}&\textbf{决策树}&\textbf{备注}\\
-            \midline
-            \endhead 
-            \midline
-            \endfoot
-            \bottomline
-            \endlastfoot
-            \colorrowa PPGMTFS & PR & / &  97.0\% & 93.3\% &  88.9\%& / \\
-            \colorrowa PPGMTFS & SR & / &  79.1\% & 78.3\% & 66.3\% & 按波形统计 \\
-            \colorrowa PPGMTFS & SR & / &  93.8\% & 81.3\% & 81.3\% & 按被试统计 \\
-            \colorrowc PPGSSTFS & PR & CS &  93.6\% & 91.4\% & 86.2\% & / \\
-            \colorrowc PPGSSTFS & PR & RS &  92.5\% & 91.6\% & 83.9\% & /\\
-            \colorrowc PPGSSTFS & SR & CS &  74.3\% & 78.3\% & 67.5\% & 按波形统计\\
-            \colorrowc PPGSSTFS & SR & RS &  77.0\% & 74.7\% & 71.6\%& 按被试统计\\
-            \colorrowc PPGSSTFS & SR & CS &  81.3\% & 81.3\% & 81.3\%& 按波形统计\\
-            \colorrowc PPGSSTFS & SR & RS &  87.5\% & 81.3\% & 87.5\%& 按被试统计\\
-      \end{longtable}
-\end{center}
-\vspace{-0.8cm} 
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {不同分析场景下通过三种算法模型在测试集上准确率对比},
+        label                   = {tab:accuracy},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[0.5,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{2-4}                = {bg=\oddcolor}, 
+        row{5-Z}                = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+        cell{2}{2}              = {r=3,c=1}{c,m},
+        cell{5}{2}              = {r=6,c=1}{c,m},
+        cell{5}{2}              = {r=6,c=1}{c,m},
+        cell{3,5}{3}            = {r=2,c=1}{c,m},
+        cell{7}{3}              = {r=4,c=1}{c,m},
+    }
+    序号 & PPG数据集 & 抽样方式 & 波形对齐策略 & 随机森林 & K近邻 & 决策树 & 备注 \\
+    1 & {PPG多维度\\时域特征集} & 按波形 & / &  97.0\% & 93.3\% &  88.9\%& / \\
+    2 & & 按被试 & / &  79.1\% & 78.3\% & 66.3\% & 按波形统计 \\
+    3 & & 按被试 & / &  93.8\% & 81.3\% & 81.3\% & 按被试统计 \\
+    4 & {PPG采样序列\\时域特征集} & 按波形 & 补齐 &  93.6\% & 91.4\% & 86.2\% & / \\
+    5 &  & 按波形 & 重采样 &  92.5\% & 91.6\% & 83.9\% & /\\
+    6 &  & 按被试 & 补齐 &  74.3\% & 78.3\% & 67.5\% & 按波形统计\\
+    7 &  & 按被试 & 重采样 &  77.0\% & 74.7\% & 71.6\%& 按被试统计\\
+    8 &  & 按被试 & 补齐 &  81.3\% & 81.3\% & 81.3\%& 按波形统计\\
+    9 &  & 按被试 & 重采样 &  87.5\% & 81.3\% & 87.5\%& 按被试统计\\  
+\end{longtblr}
 
 从\autoref{tab:accuracy}可以发现，在本研究涉及的多种分析场景下，随机森林算法充分体现了集成学习的优势，构建的模型性能均高于决策树与K近邻算法。
 而对于决策树与K近邻算法而言，在大多数分析场景下，K近邻算法的性能表现优于决策树算法。

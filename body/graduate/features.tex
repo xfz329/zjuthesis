@@ -9,9 +9,9 @@
 本章研究内容的框架如\autoref{fig:frameworks4}所示。
 
 \begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.9\linewidth]{features/frameworks4}
-  \caption{\label{fig:frameworks4}第四章研究内容框架图}
+    \centering
+    \includegraphics[width=0.9\linewidth]{features/frameworks4}
+    \caption{\label{fig:frameworks4}第四章研究内容框架图}
 \end{figure}
 
 \section{脉搏波的新型时域特征参数设计}
@@ -23,15 +23,15 @@
 第二章已经介绍过，PPG的上升支是由于心脏收缩致使血液开始进入主动脉，并使血管壁扩张，最终导致动脉血压快速上升而形成的\cite{PPGYY}。该过程非常迅速，导致上升支大多较为陡峭，从形态上来看，PPG信号的上升支通常较下降支更为简单\cite{PPGYY,Chen2021}。
 因此，对PPG的描述可着重聚焦于PPG的下降支，如\autoref{fig:ppg_roads}所示。
 \begin{figure}[htbp]
-  \centering
-  \subfigure[\label{fig:pulsecontrast}同一被试的PPG的原始波形对比图]{
-    \includegraphics[width=6cm]{features/pulsecontrast}
-  }
-  \quad
-  \subfigure[\label{fig:road}同一被试的PPG的下降支波形对比图]{
-    \includegraphics[width=6cm]{features/road}
-  }
-  \caption{\label{fig:ppg_roads}PPG波形及PPG下降支对比图}
+    \centering
+    \subfigure[\label{fig:pulsecontrast}同一被试的PPG的原始波形对比图]{
+        \includegraphics[width=6cm]{features/pulsecontrast}
+    }
+    \quad
+    \subfigure[\label{fig:road}同一被试的PPG的下降支波形对比图]{
+        \includegraphics[width=6cm]{features/road}
+    }
+    \caption{\label{fig:ppg_roads}PPG波形及PPG下降支对比图}
 \end{figure}
 
 在图\autoref{fig:pulsecontrast}中，同一被试的三个PPG波形用不同颜色进行了区分对比，可以发现三个波形在重博的显著程度、持续时长及幅值大小等方面均存在着差异。
@@ -43,54 +43,57 @@
 上述过程中涉及的可用指标具体如\autoref{tab:pointsdesc}所示，部分参数指标的归一化/类归一化的无量纲形式也在\autoref{tab:pointsdesc}中进行了说明。
 
 \begin{figure}[htbp]
-  \centering
-  \includegraphics[width=.6\linewidth]{features/point}
-  \caption{\label{fig:point}PPG波形下降支上任意点的描述示意图}
+    \centering
+    \includegraphics[width=.6\linewidth]{features/point}
+    \caption{\label{fig:point}PPG波形下降支上任意点的描述示意图}
 \end{figure}
 
-\vspace{-1em}
-\begin{center}
-    \zihao{-5}
-    \begin{longtable}{m{0.6cm}<{\centering}m{1.5cm}<{\centering}m{3.2cm}<{\centering}m{3cm}<{\centering}m{3.2cm}<{\centering}m{3cm}<{\centering}}
-		\caption{PPG波形上任意一点的描述指标}\\
-		\label{tab:pointsdesc}\\
-		\topline
-        \colorhead & & \multicolumn{2}{c}{\textbf{原始数值表达}} & \multicolumn{2}{c}{\textbf{归一化表达}} \\
-        \colorhead \multirow{-2}{*}{\textbf{序号}}&\multirow{-2}{*}{\textbf{参数类型}}  & 物理意义 & 表达式或公式 & 物理意义 & 表达式或公式 \\
-        \midline
-        \endfirsthead
-        \caption[]{(续)}\\
-        \topline
-        \colorhead   & & \multicolumn{2}{c}{\textbf{原始数值表达}} & \multicolumn{2}{c}{\textbf{归一化表达}} \\
-        \colorhead \multirow{-2}{*}{\textbf{序号}}& \multirow{-2}{*}{\textbf{参数类型}}  & 物理意义 & 表达式或公式 & 物理意义 & 表达式或公式 \\
-        \midline
-        \endhead 
-        \midline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowa 1 &                             & Y轴方向下降高度           &   $SP_y$      &  Y轴方向下降比例     & $ \displaystyle \frac{SP_y}{OS}$ \\
-        \colorrowa 2 &                             & P点高度                  &   $OP_y$       &    P点高度与波峰比值   & $\displaystyle \frac{OP_y}{OS}$ \\
-        \colorrowa 3 &                             & 从S点到P点所用时间        &    $OP_x$   &      起点至P点所用时间与下降支总时长比值 & $\displaystyle \frac{OP_x}{OE}$ \\
-        \colorrowa 4 &                             & 从P点到E点所用时间        &    $EP_x$   &      P点至终点E所用时间与下降支总时长比值 & $\displaystyle \frac{EP_x}{OE}$ \\
-        \colorrowa 5 &                             & OP两点间几何距离        &    $OP$   &  OP两点距离与SE两点距离之比     & $\displaystyle \frac{OP}{SE}$ \\
-        \colorrowa 6 &                             & SP两点间几何距离        &    $SP$   &  SP两点距离与SE两点距离之比     & $\displaystyle \frac{SP}{SE}$ \\
-        \colorrowa 7 & \multirow{-7}*{线段}         & PE两点间几何距离        &    $PE$   &  PE两点距离与SE两点距离之比     & $\displaystyle \frac{PE}{SE}$ \\
-        \colorrowc 8 &                             &  SP两点间曲线弧长     &  $\displaystyle L_{\overset{\frown}{SP}}$     &     SP两点间曲线弧长与SE两点直线距离之比  & $\displaystyle \frac{L_{\overset{\frown}{SP}}}{SE}$ \\
-        \colorrowc 9 & \multirow{-2}*{曲线长度} &  PE两点间曲线弧长   &   $\displaystyle L_{\overset{\frown}{PE}}$    &    PE两点间曲线弧长与SE两点直线距离之比  &  $\displaystyle \frac{L_{\overset{\frown}{PE}}}{SE}$\\
-        \colorrowa 10 &                             &  线段SP的斜率     &  $\displaystyle -\frac{SP_y}{PP_y}$     &   /    &  /  \\
-        \colorrowa 11 &                             &  线段PE的斜率     &   $\displaystyle -\frac{P_yP_x}{EP_x}$    &    /  &  /   \\
-        \colorrowa 12 & \multirow{-3}*{斜率}        &  线段OP的斜率    &    $\displaystyle \frac{PP_y}{PP_x}$   &    /   &  /     \\
-        \colorrowc 13 &                             &  $\angle SPP_y$的弧度      & $\displaystyle \arctan(\frac{SP_y}{PP_y})$     &    /  &  /   \\
-        \colorrowc 14 &                             &   $\angle POE$的弧度    &  $\displaystyle \arctan(\frac{P_yP_x}{EP_x})$      &    /  &  /   \\
-        \colorrowc 15 & \multirow{-3}*{\tabincell{c}{角度\\（弧度）}}&   $\angle PEO$的弧度   &  $\displaystyle \arctan(\frac{PP_y}{PP_x})$         &    /  &  /   \\
-        \colorrowa 16 &                             &    坐标轴、曲线与$PP_y$以上围成的面积   &  $\displaystyle \int_{P_y}^{S}{P(t)dy} $     &   前述面积与整体面积之比    & $\displaystyle \frac{\int_{P_y}^{S}{P(t)dy}}{\int_O^E{P(t)dx}}$ \\
-        \colorrowa 17 & 面积                            &   坐标轴、曲线与$OP$以左围成的面积   &    $\displaystyle \int_{O}^{P_x}{P(t)dx}-S_{\triangle OPP_x}$   &  前述面积与整体面积之比     & $\displaystyle \frac{\int_{O}^{P_x}{P(t)dx}-S_{\triangle OPP_x}}{\int_O^E{P(t)dx}}$ \\
-        \colorrowa 18 &                             &   坐标轴、曲线与$PP_x$以左围成的面积   &   $\displaystyle \int_{O}^{P_x}{P(t)dx}$    &  前述面积与整体面积之比     & $\displaystyle \frac{\int_{O}^{P_x}{P(t)dx}}{\int_O^E{P(t)dx}}$ \\
-        \colorrowa 19 &         &    曲线与$SP$围成的面积   &   $\displaystyle \int_{P_y}^{S}{P(t)dy}-S_{\triangle SPP_y} $    &   /    &  /\\
-	\end{longtable}
-\end{center}
-\vspace{-0.8cm}
+\begin{longtblr}
+    [
+        theme                     = {zju},
+        caption                   = {PPG波形上任意一点的描述指标},
+        label                     = {tab:pointsdesc},
+    ]
+    {
+        width                     = \linewidth,
+        colspec                   = {X[1,c,m]X[2,c,m]X[5.5,c,m]X[4.5,c,m]X[5.5,c,m]X[5,c,m]},
+        hline{1,Z}                = {\thickline},
+        hline{3}                  = {\thinline},
+        rowhead                   = 2,
+        row{3-9,12-14,18-Z}       = {bg=\oddcolor}, 
+        row{10-11,15-17}          = {bg=\evencolor},
+        row{1-2}                  = {font=\headfont,bg=\headcolor},
+        row{3-Z}                  = {font=\nonheadfont},
+        cell{1}{1-2}              = {r=2,c=1}{c,m},
+        cell{1}{3,5}              = {r=1,c=2}{c,m},
+        cell{3}{2}                = {r=6,c=1}{c,m},
+        cell{10}{2}               = {r=2,c=1}{c,m},
+        cell{12}{2}               = {r=3,c=1}{c,m},
+        cell{15}{2}               = {r=3,c=1}{c,m},
+        cell{18}{2}               = {r=4,c=1}{c,m},
+    }
+    序号 & {参数\\类型} & 原始数值表达 & & 归一化表达 & \\
+    序号 & {参数\\类型} & 物理意义 & 表达式或公式& 物理意义 & 表达式或公式\\
+    1       &        线段     & Y轴方向下降高度           &   $SP_y$      &  Y轴方向下降比例     & $ \displaystyle \frac{SP_y}{OS}$ \\
+    2       &        线段     & P点高度                  &   $OP_y$       &    P点高度与波峰比值   & $\displaystyle \frac{OP_y}{OS}$ \\
+    3       &        线段     & 从S点到P点所用时间        &    $OP_x$   &      起点至P点所用时间与下降支总时长比值 & $\displaystyle \frac{OP_x}{OE}$ \\
+    4       &        线段     & 从P点到E点所用时间        &    $EP_x$   &      P点至终点E所用时间与下降支总时长比值 & $\displaystyle \frac{EP_x}{OE}$ \\
+    5       &        线段     & OP两点间几何距离        &    $OP$   &  OP两点距离与SE两点距离之比     & $\displaystyle \frac{OP}{SE}$ \\
+    6       &        线段     & SP两点间几何距离        &    $SP$   &  SP两点距离与SE两点距离之比     & $\displaystyle \frac{SP}{SE}$ \\
+    7       &        线段     & PE两点间几何距离        &    $PE$   &  PE两点距离与SE两点距离之比     & $\displaystyle \frac{PE}{SE}$ \\
+    8       &   {曲线\\长度}  &  SP两点间曲线弧长     &  $\displaystyle L_{\overset{\frown}{SP}}$     &     SP两点间曲线弧长与SE两点直线距离之比  & $\displaystyle \frac{L_{\overset{\frown}{SP}}}{SE}$ \\
+    9       &   {曲线\\长度}  &  PE两点间曲线弧长   &   $\displaystyle L_{\overset{\frown}{PE}}$    &    PE两点间曲线弧长与SE两点直线距离之比  &  $\displaystyle \frac{L_{\overset{\frown}{PE}}}{SE}$\\
+    10       &      斜率     &  线段SP的斜率     &  $\displaystyle -\frac{SP_y}{PP_y}$     &   /    &  /  \\
+    11       &      斜率     &  线段PE的斜率     &   $\displaystyle -\frac{P_yP_x}{EP_x}$    &    /  &  /   \\
+    12       &      斜率     &  线段OP的斜率    &    $\displaystyle \frac{PP_y}{PP_x}$   &    /   &  /     \\
+    13       &    {角度\\（弧度）}  &  $\angle SPP_y$的弧度      & $\displaystyle \arctan(\frac{SP_y}{PP_y})$     &    /  &  /   \\
+    14       &    {角度\\（弧度）}  &   $\angle POE$的弧度    &  $\displaystyle \arctan(\frac{P_yP_x}{EP_x})$      &    /  &  /   \\
+    15       &    {角度\\（弧度）}  &   $\angle PEO$的弧度   &  $\displaystyle \arctan(\frac{PP_y}{PP_x})$         &    /  &  /   \\
+    16       &        面积           &    坐标轴、曲线与$PP_y$以上围成的面积   &  $\displaystyle \int_{P_y}^{S}{P(t)dy} $     &   前述面积与整体面积之比    & $\displaystyle \frac{\int_{P_y}^{S}{P(t)dy}}{\int_O^E{P(t)dx}}$ \\
+    17       &        面积           &   坐标轴、曲线与$OP$以左围成的面积   &    $\displaystyle \int_{O}^{P_x}{P(t)dx}-S_{\triangle OPP_x}$   &  前述面积与整体面积之比     & $\displaystyle \frac{\int_{O}^{P_x}{P(t)dx}-S_{\triangle OPP_x}}{\int_O^E{P(t)dx}}$ \\
+    18       &        面积           &   坐标轴、曲线与$PP_x$以左围成的面积   &   $\displaystyle \int_{O}^{P_x}{P(t)dx}$    &  前述面积与整体面积之比     & $\displaystyle \frac{\int_{O}^{P_x}{P(t)dx}}{\int_O^E{P(t)dx}}$ \\
+    19       &        面积           &    曲线与$SP$围成的面积   &   $\displaystyle \int_{P_y}^{S}{P(t)dy}-S_{\triangle SPP_y} $    &   /    &  /\\
+\end{longtblr}
 
 结合\autoref{tab:pointsdesc}与\autoref{fig:point}可知，在PPG波形上任意确定一点$P$，与$P$关联的线段指标、曲线长度指标、斜率指标、弧度指标及面积指标等都可以得到确定并有与之对应的唯一数值。
 反之，若以\autoref{tab:pointsdesc}中某一指标为基准，并在该指标的值域内选定一具体数值，则在PPG波形上也可以确定与之对应的参考点$P'$，进一步可由$P'$得到其他描述参数的具体数值。
@@ -99,8 +102,8 @@
 
 对于\autoref{tab:pointsdesc}的任意特征而言，若按照上一小节的方法在PPG波形上确定多个描述点，即可得到同一特征的多个有关联性的数值。本研究将这些有关联性的数值称为脉搏波特征描述向量（photoplethysmographic feature vector，PPGFV）
 \begin{equation}
-  \label{equ:featurevector}
-  \boldsymbol {V_n}=[v_0,v_1,\cdots,v_{n-1}]
+    \label{equ:featurevector}
+    \boldsymbol {V_n}=[v_0,v_1,\cdots,v_{n-1}]
 \end{equation}
 其中，$v$对应\autoref{tab:pointsdesc}中的具体特征，$n$是向量的维数，可以视情况人工设定。
 
@@ -118,15 +121,15 @@ PPGFV最显著的特点在于用一组相互联系的数值来量化描述PPG波
 称为PPG波形的紊乱程度，如\autoref{fig:diff_in_pulse}所示。
 
 \begin{figure}[htbp]
-  \centering
-  \subfigure[\label{fig:dp0}实验组被试波形示意图]{
-  \includegraphics[width=6cm]{features/cmf}
-  }
-  \quad
-  \subfigure[\label{fig:dp1}对照组被试波形示意图]{
-    \includegraphics[width=6cm]{features/wjh}
-  }
-  \caption[脉搏波波形间的差异性示意图]{\label{fig:diff_in_pulse}脉搏波波形间的差异性示意图}
+    \centering
+    \subfigure[\label{fig:dp0}实验组被试波形示意图]{
+    \includegraphics[width=6cm]{features/cmf}
+    }
+    \quad
+    \subfigure[\label{fig:dp1}对照组被试波形示意图]{
+        \includegraphics[width=6cm]{features/wjh}
+    }
+    \caption[脉搏波波形间的差异性示意图]{\label{fig:diff_in_pulse}脉搏波波形间的差异性示意图}
 \end{figure}
 
 \autoref{fig:diff_in_pulse}对同一被试的所有PPG波形按起点进行了对齐，即使对同一被试而言，其波形的形态特征、波形时长同样存在一定的差异，而这些差异在不同的个体之间体现得更为明显。
@@ -159,9 +162,9 @@ FD的完整数学定义如下，若将曲线视为其在定义域至度量空间
 其中，$\alpha$与$\beta$是满足能将$[0,1]$分别映射至$[a,b]$与$[a',b']$的任意连续非递减函数，$d$是$V$上的度量函数\cite{Wien1994}。
 二维空间上的FD如\autoref{fig:frechet distance}所示。
 \begin{figure}[htbp]
-  \centering
-  \includegraphics[width=.5\linewidth]{features/frechet_distance1}
-  \caption{\label{fig:frechet distance}二维空间上的弗朗明歇距离示意图}
+    \centering
+    \includegraphics[width=.5\linewidth]{features/frechet_distance1}
+    \caption{\label{fig:frechet distance}二维空间上的弗朗明歇距离示意图}
 \end{figure}
 
 对于两个PPG波形而言，此时的FD已经退化成在相同采样点的采样幅值之差的最大值，波形间的弗朗明歇距离值越小，两者越“相似”。
@@ -177,9 +180,9 @@ FD的完整数学定义如下，若将曲线视为其在定义域至度量空间
     \end{aligned}
 \end{equation}
 \begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.6\linewidth]{features/dea0}
-  \caption[包络面积差示意图]{\label{fig:dea}包络面积差示意图}
+    \centering
+    \includegraphics[width=0.6\linewidth]{features/dea0}
+    \caption[包络面积差示意图]{\label{fig:dea}包络面积差示意图}
 \end{figure}
 
 两个波形间包络面积差值越小，两者越“相似”。
@@ -209,9 +212,9 @@ FD的完整数学定义如下，若将曲线视为其在定义域至度量空间
 将图\autoref{fig:dp0}中的被试数据分别按以上三种对齐策略处理，所得效果如\autoref{fig:no_pe2}所示。
 
 \begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.75\linewidth]{features/alignment}
-  \caption{\label{fig:no_pe2}同一被试PPG波形按三种对齐策略处理效果对比图}
+    \centering
+    \includegraphics[width=0.75\linewidth]{features/alignment}
+    \caption{\label{fig:no_pe2}同一被试PPG波形按三种对齐策略处理效果对比图}
 \end{figure}
 
 从\autoref{fig:no_pe2}可以看到，三种策略均可以完成PPG波形的对齐处理。但按截取策略处理时，出现了不可忽视的数据损失，因此截取策略在后续处理中被暂时弃用。
@@ -239,6 +242,21 @@ FD的完整数学定义如下，若将曲线视为其在定义域至度量空间
 
 在PPG波形上选取并确定基准点的过程，是通过PPGFV对PPG进行描述的关键。本研究共使用了三种策略，分别为左视策略（left-view strategy，LVS）、中视策略（center view strategy，CVS）与分层策略（scaled view strategy，SVS）。
 这三种策略的概念图如\autoref{fig:all_views}所示。
+\begin{figure}[htbp]
+    \centering
+    \subfigure[\label{fig:lv}左视类指标示意图]{
+    \includegraphics[width=6cm]{features/lv}
+    }
+    \quad
+    \subfigure[\label{fig:mv}中视类指标示意图]{
+    \includegraphics[width=6cm]{features/mv}
+    }
+    \quad
+    \subfigure[\label{fig:hv}分层类指标示意图]{
+    \includegraphics[width=6cm]{features/hv}
+    }
+    \caption{\label{fig:all_views}确定基准点的三种策略示意图}
+\end{figure}
 
 1、左视策略（LVS）
 
@@ -251,22 +269,6 @@ FD的完整数学定义如下，若将曲线视为其在定义域至度量空间
 3、分层策略（SVS）
 
 分层策略将PPG波峰$P$在水平线$TT'$上的映射点计为$O$，作线段$OP$的水平垂线将$OP$等分为若干份。将这些等分线与PPG的上升支、下降支的交点计为参考基准点${Q'}_i$，这一过程如图\autoref{fig:hv}所示。
-
-\begin{figure}[htbp]
-  \centering
-  \subfigure[\label{fig:lv}左视类指标示意图]{
-  \includegraphics[width=6cm]{features/lv}
-  }
-  \quad
-  \subfigure[\label{fig:mv}中视类指标示意图]{
-  \includegraphics[width=6cm]{features/mv}
-  }
-  \quad
-  \subfigure[\label{fig:hv}分层类指标示意图]{
-  \includegraphics[width=6cm]{features/hv}
-  }
-  \caption{\label{fig:all_views}确定基准点的三种策略示意图}
-\end{figure}
 
 二、基准点的维数
 
@@ -285,61 +287,63 @@ FD的完整数学定义如下，若将曲线视为其在定义域至度量空间
 而线性变换过程中的截距与斜率本身也是多维度特征的一种，因此，本研究也这4个参数作为第4类标准化参数，纳入进PPG多维度时域特征集中。
 
 \autoref{tab:allfeatures}中展示了上述标准化参数与经由左视策略、中视策略与分层策略确定得到的多维度时域特征。
-\vspace{2em}
-\begin{center}
-  \zihao{-5}
-  \begin{longtable}{m{1cm}<{\centering}m{1.4cm}<{\centering}m{3.3cm}<{\centering}m{1.5cm}<{\centering}m{7.5cm}<{\centering}}
-    \caption{PPG多维度时域特征集合}\\
-    \label{tab:allfeatures}\\
-        \topline
-        \colorhead \textbf{序号} & \textbf{类别}&\textbf{特征名称}&\textbf{缩写符号}&\textbf{物理意义}\\
-        \midline
-        \endfirsthead
-        \caption[]{(续)}\\
-        \midline
-        \colorhead \textbf{序号} & \textbf{类别}&\textbf{特征名称}&\textbf{缩写符号}&\textbf{物理意义}\\
-        \midline
-        \endhead 
-        \midline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowc 1 & &     上升支标准化斜率 & STDKR & 标准化PPG上升支波形至[0-1000]时使用的斜率 \\
-        \colorrowc 2 & &     上升支标准化截距 & STDBR & 标准化PPG上升支波形至[0-1000]时使用的截距 \\
-        \colorrowc 3 & &     下降支标准化斜率& STDKF & 标准化PPG下降支波形至[0-1000]时使用的斜率 \\
-        \colorrowc 4 & \multirow{-4}*{标准化指标}   &  下降支标准化截距 & STDBF & 标准化PPG上升支波形至[0-1000]时使用的截距 \\
-        \colorrowa 5 & &     左视斜率    &   LVS    &   各等分线所对应的直线斜率   \\
-        \colorrowa 6 & &     左视上升支交点坐标 & LVLR & 等分线与PPG波形上升支交点横坐标 \\
-        \colorrowa 7 & &     左视下降支交点坐标 & LVLF & 等分线与PPG波形下降支交点横坐标 \\
-        \colorrowa 8 & &     左视上升支交点距离 & LVRR & 等分线与PPG波形上升支交点与波形起点距离 \\
-        \colorrowa 9 & &     左视下降支交点距离 & LVRF & 等分线与PPG波形下降支交点与波形起点距离 \\
-        \colorrowa 10 & &     左视交点坐标差 & LVD & 左视上升支交点坐标与左视下降支交点坐标之差 \\
-        \colorrowa 11 & &     左视上升支弧长 & LVALR & PPG波形上升支被等分线分割的各区间弧长 \\
-        \colorrowa 12 & \multirow{-8}*{左视策略} & 左视下降支弧长 & LVALF & PPG波形下降支被等分线分割的各区间弧长 \\
-        \colorrowc 13 & &     中视上升支交点坐标 & CVLR & 等分线与PPG波形上升支交点横坐标 \\
-        \colorrowc 14 & &     中视下降支交点坐标 & CVLF & 等分线与PPG波形下降支交点横坐标 \\
-        \colorrowc 15 & &     中视上升支交点距离 & CVRR & 等分线与PPG波形上升支交点与峰值水平映射点距离 \\
-        \colorrowc 16 & &     中视下降支交点距离 & CVRF & 等分线与PPG波形下降支交点与峰值水平映射点距离 \\
-        \colorrowc 17 & &     中视交点坐标差 & CVD & 中视上升支交点坐标与中视下降支交点坐标之差 \\
-        \colorrowc 18 & &     中视上升支弧长 & CVALR & PPG波形上升支被等分线分割的各区间弧长 \\
-        \colorrowc 19 & &     中视下降支弧长 & CVALF & PPG波形下降支被等分线分割的各区间弧长 \\
-        \colorrowc 20 & &     中视上升支面积 & CVAR & PPG波形上升支被等分线分割的各区域面积 \\
-        \colorrowc 21 & \multirow{-9}*{中视策略} &     中视下降支面积 & CVAF & PPG波形下降支被等分线分割的各区域面积 \\
-        \colorrowa 22 & &     分层上升支交点坐标 & SVLR & 等分线与PPG波形上升支交点横坐标 \\
-        \colorrowa 23 & &     分层下降支交点坐标 & SVLF & 等分线与PPG波形下降支交点横坐标 \\
-        \colorrowa 24 & &     分层上升支面积 & SVAR & PPG波形上升支被等分线分割的各区域面积 \\
-        \colorrowa 25 & &     分层下降支面积 & SVAF & PPG波形下降支被等分线分割的各区域面积 \\
-        \colorrowa 26 & &     分层面积 & SVAT & PPG波形整体被等分线分割的各区域面积 \\
-        \colorrowa 27 & &     分层上升支交点距离 & SVRR & 等分线与PPG波形上升支交点与峰值水平映射点距离 \\
-        \colorrowa 28 & &     分层下降支交点距离 & SVRF & 等分线与PPG波形下降支交点与峰值水平映射点距离 \\
-        \colorrowa 29 & &     分层交点坐标差 & SVD &  分层上升支交点坐标与分层下降支交点坐标之差\\
-        \colorrowa 30 & &     分层上升支弧长 & SVALR & PPG波形上升支被等分线分割的各区间弧长 \\
-        \colorrowa 31 & &     分层下降支弧长 & SVALF & PPG波形下降支被等分线分割的各区间弧长 \\
-        \colorrowa 32 & &     分层上升支斜率 & SVSR & \tabincell{c}{等分线与PPG波形上升支交点与PPG\\峰值水平映射点所形成直线的斜率}\\
-        \colorrowa 33 & \multirow{-12}*{分层策略} & 分层下降支斜率 & SVSF & \tabincell{c}{等分线与PPG波形下降支交点与PPG\\峰值水平映射点所形成直线的斜率} \\
-  \end{longtable}
-\end{center}
-\vspace{-1.2cm} 
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {PPG多维度时域特征集合},
+        label                   = {tab:allfeatures},
+    ]
+    {
+        colspec                 = {X[1,c,m]X[1.4,c,m]X[3.3,c,m]X[1.5,c,m]X[7.5,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{2-5,14-22}          = {bg=\oddcolor}, 
+        row{6-13,23-Z}          = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+        cell{2}{2}              = {r=4,c=1}{c,m},
+        cell{7}{2}              = {r=7,c=1}{c,m},
+        cell{14}{2}             = {r=9,c=1}{c,m},
+        cell{23}{2}             = {r=5,c=1}{c,m},
+        cell{28}{2}             = {r=7,c=1}{c,m},
+    }
+    序号 & 类别 & 特征名称 & 缩写符号 & 物理意义 \\
+    1 &   {标准化\\指标}  &     上升支标准化斜率 & STDKR & 标准化PPG上升支波形至[0-1000]时使用的斜率 \\
+    2 &    标准化指标     &     上升支标准化截距 & STDBR & 标准化PPG上升支波形至[0-1000]时使用的截距 \\
+    3 &    标准化指标     &     下降支标准化斜率& STDKF & 标准化PPG下降支波形至[0-1000]时使用的斜率 \\
+    4 &    标准化指标     &     下降支标准化截距 & STDBF & 标准化PPG上升支波形至[0-1000]时使用的截距 \\
+    5 &     左视策略      &     左视斜率    &   LVS    &   各等分线所对应的直线斜率   \\
+    6 &     左视策略      &     左视上升支交点坐标 & LVLR & 等分线与PPG波形上升支交点横坐标 \\
+    7 &     左视策略      &     左视下降支交点坐标 & LVLF & 等分线与PPG波形下降支交点横坐标 \\
+    8 &     左视策略      &     左视上升支交点距离 & LVRR & 等分线与PPG波形上升支交点与波形起点距离 \\
+    9 &     左视策略      &     左视下降支交点距离 & LVRF & 等分线与PPG波形下降支交点与波形起点距离 \\
+    10 &    左视策略      &     左视交点坐标差 & LVD & 左视上升支交点坐标与左视下降支交点坐标之差 \\
+    11 &    左视策略      &     左视上升支弧长 & LVALR & PPG波形上升支被等分线分割的各区间弧长 \\
+    12 &    左视策略      &     左视下降支弧长 & LVALF & PPG波形下降支被等分线分割的各区间弧长 \\
+    13 &    中视策略      &     中视上升支交点坐标 & CVLR & 等分线与PPG波形上升支交点横坐标 \\
+    14 &    中视策略      &     中视下降支交点坐标 & CVLF & 等分线与PPG波形下降支交点横坐标 \\
+    15 &    中视策略      &     中视上升支交点距离 & CVRR & {等分线与PPG波形上升支交点\\与峰值水平映射点距离} \\
+    16 &    中视策略      &     中视下降支交点距离 & CVRF & {等分线与PPG波形下降支交点\\与峰值水平映射点距离} \\
+    17 &    中视策略      &     中视交点坐标差 & CVD & 中视上升支交点坐标与中视下降支交点坐标之差 \\
+    18 &    中视策略      &     中视上升支弧长 & CVALR & PPG波形上升支被等分线分割的各区间弧长 \\
+    19 &    中视策略      &     中视下降支弧长 & CVALF & PPG波形下降支被等分线分割的各区间弧长 \\
+    20 &    中视策略      &     中视上升支面积 & CVAR & PPG波形上升支被等分线分割的各区域面积 \\
+    21 &    中视策略      &     中视下降支面积 & CVAF & PPG波形下降支被等分线分割的各区域面积 \\
+    22 &    分层策略      &     分层上升支交点坐标 & SVLR & 等分线与PPG波形上升支交点横坐标 \\
+    23 &    分层策略      &     分层下降支交点坐标 & SVLF & 等分线与PPG波形下降支交点横坐标 \\
+    24 &    分层策略      &     分层上升支面积 & SVAR & PPG波形上升支被等分线分割的各区域面积 \\
+    25 &    分层策略      &     分层下降支面积 & SVAF & PPG波形下降支被等分线分割的各区域面积 \\
+    26 &    分层策略      &     分层面积 & SVAT & PPG波形整体被等分线分割的各区域面积 \\
+    27 &    分层策略      &     分层上升支交点距离 & SVRR & {等分线与PPG波形上升支交点\\与峰值水平映射点距离} \\
+    28 &    分层策略      &     分层下降支交点距离 & SVRF & {等分线与PPG波形下降支交点\\与峰值水平映射点距离} \\
+    29 &    分层策略      &     分层交点坐标差 & SVD &  分层上升支交点坐标与分层下降支交点坐标之差\\
+    30 &    分层策略      &     分层上升支弧长 & SVALR & PPG波形上升支被等分线分割的各区间弧长 \\
+    31 &    分层策略      &     分层下降支弧长 & SVALF & PPG波形下降支被等分线分割的各区间弧长 \\
+    32 &    分层策略      &     分层上升支斜率 & SVSR & {等分线与PPG波形上升支交点与PPG\\峰值水平映射点所形成直线的斜率}\\
+    33 &    分层策略      &     分层下降支斜率 & SVSF & {等分线与PPG波形下降支交点与PPG\\峰值水平映射点所形成直线的斜率} \\
+\end{longtblr}
 
 在\autoref{tab:allfeatures}中，左视策略下确定了8种脉搏波特征描述向量（PPGFV），中视策略下
 确定了9种PPGFV，分层策略下确定了12种PPGFV。而上小节已经对各策略下的维数进行过说明，
@@ -355,9 +359,9 @@ FD的完整数学定义如下，若将曲线视为其在定义域至度量空间
 \autoref{fig:no_pe}对比展示了四例被试的PPG波形的采样值差异，其中，各子图在同一坐标系下绘制了同一被试的所有PPG波形，这些波形均按起点进行了对齐，波形的采样值经标准化后被调整至[0,1]区间。
 
 \begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.75\linewidth]{features/ppgs}
-  \caption{\label{fig:no_pe}被试孕妇PPG经标准化处理后的波形对照}
+    \centering
+    \includegraphics[width=0.75\linewidth]{features/ppgs}
+    \caption{\label{fig:no_pe}被试孕妇PPG经标准化处理后的波形对照}
 \end{figure}
 
 从\autoref{fig:no_pe}可以看到，实验组与对照组的被试在PPG波形形态及整体分布上均呈现出一定的差异，这说明通过采样值描述PPG波形的可行性。
@@ -423,46 +427,45 @@ FD的完整数学定义如下，若将曲线视为其在定义域至度量空间
 供所有ML算法训练模型或进行测试使用。
 
 最终的数据集划分结果如\autoref{tab:dataset}所示。
-\begin{center}
-  \zihao{-5}
-  \begin{longtable}{m{1cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}m{1.5cm}<{\centering}}
-    \caption{数据集划分结果}\\
-    \label{tab:dataset}\\
-        \topline
-        \colorhead & & & \multicolumn{2}{c}{\textbf{训练集}} & \multicolumn{2}{c}{\textbf{测试集}}\\
-        \colorhead  \multirow{-2}{*}{\textbf{序号}}& \multirow{-2}{*}{\textbf{研究方向}}& \multirow{-2}{*}{\textbf{样本总数}}& \textbf{实验组} & \textbf{对照组} & \textbf{实验组} & \textbf{对照组} \\
-        \midline
-        \endfirsthead
-        \caption[]{(续)}\\
-        \midline
-        \colorhead & & & \multicolumn{2}{c}{\textbf{训练集}} & \multicolumn{2}{c}{\textbf{测试集}}\\
-        \colorhead  \multirow{-2}{*}{\textbf{序号}}& \multirow{-2}{*}{\textbf{研究方向}}& \multirow{-2}{*}{\textbf{样本总数}}& \textbf{实验组} & \textbf{对照组} & \textbf{实验组} & \textbf{对照组} \\
-        \midline
-        \endhead 
-        \midline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowa 1 & PR  & 7864  & 3746 & 2545 & 937 & 636 \\
-        \colorrowc 2 & SR  & 79  & 35 & 28 & 9 & 7 \\           
-  \end{longtable}
-\end{center}
-\vspace{-1em} 
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {数据集划分结果},
+        label                   = {tab:dataset},
+    ]
+    {
+        width                   = 0.8\linewidth,
+        colspec                 = {X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{3}                = {\thinline},
+        rowhead                 = 2,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1-2}                = {font=\headfont,bg=\headcolor},
+        row{3-Z}                = {font=\nonheadfont},
+        cell{1}{1-3}            = {r=2,c=1}{c,m},
+        cell{1}{4,6}            = {r=1,c=2}{c,m},
+    }
+    序号 & 研究角度 & 样本总数 & 训练集 & 训练集 & 测试集 & 测试集 \\
+    序号 & 研究角度 & 样本总数 & 实验组 & 对照组 & 实验组 & 对照组 \\
+    1 & PR  & 7864  & 3746 & 2545 & 937 & 636 \\
+    2 & SR  & 79  & 35 & 28 & 9 & 7 \\     
+\end{longtblr}
 
 \subsection{特征缩放}
 一般而言，原始数据的输入特征在数值属性出现较大的差异会导致机器学习模型的性能下降、表现欠佳\cite{Aurélien2018}。为保证这些输入特征能满足特定的机器学习算法的输入要求，通常还要对这些特征的数值分布进行一定的调整，这也就是特征缩放操作。
 
 常见的特征缩放处理原则是同比例缩放所有属性，使用的方法有归一化与标准化等两类方法。归一化方法又称为最小-最大缩放，可将所有数据的特征属性值同比例映射至[0,1]区间内
 \begin{equation}
-  \label{equ:maxmin}
-  z = \frac{x - x_{min}}{x_{max}-x_{min}}
+    \label{equ:maxmin}
+    z = \frac{x - x_{min}}{x_{max}-x_{min}}
 \end{equation}
 其中，$z$为缩放后的数据，$x$需要标准化的数据，$x_{min}$与$x_{max}$分别对应这批数据的最小值与最大值。
 
 而标准化的过程可将所有数据的特征属性调整至符合正态分布
 \begin{equation}
-  \label{equ:normalization}
-  z = \frac{x - \mu}{\epsilon}
+    \label{equ:normalization}
+    z = \frac{x - \mu}{\epsilon}
 \end{equation}
 其中，$z$为缩放后的数据，$x$需要标准化的数据，$\mu$与$\epsilon$分别对应这批数据的平均值与样本方差。
 
@@ -475,36 +478,40 @@ FD的完整数学定义如下，若将曲线视为其在定义域至度量空间
 主要依赖于特征数据属性值的分布特性进行筛选；在模型训练完成后的特征降维主要依赖于特征属性对模型的贡献程度进行筛选。
 本小节在训练ML模型前，使用统计分析中的U检验方法，评估了PPG多维度时域特征集（PPGMTFS）中各特征参数与PE的相关性，进而完成了特征筛选与降维，结果如\autoref{tab:utest}所示。
 
-\vspace{-1em}
-\begin{center}
-  \zihao{-5}
-  \begin{longtable}{m{2.5cm}<{\centering}m{2cm}<{\centering}m{2.5cm}<{\centering}m{2cm}<{\centering}m{2.5cm}<{\centering}m{2cm}<{\centering}}
-    \caption{PPG多维度时域特征集中特征的U检验结果}\\
-    \label{tab:utest}\\
-        \topline
-        \colorhead \textbf{特征缩写}&\textbf{p值}&\textbf{特征缩写}&\textbf{p值}&\textbf{特征缩写}&\textbf{p值}\\
-        \midline
-        \endfirsthead
-        \caption[]{(续)}\\
-        \midline
-        \colorhead \textbf{特征缩写}&\textbf{p值}&\textbf{特征缩写}&\textbf{p值}&\textbf{特征缩写}&\textbf{p值}\\
-        \midline
-        \endhead 
-        \midline
-        \endfoot
-        \bottomline
-        \endlastfoot
-        \colorrowa  LVLR\_9  &  0.004 &  CVLF\_1  & \cellcolor{pink} \textbf{0.068} &  SVRR\_2  &  0.027 \\
-        \colorrowc  LVLF\_1  &  \cellcolor{pink}\textbf{0.27}  &  CVLF\_2  &  0.038 &  SVRR\_3  &  0.001 \\
-        \colorrowa  LVRR\_6  &  0.002 &  CVRF\_4  & \cellcolor{pink} \textbf{0.44}  &  SVRR\_4  &  0.001 \\
-        \colorrowc  LVRR\_7  &  \cellcolor{pink}\textbf{0.387} &  CVD\_1   &  \cellcolor{pink}\textbf{0.159} &  SVD\_2   &  0.009 \\
-        \colorrowa  LVD\_1   &  0.022 &  CVD\_2   &  0.024 &  SVD\_3   & \cellcolor{pink} \textbf{0.65}  \\
-        \colorrowc  LVD\_2   &  0.006 &  CVALF\_6 &  0.02  &  SVALR\_2 & \cellcolor{pink} \textbf{0.078} \\
-        \colorrowa  LVALR\_4 &  0.013 &           &        &  SVALR\_3 &  0.001 \\
-        \colorrowc  LVALR\_5 &  \cellcolor{pink}\textbf{0.063} &           &        &           &               
-  \end{longtable}
-\end{center}
-\vspace{-0.8cm} 
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {PPG多维度时域特征集中特征的U检验结果},
+        label                   = {tab:utest},
+        note{*}                 = {有统计意义上的显著性区别。},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{3}                = {\thinline},
+        rowhead                 = 2,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1-2}                = {font=\headfont,bg=\headcolor},
+        row{3-Z}                = {font=\nonheadfont},
+        cell{1}{1}              = {r=2,c=1}{c,m},
+        cell{1}{2,4,6}          = {r=1,c=2}{c,m},
+        cell{4,6,10}{2-3}       = {font=\headfont,bg=\emphacolor},
+        cell{3,5,6}{4-5}        = {font=\headfont,bg=\emphacolor},
+        cell{7-8}{6-7}          = {font=\headfont,bg=\emphacolor},
+    }
+    序号 & 左视策略 & 左视策略 & 中视策略 & 中视策略 & 分层策略 & 分层策略 \\
+    序号 & 特征缩写 & $p$值 & 特征缩写 & $p$值 & 特征缩写 & $p$值 \\
+    1  &  LVLR\_9  &  0.004 &  CVLF\_1  & 0.068\TblrNote{*} &  SVRR\_2  &  0.027 \\
+    2  &  LVLF\_1  &  0.270 \TblrNote{*}  &  CVLF\_2  &  0.038 &  SVRR\_3  &  0.001 \\
+    3  &  LVRR\_6  &  0.002 &  CVRF\_4  & 0.440 \TblrNote{*} &  SVRR\_4  &  0.001 \\
+    4  &  LVRR\_7  &  0.387 \TblrNote{*}&  CVD\_1   &  0.159 \TblrNote{*}&  SVD\_2   &  0.009 \\
+    5  &  LVD\_1   &  0.022 &  CVD\_2   &  0.024 &  SVD\_3   & 0.650\TblrNote{*}  \\
+    6  &  LVD\_2   &  0.006 &  CVALF\_6 &  0.020  &  SVALR\_2 & 0.078\TblrNote{*} \\
+    7  &  LVALR\_4 &  0.013 &           &        &  SVALR\_3 &  0.001 \\
+    8  &  LVALR\_5 &  0.063 \TblrNote{*}&           &        &           &         \\       
+\end{longtblr}
 
 \autoref{tab:utest}列举出了由U检验得到的所有$p$值$>10^{-4}$的特征参数，并用粉红底色加粗字体突出显示了在PE数值上无明显统计差别的特征（$p$值$> 0.05$）。
 其中，特征缩写及下标含义可参考4.3.1小节相关内容。\autoref{tab:utest}中的8种在PE数值上无明显统计差别的特征未参与后续模型的训练。
