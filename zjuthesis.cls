@@ -84,8 +84,7 @@
         \ifthenelse{\equal{\Type}{thesis} \OR \equal{\Type}{design}}
         {
             % thesis or design
-            % \newcommand{\TitleTypeName}{浙江大学博士学位论文}
-            \newcommand{\TitleTypeName}{}
+            \newcommand{\TitleTypeName}{浙江大学博士学位论文}
             \newcommand{\TitleTypeNameCover}{博士学位论文}
         }
         {}
