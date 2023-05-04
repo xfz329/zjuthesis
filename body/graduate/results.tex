@@ -180,23 +180,19 @@ CM是评估分类器分类效果优劣的常用工具\cite{Zhou2016,Aurélien201
         theme                   = {zju},
         caption                 = {二分类任务的混淆矩阵},
         label                   = {tab:cm},
-        % note{*}                 = {有统计意义上的显著性区别。},
     ]
     {
         width                   = 0.6\linewidth,
         colspec                 = {X[1,c,m]X[1,c,m]X[1,c,m]},
         hline{1,Z}              = {\thickline},
-        hline{3}                = {\thinline},
-        rowhead                 = 2,
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
         row{odd}                = {bg=\oddcolor}, 
         row{even}               = {bg=\evencolor},
-        row{1-2}                = {font=\headfont,bg=\headcolor},
-        row{3-Z}                = {font=\nonheadfont},
-        cell{1}{1}              = {r=2,c=1}{c,m},
-        cell{1}{2}              = {r=1,c=2}{c,m},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
     }
-    真实情况 & 预测结果 & 预测结果 \\
-    真实情况 & 阳性（1） & 阴性（0） \\
+    \diagbox{真实结果}{预测结果} & 阳性（1） & 阴性（0） \\
     阳性（1） & 真阳性（TP） & 假阴性（FN） \\
     阴性（0） & 假阳性（FP） & 真阴性（TN） \\   
 \end{longtblr}
@@ -845,6 +841,36 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 能将这些预测比例进行分割的最佳阈值。由三种算法在两种对齐策略下生成的对应的ROC曲线，如\autoref{fig:model_roc2}所示。
 在此过程中，借助约登指数，也可得到各模型对应的最佳分割阈值，如\autoref{fig:pr_model}所示。
 
+图\autoref{fig:pr_model_detail}对比展示了\autoref{tab:model_detail}中各模型的得到的每名被试预测比例数值分布，图\autoref{fig:pr_model_split}进一步展示了随机森林模型得到的预测比例与
+最佳分割阈值的数值关系。上述过程中涉及的各算法最佳阈值及最佳阈值下的CM、准确率与AUC数值结果如\autoref{tab:cm_on_best2}所示。
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {三种模型在最佳分割阈值下的混淆矩阵},
+        label                   = {tab:cm_on_best2},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[0.5,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{2-3,6-7}            = {bg=\oddcolor}, 
+        row{4-5}                = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+        cell{2,4,6}{2}          = {r=2,c=1}{c,m},
+    }
+    序号 & 机器学习算法 & 波形对齐策略 & 最佳分割阈值 & 混淆矩阵 & 准确率 & AUC \\
+    1 & 决策树    & 补齐   &   0.864     &     $\left[ \begin{array}{cc} 7 & 2 \\ 1 & 6 \end{array} \right]$  & 81.3\% & 0.825 \\
+    2 & 决策树    & 重采样 &    0.573     &     $\left[ \begin{array}{cc} 7 & 2 \\ 0 & 7 \end{array} \right]$  & 87.5\% & 0.905  \\
+    3 & K近邻     & 补齐   &    0.813     &     $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$  & 81.3\% & 0.849  \\
+    4 & K近邻     & 重采样 &    0.820     &     $\left[ \begin{array}{cc} 8 & 1 \\ 2 & 5 \end{array} \right]$  & 81.3\% & 0.865 \\
+    5 & 随机森林   & 补齐  &    0.884     &     $\left[ \begin{array}{cc} 7 & 2 \\ 1 & 6 \end{array} \right]$  & 81.3\% & 0.905  \\
+    6 & 随机森林   & 重采样 &   0.673    &     $\left[ \begin{array}{cc} 8 & 1 \\ 1 & 6 \end{array} \right]$  & 87.5\% & 0.929  \\
+\end{longtblr}
+
 \begin{figure}[htbp]
     \centering
     \subfigure[\label{fig:roc_31}补齐策略下模型得到的PE预测比例的ROC示意图]{
@@ -876,36 +902,6 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
     }
     \caption{\label{fig:pr_model2}基于三种算法得到的PE预测比例散点与最佳分割阈值示意图}
 \end{figure}
-
-\begin{longtblr}
-    [
-        theme                   = {zju},
-        caption                 = {三种模型在最佳分割阈值下的混淆矩阵},
-        label                   = {tab:cm_on_best2},
-    ]
-    {
-        width                   = \linewidth,
-        colspec                 = {X[0.5,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]X[1,c,m]},
-        hline{1,Z}              = {\thickline},
-        hline{2}                = {\thinline},
-        rowhead                 = 1,
-        row{2-3,6-7}            = {bg=\oddcolor}, 
-        row{4-5}                = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
-        row{2-Z}                = {font=\nonheadfont},
-        cell{2,4,6}{2}          = {r=2,c=1}{c,m},
-    }
-    序号 & 机器学习算法 & 波形对齐策略 & 最佳分割阈值 & 混淆矩阵 & 准确率 & AUC \\
-    1 & 决策树    & 补齐   &   0.864     &     $\left[ \begin{array}{cc} 7 & 2 \\ 1 & 6 \end{array} \right]$  & 81.3\% & 0.825 \\
-    2 & 决策树    & 重采样 &    0.573     &     $\left[ \begin{array}{cc} 7 & 2 \\ 0 & 7 \end{array} \right]$  & 87.5\% & 0.905  \\
-    3 & K近邻     & 补齐   &    0.813     &     $\left[ \begin{array}{cc} 6 & 3 \\ 0 & 7 \end{array} \right]$  & 81.3\% & 0.849  \\
-    4 & K近邻     & 重采样 &    0.820     &     $\left[ \begin{array}{cc} 8 & 1 \\ 2 & 5 \end{array} \right]$  & 81.3\% & 0.865 \\
-    5 & 随机森林   & 补齐  &    0.884     &     $\left[ \begin{array}{cc} 7 & 2 \\ 1 & 6 \end{array} \right]$  & 81.3\% & 0.905  \\
-    6 & 随机森林   & 重采样 &   0.673    &     $\left[ \begin{array}{cc} 8 & 1 \\ 1 & 6 \end{array} \right]$  & 87.5\% & 0.929  \\
-\end{longtblr}
-
-图\autoref{fig:pr_model_detail}对比展示了\autoref{tab:model_detail}中各模型的得到的每名被试预测比例数值分布，图\autoref{fig:pr_model_split}进一步展示了随机森林模型得到的预测比例与
-最佳分割阈值的数值关系。上述过程中涉及的各算法最佳阈值及最佳阈值下的CM、准确率与AUC数值结果如\autoref{tab:cm_on_best2}所示。
 
 从上述研究结果中可以得到以下结论：
 
