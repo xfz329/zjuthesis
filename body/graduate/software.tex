@@ -175,19 +175,8 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
 一、数据导入
 
 为保持对来自不同硬件设备采集的原始数据保持读取的兼容性，软件系统使用了DP中的模板方法对这一过程进行了设计。
-模板方法的基本原则是预定义一个操作中算法的骨架,而将延迟实现其中的关键步骤。
-软件系统在数据读取过程所对应的抽象基类中定义了模板方法，并在模板方法中定义了数据读取过程的操作骨架，如\autoref{fig:template}所示。
-基类中的读取方法被定义为抽象方法，真正的业务方法必须在基类的具体子类中实现。
-当主程序需要读取数据时，只需实例化特定子类后，在子类中调用上述模板方法。
-由硬件差异、数据格式等原因导致的读取方法的差异可以在读取过程的不同子类中实现。
-这种机制延迟实现了读取的具体处理过程，隔离了数据读取功能对系统其他功能的影响，也保证了系统整体的灵活性。
-在这种设计下，目前软件系统已经支持对GE、迈瑞ePM 15M生理信号监护仪等多种医用监护仪导出的数据的读取，同时也支持研究团队自研的多生理参数采集设备的数据读取，如\autoref{fig:data_sources}所示。
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.65\linewidth]{software/template}
-    \caption{\label{fig:template}数据预处理模块流程图}
-\end{figure}
+在这种设计下，目前软件系统已经支持对GE、迈瑞ePM 15M生理信号监护仪等多种医用监护仪导出的数据的读取，
+同时也支持研究团队自研的多生理参数采集设备的数据读取，如\autoref{fig:data_sources}所示。
 
 \begin{figure}[htbp]
     \centering
@@ -200,12 +189,328 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
     }
     \quad
     \subfigure[研究团队自研的多生理参数采集设备]{
-    \includegraphics[width=5.5cm]{software/ep20}
+    \includegraphics[width=5.5cm]{software/SystemCon}
     }
-    \caption{\label{fig:B·R·A·H·M·S}德国Thermo Fisher Scientific公司的KRYPTOR检测设备}
+    \caption{\label{fig:data_sources}软件系统目前支持的几款硬件设备}
 \end{figure}
 
+模板方法的基本原则是预定义一个操作中算法的骨架,而将延迟实现其中的关键步骤。
+软件系统在数据读取过程所对应的抽象基类中定义了模板方法，并在模板方法中定义了数据读取过程的操作骨架，如\autoref{fig:template}所示。
+基类中的读取方法被定义为抽象方法，真正的业务方法必须在基类的具体子类中实现。
+当主程序需要读取数据时，只需实例化特定子类后，在子类中调用上述模板方法。
+由硬件差异、数据格式等原因导致的读取方法的差异可以在读取过程的不同子类中实现。
+这种机制延迟实现了读取的具体处理过程，隔离了数据读取功能对系统其他功能的影响，也保证了系统整体的灵活性。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.55\linewidth]{software/template}
+    \caption{\label{fig:template}数据预处理模块流程图}
+\end{figure}
+
+二、滤波处理
+
+在对生理信号的进行数字滤波时，一般会涉及多种类型的数字滤波器甄选。同时，每种滤波器也会有相应的可调参数。
+因此，性能最佳的滤波器的选择往往需要对多种滤波器调参后综合测评后才能判别，软件分析系统需要能在多种滤波器之间灵活切换。
+软件系统对滤波处理思路与数据导入类似，也在这一过程中采取了模板方法的设计模式。
+
+所不同的是，滤波过程所对应的抽象基类中定义了模板方法外，还定义了其他评价滤波效果的相关方法等，如\autoref{fig:template2}所示。
+而常用于评价滤波效果的均方误差与信噪比等指标可以设计为滤波基类的业务方法；
+而带通滤波器、小波滤波器等多种经典滤波算法可以在不同的滤波子类滤波方法中实现。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.55\linewidth]{software/template}
+    \caption{\label{fig:template2}数据预处理模块流程图}
+\end{figure}
+
+三、特征点定位与波形检测
+
+由于特征点定位与波形检测的详细算法过程已经在第三章中详细介绍过，此处对其算法原理不再赘述。但值得一提的是，本研究对PPG波形的检测过程进行了模式设计，
+结合模板方法与工厂方法，提出了一种基于初筛—复核—决策（screening-checking-deciding，SCD）的新型算法，其处理流程如\autoref{fig:detect2}所示。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\linewidth]{pulse_preprocess/scd}
+    \caption{\label{fig:detect2}SCD算法检测流程示意图}
+\end{figure}
+
+工厂方法的原则是定义一个用于创建对象的接口，让子类决定实例化具体的类。对\autoref{fig:detect2}中的SCD波形检测算法而言，
+初筛、复核及决策阶段均按上述模板方法进行了设计，各阶段的具体业务方法均在对应的具体子类中得到实现。
+在SCD算法运行时，这些子类并不是直接被实例化，而是作为特殊的“产品”，由一个额外的工厂类完成生产。
+该工厂类中定义了用于实例化、初始化这些产品的抽象生产方法，该抽象方法必须在工厂类的子类中实现。
+若需设置或改变所需产品，只需在工厂类的不同子类中调整生产过程。
+对SCD算法而言，在初筛及决策阶段对应的工厂类中，生产方法只返回一个产品对象；而在复核阶段对应的工厂类中，
+生产方法则以列表的形式同时返回了多个产品对象。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.55\linewidth]{software/factory}
+    \caption{\label{fig:factory}数据预处理模块流程图}
+\end{figure}
+
+四、特征计算
+
+在第四章中，本论文定义了大量基于PPG形态学的特征参数。软件系统使用单例程模式对这些特征参数的计算过程进行了模式设计，
+这一过程如\autoref{fig:singleton}所示。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.55\linewidth]{software/singleton}
+    \caption{\label{fig:singleton}数据预处理模块流程图}
+\end{figure}
+
+单例程模式的原则是保证一个类仅有一个实例，并提供一个访问它的全局访问点。
+单例程模式在PPG形态特征计算模块得到了应用。由于PPG时域特征种类繁多，本研究在时域特征的抽象基类中定义了模板方法，
+由模板方法负责调用特征的计算方法。计算方法在基类中被定义为抽象方法，也必须在具体的特征子类中实现。
+而PPG时域特征的计算过程与其定义完全绑定，在处理不同PPG波形时创建不同特征实例是对内存资源的浪费。
+因此，本研究使用单例程模式该过程进行了设计，单例程类自身不提供显式的构造方法，
+此前所有可用特征的实例化过程被设计为单例程类的生产方法，且该方法只能作为类方法被调用。
+在初次被调用时，生产方法会创建并保存单例程类本身的一个全局对象，并由全局对象完成生产返回所需产品；
+此后的调用直接均由全局对象完成生产。单例程模式可以提升软件系统的工作效率、降低内存资源的消耗。
+
+五、数据导出
+
+当对生理信号的预处理分析完成后，如何将分析处理结果进行保存是软件系统最后需要解决的问题。
+导出的数据是以检测的PPG波形为基础，包含该波形所有形态特征。而在本研究中，多种新设计的特征参数往往是以向量的形式出现，
+因此最后导出的结果将会大量出现波形——特征——向量（pulse-feature-vector）这种二级树状结构。
+此外信号特征算法出现引入了新的信号特征、对已有特征值数值的保存形式进行更改等更迭将会直接引起数据存储格式的变化。
+而常见的基于列表式的cvs、txt等对这种树状数据格式的支持较差，
+需要借助新的数据储存格式来实现。
+
+扩展标记语言(Extensible Markup Language，XML) \cite{xml,Li2016}与JavaScript对象标记法（JavaScript Object Notation，JSON）\cite{json,Crockford2006}
+是两种服务器端流行的数据交换格式。两者均可按照实际需求灵活定制存储规则，对较为复杂的数据结构
+支持性好、拓展性强。但由于XML是基于标签描述数据的，在描述数组类型数据时，引入了大量冗余信息。
+而JSON则对数组类数据有着更好的支持，有着更快的读写速度与更高的存储效率\cite{Nurseitov2009}。
+因此，软件分析系统最终使用JSON作为数据交换格式，
+而在具体实现时使用了中国阿里巴巴公司的开源JSON解析库fastjson\cite{fastjson}进行编码。
+最后的导出数据如\autoref{fig:json}所示，除基本数据特征外，与数据相关的文件信息及孕妇人口统计学信息也被保存至JSON文件。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.8\linewidth]{software/json}
+    \caption{\label{fig:json}数据预处理模块流程图}
+\end{figure}
+
+六、多生理参数的兼容接口
+
+尽管现阶段针对PE的研究主要基于脉搏波这一生理信号，但并不排除更多人体生理信号会增加进信号分析的可能。
+鉴于此，软件系统进一步设计了$AbstractBMESignal.class$这一抽象类来表征一般生理信号，数据读取、预处理及信号特征计算过程均设计成抽象方法，
+$Pulse.class$是继承该抽象类的复杂处理脉搏波信号的子类。若有其他生理信号的分析需求，可以视情况
+拓展实现心电$ECG.class$、脑电$EEG.class$等。
+而这些具体的信号类都是$AbstractBMESignal.class$的子类，且必须实现相应的抽象方法，可以确保这些子类具有相同的函数接口，方便将来可能的拓展。
+
 \subsection{跨平台客户端模块}
+
+在数据与处理模块的基础上，软件系统利用Java编程语言分别完成了PC客户端与Android客户端的设计开发。下面对其功能分别予以具体介绍。
+
+一、PC客户端
+
+软件系统借助VSCode在Windows系统下完成了PC客户端的开发。而由于Java本身的跨平台特性，该客户端也可方便在Linux等其他系统下进行编译。
+
+1、功能与界面
+
+PC客户端的交互界面如\autoref{fig:pc_ui}所示。\autoref{tab:pc_ui}对\autoref{fig:pc_ui}中软件界面的相关功能进行了进一步的说明。
+其中，文件菜单选择对原始数据的打开及经分析后特征数据的导出；编辑菜单可以完成数据的预处理、分析等功能；
+批处理菜单提供了大量数据进行处理分析的便捷操作方式；而帮助菜单则给出软件开发单位、软件版本号等信息。这些功能的进一步说明可参考\autoref{tab:pc_ui_menu}。
+软件交互界面的波形显示区域可以展示当前打开数据文件的波形图，支持通过鼠标完成拖动、缩放等功能；对波形的波峰波谷等特征点的分析也在\autoref{fig:pc_ui}中有所标示。
+与此同时，PC端软件也提供了较为丰富的右键菜单功能，提供了修改绘图颜色字体属性，支持选中当前波形直接复制至文件及连接打印机打印等功能。
+由于这些右键功能意义明确，可直接通过菜单名理解，故不提供表格进行枚举解释。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{software/pc}
+    \caption{\label{fig:pc_ui}PC端软件界面示意图}
+\end{figure}
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {PC端软件界面功能说明},
+        label                   = {tab:pc_ui},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[3,c,m]X[1,c,m]X[3,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+    }
+    编号 & 功能 & 编号 & 功能 \\
+    1 & 菜单栏 & 5 & 波形起点标记 \\
+    2 & 文件路径及PE状态说明 & 6 & 波形终点标记 \\
+    3 & 波形显示区域 & 7 & 右键功能菜单 \\
+    4 & 波形峰值标记 & 8 & 图例 \\
+\end{longtblr}
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {PC端软件主菜单功能说明},
+        label                   = {tab:pc_ui_menu},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[1.5,c,m]X[4,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{2-4,11-13}          = {bg=\oddcolor}, 
+        row{5-10,14-15}         = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+        cell{2}{1}              = {r=3,c=1}{c,m},
+        cell{5}{1}              = {r=6,c=1}{c,m},
+        cell{11}{1}             = {r=3,c=1}{c,m},
+        cell{14}{1}             = {r=2,c=1}{c,m},
+    }
+    菜单 & 子菜单 & 功能说明 \\
+    文件 & 打开 & 选择需要分析的PPG文件 \\
+        & 上传单个文件 & 上传单个PPG文件的处理结果至云服务器\\
+        & 上传目录下文件 & 上传目录下多个PPG文件的处理值云服务器端\\
+    编辑 & 设置PE状态 & 标记当前PPG文件对应的孕妇的PE状态 \\
+        & 波形校验 & 开启SCD算法自动校验波形 \\
+        & 波形人工校验 & 启动人工校验波形功能\\
+        & 导出检波结果 & 将检测到的PPG波形数据以Json形式保存至硬盘\\
+        & 特征分析 & 开始计算检测PPG波形的特征参数 \\
+        & 导出并上传 & 导出当前分析的所有分析结果，并将结果上传至云服务器 \\
+    批处理 & 操作说明 & 显示批处理操作的帮助文档\\
+        & 生成模板 & 选择要批处理分析的文件夹路径，并在目录下生成批处理模板\\
+        & 开始批处理 & 选择经过人工调整确认过的批处理模版，开始批处理\\
+    帮助 & 更新日志 & 显示软件的更新日志信息\\
+        & 关于 & 显示软件的开发团队、版本信息等 \\
+\end{longtblr}
+
+2、处理流程与逻辑
+
+PC端正常的处理流程如所示。在选中需要分析的PPG文件后，软件系统会自动调用SCD算法的进行波形初筛，并将筛选结果在波形显示区域进行标注。
+此时，点击波形检验菜单，SCD算法的检查与投票功能会被调用，会对此前的检验结果进行调整修整。用户可以通过鼠标放大观察整段数据的检测结果，若对
+检测结果有异议，可以点击波形人工校验菜单进行校正。此时，可以选择导出波形的检测结果，将完整波形对应的数据段以及其相对原始数据的位置等信息导出。
+随后，点击特征分析可以计算PPG波形的时域特征，点击导出并上传会将波形检测结果与特征计算结果以Json形式保存，同时这些数据也会被上传至云服务器进行后续分析。
+
+除上述完整流程外，PC软件客户端也支持直接选择包含某次分析的生成结果的Json文件上传至云服务器和对指定目录下的指定PPG文件进行批量处理操作。批处理操作的详细介绍见下文。
+
+3、特色功能说明
+
+1）完善的日志记录
+
+PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件日志管理与输出，可将软件运行过程中的运行状态和中间变量等关键信息按级别
+输出到不同日志文件中，方便系统开发与调试维护，如所示\autoref{fig:logs}所示。其中，日志输出级别包括OFF、FATAL、ERROR、WARN、INFO、DEBUG、ALL等，
+其日志输出的重要性依次降低，但输出的详细程度递增。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth]{software/logs}
+    \caption{\label{fig:logs}PC客户端日志文件示意（局部）}
+\end{figure}
+
+2）人工校验波形
+
+为解决SCD波形检测算法对某些极端数据的漏检、误检等问题，PC客户端还额外增加了对PPG波形的人工校验功能以精细控制PPG波形的增删，如\autoref{fig:manal_check}所示。
+
+具体而言，点击\autoref{fig:manal_check}中的跳转至，软件界面会自动放大波形并跳转至当前选择波形，方便观察波形细节。
+当需要删除已检波形时，只需在\autoref{fig:manal_check}中取消勾选波形行末的是否确认按钮；当需要调整波形起点、波峰及波谷时，只需双击相应数字单元格，
+输入新的采样点序号近似值；当需要新增波形时，只需点击\autoref{fig:manal_check}中的增加新波形，并输入新的波形
+的起点、波峰及波谷的近似采样点序号。点击校验当前行，PC软件会自动检查当前波形，并在起点、波峰及波谷的采样点序号的邻域内自动选择更为精确的数值，并将相应操作更新至
+软件的波形显示区域；而点击校验所有行则会对所有波形进行相应的处理。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{software/manal_check}
+    \caption{\label{fig:manal_check}PC客户端人工校验波形操作界面}
+\end{figure}
+
+3）批处理
+
+在某些情景下，可能存在对已经分析过的PPG数据再次进行分析的情景，如PPG波形的特征算法得到更新、云服务器端的识别模型得到更新之后等。
+则此时按上述处理逻辑与流程重新人工手动处理每一条原始PPG数据无疑显得耗时、低效且繁琐，特别是需要分析处理的数据量较大时。
+为简化上述繁琐耗时的操作流程，PC客户端软件还额外开发了批量处理的功能。
+
+批量处理的核心思路是预先将多条PPG数据的处理过程中的各项人工操作写入配置文件中，随后按照该配置文件依次处理所有PPG数据原始记录文件。
+具体操作时，需选择\autoref{tab:pc_ui}中的批处理菜单，先从\autoref{tab:pc_ui_menu}所示的子菜单中选中生成模板，该操作会要求选择一个
+文件夹作为批处理的根目录，该根目录下所有的有效PPG原始文件会被记录，并在根目录下生成一个空白的配置文件模板。此时，需要用户
+根据实际需要，自定义每一个PPG数据文件的个性化的处理流程，包括波形的计算与调整等。当批处理配置文件由用户更新完成后，最后可点击
+从\autoref{tab:pc_ui_menu}所示的子菜单中选中开始批处理，选择打开该配置文件，等待PC客户端处理完成即可。
+这一过程中的使用的配置文件如\autoref{fig:configure}所示，而\autoref{tab:configure}也对\autoref{fig:configure}中内容进行了进一步的解释与说明。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{software/configure}
+    \caption{\label{fig:configure}PC客户端批处理配置文件示意}
+\end{figure}
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {PC客户端批处理配置文件配置项说明},
+        label                   = {tab:configure},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[3,c,m]X[5,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+    }
+    配置项 & 意义 & 说明 \\
+    path & 文件夹路径 & 选择路径后会自动生成，不建议修改\\
+    PEstate & PE状态 & 0 为正常，1为PE，其他值无效 \\
+    mode & 功能选择 & 有效区间为0-63，具体含义参加后文 \\
+    files & 需要批处理的所有文件 & 选择路径后会自动生成，支持修改部分配置项 \\
+    files下的path & 需要处理的PPG文件名 & 选择路径后会自动生成，不建议修改\\
+    skipped & 是否跳过处理该文件 & true跳过，false不跳过，默认不跳过\\
+    pulses & 需要调整的PPG波形 & 默认为空，需要自定义修改 \\
+    type & PPG波形调整类型 & R为移除，A为新增，其他值无效\\
+    Points & PPG波形特征点坐标 & {需要波形起点、波峰、波谷等三个数值。\\可以不精确，可自动在邻域内精确调整}\\
+\end{longtblr}
+
+\autoref{fig:configure}所示的配置文件本质上仍是一个Json文件，其中的大部分配置项的具体含义及可选数值范围已经在\autoref{tab:configure}进行了说明。
+对于\autoref{fig:configure}中的mode配置而言，其数值确定了所需要进行的批处理操作。
+目前mode支持\autoref{tab:pc_ui_menu}中波形校验、波形人工校验、导出检波结果、特征分析、导出并上传等6种操作，
+这些操作分别通过mode的1位来完成控制，其中波形校验对应mode的最低位。mode的默认值为31，即$0b011111$，即对当前文件进行除数据特征上传外的所有操作。
+需要注意的是，尽管mode的可选值域是0-63，但由于可配置的6个操作有着逻辑上的依赖关系，某些配置可能会导致程序无法运行。
+因此，\autoref{fig:configure}所示的配置文件的意义即为处理
+
+
+二、Android客户端
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {Windows与Andoird平台下部分软件功能使用的开发组件对比},
+        label                   = {tab:platform},
+    ]
+    {
+        width                   = 0.8\linewidth,
+        colspec                 = {X[1,c,m]X[1,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{3}                = {\thinline},
+        rowhead                 = 1,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+    }
+    功能特征&Windows&Android\\
+    数据上传&HttpClient\cite{HttpClient}&Retrofit\cite{Retrofit}\\
+    数据图表显示&JFreeChart\cite{JFreeChart}&MPAndroidChart\cite{MPAndroidChart}\\
+\end{longtblr}
+
+\autoref{fig:aui}展示了软件分析系统在Android上运行效果。
+\begin{figure}[htbp]
+    \centering
+    \subfigure[默认界面]{
+    \includegraphics[width=10cm]{software/android}
+    }
+    \quad
+    \subfigure[菜单唤出界面]{
+    \includegraphics[width=10cm]{software/android_menu}
+    }
+    \caption{\label{fig:android_ui}Android客户端运行界面}
+\end{figure}
 
 
 \subsection{PE识别模型训练生成模块}
@@ -239,8 +544,10 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
 
 一、多种来源的数据格式的支持
 
-本研究开展时，所有数据均来源自GE设备balabala，数据是以csv格式导出的。在研究后期，课题组也引入了迈瑞公司的 。与此同时，课题组自研多生理信号采集终端也已完成，最多可支持对127路生理信号的采集，如\autoref{fig:msd}所示。
-不同厂商的硬件设备的采集得到的数据可能会有采样率、采样精度的差异，同时导出数据项也往往不尽相同。显然综合软件系统的数据读取功能需有一定的硬件适配性，
+本研究开展时，所有数据均来源自GE设备balabala，数据是以csv格式导出的。在研究后期，课题组也引入了迈瑞公司的。
+与此同时，课题组自研多生理信号采集终端也已完成，最多可支持对127路生理信号的采集，如\autoref{fig:msd}所示。
+不同厂商的硬件设备的采集得到的数据可能会有采样率、采样精度的差异，同时导出数据项也往往不尽相同。
+显然综合软件系统的数据读取功能需有一定的硬件适配性，
 可以依据数据通讯协议、存储格式的不同灵活定制，以实现对多种硬件设备的兼容。
 % \begin{figure}[htbp]
 %     \centering
@@ -254,7 +561,8 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
 %     \caption{\label{fig:msd}课题组自研多生理信号采集终端}
 % \end{figure}
 
-为隔离由于不同硬件数据格式给数据读取模块带来的变化，在综合软件分析系统的设计中使用了规范与实现分离的机制，利用Java接口完成了所需功能。具体实现是首先将数据读取的过程定义为一抽象接口$PPGReader.class$。由于接口无法实现具体方法，因此，
+为隔离由于不同硬件数据格式给数据读取模块带来的变化，在综合软件分析系统的设计中使用了规范与实现分离的机制，利用Java接口完成了所需功能。
+具体实现是首先将数据读取的过程定义为一抽象接口$PPGReader.class$。由于接口无法实现具体方法，因此，
 当来源自某种硬件设备的数据需要进行读取时，需要一个特定的子类$SpecificReader.class$去继承该抽象接口并具体实现读取的$readFromFile.class$方法。当实现好多个与硬件绑定的子类后，需要在$TotalReader.class$类中真正读取数据时，即可按图索骥，
 找到与硬件数据解析方式相对应的具体子类。这样的设计可以确保与硬件相关的特性被封装隐藏并可以随时增加新的硬件支持。这一过程中的伪代码如\autoref{lst:reader}所示。
 
@@ -320,76 +628,18 @@ $Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子�
 最后客户端使用了设计模式中的Singlon单例模式\cite{Li2015}对$FeatureFactory.class$
 进行了再次设计，即只可以创建一个$FeatureFactory.class$的实例，此后所有调用$FeatureFactory.class$的创建方法只会返回第一次调用时创建的实例。
 
-四、多种数据类型的支持
-
-尽管现阶段针对PE的研究主要基于脉搏波这一生理信号，但并不排除更多人体生理信号会增加进信号分析的可能。而上述过程中，涉及的脉搏波原始数据读取、预处理及信号特征设计与计算等过程也可以作为生理信号的一般处理过程。
-鉴于此，客户端软件进一步设计了$AbstractBMESignal.class$这一抽象类来表征一般生理信号，数据读取、预处理及信号特征计算过程均设计成抽象方法，$Pulse.class$是继承该抽象类的复杂处理脉搏波信号的子类。若有其他生理信号的分析需求，可以视情况
-拓展实现心电$ECG.class$、脑电$EEG.class$等，这一过程如所示。
-
-五、数据导出
-
-当客户端完成对生理信号的分析后，如何将分析处理结果进行保存是客户端软件最后需要解决的问题。导出的数据是以检测的PPG波形为基础，包含该波形所有形态特征。而在本研究中，多种新设计的特征参数往往是以向量的形式出现，因此最后导出的结果将会大量出现波形——
-特征——向量（pulse-feature-vector）这种二级树状结构。此外信号特征算法出现引入了新的信号特征、对已有特征值数值的保存形式进行更改等更迭将会直接引起数据存储格式的变化。而常见的基于列表式的cvs、txt等对这种树状数据格式的支持较差，
-需要借助新的数据储存格式来实现。
-
-扩展标记语言(Extensible Markup Language，XML) \cite{xml,Li2016}与JavaScript对象标记法（JavaScript Object Notation，JSON）\cite{json,Crockford2006}是两种服务器端流行的数据交换格式。两者均可按照实际需求灵活定制存储规则，对较为复杂的数据结构
-支持性好、拓展性强。但由于XML是基于标签描述数据的，在描述数组类型数据时，引入了大量冗余信息。而JSON则对数组类数据有着更好的支持，有着更快的读写速度与更高的存储效率\cite{Nurseitov2009}。因此，软件分析系统最终使用JSON作为数据交换格式，
-而在具体实现时使用了中国阿里巴巴公司的开源JSON解析库fastjson\cite{fastjson}进行编码。最后的导出数据如\autoref{lst:json}所示，除基本数据特征外，与数据相关的文件信息及孕妇人口统计学信息也被保存至JSON文件。
-% \lstinputlisting[caption={导出数据示意},label=lst:json,style=myJava]{code/ch6/out.json}
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=.6\linewidth]{ch6/json}
-%     \caption{\label{fig:json}导出数据示意}
-% \end{figure}
 
 六、多平台支持
 
 综合考虑软件实际的使用场合与应用前景，本研究最终选择了对Windows PC平台及Andoird移动平台进行了适配开发。由于Java的天然的跨平台特性，前文提及的多项软件设计在实现后可直接在PC端与移动端顺利运行。另一方面，Android系统独立于Java社区，主要由美国Google公司
 负责维护及更新，因此经常会出现某些Java组件在PC端与Android端的生命周期不一致的现象，并直接导致部分PC端可用的Java组件在新版本的Android系统下不被支持。因此，软件系统的特定功能需要针对具体操作系统平台选取恰当的组件完成功能开发。图\autoref{tab:platform}
 展示了PC端与Android移动端相同软件功能在具体实现组件上的差异。由于此过程中较少涉及算法模式的设计，故正文对具体开发实现过程不再赘述。
-\begin{longtblr}
-    [
-        theme                   = {zju},
-        caption                 = {Windows与Andoird平台下部分软件功能使用的开发组件对比},
-        label                   = {tab:platform},
-    ]
-    {
-        width                   = 0.8\linewidth,
-        colspec                 = {X[1,c,m]X[1,c,m]X[1,c,m]},
-        hline{1,Z}              = {\thickline},
-        hline{3}                = {\thinline},
-        rowhead                 = 1,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
-        row{2-Z}                = {font=\nonheadfont},
-    }
-    功能特征&Windows&Android\\
-    数据上传&HttpClient\cite{HttpClient}&Retrofit\cite{Retrofit}\\
-    数据图表显示&JFreeChart\cite{JFreeChart}&MPAndroidChart\cite{MPAndroidChart}\\
-\end{longtblr}
+
 
 
 七、UI界面
 
-1. PC界面
 
-\autoref{fig:pc_ui}展示了软件分析系统在PC上运行效果。可通过文件菜单选择对原始数据的打开及经分析后特征数据的导出。编辑菜单可以完成数据的预处理、分析等功能。帮助菜单则给出软件开发单位、软件版本号等信息。软件
-的主界面展示了打开数据文件的波形图，可以通过鼠标完成拖动、缩放等功能。对波形的波峰波谷等特征点的分析也在图中有所标示。右键菜单同时还提供了修改绘图颜色字体属性，支持选中当前波形直接复制至文件及连接打印机打印等功能。
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=.8\linewidth]{ch6/pc_ui}
-%     \caption{\label{fig:pc_ui}PC软件运行界面}
-% \end{figure}
-
-2. Android界面
-
-\autoref{fig:aui}展示了软件分析系统在Android上运行效果。
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=.6\linewidth]{ch6/android_ui}
-%     \caption{\label{fig:aui}Android软件运行界面}
-% \end{figure}
 
 \subsection{服务器模块}
 
