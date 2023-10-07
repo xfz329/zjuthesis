@@ -211,7 +211,7 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
 
 在对生理信号的进行数字滤波时，一般会涉及多种类型的数字滤波器甄选。同时，每种滤波器也会有相应的可调参数。
 因此，性能最佳的滤波器的选择往往需要对多种滤波器调参后综合测评后才能判别，软件分析系统需要能在多种滤波器之间灵活切换。
-软件系统对滤波处理思路与数据导入类似，也在这一过程中采取了模板方法的设计模式。
+软件系统对滤波处理思路与数据导入类似，也在这一过程中采取了模板方法（Template Method）的设计模式\cite{Enrich2018}。
 
 所不同的是，滤波过程所对应的抽象基类中定义了模板方法外，还定义了其他评价滤波效果的相关方法等，如\autoref{fig:template2}所示。
 而常用于评价滤波效果的均方误差与信噪比等指标可以设计为滤波基类的业务方法；
@@ -225,7 +225,7 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
 三、特征点定位与波形检测
 
 由于特征点定位与波形检测的详细算法过程已经在第三章中详细介绍过，此处对其算法原理不再赘述。但值得一提的是，本研究对PPG波形的检测过程进行了模式设计，
-结合模板方法与工厂方法，提出了一种基于初筛—复核—决策（screening-checking-deciding，SCD）的新型算法，其处理流程如\autoref{fig:detect2}所示。
+结合模板方法与工厂方法（Factory Method）\cite{Enrich2018}，提出了一种基于初筛—复核—决策（screening-checking-deciding，SCD）的新型算法，其处理流程如\autoref{fig:detect2}所示。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\linewidth]{pulse_preprocess/scd}
@@ -248,7 +248,7 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
 
 四、特征计算
 
-在第四章中，本论文定义了大量基于PPG形态学的特征参数。软件系统使用单例程模式对这些特征参数的计算过程进行了模式设计，
+在第四章中，本论文定义了大量基于PPG形态学的特征参数。软件系统使用单例程模式（Singlon）对这些特征参数的计算过程进行了模式设计\cite{Li2015,Enrich2018}，
 这一过程如\autoref{fig:singleton}所示。
 
 \begin{figure}[htbp]
@@ -265,6 +265,11 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
 此前所有可用特征的实例化过程被设计为单例程类的生产方法，且该方法只能作为类方法被调用。
 在初次被调用时，生产方法会创建并保存单例程类本身的一个全局对象，并由全局对象完成生产返回所需产品；
 此后的调用直接均由全局对象完成生产。单例程模式可以提升软件系统的工作效率、降低内存资源的消耗。
+
+另外，预处理模块在时域特征的抽象基类额外定了两个属性$Order$与$Prefixes$。
+这是因为某些特定的特征在计算时，可能需要一定的先导条件，需要预先计算好一定的先导特征。
+因此，按照先导条件从无到有、从少到多、从简单到复杂的原则，在初始化特征时，给每个具体实现子类设置好其计算顺序
+$Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子类的计算次序$Order$遍历，即可保证所有特征均按指定顺序全部计算完毕。
 
 五、数据导出
 
@@ -458,7 +463,7 @@ PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件�
     配置项 & 意义 & 说明 \\
     path & 文件夹路径 & 选择路径后会自动生成，不建议修改\\
     PEstate & PE状态 & 0 为正常，1为PE，其他值无效 \\
-    mode & 功能选择 & 有效区间为0-63，具体含义参加后文 \\
+    mode & 功能选择 & 有效区间为0-63，具体含义参见后文 \\
     files & 需要批处理的所有文件 & 选择路径后会自动生成，支持修改部分配置项 \\
     files下的path & 需要处理的PPG文件名 & 选择路径后会自动生成，不建议修改\\
     skipped & 是否跳过处理该文件 & true跳过，false不跳过，默认不跳过\\
@@ -472,34 +477,18 @@ PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件�
 目前mode支持\autoref{tab:pc_ui_menu}中波形校验、波形人工校验、导出检波结果、特征分析、导出并上传等6种操作，
 这些操作分别通过mode的1位来完成控制，其中波形校验对应mode的最低位。mode的默认值为31，即$0b011111$，即对当前文件进行除数据特征上传外的所有操作。
 需要注意的是，尽管mode的可选值域是0-63，但由于可配置的6个操作有着逻辑上的依赖关系，某些配置可能会导致程序无法运行。
-因此，\autoref{fig:configure}所示的配置文件的意义即为处理
-
+因此，\autoref{fig:configure}所示的配置文件可对\path{D:/UrgeData/Documents/ppgdata/No}文件夹下的\path{by_wavePLETH_2017080113.csv}等文件进行批处理。其中，PEstate被设置为0，表示当前目录下全为健康人群数据文件。
+mode被配置为63，所有文件会完成全部6项批处理操作。而在对\path{by_wavePLETH_2017080113.csv}文件处理时，
+不需跳过该文件，对算法的自动检测结果需先移除$(91,105,177)$处的PPG波形，再在$(91,105,177)$处新增一个PPG波形。
 
 二、Android客户端
 
-\begin{longtblr}
-    [
-        theme                   = {zju},
-        caption                 = {Windows与Andoird平台下部分软件功能使用的开发组件对比},
-        label                   = {tab:platform},
-    ]
-    {
-        width                   = 0.8\linewidth,
-        colspec                 = {X[1,c,m]X[1,c,m]X[1,c,m]},
-        hline{1,Z}              = {\thickline},
-        hline{3}                = {\thinline},
-        rowhead                 = 1,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
-        row{2-Z}                = {font=\nonheadfont},
-    }
-    功能特征&Windows&Android\\
-    数据上传&HttpClient\cite{HttpClient}&Retrofit\cite{Retrofit}\\
-    数据图表显示&JFreeChart\cite{JFreeChart}&MPAndroidChart\cite{MPAndroidChart}\\
-\end{longtblr}
+软件系统借助Android Studio在Windows系统下完成了Android客户端的开发，并在中国小米公司生产的Redmi Pad SE上测试通过。
+其中，Redmi Pad SE的Linux内核版本为5.10.101，Android版本为12。
 
-\autoref{fig:aui}展示了软件分析系统在Android上运行效果。
+1、功能与界面
+
+\autoref{fig:android_ui}展示了软件分析系统在Redmi Pad SE上运行效果。为充分利用Pad显示界面，菜单栏默认隐藏，需要使用时可点击按钮唤出。
 \begin{figure}[htbp]
     \centering
     \subfigure[默认界面]{
@@ -512,65 +501,170 @@ PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件�
     \caption{\label{fig:android_ui}Android客户端运行界面}
 \end{figure}
 
+另一方面，考虑到Android客户端的实际使用场景，上文介绍的PC客户端特殊功能目前未在Android客户端下实现。
+但除此之外，Android客户端与PC客户端整体功能相近、操作类似，故在此处不再进行相关赘述。
+
+2、组件区别
+
+由于Android系统独立于Java社区，主要由美国Google公司负责维护及更新，因此经常会出现某些Java组件在PC端与Android端的生命周期不一致的现象。
+这也导致部分PC端可用的Java组件在新版本的Android系统下不被支持。因此，软件系统的特定功能需要针对具体操作系统平台选取恰当的组件完成功能开发。
+图\autoref{tab:platform}展示了PC端与Android移动端相同软件功能在具体实现组件上的差异。
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {PC端与Android移动端部分软件开发组件对比},
+        label                   = {tab:platform},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[1,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{3}                = {\thinline},
+        rowhead                 = 1,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+    }
+    功能特征&PC&Android\\
+    数据上传&HttpClient\cite{HttpClient}&Retrofit\cite{Retrofit}\\
+    数据图表显示&JFreeChart\cite{JFreeChart}&MPAndroidChart\cite{MPAndroidChart}\\
+\end{longtblr}
 
 \subsection{PE识别模型训练生成模块}
+PE识别模型训练生成模块是软件系统的核心，基于已经提取好的数据特征完成识别模型的训练生成任务。在对训练好的PE分类识别模型进行评估后，
+综合性能表现好的识别模型才会被部署至云服务端，供PC客户端与Android客户端调用，以识别预测新数据。而由于Python在机器学习领域的广泛普及应用，
+此模块的所有编程设计与实现全部基于Python完成，以下为具体介绍。
+
+一、数据合并
+
+如前文所述，软件系统的客户端程序最终会把检测得到PPG波形数据与PPG时域特征分别以Json文件的形式保存至本地并上传至云服务器。而前文中已经介绍过，
+Json文件的构成更符合一棵数据“树”的概念。为从多棵这样的数据树中构建出完整的特征数据集矩阵，显然需要一个数据合并的过程。
+这也即第四章中提及的的脉搏波多维度时域特征集（photoplethysmographic multidimensional
+time-domain feature set，PPGMTFS）与脉搏波采样序列时域特征集（photoplethysmographic sampling series time-domain feature set，PPGSSTFS）的生成过程。
+
+模块对数据合并的处理流程如所示。依次读取需要合并的数据特征文件，确定生成矩阵的标题栏，记录下包括软件版本号、原始PPG数据文件名、数据患者名、PE状态等基本信息，
+随后开始记录数据特征文件的所有特征数值，为了后续分析方便，PPG波形序号也被同时记录。而当生成PPGSSTFS时，需要根据PPG波形对齐策略的选择，将原始采样值量化至指定区间内。
+按此方式依次处理完所有文件即可得到最终的数据集矩阵，而考虑到数据格式的兼容性的需要，数据集矩阵最终会以csv格式进行保存。
+
+二、数据划分
+
+如第四章介绍过的，为使后续经由不同机器学习算法训练所得的PE识别模型的性能具有可比性，需要通过控制变量法，让所有的机器学习模型在相同的训练数据集上训练模型，并在相同测试
+数据集上评估性能。
+
+本模块对数据划分的流程如所示。一个单独的数据集管理类负责返回所有模型训练、评估的训练集与测试集，而在该类内部，需要返回数据时，函数都会先去检查硬盘上是否已有划分好的数据集。
+如果存在这样的数据集，则直接读取硬盘上数据集并返回；否则，函数会调用数据集分层抽样等函数并生成特定的数据集，将该数据集保存至硬盘上后返回该数据集。
+而对比数据预处理模块的特征计算的\autoref{fig:singleton}可以发现，上述介绍的数据划分方式也可以视为一种广义上的单例程模式，区别在于后者多了一次对硬盘数据的检查和读取。
+
+三、模型训练与保存
+
+软件系统所有的PE识别模型均是借助Python下Sklearn工具包完成的。而单个PE识别模型的具体构建过程通常涉及载入数据、在训练集上进行训练、考察训练集上的性能、在
+测试集上测试等等操作，且其中的某些步骤往往涉及到多个参数的计算与比较。当需要评估对比的机器模型过多时，这一些列的操作会给编程带来麻烦，且极易疏漏。
+另一方面，由于Python本身是一种动态类型的编程语言，强调在运行时确定对象的类型，而非在编译时确定其类型。这意味着Python不会检测变量的具体类型，而是关注变量
+是否具有特定的属性与方法。而Sklearn本身在设计过程中均遵循了统一规范，不同的机器学习算法均提供了相同的API函数。因此，软件系统在此基础上对不同机器学习算法进行了一层封装。
+
+对机器学习算法的具体封装过程如所示。MyClasssifer是封装之后的类名，可直接用Sklearn工具包中的具体分类算法的实例初始化该类。除此之外，该类只有三个公共函数接口，
+一个为设定MyClasssifer所使用的分类算法的实例，该实例也必须为Sklearn工具包中有效实例；
+一个为设定模型训练所需的训练集与测试集数据函数loadData；最后一个为开始训练并评估的fitPredict函数，该函数封装了机器学习算法在训练集与测试集上的全部处理操作过程。
+在具体使用时，使用封装后MyClasssifer类评估不同的机器学习方法在数据集上的表现时，可实现代码的最小化，简化了模型训练过程。
+
+另外，在上述过程中，为使训练好的机器学习模型供后续上传至云服务器使用，相关结果也必须及时保存。
+这一过程也被封装在了MyClasssifer的fitPredict函数中，生成的最终模型与训练模型的超参数也被同时保存下来。
+除随机森林算法构建的模型因为算法本身的随机性导致训练模型的不可控外，只要给定相同的数据集，选中固定的算法，在给予相同的超参数的条件下，就可以复现出完全相同的最终识别模型。
+
 
 
 \subsection{云服务器模块}
+云服务器模块在某种意义上可以看作为客户端软件与PE识别模型训练生成模块的中间件。云服务器端接收来自客户端的特征数据，在一定的校验确认数据无误后，
+根据客户端具体请求内容，选择一个或多个已经训练好的机器学习模型进行新数据的识别预测，并将结果返回至客户端。为方便后续可能的二次开发，所有客户端的
+发送来的原始数据都会被保存至数据库中。
+
+需要注意的是，云服务器模块在设计时是可以直接使用第三方商业公司提供的具有公网IP地址的云服务器等业务。但在本软件系统的研发过程中，出于方便开发的角度，暂时仅使用了
+局域网进行环境搭建模拟与后续测试。以下为云服务器模块的具体介绍。
+
+一、网络协议选择与数据接口设计
+
+为使客户端软件与云服务器端能够进行数据通信与数据交换，显然需要借助一定的网络协议。本软件系统最终选择了最为常见的超文本传输协议（Hypertext Transfer Protocol，HTTP）进行
+两者间的数据通信。HTTP是一种简单的请求——响应协议，它通常运行在TCP之上，同时，HTTP也指定了客户端可能发送给服务器的消息类型以及能得到何种响应。
+
+1、POST与GET
+
+HTTP协议中定义了很多与服务器的交互的方法，而PUT、DELETE、POST与GET则是其中最基本的四种。一般而言，一个URL地址描述了一个互联网上的资源，而HTTP协议中的
+PUT、DELETE、POST与GET等方法则对应着对这个资源的增、删、改、查等基本操作。其中，GET方法与POST方法最为常见，在互联网应用中使用的最为广泛。
+GET方法与POST方法均能向服务器端传递数据，但两者之间也存在着一定的差异，如\autoref{tab:get_post}所示。
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {GET方法与POST方法对比},
+        label                   = {tab:get_post},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[3,c,m]X[3,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{3}                = {\thinline},
+        rowhead                 = 1,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+    }
+    &GET&POST\\
+    常用场景&获取、查询信息&更新资源信息\\
+    数据传递方式&请求参数与数值附加在URL后&封装在HTTP请求中\\
+    传递数据量&受限，一般为1024个字符&无限制\\
+    编码方式&只允许ASCII字符&没有限制，也允许二进制数据\\
+    安全性&较差，数据是URL的一部分&较安全，参数不会被记录保存\\
+
+\end{longtblr}
+
+鉴于\autoref{tab:get_post}所示，POST方法较GET方法功能更为强大，能够同时传递文本数据与二进制文件数据，因而被选为软件系统的客户端与云服务器端的通讯方式。
+
+2、客户端的网络组件
+
+客户端在将需要上传的参数、数据进行POST封装时，所有的数据都会以键值对的形式进行映射。而为了方便服务器端的解析，所有键值强制以“file”结尾是区分文件数据与文本数据的标志，
+并据此选择将与键对应的值以文件形式封装或文本形式封装，这一过程如所示。而服务器端在接受到POST请求后，在解析时数据时，会首先检查数据的键是否以“file”结尾，随后
+选择对应的解析处理方式。
+
+另一方面，在上述过程中，PC客户端与Android客户端实现与服务器通讯的组件库各不相同，这些组件库的具体使用方式也有所差异。下面分别进行简单介绍。
+
+1）PC客户端
+
+PC客户端选择了HttpClient这一组件进行网络功能的开发。HttpClient是Apache Jakarta Common下的子项目，用来提供高效的、最新的、更能丰富的支持HTTP协议的客户端编程工具包，
+HttpClient基于标准、纯净的Java语言实现，完全实现了HTTP1.0和HTTP1.1的内容与功能。
+
+2）Android客户端
+
+Android客户端选择了Retrofit这一组件进行网络功能的开发。Retrofit是目前Android系统下最流行、应用最广的一个RESTful的HTTP网络请求框架的封装。
+网络请求的工作本质上是OkHttp完成，而Retrofit仅负责网络请求接口的封装。
+App应用程序通过Retrofit请求网络，实际上是使用Retrofit接口层封装请求参数、Header、URL等信息，之后由OkHttp完成后续的请求操作
+在服务端返回数据之后，OkHttp将原始的结果交给Retrofit，Retrofit根据用户的需求对结果进行解析，这一过程如\autoref{fig:Retrofit}所示。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.7\linewidth]{/software/Retrofit}
+    \caption{\label{fig:Retrofit}Retrofit的工作原理}
+\end{figure}
+
+3、POST方法的参数设计
+
+
+二、基于Django的服务器端程序设计
+
+三、数据库设计
+
 
 
 \section{测试与验证}
 \section{小结}
 
 
-一、客户端模块
 
-客户端模块即数据准备模块，负责绝大部分数据处理任务，包括对数据的读取、预处理、特征计算等工作。数据处理完成后以Json的存储格式上传至服务器端，并根据上传时选择参数，由服务器训练好的数据模型返回相应的PE预测分类结果。
-为方便对移动智能平台的支持，客户端模块采用静态面向对象语言Java编程完成。
-
-二、模型训练模块
-
-模型训练模块是软件系统的核心算法模块，需要基于提取好的数据特征完成所有模型训练、分类处理工作。由于Python在机器学习领域的广泛普及，此模块的所有编程设计与实现全部基于Python完成。训练好的分类模型也会部署至服务器端。
-
-三、数据存储模块
-
-数据存储模块即服务器模块，是上述两个模块的中间件，接收来自客户端的特征等数据，并将相关数据存储至数据库中，同时根据相应的特征值依据训练好的模型给出相应的预测结果。为能直接使用由模型训练模块生成的多种机器学习模型，数据存储模块采用Python为
-主要编程语言，。
-
-
-\section{模块具体设计与实现}
-\subsection{客户端模块}
-
-
-一、多种来源的数据格式的支持
-
-本研究开展时，所有数据均来源自GE设备balabala，数据是以csv格式导出的。在研究后期，课题组也引入了迈瑞公司的。
-与此同时，课题组自研多生理信号采集终端也已完成，最多可支持对127路生理信号的采集，如\autoref{fig:msd}所示。
-不同厂商的硬件设备的采集得到的数据可能会有采样率、采样精度的差异，同时导出数据项也往往不尽相同。
-显然综合软件系统的数据读取功能需有一定的硬件适配性，
-可以依据数据通讯协议、存储格式的不同灵活定制，以实现对多种硬件设备的兼容。
-% \begin{figure}[htbp]
-%     \centering
-%     \subfigure[连接实物图]{
-%     \includegraphics[width=5.5cm]{ch6/SystemCon}
-%     }
-%     \quad
-%     \subfigure[采集得到的信号]{
-%     \includegraphics[width=5.5cm]{ch6/data}
-%     }
-%     \caption{\label{fig:msd}课题组自研多生理信号采集终端}
-% \end{figure}
-
-为隔离由于不同硬件数据格式给数据读取模块带来的变化，在综合软件分析系统的设计中使用了规范与实现分离的机制，利用Java接口完成了所需功能。
-具体实现是首先将数据读取的过程定义为一抽象接口$PPGReader.class$。由于接口无法实现具体方法，因此，
-当来源自某种硬件设备的数据需要进行读取时，需要一个特定的子类$SpecificReader.class$去继承该抽象接口并具体实现读取的$readFromFile.class$方法。当实现好多个与硬件绑定的子类后，需要在$TotalReader.class$类中真正读取数据时，即可按图索骥，
-找到与硬件数据解析方式相对应的具体子类。这样的设计可以确保与硬件相关的特性被封装隐藏并可以随时增加新的硬件支持。这一过程中的伪代码如\autoref{lst:reader}所示。
-
-% \lstinputlisting[caption={数据读取模块的伪代码实现},label=lst:reader,style=myJava]{code/ch6/PPGReader.java}
 
 二、预处理算法设计
 
-数据预处理部分的软件算法工作主要由等几部分组成。由于本小节部分内容与第四章内容较为接近，预处理工作的具体实现思路可参阅前文。而数据滤波与波形检测的软件设计均采用了策略与机制分离的思想，利用工厂设计模式\cite{Enrich2018}完成。
+数据预处理部分的软件算法工作主要由等几部分组成。由于本小节部分内容与第四章内容较为接近，预处理工作的具体实现思路可参阅前文。而数据滤波与波形检测的软件设计均采用了策略与机制分离的思想，利用工厂设计模式完成。
 
 1. 数据滤波
 
@@ -614,9 +708,7 @@ PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件�
 % \end{figure}
 
 与前小节的设计类似，$AbstractFeature.class$是个抽象父类，规定了所有特征应有的一般属性，包括特征名及其缩写$Name$，特征所代表的含义$Describition$等描述信息。而在$AbstractFeature.class$的子类$SpesificFeatureX.class$中才根据具体设计思想等完成对
-该特征的计算过程$calculate()$。值得注意的是，在\autoref{fig:features}中，$AbstractFeature.class$额外定了两个属性$Order$与$Prefixes$。
-这是因为某些特定的特征在计算时，可能需要一定的先导条件，即需要预先计算好一定的先导特征。因此，每个特征在初始化时，按照先导条件从无到有、从少到多、从简单到复杂的原则，给每个具体实现子类$SpesificFeatureX.class$设置好其计算顺序
-$Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子类$SpesificFeatureX.class$的$Order$遍历，即可保证所有特征均按指定顺序全部计算完毕。
+该特征的计算过程$calculate()$。值得注意的是，
 
 而上述先导设置过程，可以在$SpesificFeatureX.class$定义时设定，但为了保持更多的调整灵活性。最终在实现软件系统时额外定义了$FeatureFactory.class$，用以集中完成并封装所有需进行计算的特征子类的初始化工作。而在主程序中调用$FeatureFactory.class$
 的$GetAllFeatures()$方法时，其返回值将是包含所有特征子类的列表，并特征子类的$Order$值决定了该子类在返回列表里的排列顺序，即真正的执行顺序。若软件系统需要增加某一新型特征算法，只需设计新的$SpesificFeature.class$，实现其具体的计算过程，
@@ -627,34 +719,3 @@ $Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子�
 即执行最后的$pulseX.Store(feature)$操作。另外，不难发现，$FeatureFactory.class$的实例化过程会随着待检波形的更迭而不断进行，最终会导致Java虚拟机重复创建、同时消耗系统内存资源。为减少该冗余操作，
 最后客户端使用了设计模式中的Singlon单例模式\cite{Li2015}对$FeatureFactory.class$
 进行了再次设计，即只可以创建一个$FeatureFactory.class$的实例，此后所有调用$FeatureFactory.class$的创建方法只会返回第一次调用时创建的实例。
-
-
-六、多平台支持
-
-综合考虑软件实际的使用场合与应用前景，本研究最终选择了对Windows PC平台及Andoird移动平台进行了适配开发。由于Java的天然的跨平台特性，前文提及的多项软件设计在实现后可直接在PC端与移动端顺利运行。另一方面，Android系统独立于Java社区，主要由美国Google公司
-负责维护及更新，因此经常会出现某些Java组件在PC端与Android端的生命周期不一致的现象，并直接导致部分PC端可用的Java组件在新版本的Android系统下不被支持。因此，软件系统的特定功能需要针对具体操作系统平台选取恰当的组件完成功能开发。图\autoref{tab:platform}
-展示了PC端与Android移动端相同软件功能在具体实现组件上的差异。由于此过程中较少涉及算法模式的设计，故正文对具体开发实现过程不再赘述。
-
-
-
-七、UI界面
-
-
-
-\subsection{服务器模块}
-
-一、数据库设计
-
-二、模型存储设计
-
-三、模型调用设计
-
-\subsection{模型训练模块}
-一、数据获取
-
-二、模型训练
-
-\section{系统验证与测试}
-界面
-输入输出
-\section{小结}
