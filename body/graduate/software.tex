@@ -9,7 +9,7 @@
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\linewidth]{results/frameworks5}
+    \includegraphics[width=0.9\linewidth]{software/frameworks6}
     \caption{\label{fig:frameworks6}第六章研究内容框架图}
 \end{figure}
 
@@ -72,11 +72,11 @@ PC端与移动端均需开发对应的客户端。
 一、模块化设计
 
 软件分析系统整体设计框图如\autoref{fig:scas}所示。上小节中提及的软件系统的核心分析功能被拆分为四个独立的功能模块分别实现，以下为具体介绍。
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=.6\linewidth]{ch6/scas}
-%     \caption{\label{fig:scas}软件分析系统设计框架}
-% \end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{software/scas}
+    \caption{\label{fig:scas}软件分析系统的多模块设计框架图}
+\end{figure}
 
 1、数据预处理模块
 
@@ -165,7 +165,7 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
 针对需求分析中提出的多项具体要求，本小节将具体介绍总体设计中确定的四个模块的设计与开发过程。
 \subsection{数据预处理模块}
 
-数据预处理模块的处理流程如\autoref{fig:preprocess2}所示。下面依次介绍各流程的详细设计。
+数据预处理模块整体的处理流程如\autoref{fig:preprocess2}所示。下面依次介绍流程中各步骤的详细设计。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.65\linewidth]{software/preprocess}
@@ -174,10 +174,15 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
 
 一、数据导入
 
-为保持对来自不同硬件设备采集的原始数据保持读取的兼容性，软件系统使用了DP中的模板方法对这一过程进行了设计。
-在这种设计下，目前软件系统已经支持对GE、迈瑞ePM 15M生理信号监护仪等多种医用监护仪导出的数据的读取，
-同时也支持研究团队自研的多生理参数采集设备的数据读取，如\autoref{fig:data_sources}所示。
+为保持对来自不同硬件设备采集的原始数据保持读取的兼容性，软件系统将数据读取过程进行了抽象，如\autoref{fig:template}所示。
+数据读取的过程被设计为一个抽象基类，其中的读取方法被设计为一个抽象方法，该方法只定义了函数名，而不进行具体实现。
+当需要读取具体来源的数据时，必须重新定义该基类的一个子类，并在子类中详细实现具体的读
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.7\linewidth]{software/read}
+    \caption{\label{fig:template}数据导入的设计}
+\end{figure}
 \begin{figure}[htbp]
     \centering
     \subfigure[GE B650监护仪]{
@@ -193,58 +198,56 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
     }
     \caption{\label{fig:data_sources}软件系统目前支持的几款硬件设备}
 \end{figure}
+\noindent
+取方法。
+此时，由硬件差异、数据格式等原因导致的读取方法的差异可以在该抽象基类的不同子类中实现。
 
-模板方法的基本原则是预定义一个操作中算法的骨架,而将延迟实现其中的关键步骤。
-软件系统在数据读取过程所对应的抽象基类中定义了模板方法，并在模板方法中定义了数据读取过程的操作骨架，如\autoref{fig:template}所示。
-基类中的读取方法被定义为抽象方法，真正的业务方法必须在基类的具体子类中实现。
-当主程序需要读取数据时，只需实例化特定子类后，在子类中调用上述模板方法。
-由硬件差异、数据格式等原因导致的读取方法的差异可以在读取过程的不同子类中实现。
-这种机制延迟实现了读取的具体处理过程，隔离了数据读取功能对系统其他功能的影响，也保证了系统整体的灵活性。
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.55\linewidth]{software/template}
-    \caption{\label{fig:template}数据预处理模块流程图}
-\end{figure}
+以上机制延迟实现了读取的具体处理过程，隔离了数据读取功能对系统其他功能的影响，也保证了系统整体的灵活性。
+在这种设计下，目前软件系统已经支持对GE、迈瑞ePM 15M生理信号监护仪等多种医用监护仪导出的数据的读取，
+同时也支持研究团队自研的多生理参数采集设备的数据读取，如\autoref{fig:data_sources}所示。
 
 二、滤波处理
 
 在对生理信号的进行数字滤波时，一般会涉及多种类型的数字滤波器甄选。同时，每种滤波器也会有相应的可调参数。
 因此，性能最佳的滤波器的选择往往需要对多种滤波器调参后综合测评后才能判别，软件分析系统需要能在多种滤波器之间灵活切换。
-软件系统对滤波处理思路与数据导入类似，也在这一过程中采取了模板方法（Template Method）的设计模式\cite{Enrich2018}。
-
-所不同的是，滤波过程所对应的抽象基类中定义了模板方法外，还定义了其他评价滤波效果的相关方法等，如\autoref{fig:template2}所示。
-而常用于评价滤波效果的均方误差与信噪比等指标可以设计为滤波基类的业务方法；
-而带通滤波器、小波滤波器等多种经典滤波算法可以在不同的滤波子类滤波方法中实现。
+软件系统使用了DP中的模板方法（Template Method）对这一过程进行了设计\cite{Enrich2018}，这一过程如\autoref{fig:template2}所示。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.55\linewidth]{software/template}
-    \caption{\label{fig:template2}数据预处理模块流程图}
+    \caption{\label{fig:template2}滤波处理的设计}
 \end{figure}
+
+模板方法的基本原则是预定义一个操作中算法的骨架,而将延迟实现其中的关键步骤。
+软件系统在数据读取过程所对应的抽象基类中定义了模板方法，并在模板方法中定义了数据读取过程的操作骨架。
+基类中的读取方法被定义为抽象方法，真正的业务方法必须在基类的具体子类中实现。
+当主程序需要进行滤波处理时，只需实例化特定子类后，在子类中调用上述模板方法。
+
+与\autoref{fig:template}不同的是，在\autoref{fig:template2}中，滤波过程所对应的抽象基类中除定义了模板方法外，还定义了其他评价滤波效果的相关方法等。
+而常用于评价滤波效果的均方误差与信噪比等指标可以设计为滤波基类的业务方法；而带通滤波器、小波滤波器等多种经典滤波算法可以在不同的滤波子类滤波方法中实现。
 
 三、特征点定位与波形检测
 
-由于特征点定位与波形检测的详细算法过程已经在第三章中详细介绍过，此处对其算法原理不再赘述。但值得一提的是，本研究对PPG波形的检测过程进行了模式设计，
+本研究对PPG波形的检测过程进行了模式设计，
 结合模板方法与工厂方法（Factory Method）\cite{Enrich2018}，提出了一种基于初筛—复核—决策（screening-checking-deciding，SCD）的新型算法，其处理流程如\autoref{fig:detect2}所示。
+由于特征点定位与波形检测的详细算法过程已经在第三章中详细介绍过，此处对其算法原理不再赘述。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\linewidth]{pulse_preprocess/scd}
+    \includegraphics[width=0.65\linewidth]{software/scd}
     \caption{\label{fig:detect2}SCD算法检测流程示意图}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.55\linewidth]{software/factory}
+    \caption{\label{fig:factory}工厂方法的原理示意图}
 \end{figure}
 
 工厂方法的原则是定义一个用于创建对象的接口，让子类决定实例化具体的类。对\autoref{fig:detect2}中的SCD波形检测算法而言，
 初筛、复核及决策阶段均按上述模板方法进行了设计，各阶段的具体业务方法均在对应的具体子类中得到实现。
-在SCD算法运行时，这些子类并不是直接被实例化，而是作为特殊的“产品”，由一个额外的工厂类完成生产。
+在SCD算法运行时，这些子类并不是直接被实例化，而是作为特殊的“产品”，由一个额外的工厂类完成生产，如\autoref{fig:factory}所示。
 该工厂类中定义了用于实例化、初始化这些产品的抽象生产方法，该抽象方法必须在工厂类的子类中实现。
 若需设置或改变所需产品，只需在工厂类的不同子类中调整生产过程。
 对SCD算法而言，在初筛及决策阶段对应的工厂类中，生产方法只返回一个产品对象；而在复核阶段对应的工厂类中，
 生产方法则以列表的形式同时返回了多个产品对象。
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.55\linewidth]{software/factory}
-    \caption{\label{fig:factory}数据预处理模块流程图}
-\end{figure}
 
 四、特征计算
 
@@ -253,8 +256,8 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.55\linewidth]{software/singleton}
-    \caption{\label{fig:singleton}数据预处理模块流程图}
+    \includegraphics[width=.6\linewidth]{software/singleton}
+    \caption{\label{fig:singleton}单例程模式的原理示意图}
 \end{figure}
 
 单例程模式的原则是保证一个类仅有一个实例，并提供一个访问它的全局访问点。
@@ -277,8 +280,13 @@ $Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子�
 导出的数据是以检测的PPG波形为基础，包含该波形所有形态特征。而在本研究中，多种新设计的特征参数往往是以向量的形式出现，
 因此最后导出的结果将会大量出现波形——特征——向量（pulse-feature-vector）这种二级树状结构。
 此外信号特征算法出现引入了新的信号特征、对已有特征值数值的保存形式进行更改等更迭将会直接引起数据存储格式的变化。
-而常见的基于列表式的cvs、txt等对这种树状数据格式的支持较差，
-需要借助新的数据储存格式来实现。
+而常见的基于列表式的csv、txt等对这种树状数据格式的支持较差，需要借助新的数据储存格式来实现。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.8\linewidth]{software/json}
+    \caption{\label{fig:json}软件系统按JSON格式保存的数据示意图}
+\end{figure}
 
 扩展标记语言(Extensible Markup Language，XML) \cite{xml,Li2016}与JavaScript对象标记法（JavaScript Object Notation，JSON）\cite{json,Crockford2006}
 是两种服务器端流行的数据交换格式。两者均可按照实际需求灵活定制存储规则，对较为复杂的数据结构
@@ -286,21 +294,14 @@ $Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子�
 而JSON则对数组类数据有着更好的支持，有着更快的读写速度与更高的存储效率\cite{Nurseitov2009}。
 因此，软件分析系统最终使用JSON作为数据交换格式，
 而在具体实现时使用了中国阿里巴巴公司的开源JSON解析库fastjson\cite{fastjson}进行编码。
-最后的导出数据如\autoref{fig:json}所示，除基本数据特征外，与数据相关的文件信息及孕妇人口统计学信息也被保存至JSON文件。
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.8\linewidth]{software/json}
-    \caption{\label{fig:json}数据预处理模块流程图}
-\end{figure}
+最后的导出数据如\autoref{fig:json}所示。在\autoref{fig:json}中，除基本数据特征外，与数据相关的文件信息及孕妇人口统计学信息也被保存至JSON文件。
 
 六、多生理参数的兼容接口
 
-尽管现阶段针对PE的研究主要基于脉搏波这一生理信号，但并不排除更多人体生理信号会增加进信号分析的可能。
-鉴于此，软件系统进一步设计了$AbstractBMESignal.class$这一抽象类来表征一般生理信号，数据读取、预处理及信号特征计算过程均设计成抽象方法，
-$Pulse.class$是继承该抽象类的复杂处理脉搏波信号的子类。若有其他生理信号的分析需求，可以视情况
-拓展实现心电$ECG.class$、脑电$EEG.class$等。
-而这些具体的信号类都是$AbstractBMESignal.class$的子类，且必须实现相应的抽象方法，可以确保这些子类具有相同的函数接口，方便将来可能的拓展。
+尽管现阶段针对PE的研究主要基于PPG这种单一生理信号，但这并不排除以后的研究会引入更多人体生理信号进行分析的可能。
+鉴于此，软件系统进一步设计了表征一般生理信号的抽象基类$AbstractBMESignal.class$，数据读取、预处理及信号特征计算过程均设计成抽象方法，
+而PPG信号作为上述抽象生理信号的具体基类被设计为$Pulse.class$，而上文中介绍的具体处理过程均是对抽象基类中各抽象方法的实现。后续若有其他生理信号的分析需求，可以视情况
+拓展实现心电$ECG.class$、脑电$EEG.class$等。由于这些子类都继承自$AbstractBMESignal.class$，因此可以确保这些子类具有相同的函数接口，方便将来可能的拓展。
 
 \subsection{跨平台客户端模块}
 
@@ -308,7 +309,7 @@ $Pulse.class$是继承该抽象类的复杂处理脉搏波信号的子类。若�
 
 一、PC客户端
 
-软件系统借助VSCode在Windows系统下完成了PC客户端的开发。而由于Java本身的跨平台特性，该客户端也可方便在Linux等其他系统下进行编译。
+软件系统借助VSCode在Windows系统下完成了PC客户端的开发。而由于Java本身的跨平台特性，该客户端也可方便在Linux等其他系统下进行编译运行。
 
 1、功能与界面
 
@@ -319,7 +320,7 @@ PC客户端的交互界面如\autoref{fig:pc_ui}所示。\autoref{tab:pc_ui}对\
 与此同时，PC端软件也提供了较为丰富的右键菜单功能，提供了修改绘图颜色字体属性，支持选中当前波形直接复制至文件及连接打印机打印等功能。
 由于这些右键功能意义明确，可直接通过菜单名理解，故不提供表格进行枚举解释。
 
-\begin{figure}[htbp]
+\begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{software/pc}
     \caption{\label{fig:pc_ui}PC端软件界面示意图}
@@ -389,19 +390,24 @@ PC客户端的交互界面如\autoref{fig:pc_ui}所示。\autoref{tab:pc_ui}对\
 
 2、处理流程与逻辑
 
-PC端正常的处理流程如所示。在选中需要分析的PPG文件后，软件系统会自动调用SCD算法的进行波形初筛，并将筛选结果在波形显示区域进行标注。
+PC端正常的处理流程如\autoref{fig:pc_process}所示。在选中需要分析的PPG文件后，软件系统会自动调用SCD算法的进行波形初筛，并将筛选结果在波形显示区域进行标注。
 此时，点击波形检验菜单，SCD算法的检查与投票功能会被调用，会对此前的检验结果进行调整修整。用户可以通过鼠标放大观察整段数据的检测结果，若对
-检测结果有异议，可以点击波形人工校验菜单进行校正。此时，可以选择导出波形的检测结果，将完整波形对应的数据段以及其相对原始数据的位置等信息导出。
+检测结果有异议，可以点击波形人工校验菜单进行校正。此时，用户可以选择导出波形的检测结果，将完整波形对应的数据段以及其相对原始数据的位置等信息导出。
 随后，点击特征分析可以计算PPG波形的时域特征，点击导出并上传会将波形检测结果与特征计算结果以Json形式保存，同时这些数据也会被上传至云服务器进行后续分析。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.65\linewidth]{software/pc_process}
+    \caption{\label{fig:pc_process}PC客户端程序的操作流程}
+\end{figure}
 
-除上述完整流程外，PC软件客户端也支持直接选择包含某次分析的生成结果的Json文件上传至云服务器和对指定目录下的指定PPG文件进行批量处理操作。批处理操作的详细介绍见下文。
+除上述完整流程外，PC软件客户端也支持直接选择包含某次分析的生成结果的Json文件上传至云服务器和对指定目录下的指定PPG文件进行批量处理操作，这部分的详细介绍见下文。
 
 3、特色功能说明
 
 1）完善的日志记录
 
 PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件日志管理与输出，可将软件运行过程中的运行状态和中间变量等关键信息按级别
-输出到不同日志文件中，方便系统开发与调试维护，如所示\autoref{fig:logs}所示。其中，日志输出级别包括OFF、FATAL、ERROR、WARN、INFO、DEBUG、ALL等，
+输出到不同日志文件中，方便系统开发与调试维护，如\autoref{fig:logs}所示。其中，日志输出级别包括OFF、FATAL、ERROR、WARN、INFO、DEBUG、ALL等，
 其日志输出的重要性依次降低，但输出的详细程度递增。
 \begin{figure}[htbp]
     \centering
@@ -413,14 +419,14 @@ PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件�
 
 为解决SCD波形检测算法对某些极端数据的漏检、误检等问题，PC客户端还额外增加了对PPG波形的人工校验功能以精细控制PPG波形的增删，如\autoref{fig:manal_check}所示。
 
-具体而言，点击\autoref{fig:manal_check}中的跳转至，软件界面会自动放大波形并跳转至当前选择波形，方便观察波形细节。
+在\autoref{fig:manal_check}中，点击其中表格当前行末的跳转至按钮，软件界面会自动放大波形并跳转至当前选择波形，方便观察波形细节。
 当需要删除已检波形时，只需在\autoref{fig:manal_check}中取消勾选波形行末的是否确认按钮；当需要调整波形起点、波峰及波谷时，只需双击相应数字单元格，
 输入新的采样点序号近似值；当需要新增波形时，只需点击\autoref{fig:manal_check}中的增加新波形，并输入新的波形
 的起点、波峰及波谷的近似采样点序号。点击校验当前行，PC软件会自动检查当前波形，并在起点、波峰及波谷的采样点序号的邻域内自动选择更为精确的数值，并将相应操作更新至
 软件的波形显示区域；而点击校验所有行则会对所有波形进行相应的处理。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.7\linewidth]{software/manal_check}
+    \includegraphics[width=0.8\linewidth]{software/manal_check}
     \caption{\label{fig:manal_check}PC客户端人工校验波形操作界面}
 \end{figure}
 
@@ -430,18 +436,18 @@ PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件�
 则此时按上述处理逻辑与流程重新人工手动处理每一条原始PPG数据无疑显得耗时、低效且繁琐，特别是需要分析处理的数据量较大时。
 为简化上述繁琐耗时的操作流程，PC客户端软件还额外开发了批量处理的功能。
 
-批量处理的核心思路是预先将多条PPG数据的处理过程中的各项人工操作写入配置文件中，随后按照该配置文件依次处理所有PPG数据原始记录文件。
-具体操作时，需选择\autoref{tab:pc_ui}中的批处理菜单，先从\autoref{tab:pc_ui_menu}所示的子菜单中选中生成模板，该操作会要求选择一个
-文件夹作为批处理的根目录，该根目录下所有的有效PPG原始文件会被记录，并在根目录下生成一个空白的配置文件模板。此时，需要用户
-根据实际需要，自定义每一个PPG数据文件的个性化的处理流程，包括波形的计算与调整等。当批处理配置文件由用户更新完成后，最后可点击
-从\autoref{tab:pc_ui_menu}所示的子菜单中选中开始批处理，选择打开该配置文件，等待PC客户端处理完成即可。
-这一过程中的使用的配置文件如\autoref{fig:configure}所示，而\autoref{tab:configure}也对\autoref{fig:configure}中内容进行了进一步的解释与说明。
-
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\linewidth]{software/configure}
     \caption{\label{fig:configure}PC客户端批处理配置文件示意}
 \end{figure}
+
+批量处理的核心思路是预先将多条PPG数据的处理过程中的各项人工操作写入配置文件中，随后按照该配置文件依次处理所有PPG数据原始记录文件。
+具体操作时，需选择\autoref{fig:pc_ui}中的批处理菜单，再从如\autoref{tab:pc_ui_menu}所示的子菜单中选中生成模板。生成模板操作会要求选择一个
+文件夹作为批处理的根目录，该根目录下所有的有效PPG原始文件会被记录，并在根目录下生成一个空白的配置文件模板。此时，需要用户
+根据实际需要，自定义每一个PPG数据文件的个性化的处理流程，包括波形的计算与调整等。当批处理配置文件由用户更新完成后，最后可点击
+从\autoref{tab:pc_ui_menu}所示的子菜单中选中开始批处理，选择打开该配置文件，等待PC客户端处理完成即可。
+这一过程中的使用的配置文件范例如\autoref{fig:configure}所示，而\autoref{tab:configure}也对\autoref{fig:configure}中内容进行了进一步的解释与说明。
 
 \begin{longtblr}
     [
@@ -492,16 +498,16 @@ mode被配置为63，所有文件会完成全部6项批处理操作。而在对\
 \begin{figure}[htbp]
     \centering
     \subfigure[默认界面]{
-    \includegraphics[width=10cm]{software/android}
+    \includegraphics[width=11cm]{software/android}
     }
     \quad
     \subfigure[菜单唤出界面]{
-    \includegraphics[width=10cm]{software/android_menu}
+    \includegraphics[width=11cm]{software/android_menu}
     }
     \caption{\label{fig:android_ui}Android客户端运行界面}
 \end{figure}
 
-另一方面，考虑到Android客户端的实际使用场景，上文介绍的PC客户端特殊功能目前未在Android客户端下实现。
+另一方面，考虑到Android客户端的实际使用场景，上文介绍的PC客户端特色功能目前未在Android客户端下实现。
 但除此之外，Android客户端与PC客户端整体功能相近、操作类似，故在此处不再进行相关赘述。
 
 2、组件区别
@@ -552,8 +558,13 @@ time-domain feature set，PPGMTFS）与脉搏波采样序列时域特征集（ph
 
 如第四章介绍过的，为使后续经由不同机器学习算法训练所得的PE识别模型的性能具有可比性，需要通过控制变量法，让所有的机器学习模型在相同的训练数据集上训练模型，并在相同测试
 数据集上评估性能。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.65\linewidth]{software/loaddataset}
+    \caption{\label{fig:loaddataset}数据集划分创建过程示意图}
+\end{figure}
 
-本模块对数据划分的流程如所示。一个单独的数据集管理类负责返回所有模型训练、评估的训练集与测试集，而在该类内部，需要返回数据时，函数都会先去检查硬盘上是否已有划分好的数据集。
+本模块对数据划分的流程如\autoref{fig:loaddataset}所示。一个单独的数据集管理类负责返回所有模型训练、评估的训练集与测试集，而在该类内部，需要返回数据时，函数都会先去检查硬盘上是否已有划分好的数据集。
 如果存在这样的数据集，则直接读取硬盘上数据集并返回；否则，函数会调用数据集分层抽样等函数并生成特定的数据集，将该数据集保存至硬盘上后返回该数据集。
 而对比数据预处理模块的特征计算的\autoref{fig:singleton}可以发现，上述介绍的数据划分方式也可以视为一种广义上的单例程模式，区别在于后者多了一次对硬盘数据的检查和读取。
 
@@ -566,11 +577,11 @@ time-domain feature set，PPGMTFS）与脉搏波采样序列时域特征集（ph
 
 对机器学习算法的具体封装过程如所示。MyClasssifer是封装之后的类名，可直接用Sklearn工具包中的具体分类算法的实例初始化该类。除此之外，该类只有三个公共函数接口，
 一个为设定MyClasssifer所使用的分类算法的实例，该实例也必须为Sklearn工具包中有效实例；
-一个为设定模型训练所需的训练集与测试集数据函数loadData；最后一个为开始训练并评估的fitPredict函数，该函数封装了机器学习算法在训练集与测试集上的全部处理操作过程。
+一个为设定模型训练所需的训练集与测试集数据函数$loadData()$；最后一个为开始训练并评估的$fit\_predict()$函数，该函数封装了机器学习算法在训练集与测试集上的全部处理操作过程。
 在具体使用时，使用封装后MyClasssifer类评估不同的机器学习方法在数据集上的表现时，可实现代码的最小化，简化了模型训练过程。
 
 另外，在上述过程中，为使训练好的机器学习模型供后续上传至云服务器使用，相关结果也必须及时保存。
-这一过程也被封装在了MyClasssifer的fitPredict函数中，生成的最终模型与训练模型的超参数也被同时保存下来。
+这一过程也被封装在了MyClasssifer的$fit\_predict()$函数中，生成的最终模型与训练模型的超参数也被同时保存下来。
 除随机森林算法构建的模型因为算法本身的随机性导致训练模型的不可控外，只要给定相同的数据集，选中固定的算法，在给予相同的超参数的条件下，就可以复现出完全相同的最终识别模型。
 
 四、日志记录
@@ -692,7 +703,7 @@ App应用程序通过Retrofit请求网络，实际上是使用Retrofit接口层�
 在服务端返回数据之后，OkHttp将原始的结果交给Retrofit，Retrofit根据用户的需求对结果进行解析，这一过程如\autoref{fig:Retrofit}所示。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.7\linewidth]{/software/Retrofit}
+    \includegraphics[width=.9\linewidth]{/software/retrofit}
     \caption{\label{fig:Retrofit}Retrofit的工作原理}
 \end{figure}
 
@@ -796,9 +807,9 @@ Django按模型-模版-视图（Model-Template-View，MTV）设计模式的进�
 是计算机领域最重要的基础软件之一，也是确保计算机系统稳定运行的基石。
 
 另一方面，关系型数据库是对存储的格式能够直观地反映实体间的关系的一类数据库的统称。关系型数据库和常见的表格比较相似，数据库的表与表之间是有很多复杂的关联关系。
-而Mysql就是一种最为常见、也最具代表性的关系型数据库，也是目前流行的主流关系数据库之一。
-Mysql遵循结构化查询语言（Structured Query Language，SQL）标准，支持查询、新增、更新、删除、求和、排序等基本操作。
-为使云服务器端的数据管理更为便捷有效，同时应对后续可能的大量数据管理，综合软件系统的开发过程中也基于Mysql进行了简单的数据库设计。
+而MySQL就是一种最为常见、也最具代表性的关系型数据库，也是目前流行的主流关系数据库之一。
+MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，支持查询、新增、更新、删除、求和、排序等基本操作。
+为使云服务器端的数据管理更为便捷有效，同时应对后续可能的大量数据管理，综合软件系统的开发过程中也基于MySQL进行了简单的数据库设计。
 
 
 \section{测试与验证}
