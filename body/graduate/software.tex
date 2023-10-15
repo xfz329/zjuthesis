@@ -3,7 +3,7 @@
 本研究此前各章中均涉及了一定的软件设计与算法设计，在这些工作的基础上，本章介绍了一款基于PPG信号的PE识别分析软件系统的设计与实现过程。在分析具体功能需求后，
 选取跨平台客户端+云服务器的方案进行整体设计，以期完成以下四部分内容：PPG信号的预处理与特征计算生成；PE识别模型的本地化训练与生成；跨平台的多客户端软件设计；
 云服务器端软件设计与PE识别模型的部署。本章对其中涉及的软件与算法开发设计进行了详细的介绍，同时也展示了各工作内容的实现效果，
-并对软件系统进行了功能性的验证与测试。
+并对软件系统简单地进行了功能性的验证与测试。
 
 本章研究内容的框架图如\autoref{fig:frameworks6}所示。
 
@@ -284,7 +284,7 @@ $Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子�
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.8\linewidth]{software/json}
+    \includegraphics[width=\linewidth]{software/json}
     \caption{\label{fig:json}软件系统按JSON格式保存的数据示意图}
 \end{figure}
 
@@ -549,8 +549,13 @@ PE识别模型训练生成模块是软件系统的核心，基于已经提取好
 Json文件的构成更符合一棵数据“树”的概念。为从多棵这样的数据树中构建出完整的特征数据集矩阵，显然需要一个数据合并的过程。
 这也即第四章中提及的的脉搏波多维度时域特征集（photoplethysmographic multidimensional
 time-domain feature set，PPGMTFS）与脉搏波采样序列时域特征集（photoplethysmographic sampling series time-domain feature set，PPGSSTFS）的生成过程。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.65\linewidth]{software/mergedata}
+    \caption{\label{fig:mergedata}数据合并流程图}
+\end{figure}
 
-模块对数据合并的处理流程如所示。依次读取需要合并的数据特征文件，确定生成矩阵的标题栏，记录下包括软件版本号、原始PPG数据文件名、数据患者名、PE状态等基本信息，
+模块对数据合并的处理流程如\autoref{fig:mergedata}所示。依次读取需要合并的数据特征文件，确定生成矩阵的标题栏，记录下包括软件版本号、原始PPG数据文件名、数据患者名、PE状态等基本信息，
 随后开始记录数据特征文件的所有特征数值，为了后续分析方便，PPG波形序号也被同时记录。而当生成PPGSSTFS时，需要根据PPG波形对齐策略的选择，将原始采样值量化至指定区间内。
 按此方式依次处理完所有文件即可得到最终的数据集矩阵，而考虑到数据格式的兼容性的需要，数据集矩阵最终会以csv格式进行保存。
 
@@ -575,14 +580,20 @@ time-domain feature set，PPGMTFS）与脉搏波采样序列时域特征集（ph
 另一方面，由于Python本身是一种动态类型的编程语言，强调在运行时确定对象的类型，而非在编译时确定其类型。这意味着Python不会检测变量的具体类型，而是关注变量
 是否具有特定的属性与方法。而Sklearn本身在设计过程中均遵循了统一规范，不同的机器学习算法均提供了相同的API函数。因此，软件系统在此基础上对不同机器学习算法进行了一层封装。
 
-对机器学习算法的具体封装过程如所示。MyClasssifer是封装之后的类名，可直接用Sklearn工具包中的具体分类算法的实例初始化该类。除此之外，该类只有三个公共函数接口，
-一个为设定MyClasssifer所使用的分类算法的实例，该实例也必须为Sklearn工具包中有效实例；
-一个为设定模型训练所需的训练集与测试集数据函数$loadData()$；最后一个为开始训练并评估的$fit\_predict()$函数，该函数封装了机器学习算法在训练集与测试集上的全部处理操作过程。
-在具体使用时，使用封装后MyClasssifer类评估不同的机器学习方法在数据集上的表现时，可实现代码的最小化，简化了模型训练过程。
+在本软件系统中，MyClasssifer是封装之后的类名，可直接用Sklearn工具包中的具体分类算法的实例初始化该类。除此之外，该类只有四个公共函数接口，
+第一个为设定MyClasssifer所使用的分类算法的实例的初始化函数$init()$，该函数要求初始实例必须为Sklearn工具包中有效算法实例；
+第二个为设定模型训练所需的训练集与测试集数据函数$load\_data()$；第三个为开始训练并评估的$fit\_predict()$函数，该函数封装了机器学习算法在训练集与测试集上的全部处理操作过程；
+最后一个为对模型进行超参数网格搜索的函数$grid\_search()$。特别地，在$fit\_predict()$函数中集成封装了Sklearn工具包中各算法模型的多项重要函数，其处理流程如\autoref{fig:fit_predict}所示。
+综上，借助封装后MyClasssifer类，评估不同的机器学习方法在同一批数据集上的表现的过程将得到进一步地简化，在实现代码的最小化的同时，也避免了算法模型训练过程的代码遗漏等问题，从而简化了模型训练过程。
 
-另外，在上述过程中，为使训练好的机器学习模型供后续上传至云服务器使用，相关结果也必须及时保存。
-这一过程也被封装在了MyClasssifer的$fit\_predict()$函数中，生成的最终模型与训练模型的超参数也被同时保存下来。
-除随机森林算法构建的模型因为算法本身的随机性导致训练模型的不可控外，只要给定相同的数据集，选中固定的算法，在给予相同的超参数的条件下，就可以复现出完全相同的最终识别模型。
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.38\linewidth]{software/fit_predict}
+    \caption{\label{fig:fit_predict}封装后的$fit\_predict()$函数处理流程图}
+\end{figure}
+
+注意在\autoref{fig:fit_predict}中，为使训练好的机器学习模型供后续上传至云服务器使用，MyClasssifer的$fit\_predict()$函数也将生成的最终模型与训练模型的超参数进行了保存。
+除以随机森林为代表的部分随机性强的机器学习算法外，保存模型生成的超参数可确保只要给定相同的数据集，使用相同的算法在相同的超参数的条件下，就可以复现出完全相同的机器学习模型。
 
 四、日志记录
 
@@ -591,7 +602,7 @@ time-domain feature set，PPGMTFS）与脉搏波采样序列时域特征集（ph
 
 日志记录logging包中也支持设置日志等级，可在不同的版本（如开发环境、生产环境）上通过设置不同的输出等级来记录对应的日志，非常灵活。
 其中，日志输出级别包括DEBUG、INFO、NOTICE、WARNING、ERROR、CRITICAL、ALERT、EMERGENCY等。而在具体使用logging包时需要通过一个Json文件进行
-相关功能的配置，具体配置过程可参见官网，这里不再赘述。\autoref{fig:clflog}给出了模型训练生成模型最终的日志记录示意。
+相关功能的配置，具体配置过程可参见logging包官方文档，这里不再赘述。\autoref{fig:clflog}给出了模型训练生成模型最终的日志记录示意。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.8\linewidth]{software/clflog}
@@ -697,21 +708,27 @@ HttpClient基于标准、纯净的Java语言实现，完全实现了HTTP1.0和HT
 
 2）Android客户端
 
-Android客户端选择了Retrofit这一组件进行网络功能的开发。Retrofit是目前Android系统下最流行、应用最广的一个RESTful的HTTP网络请求框架的封装。
-网络请求的工作本质上是OkHttp完成，而Retrofit仅负责网络请求接口的封装。
-App应用程序通过Retrofit请求网络，实际上是使用Retrofit接口层封装请求参数、Header、URL等信息，之后由OkHttp完成后续的请求操作
-在服务端返回数据之后，OkHttp将原始的结果交给Retrofit，Retrofit根据用户的需求对结果进行解析，这一过程如\autoref{fig:Retrofit}所示。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.9\linewidth]{/software/retrofit}
     \caption{\label{fig:Retrofit}Retrofit的工作原理}
 \end{figure}
+Android客户端选择了Retrofit这一组件进行网络功能的开发。Retrofit是目前Android系统下最流行、应用最广的一个RESTful的HTTP网络请求框架的封装。
+网络请求的工作本质上是OkHttp完成，而Retrofit仅负责网络请求接口的封装。
+App应用程序通过Retrofit请求网络，实际上是使用Retrofit接口层封装请求参数、Header、URL等信息，之后由OkHttp完成后续的请求操作
+在服务端返回数据之后，OkHttp将原始的结果交给Retrofit，Retrofit根据用户的需求对结果进行解析，这一过程如\autoref{fig:Retrofit}所示。
 
 二、模型的上传
 
 在前文中提及过的PE识别模型训练完成之后，得到的各机器学习模型也需要被上传部署在云服务器端。为使机器学习的部署更为便捷、清晰，软件系统也基于Python的图形界面PyQt额外开发了
-机器学习模型上传程序，如所示。而各机器学习模型在上传时，本质上仍使用了HTTP协议的POST方法。该POST方法在与云服务器端进行通讯时携带的参数及含义如\autoref{tab:post_paras2}所示，
+机器学习模型上传程序，如\autoref{fig:upload_model}所示。而各机器学习模型在上传时，本质上仍使用了HTTP协议的POST方法。除\autoref{fig:upload_model}中已展示的外，
+该POST方法在与云服务器端进行通讯时携带的全部参数及含义如\autoref{tab:post_paras2}所示，
 其中文件类数据在表格中用粉红色底色进行了突出显示。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{software/upload_model}
+    \caption{\label{fig:upload_model}模型上传软件操作界面示意}
+\end{figure}
 \begin{longtblr}
     [
         theme                   = {zju},
@@ -782,21 +799,23 @@ Django按模型-模版-视图（Model-Template-View，MTV）设计模式的进�
     视图&业务逻辑层&存取模型及调取恰当模板的相关逻辑。模型与模板的桥梁\\
 \end{longtblr}
 
-云服务器端的程序处理流程如\autoref{fig:django2}所示。此前介绍过的\autoref{tab:post_paras}中的跨平台客户端的数据请求与\autoref{tab:post_paras2}中的
+云服务器端的程序处理流程如\autoref{fig:url}所示。此前介绍过的\autoref{tab:post_paras}中的跨平台客户端的数据请求与\autoref{tab:post_paras2}中的
 模型上传请求分别对应云服务器端的两个路由地址，即两个URL地址。对模型上传请求而言，云服务器端程序会在检查各项参数后，会在确认当前并无重复的算法及其版本后，将新的
 模型存入数据库中供后续调用。而在处理跨平台客户端的数据请求时，程序也会进行参数检查，检查无误也会将所有数据进行存储。随后，依据数据请求中的是否需要进行数据预测参数，
 数据请求中指定的需要使用的机器学习模型等参数，程序开始进行数据预测。由于本论文目前使用采集的数据量较小，当指定的机器学习模型被载入后，
 程序会进一步检查，当前数据是否已经在模型训练阶段使用过，即当前数据是否在模型的训练集中。只有机器学习的未见数据实例才会被最终预测，同时，预测结果会被
 返回至客户端。
 
-\begin{figure}[htbp]
+以上介绍的处理流程实际上对应着\autoref{tab:django_func}中的视图，即业务逻辑层。而对于\autoref{tab:django_func}中的模板表现层而言，目前云服务器端程序对网络请求的处理较为简单，
+只以纯文字的形式返回内容，没有进行专门的网页UI设计，故这部分不做过多介绍。而\autoref{tab:django_func}中的模型
+\begin{figure}[h]
     \centering
-    \includegraphics[width=.8\linewidth]{software/django}
-    \caption{\label{fig:django2}Django框架结构示意\cite{djangosq}}
+    \includegraphics[width=\linewidth]{software/url}
+    \caption{\label{fig:url}云服务器响应URL请求过程流程图}
 \end{figure}
 
-以上介绍的处理流程实际上对应着\autoref{tab:django_func}中的视图，即业务逻辑层。而对于\autoref{tab:django_func}中的模板表现层而言，目前云服务器端程序对网络请求的处理较为简单，
-只以纯文字的形式返回内容，没有进行专门的网页UI设计，故这部分不做过多介绍。而\autoref{tab:django_func}中的模型涉及了数据库的处理操作，这部分的程序设计会在后续进行介绍。
+\noindent
+涉及了数据库的处理操作，这部分的程序设计会在后续进行介绍。
 
 另外，为方便调试，云服务端在使用Django进行开发时，也启用了日志记录功能。由于这部分的程序功能也是基于Python下的logging包开发，具体过程与此前模型训练模块的类似，故不再单独赘述。
 
