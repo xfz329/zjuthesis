@@ -843,7 +843,8 @@ MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，�
     \caption{\label{fig:data_table_relationship}软件系统的数据表及数据关系示意图}
 \end{figure}
 
-基于以上考虑，软件系统最终设计了多张数据表（Table）以管理存储客户端上传来的数据与模型文件。这些数据表之间的相互关联关系如\autoref{fig:data_table_relationship}所示。
+基于以上考虑，为便捷高效地存储本研究中涉及的PPG相关数据，同时保持由于新的数据类型引入、算法更新导致的特征增删等多种变化的兼容性，
+软件系统一共设计了四张数据表（Table）来解决这一问题。这些数据表之间的相互关联关系如\autoref{fig:data_table_relationship}所示。
 可以看到，模型的存储过程较为简单；而相对地，为保证兼容性，生理信号数据及其衍生特征的存储较为复杂，需要多张数据表级联并相互配合。
 需要注意的是，为简明扼要，\autoref{fig:data_table_relationship}中仅显示了各数据表的重要的外部键，这些数据表的详细设计可参见
 \autoref{tab:data_table_record}至\autoref{tab:data_table_model}。
@@ -877,6 +878,11 @@ MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，�
     isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
 \end{longtblr}
 
+Record数据表是\autoref{fig:data_table_relationship}中四张数据表中最为底层的，
+它采用Django默认的AutoField字段作为主键，主要用来记录存储数据请求中的最原始数据文件，如\autoref{tab:data_table_record}所示。
+Record数据表中的project字段与state字段是一定程度上的冗余设计，前者目前固定表征PE，后者固定表征PE患病状态。
+以后可能涉及的其他项目的存储可以更加需要调整这两个字段意义。值得一提的是，数据表中额外增加了isDeleted字段用以处理数据记录的删除，当需要删除
+数据时，只需更改该字段的布尔值，避免了物理删除彻底丢失对数据后续管理的可能。
 \begin{longtblr}
     [
         theme                   = {zju},
@@ -905,6 +911,11 @@ MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，�
     isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
 \end{longtblr}
 
+Analysis数据表存储了对Record数据表的进行了初步处理的文件信息，如\autoref{tab:data_table_analysis}所示。
+而在本研究中，这些文件包括存储PPG时域特征的Json文件与PPG原始采样值的Json文件。
+该表通过bindRecord字段绑定Record数据表的外部键，通过jsonFile字段存储初步处理的文件信息。此外，该表通过dataType与dataVersion两个字段来保证
+后续可能引入的多生理信号类型与数据版本更迭的兼容适配。
+
 \begin{longtblr}
     [
         theme                   = {zju},
@@ -930,6 +941,11 @@ MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，�
     index&整型&最小分析单位编号&兼容性设计，在PE项目中，该值指代PPG原始记录中的完整波形序号\\
     isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
 \end{longtblr}
+
+Unit数据表存储了对Analysis数据表的进行分析处理的最小单位，如\autoref{tab:data_table_unit}所示。
+在本研究中，显然最小分析单位是PPG数据的单个波形数据。
+该表通过bindAnalysis字段绑定Analysis数据表的外部键，通过index字段存储最小单位信息。此外，该表通过signalType字段来保证
+后续引入的多种类型的生理信号的可能。
 
 \begin{longtblr}
     [
@@ -957,6 +973,11 @@ MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，�
     value&Json&具体特征值&兼容性设计，Django支持直接以Json形式存储字段信息\\
     isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
 \end{longtblr}
+
+Feature数据表存储了对PPG记录的单个波形的所有特征，而bindUnit字段是关联到Unit数据表的外部键，如\autoref{tab:data_table_feature}所示。
+特别地，本论文中介绍过的波形时域特征与其原始采样值序列都可以在该数据表中存储，只需通过name字段进行区分即可，其中前者的name字段数值
+多变，而后者固定为point。这种广义上的特征具体数值直接以Json格式存储在value字段中。此外，对原始采样值而言，可能存在均一化、滤波等操作，这些操作也
+会产生新的数据，这些操作引起的差异被存储入type字段。
 
 \begin{longtblr}
     [
@@ -986,6 +1007,10 @@ MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，�
     uploadTime&字符串&记录模型上传时间&\\
     isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
 \end{longtblr}
+
+Model数据表主要存储云服务端的机器学习模型，该表结构单一，\autoref{tab:data_table_model}中的字段信息意义也较为简单。其中，version字段
+用于保留对模型更新迭代的可能，而trainSet字段则是在目前数据量较小的情况下的一种折中，避免模型处理在训练过程中的已见示例。
+
 \section{测试与验证}
 此前的内容主要对软件系统的功能的设计与实现进行了介绍，在软件开发完成后，还需要对其各项模块功能与最终完整功能进行一定的实际验证。本小节将对这部分的工作进行介绍。
 
