@@ -810,7 +810,7 @@ Django按模型-模版-视图（Model-Template-View，MTV）设计模式的进�
 只以纯文字的形式返回内容，没有进行专门的网页UI设计，故这部分不做过多介绍。而\autoref{tab:django_func}中的模型
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{software/url}
+    \includegraphics[width=0.8\linewidth]{software/url}
     \caption{\label{fig:url}云服务器响应URL请求过程流程图}
 \end{figure}
 
@@ -830,7 +830,162 @@ Django按模型-模版-视图（Model-Template-View，MTV）设计模式的进�
 MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，支持查询、新增、更新、删除、求和、排序等基本操作。
 为使云服务器端的数据管理更为便捷有效，同时应对后续可能的大量数据管理，综合软件系统的开发过程中也基于MySQL进行了简单的数据库设计。
 
+数据库中的数据一词指数据库可以储存多种信息，这些信息一般被称为字段。而为了从包含多条数据记录的集合中获取特定记录，还必须从这些字段中定义主键（PRIMARY KEY）。
+主键通常可以是一个字段或多个字段的组合，其值能唯一地标识表中的每一行，通过它可强制表的实体完整性。主键在与其他表的外键关联以及数据记录的修改与删除中具有重要作用。
 
+另一方面，如前所述，不论是如\autoref{tab:post_paras}上传的数据请求还是如\autoref{tab:post_paras2}上传的模型请求，都包含了大量参数信息，这些信息必须进行高效、有序的完整储存。
+与此同时，相比模型请求而言，数据请求中的参数种类常常会随着软件系统的迭代而发生较大的改变，比如数据信号种类的变更，PPG特征的增改等。这也要求软件系统在进行数据库设计时，必须同时
+保持一定的兼容性设计。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.8\linewidth]{software/data_table_relationship}
+    \caption{\label{fig:data_table_relationship}软件系统的数据表及数据关系示意图}
+\end{figure}
+
+基于以上考虑，软件系统最终设计了多张数据表（Table）以管理存储客户端上传来的数据与模型文件。这些数据表之间的相互关联关系如\autoref{fig:data_table_relationship}所示。
+可以看到，模型的存储过程较为简单；而相对地，为保证兼容性，生理信号数据及其衍生特征的存储较为复杂，需要多张数据表级联并相互配合。
+需要注意的是，为简明扼要，\autoref{fig:data_table_relationship}中仅显示了各数据表的重要的外部键，这些数据表的详细设计可参见
+\autoref{tab:data_table_record}至\autoref{tab:data_table_model}。
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {Record数据表的字段设计},
+        label                   = {tab:data_table_record},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[1,c,m]X[2,c,m]X[2,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+        cell{2}{4}              = {bg=\emphacolor},
+    }
+    字段&数据类型&意义&备注\\
+    AutoField&32位整型&自增字段&Django默认主键，随记录存储自动增加\\
+    project&字符串&数据归属项目&兼容性设计，默认值为PE\\
+    sourceFileName&字符串&上传的原始数据文件名&\\
+    sourceFile&字符串&上传的原始数据文件&Django会自动管理文件名与文件的映射关系\\
+    person&字符串&原始数据文件来源的人名&\\
+    state&状态变量&整型&兼容性设计，在PE项目中指代用户PE患病状态，0为健康，1为PE，2为PE待定；其他项目中state意义可根据需要自定义\\
+    sampleTime&字符串&数据采集时间&\\
+    createTime&时间日期&当前Record存储时间&时间日期为Django自定义的数据类型\\
+    isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
+\end{longtblr}
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {Analysis数据表的字段设计},
+        label                   = {tab:data_table_analysis},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[2,c,m]X[3,c,m]X[4,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+        cell{2-3}{4}            = {bg=\emphacolor},
+    }
+    字段&数据类型&意义&备注\\
+    AutoField&32位整型&自增字段&Django默认主键，随记录存储自动增加\\
+    bindRecord&\autoref{tab:data_table_record}中定义的Record记录&当前记录绑定的Record数据表记录ID&关联到Record数据表的外部键\\
+    dataType&字符串&数据记录所属类别&兼容性设计，在PE项目中，可选值包括指代特征的feature与指代原始采用点的point\\
+    dataVersion&字符串&上传的数据特征文件版本号&兼容性设计，保持软件系统对因算法迭代导致的数据调整的兼容\\
+    jsonFile&字符串&上传的数据特征文件&Django会自动管理文件名与文件的映射关系\\
+    createTime&时间日期&当前Record存储时间&时间日期为Django自定义的数据类型\\
+    isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
+\end{longtblr}
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {Unit数据表的字段设计},
+        label                   = {tab:data_table_unit},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[2,c,m]X[3,c,m]X[4,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+        cell{2-3}{4}            = {bg=\emphacolor},
+    }
+    字段&数据类型&意义&备注\\
+    AutoField&32位整型&自增字段&Django默认主键，随记录存储自动增加\\
+    bindAnalysis&\autoref{tab:data_table_analysis}中定义的Analysis记录&当前记录绑定的Analysis数据表记录ID&关联到Analysis数据表的外部键\\
+    signalType&字符串&数据类型&兼容性设计，在PE项目中，目前该值仅为PPG\\
+    index&整型&最小分析单位编号&兼容性设计，在PE项目中，该值指代PPG原始记录中的完整波形序号\\
+    isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
+\end{longtblr}
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {Feature数据表的字段设计},
+        label                   = {tab:data_table_feature},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[2,c,m]X[3,c,m]X[4,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+        cell{2-3}{4}            = {bg=\emphacolor},
+    }
+    字段&数据类型&意义&备注\\
+    AutoField&32位整型&自增字段&Django默认主键，随记录存储自动增加\\
+    bindUnit&\autoref{tab:data_table_unit}中定义的Unit记录&当前记录绑定的Unit数据表记录ID&关联到Unit数据表的外部键\\
+    type&字符串&操作标记&兼容性设计，在PE项目组，对PPG的特征类数值无意义；对PPG的采样点数据记录的均一化等特性\\
+    name&字符串&特征数据名称&兼容性设计，特征名。在PE项目组，特征类数据该值为具体特征缩写；对采样点数据该值固定为point\\
+    value&Json&具体特征值&兼容性设计，Django支持直接以Json形式存储字段信息\\
+    isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
+\end{longtblr}
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {Model数据表的字段设计},
+        label                   = {tab:data_table_model},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[1,c,m]X[2,c,m]X[3,c,m]X[4,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+        cell{2}{4}              = {bg=\emphacolor},
+    }
+    字段&数据类型&意义&备注\\
+    AutoField&32位整型&自增字段&Django默认主键，随记录存储自动增加\\
+    model&字符串&机器学习模型文件&Django会自动管理文件名与文件的映射关系\\
+    algorithm&字符串&机器学习训练使用的算法名称&\\
+    version&字符串&模型的版本号&兼容性设计，支持模型版本更迭\\
+    trainSet&Json&记录当前模型训练所使用的用户数据&\\
+    trainTime&字符串&记录模型训练时间&\\
+    uploadTime&字符串&记录模型上传时间&\\
+    isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
+\end{longtblr}
 \section{测试与验证}
 此前的内容主要对软件系统的功能的设计与实现进行了介绍，在软件开发完成后，还需要对其各项模块功能与最终完整功能进行一定的实际验证。本小节将对这部分的工作进行介绍。
 
@@ -844,64 +999,3 @@ MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，�
 \subsection{预测模型的测试与验证}
 
 \section{小结}
-
-
-
-
-二、预处理算法设计
-
-数据预处理部分的软件算法工作主要由等几部分组成。由于本小节部分内容与第四章内容较为接近，预处理工作的具体实现思路可参阅前文。而数据滤波与波形检测的软件设计均采用了策略与机制分离的思想，利用工厂设计模式完成。
-
-1. 数据滤波
-
-如前所述，在对生理信号的进行数字滤波时，一般会涉及多种类型的数字滤波器甄选。同时，每种滤波器也会有相应的可调参数。因此，性能最佳的滤波器的选择往往需要对多种滤波器调参后综合测评后才能判别，因此，软件分析系统需要能在多种滤波器之间灵活切换。
-
-为实现上述功能，首先定义了抽象的滤波器基类$Filter.class$,在该基类中定义了滤波器的滤波、调参等基本操作的抽象方法。其次，每种特定滤波器$SpecificFilter.class$作为子类继承并实现$Filter.class$中的所有抽象方法。所有的滤波器子类并不直接实例化
-，而是通过额外定义的$FilterFactory.class$这一工厂类来实现。在$FilterFactory.class$中定义好$getFilter()$方法，在该方法中选择适当的滤波器种类，将其实例化后，根据实际需求调整好滤波器性能参数并返回该实例。另一方面，当主程序中需要使用
-滤波器对原始信号进行处理时，仅需调用$FilterFactory.class$的$getFilter()$方法即可。任何对滤波器种类及相关参数的设置与修改对主程序而言均是不可见的，从而很好的隔离了滤波器设置对主程序代码的影响，降低了软件系统的耦合性。
-这一过程中的伪代码如\autoref{lst:filter}所示。
-% \lstinputlisting[caption={滤波器设置的伪代码实现},label=lst:filter,style=myJava]{code/ch6/PPGReader.java}
-
-2. 波形检测
-
-脉搏波波形检测是本研究的基础，波形检测算法的准确性将直接影响后续分析工作。此前的研究人员已经提出过多种脉搏波波形检测方式\cite{Wang2012}，本文则在前人基础上进一步优化了波形检测的流程，将之前的一次性检测改成了检测-复核-决策(Detect-Check-Keep)
-的反馈式检波流程，进一步提高了脉搏波波形检测准确性，该过程中的流程图如\autoref{fig:check}所示。
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=1.1\linewidth]{ch6/check}
-%     \caption{\label{fig:check}改进后的检波流程图}
-% \end{figure}
-
-其中，$detect()$方法负责按照一定的基础规则初步筛选出所有可能脉搏波波形位置。$check()$方法则遵循一定的标准，对初筛的结果进一步复核，筛选出某些不符合标准的疑似误检的波形。其中，本研究中自行定义了一些复核标准，
-包括如两个波形的间期需在合理时间内、同一人的脉搏波波形在短时间内波形应较为接近、单个脉搏波波形的能量不应与所有波形的平均能量有较大的出入等。随后$keep()$方法则负责对$check()$的结果进行综合评判，可按照投票决策或比重决策等方式来决定最终判断疑似误检波形的
-去留。最后，在初筛的波形中剔除误检的波形则可得到最终的检测结果。
-
-与上小节中的数字滤波的工厂模式设计类似，Detector、Checker及Keeper分别是检波算法、复核算法及决策算法的基类，分别定义了各算法的基本行为，但不负责实现具体功能。具体的实现算法需要重新定义子类继承相应的基类，
-并实现其中的相应的$detect()$、$check()$及$keep()$方法。此时，再分别定义各算法的工厂类，将各算法实例化过程进行封装。其中，需要注意的是，$DetectorFactory.class$与$KeeperFactory.class$返回的实例都仅含有一个对象，而$CheckerFactory.class$
-可以返回包含多个实例的集合，即同时返回多个复核标准同时对初筛结果进行检测。
-
-上述设计可以有效提高脉搏波波形检测的准确性，并且可以按需求灵活定制筛选标准、调整检波精度。与此同时，根据实际需要和检波效果等因素，检测算法的Detector、Checker及Keeper等部分均可自行改动、调整、优化，且不影响主程序中的代码执行，从而实现了
-检波算法的各环节的高内聚性及算法与系统整体之间的低耦合性。
-
-三、信号特征算法设计
-
-基于脉搏波的波形检测算法无疑是客户端软件的核心功能之一，且是客户端软件中改动变化最频繁、最容易因代码的更迭而发生增删修改的部分。降低特征算法的更迭对客户端软件的整体影响，是对特征算法整体设计的基本要求。本研究中，对特征算法
-的整体设计如\autoref{fig:features}所示。
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=1\linewidth]{ch6/feature}
-%     \caption{\label{fig:features}特征计算的算法流程图}
-% \end{figure}
-
-与前小节的设计类似，$AbstractFeature.class$是个抽象父类，规定了所有特征应有的一般属性，包括特征名及其缩写$Name$，特征所代表的含义$Describition$等描述信息。而在$AbstractFeature.class$的子类$SpesificFeatureX.class$中才根据具体设计思想等完成对
-该特征的计算过程$calculate()$。值得注意的是，
-
-而上述先导设置过程，可以在$SpesificFeatureX.class$定义时设定，但为了保持更多的调整灵活性。最终在实现软件系统时额外定义了$FeatureFactory.class$，用以集中完成并封装所有需进行计算的特征子类的初始化工作。而在主程序中调用$FeatureFactory.class$
-的$GetAllFeatures()$方法时，其返回值将是包含所有特征子类的列表，并特征子类的$Order$值决定了该子类在返回列表里的排列顺序，即真正的执行顺序。若软件系统需要增加某一新型特征算法，只需设计新的$SpesificFeature.class$，实现其具体的计算过程，
-随后在$FeatureFactory.class$设置好对应$Order$与所需的$Prefixes$等在内的初始化工作，即可完成对待检特征集的拓展。
-
-此外\autoref{fig:features}也给出了特定脉搏波波形所有特征的具体计算流程。首先，客户端需完成数据预处理工作，获取所有待计算的脉搏波完整波形。其次，通过实例化$FeatureFactory.class$并调用$GetAllFeatures()$方法以获取所有待计算的特征集合。
-随后，针对特征集合里面的每个$SpesificFeatureX.class$特征，分别调用其$calculate()$方法完成计算。此时特定波形的具体特征值仍然保持在$SpesificFeatureX.class$中，故最后，需要将结果保持至该波形对应的具体$Pulse.class$实例中，
-即执行最后的$pulseX.Store(feature)$操作。另外，不难发现，$FeatureFactory.class$的实例化过程会随着待检波形的更迭而不断进行，最终会导致Java虚拟机重复创建、同时消耗系统内存资源。为减少该冗余操作，
-最后客户端使用了设计模式中的Singlon单例模式\cite{Li2015}对$FeatureFactory.class$
-进行了再次设计，即只可以创建一个$FeatureFactory.class$的实例，此后所有调用$FeatureFactory.class$的创建方法只会返回第一次调用时创建的实例。
