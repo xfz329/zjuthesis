@@ -50,7 +50,7 @@ PC端与移动端均需开发对应的客户端。
 六、完备的日志记录
 
 软件系统需要具有完备的日志记录功能，方便在开发或部署到生产环境中之后，随时定位、调试可能出现的问题。由于软件系统模块繁多、功能齐全，如果没有完备的日志记录功能，
-软件系统的debug过程将举步维艰，同时，也很难评估软件系统的运行状态。
+软件系统的调试（debug）过程将举步维艰，同时，也很难评估软件系统的运行状态。
 
 七、数据源兼容性
 
@@ -695,6 +695,7 @@ GET方法与POST方法均能向服务器端传递数据，但两者之间也存�
     sample\_time&原始数据的采集时间&文本&字符串&{可选项，本论文中由于导出数据包含数据采样时间，故增设该值}\\
     predict&本次上传的数据是否需要进行预测分析&文本&字符串&值为True或False\\
     model&本次上传数据分析所使用的机器学习模型&文本&字符串&值为具体机器学习算法模型\\
+    upload\_time&本次通信上传时间&文本&字符串&\\
 \end{longtblr}
 
 3、客户端的网络组件
@@ -799,25 +800,70 @@ Django按模型-模版-视图（Model-Template-View，MTV）设计模式的进�
     视图&业务逻辑层&存取模型及调取恰当模板的相关逻辑。模型与模板的桥梁\\
 \end{longtblr}
 
-云服务器端的程序处理流程如\autoref{fig:url}所示。此前介绍过的\autoref{tab:post_paras}中的跨平台客户端的数据请求与\autoref{tab:post_paras2}中的
+1、处理流程
+
+云服务器端的程序处理流程实际上对应着\autoref{tab:django_func}中的视图，即业务逻辑层。如\autoref{fig:url}所示，此前介绍过的\autoref{tab:post_paras}中的跨平台客户端的数据请求与\autoref{tab:post_paras2}中的
 模型上传请求分别对应云服务器端的两个路由地址，即两个URL地址。对模型上传请求而言，云服务器端程序会在检查各项参数后，会在确认当前并无重复的算法及其版本后，将新的
 模型存入数据库中供后续调用。而在处理跨平台客户端的数据请求时，程序也会进行参数检查，检查无误也会将所有数据进行存储。随后，依据数据请求中的是否需要进行数据预测参数，
 数据请求中指定的需要使用的机器学习模型等参数，程序开始进行数据预测。由于本论文目前使用采集的数据量较小，当指定的机器学习模型被载入后，
 程序会进一步检查，当前数据是否已经在模型训练阶段使用过，即当前数据是否在模型的训练集中。只有机器学习的未见数据实例才会被最终预测，同时，预测结果会被
 返回至客户端。
 
-以上介绍的处理流程实际上对应着\autoref{tab:django_func}中的视图，即业务逻辑层。而对于\autoref{tab:django_func}中的模板表现层而言，目前云服务器端程序对网络请求的处理较为简单，
-只以纯文字的形式返回内容，没有进行专门的网页UI设计，故这部分不做过多介绍。而\autoref{tab:django_func}中的模型
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\linewidth]{software/url}
     \caption{\label{fig:url}云服务器响应URL请求过程流程图}
 \end{figure}
 
-\noindent
-涉及了数据库的处理操作，这部分的程序设计会在后续进行介绍。
+2、请求响应
 
-另外，为方便调试，云服务端在使用Django进行开发时，也启用了日志记录功能。由于这部分的程序功能也是基于Python下的logging包开发，具体过程与此前模型训练模块的类似，故不再单独赘述。
+在\autoref{fig:url}中，当云服务器接收到客户端传来的有效数据，在进行一定的操作处理后，需要将处理结果返回。这一过程即为请求响应过程，
+对应着\autoref{tab:django_func}中的模板表现层。一般而言，请求响应的内容可不限于文字的形式，可包括音视频文件、HTML网页文件等。
+但在本软件系统的当前版本中，请求响应的内容仅为文本字符内容，暂未进行专门的网页UI设计。
+
+Django网络框架中默认支持的请求响应包括两种，一种为普通的HttpResponse，可在其中传达文本消息等；另一种为JsonResponse，可在其中按Json数据格式传递键值对。
+考虑到客户端程序解析的方便与方便后续调整，最终的请求响应采用了JsonResponse的格式。
+而由于客户端发送的数据默认是以被试为单位的，因此，云服务器在进行处理分析时，只返回本论文第五章中基于被试的PE识别模型的相应处理结果。
+云服务器端请求响应的Json格式的具体内容如\autoref{tab:json_response}所示。同时，需要注意，尽管请求响应是以Json格式返回内容，但客户端程序仍可以根据具体需求进行解析
+与一定的美化处理等操作。
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {云服务器端相应请求的具体内容},
+        label                   = {tab:json_response},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[2,c,m]X[5,c,m]X[1,c,m]X[3,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+    }
+    参数的键名&参数值的含义&数据类型&备注\\
+    project&上传的模型归属的具体项目&字符串&{值固定为PE，代表数据隶属本论文基于PE的研究}\\
+    data\_type&上传的模型所属生理信号类别&字符串&{值固定为PPG}\\
+    model\_algorithm&模型训练生成所使用的机器学习算法&字符串&包括KNN、RF等算法\\
+    model\_version&使用特定机器学习算法生成的模型版本号&字符串&\\
+    train\_set&训练模型所使用的所有孕妇姓名&字符串&{遵循医学伦理学相关标准，省略孕妇具体姓名，仅以拼音缩写代替}\\
+    train\_time&模型训练生成时间&字符串&\\
+    ppg\_num&客户端发送的原始数据中有效PPG波形总数&数字&\\
+    positive\_num&模型预测为PE阳性的PPG波形总数&数字&\\
+    negative\_num&模型预测为PE阴性的PPG波形总数&数字&\\
+    ratio&positive\_num与ppg\_num的比值&数字&\\
+\end{longtblr}
+
+3、模型与数据库
+
+\autoref{tab:django_func}中的模型涉及了数据库的处理操作，这部分的程序设计会在后续进行介绍。
+
+4、日志
+
+为方便调试，云服务端在使用Django进行开发时，也启用了日志记录功能。由于这部分的程序功能也是基于Python下的logging包开发，具体过程与此前模型训练模块的类似，故不再单独赘述。
 
 四、数据库设计
 
@@ -825,15 +871,15 @@ Django按模型-模版-视图（Model-Template-View，MTV）设计模式的进�
 经过多年的发展，数据库技术已经是现代互联网数据管理的基本方法和技术，在组织数据、维护数据、控制数据和利用数据等方面发挥着不可替代的重要作用，
 是计算机领域最重要的基础软件之一，也是确保计算机系统稳定运行的基石。
 
-另一方面，关系型数据库是对存储的格式能够直观地反映实体间的关系的一类数据库的统称。关系型数据库和常见的表格比较相似，数据库的表与表之间是有很多复杂的关联关系。
+数据库中的数据一词指数据库可以储存多种信息，这些信息一般被称为字段。而为了从包含多条数据记录的集合中获取特定记录，还必须从这些字段中定义主键（PRIMARY KEY）。
+主键通常可以是一个字段或多个字段的组合，其值能唯一地标识表中的每一行，通过它可强制表的实体完整性。主键在与其他表的外键关联以及数据记录的修改与删除中具有重要作用。
+
+与此同时，关系型数据库是对存储的格式能够直观地反映实体间的关系的一类数据库的统称。关系型数据库和常见的表格比较相似，数据库的表与表之间是有很多复杂的关联关系。
 而MySQL就是一种最为常见、也最具代表性的关系型数据库，也是目前流行的主流关系数据库之一。
 MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，支持查询、新增、更新、删除、求和、排序等基本操作。
 为使云服务器端的数据管理更为便捷有效，同时应对后续可能的大量数据管理，综合软件系统的开发过程中也基于MySQL进行了简单的数据库设计。
 
-数据库中的数据一词指数据库可以储存多种信息，这些信息一般被称为字段。而为了从包含多条数据记录的集合中获取特定记录，还必须从这些字段中定义主键（PRIMARY KEY）。
-主键通常可以是一个字段或多个字段的组合，其值能唯一地标识表中的每一行，通过它可强制表的实体完整性。主键在与其他表的外键关联以及数据记录的修改与删除中具有重要作用。
-
-另一方面，如前所述，不论是如\autoref{tab:post_paras}上传的数据请求还是如\autoref{tab:post_paras2}上传的模型请求，都包含了大量参数信息，这些信息必须进行高效、有序的完整储存。
+另一方面，不论是如\autoref{tab:post_paras}上传的数据请求还是如\autoref{tab:post_paras2}上传的模型请求，都包含了大量参数信息，这些信息必须进行高效、有序的完整储存。
 与此同时，相比模型请求而言，数据请求中的参数种类常常会随着软件系统的迭代而发生较大的改变，比如数据信号种类的变更，PPG特征的增改等。这也要求软件系统在进行数据库设计时，必须同时
 保持一定的兼容性设计。
 
@@ -844,10 +890,10 @@ MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，�
 \end{figure}
 
 基于以上考虑，为便捷高效地存储本研究中涉及的PPG相关数据，同时保持由于新的数据类型引入、算法更新导致的特征增删等多种变化的兼容性，
-软件系统一共设计了四张数据表（Table）来解决这一问题。这些数据表之间的相互关联关系如\autoref{fig:data_table_relationship}所示。
+软件系统一共设计了五张数据表（Table）来解决这一问题。这些数据表之间的相互关联关系如\autoref{fig:data_table_relationship}所示。
 可以看到，模型的存储过程较为简单；而相对地，为保证兼容性，生理信号数据及其衍生特征的存储较为复杂，需要多张数据表级联并相互配合。
 需要注意的是，为简明扼要，\autoref{fig:data_table_relationship}中仅显示了各数据表的重要的外部键，这些数据表的详细设计可参见
-\autoref{tab:data_table_record}至\autoref{tab:data_table_model}。
+\autoref{tab:data_table_record}至\autoref{tab:data_table_model}，其中数据表的主键与外部键用粉色进行了突出显示。
 \begin{longtblr}
     [
         theme                   = {zju},
@@ -881,7 +927,7 @@ MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，�
 Record数据表是\autoref{fig:data_table_relationship}中四张数据表中最为底层的，
 它采用Django默认的AutoField字段作为主键，主要用来记录存储数据请求中的最原始数据文件，如\autoref{tab:data_table_record}所示。
 Record数据表中的project字段与state字段是一定程度上的冗余设计，前者目前固定表征PE，后者固定表征PE患病状态。
-以后可能涉及的其他项目的存储可以更加需要调整这两个字段意义。值得一提的是，数据表中额外增加了isDeleted字段用以处理数据记录的删除，当需要删除
+以后可能涉及的其他项目的存储可以根据需要调整这两个字段意义。值得一提的是，数据表中额外增加了isDeleted字段用以处理数据记录的删除，当需要删除
 数据时，只需更改该字段的布尔值，避免了物理删除彻底丢失对数据后续管理的可能。
 \begin{longtblr}
     [
@@ -1012,15 +1058,185 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
 用于保留对模型更新迭代的可能，而trainSet字段则是在目前数据量较小的情况下的一种折中，避免模型处理在训练过程中的已见示例。
 
 \section{测试与验证}
-此前的内容主要对软件系统的功能的设计与实现进行了介绍，在软件开发完成后，还需要对其各项模块功能与最终完整功能进行一定的实际验证。本小节将对这部分的工作进行介绍。
+上文对\autoref{fig:scas}中展示的软件框架的设计与实现细节进行了全面详细的说明。而按照这些设计完成软件系统的整体开发后，
+系统各模块单独的功能与模块间的协作等尚需进行一定的验证与测试。本小节将对这部分的工作进行介绍。
 
-\subsection{算法测试与验证}
+\subsection{数据预处理的测试与验证}
 数据预处理模块的验证主要集中在对本研究设计提出的SCD波形检测算法的验证与测试上。
+本论文基于自采实验数据与标准数据库数据，对SCD算法进行了测试验证。与此同时，本论文也选取了两种有代表性的PPG检测算法与SCD算法进行了对比验证。
 
-\subsection{多客户端一致性的测试与验证}
+由于上述多种PPG检测算法之间的介绍及对比过程已将在本论文第三章介绍过，具体可参考本论文\autoref{fig:scd_detect1}至\autoref{fig:ucibp_abnormal}及52页至55页内容，
+这里不再赘述。而\autoref{tab:scd_6}则展示了上述算法在不同数据集上的具体对比结果，可以看到本研究提出的SCD算法对PPG波形的识别准确率高、抗干扰能力强，与其他算法相比也具有一定的优势。
+\begin{longtblr}
+    [
+        theme          = {zju},
+        caption        = {三种PPG检波算法性能对比统计明细},
+        label          = {tab:scd_6},
+    ]
+    {
+        colspec        = {X[0.9,c,m]X[2,c,m]X[1.9,c,m]X[1.45,c,m]X[0.95,c,m]X[1.45,c,m]X[0.94,c,m]X[1.45,c,m]X[0.95,c,m]},
+        hline{1,Z}     = {\thickline},
+        hline{3}       = {\thinline},
+        rowhead        = 2,
+        row{odd}       = {bg=\oddcolor}, 
+        row{even}      = {bg=\evencolor},
+        row{1-2}       = {font=\headfont,bg=\headcolor},
+        row{3-Z}       = {font=\nonheadfont},
+        cell{1}{1-3}   = {r=2,c=1}{c,m},
+        cell{1}{4,6,8} = {r=1,c=2}{c,m},
+        cell{3-4}{4-5} = {font=\headfont,bg=\emphacolor}
+    }
+    序号 & 数据源 & 波形总数/个 & SCD算法 & & DMTW算法 & & HeartPy算法 & \\
+    &  &  & 错检数/个 & 准确率 & 错检数/个 & 准确率 & 错检数/个 & 准确率  \\
+    1 & 自主实验数据 & 7864 & 26 &  99.6\% & 112 & 98.6\% & 97 & 98.7\% \\
+    2 & CBPEDS & 17562 &  50 &  99.7\% & 182 & 99.0\% & 168 & 99.0\% \\
+\end{longtblr}
 
-\subsection{网络连接的测试与验证}
+\subsection{多平台客户端的测试与验证}
+软件系统的多平台客户端程序主要包括PC客户端（Windows平台）与Android客户端，两者的整体操作流程如\autoref{fig:pc_process}所示。
 
-\subsection{预测模型的测试与验证}
+为测试验证两个平台下的客户端软件，分别用客户端软件选中相同的PPG数据，两个平台下的检波效果完全一致，如\autoref{fig:pc_demo}与\autoref{fig:android_demo}所示。
+而进一步比较两个平台下的文件输出结果，得到的处理结果也相同。这表明软件系统的多平台客户端程序具有一致性。
+
+另外，关于不同客户端程序的网络通讯部分功能的测试与验证参见下一小节。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{software/pc_demo}
+    \caption{\label{fig:pc_demo}PC客户端对被试dmq的PPG数据检测结果}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{software/android_demo}
+    \caption{\label{fig:android_demo}Android客户端对被试dmq的PPG数据检测结果}
+\end{figure}
+
+\subsection{云服务器端程序的测试与验证}
+云服务器端程序的测试主要包括两方面，首先为不同客户端软件与云服务器的网络连接测试；其次为不同客户端软件与云服务器的整体功能性测试，即接收数据并调用模型进行识别预测的
+完整功能性测试。
+
+需要注意的是，云服务器模块在设计时是可以直接使用第三方商业公司提供的具有公网IP地址的云服务器等业务。但在本软件系统的研发过程中，出于方便开发的角度，暂时仅使用了
+局域网进行环境搭建模拟与后续测试。在此条件下，软件系统的整体物理设备组成架构如\autoref{fig:system_net}所示。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{software/system}
+    \caption{\label{fig:system_net}软件系统在局域网下的部署示意}
+\end{figure}
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {软件系统所使用的各网络设备型号明细},
+        label                   = {tab:system_devices},
+    ]
+    {
+        width                   = 0.8\linewidth,
+        colspec                 = {X[1,c,m]X[1,c,m]X[2,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+    }
+    设备代号&制造厂商&型号&系统版本\\
+    笔记本A&中国小米&Redmibook 15 Pro&Win 10\\
+    笔记本B&中国小米&Redmibook 15 Pro&Win 11\\
+    路由器&中国华为&WS5102&\\
+    平板电脑&中国小米&Redmi Pad SE&Android 12\\
+\end{longtblr}
+在\autoref{fig:system_net}中，笔记本A作为局域网内的主机服务器，运行着软件系统的云服务器端程序；笔记本B与平板电脑分别作为PC客户端与Android端的运行平台;
+而这些设备通过路由器搭建的无线局域网联络在一起。上述设备的具体生产厂商及型号、运行操作系统信息等如\autoref{tab:system_devices}所示。
+
+一、网络连接的测试与验证
+
+在前文中已经介绍过，当客户端通过POST方法与云服务器端进行通讯时，传递的参数信息中包含了此次由客户端程序发起通讯的时间，如\autoref{tab:post_paras}所示。
+因此，云服务器只需要记录下接收到数据信息的时间即可验证此次网络通讯连接成功，同时也可以利用这两个时间的间隔评估网络延迟等信息。
+
+在上述基础上，针对本论文数据采集得到的79例被试人员的PPG数据，分别在测试这些数据经由PC客户端与Android客户端的延迟后，可得到所有数据文件在与云服务器端通讯的平均延时。
+如\autoref{tab:time_delay}所示，可以看到在\autoref{fig:system_net}所示的测试环境下，PC客户端与Android客户端与云服务器均能进行有效通讯，没有出现数据丢失等现象，同时
+具有较小的网络延迟。而这可能与数据通讯在局域网内进行、且数据传输量较小有关。若云服务器部署在商用云服务端数据延迟可能有一定的差异。
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {不同客户端上传文件的平均网络连接延迟对比},
+        label                   = {tab:time_delay},
+    ]
+    {
+        width                   = 0.6\linewidth,
+        colspec                 = {X[1,c,m]X[1,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+    }
+    客户端平台&平均延时（ms）\\
+    PC&0.063\\
+    Android&0\\
+\end{longtblr}
+
+
+二、预测模型的测试与验证
+
+\subsection{数据库的测试与验证}
+软件系统使用了MySQL数据库作为后台，当软件系统正常运后，使用SQL语言在命令行下查询数据库的状态，得到的结果如\autoref{fig:mysql_db}所示。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{software/mysql}
+    \caption{\label{fig:mysql_db}命令行下查询得到的本项目MySQL数据库结构}
+\end{figure}
+
+从\autoref{fig:mysql_db}中可以发现，上节中介绍的5张数据表均已按预期生成。此外，Django框架还自动生成了一些数据表，这些数据表的详细
+作用如\autoref{tab:mysql_db}所示。
+
+\begin{longtblr}
+    [
+        theme                   = {zju},
+        caption                 = {软件系统中所有涉及的数据表及其作用一览},
+        label                   = {tab:mysql_db},
+    ]
+    {
+        width                   = \linewidth,
+        colspec                 = {X[3,c,m]X[5,c,m]X[2,c,m]},
+        hline{1,Z}              = {\thickline},
+        hline{2}                = {\thinline},
+        rowhead                 = 1,
+        row{odd}                = {bg=\oddcolor}, 
+        row{even}               = {bg=\evencolor},
+        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{2-Z}                = {font=\nonheadfont},
+        cell{2}{3}              = {r=9,c=1}{c,m},
+    }
+    数据表名称&作用&备注\\
+    auth\_group&该表维护用户组信息&Django自动生成\\
+    auth\_group\_permissions&该表维护了用户权限和用户组别之间的多对多关系&Django自动生成\\
+    auth\_permission&该表维护了用户权限信息&Django自动生成\\
+    auth\_user&该表维护了用户信息&Django自动生成\\
+    auth\_user\_groups&该表维护了用户组信息与用户信息之间的多对多关系&Django自动生成\\
+    auth\_user\_user\_permissions&该表维护了用户权限信息和用户信息之间多对多关系&\\
+    django\_admin\_log&该表记录了用户在admin页面的操作日志&\\
+    django\_content\_type&该表记录了项目中所有app与model之间的对应关系&\\
+    django\_migrations&该表维护了Django项目所有的数据迁移记录信息&\\
+    django\_session&该表维护了所有session信息&\\
+    pe\_analysis&该表维护了所有数据文件信息&本项目自定义，参见\autoref{tab:data_table_analysis}\\        
+    pe\_feature&该表维护了所有数据特征信息&本项目自定义，参见\autoref{tab:data_table_feature}\\
+    pe\_model&该表维护了所有分析模型信息&本项目子定义，参见\autoref{tab:data_table_model}\\
+    pe\_record&该表维护了所有数据记录信息&本项目自定义，参见\autoref{tab:data_table_record}\\
+    pe\_unit&该表维护了所有最小分析单位信息&本项目自定义，参见\autoref{tab:data_table_unit}\\
+\end{longtblr}
+
+
+DBeaver是一个免费开源的图形界面化的数据库管理软件。如\autoref{fig:feature_db}所示
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{software/feature_db}
+    \caption[Feature数据表的存储情况（局部）]{\label{fig:feature_db}Feature数据表的存储情况（局部）}
+\end{figure}
 
 \section{小结}
