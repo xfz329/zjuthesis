@@ -821,10 +821,13 @@ Django按模型-模版-视图（Model-Template-View，MTV）设计模式的进�
 对应着\autoref{tab:django_func}中的模板表现层。一般而言，请求响应的内容可不限于文字的形式，可包括音视频文件、HTML网页文件等。
 但在本软件系统的当前版本中，请求响应的内容仅为文本字符内容，暂未进行专门的网页UI设计。
 
-Django网络框架中默认支持的请求响应包括两种，一种为普通的HttpResponse，可在其中传达文本消息等；另一种为JsonResponse，可在其中按Json数据格式传递键值对。
+Django网络框架中默认支持的请求响应包括两种，一种为普遍通用的HttpResponse，可在其中传达文本消息及文件等；另一种为功能更专一化的JsonResponse，可在其中按Json数据格式传递键值对。
 考虑到客户端程序解析的方便与方便后续调整，最终的请求响应采用了JsonResponse的格式。
 而由于客户端发送的数据默认是以被试为单位的，因此，云服务器在进行处理分析时，只返回本论文第五章中基于被试的PE识别模型的相应处理结果。
-云服务器端请求响应的Json格式的具体内容如\autoref{tab:json_response}所示。同时，需要注意，尽管请求响应是以Json格式返回内容，但客户端程序仍可以根据具体需求进行解析
+云服务器端请求响应的Json格式的具体内容如\autoref{tab:json_response}所示。
+由于云服务器可能存在多个已训练好的模型，故在一起请求中可能返回多个模型的分析结果。返回模型的总数由\autoref{tab:json_response}中的model\_num记录；
+而不同模型的分析结果通过的model\_index与model\_data\_type字段区分。
+同时，需要注意，尽管请求响应是以Json格式返回内容，但客户端程序仍可以根据具体需求进行解析
 与一定的美化处理等操作。
 
 \begin{longtblr}
@@ -835,7 +838,7 @@ Django网络框架中默认支持的请求响应包括两种，一种为普通�
     ]
     {
         width                   = \linewidth,
-        colspec                 = {X[2,c,m]X[5,c,m]X[1,c,m]X[3,c,m]},
+        colspec                 = {X[2,c,m]X[7,c,m]X[1,c,m]X[2.5,c,m]},
         hline{1,Z}              = {\thickline},
         hline{2}                = {\thinline},
         rowhead                 = 1,
@@ -845,11 +848,14 @@ Django网络框架中默认支持的请求响应包括两种，一种为普通�
         row{2-Z}                = {font=\nonheadfont},
     }
     参数的键名&参数值的含义&数据类型&备注\\
-    project&上传的模型归属的具体项目&字符串&{值固定为PE，代表数据隶属本论文基于PE的研究}\\
+    project&上传的模型归属的具体项目&字符串&值固定为PE\\
     data\_type&上传的模型所属生理信号类别&字符串&{值固定为PPG}\\
-    model\_algorithm&模型训练生成所使用的机器学习算法&字符串&包括KNN、RF等算法\\
+    model\_num&此次分析过程使用的模型总数&数字&一次分析可返回多个模型的结果\\
+    model\_index&返回模型编号&数字&区分多个模型的结果\\
+    model\_data\_type&训练模型基于训练数据类型&字符串&值为基于时域特征feature或采样值point，同时也会标记PPG波形的对齐策略\\
+    model\_algorithm&模型训练生成所使用的机器学习算法&字符串&包括KNN、RF等\\
     model\_version&使用特定机器学习算法生成的模型版本号&字符串&\\
-    train\_set&训练模型所使用的所有孕妇姓名&字符串&{遵循医学伦理学相关标准，省略孕妇具体姓名，仅以拼音缩写代替}\\
+    train\_set&训练模型所使用的所有孕妇姓名&字符串&姓名以拼音缩写代替\\
     train\_time&模型训练生成时间&字符串&\\
     ppg\_num&客户端发送的原始数据中有效PPG波形总数&数字&\\
     positive\_num&模型预测为PE阳性的PPG波形总数&数字&\\
@@ -1156,7 +1162,7 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
 
 在上述基础上，针对本论文数据采集得到的79例被试人员的PPG数据，分别在测试这些数据经由PC客户端与Android客户端的延迟后，可得到所有数据文件在与云服务器端通讯的平均延时。
 如\autoref{tab:time_delay}所示，可以看到在\autoref{fig:system_net}所示的测试环境下，PC客户端与Android客户端与云服务器均能进行有效通讯，没有出现数据丢失等现象，同时
-具有较小的网络延迟。而这可能与数据通讯在局域网内进行、且数据传输量较小有关。若云服务器部署在商用云服务端数据延迟可能有一定的差异。
+具有较小的网络延迟。而这可能与数据通讯在局域网内进行、且数据传输量较小有关。若云服务器部署在商用云服务端，则数据延迟可能有一定程度的增加。
 
 \begin{longtblr}
     [
@@ -1183,17 +1189,41 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
 
 二、预测模型的测试与验证
 
-\subsection{数据库的测试与验证}
-软件系统使用了MySQL数据库作为后台，当软件系统正常运后，使用SQL语言在命令行下查询数据库的状态，得到的结果如\autoref{fig:mysql_db}所示。
+在不同平台下的客户端软件中，在选择打开了原始PPG数据文件并进行了一定的预处理后，即可将相关数据上传至云服务器端，让部署在云服务器端的模型对其进行一定的分析识别，
+分析的结果也会返回至客户端，其中的具体流程如\autoref{fig:pc_process}所示。
+
+如\autoref{tab:dataset}所示，将本论文采集的原始数据进行数据集划分后，对测试集中的所有被试数据，即可按照\autoref{fig:pc_process}所示的流程进行识别。
+以已在第五章的\autoref{tab:model_detail}与\autoref{tab:model_detail2}介绍过的被试cmf的数据为例，在PC客户端与Android客户端下的请求响应结果分别如
+\autoref{fig:pc_response}与\autoref{fig:android_response}所示。
+其中，来自云服务端的响应结果分别在\autoref{fig:pc_response}与\autoref{fig:android_response}用表格的形式进行了呈现，表格中具体参数的意义
+可参考\autoref{tab:json_response}。另外，在本论文中，对于基于被试的研究而言，PPG的分析数据包括时域特征与原始采样值两大类；
+而对于原始采样值而言，又使用了两种PPG波形的对齐策略。因此，\autoref{fig:pc_response}与\autoref{fig:android_response}中的模型总数的这一参数值均为3。
+
+综上，软件系统的预测模型功能能够按照设计正常运行。
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.7\linewidth]{software/mysql}
+    \includegraphics[width=.9\linewidth]{software/pc_response}
+    \caption{\label{fig:pc_response}PC客户端接收到的请求响应}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.9\linewidth]{software/android_response}
+    \caption{\label{fig:android_response}Android客户端接收到的请求响应}
+\end{figure}
+\subsection{数据库的测试与验证}
+由于软件系统使用了MySQL数据库作为后台，因此，当软件系统正常运后，可直接在命令行下连接至数据库，查询数据库的存储状态。
+在命令行下模式下，键入命令$mysql\ -u\ root\ -p$后，输入数据库密码，即可登陆数据库；随后使用SQL语言$use\ bme207$即可选中软件系统在MySQL软件中使用的数据库；
+最后，使用SQL语言$show\ Tables$即可查询数据库bme207下所有数据表的状态，得到的结果如\autoref{fig:mysql_db}所示。
+
+从\autoref{fig:mysql_db}中可以发现，上节中介绍的5张自定义数据表均已按预期生成。与此同时，\autoref{fig:mysql_db}也存在着Django框架自动生成的一些数据表。而这些数据表的详细
+作用如\autoref{tab:mysql_db}所示。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\linewidth]{software/mysql}
     \caption{\label{fig:mysql_db}命令行下查询得到的本项目MySQL数据库结构}
 \end{figure}
-
-从\autoref{fig:mysql_db}中可以发现，上节中介绍的5张数据表均已按预期生成。此外，Django框架还自动生成了一些数据表，这些数据表的详细
-作用如\autoref{tab:mysql_db}所示。
 
 \begin{longtblr}
     [
@@ -1211,7 +1241,8 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
         row{even}               = {bg=\evencolor},
         row{1}                  = {font=\headfont,bg=\headcolor},
         row{2-Z}                = {font=\nonheadfont},
-        cell{2}{3}              = {r=9,c=1}{c,m},
+        cell{2}{3}              = {r=8,c=1}{c,m},
+        cell{10}{3}             = {r=2,c=1}{c,m},
     }
     数据表名称&作用&备注\\
     auth\_group&该表维护用户组信息&Django自动生成\\
@@ -1219,11 +1250,11 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
     auth\_permission&该表维护了用户权限信息&Django自动生成\\
     auth\_user&该表维护了用户信息&Django自动生成\\
     auth\_user\_groups&该表维护了用户组信息与用户信息之间的多对多关系&Django自动生成\\
-    auth\_user\_user\_permissions&该表维护了用户权限信息和用户信息之间多对多关系&\\
-    django\_admin\_log&该表记录了用户在admin页面的操作日志&\\
-    django\_content\_type&该表记录了项目中所有app与model之间的对应关系&\\
-    django\_migrations&该表维护了Django项目所有的数据迁移记录信息&\\
-    django\_session&该表维护了所有session信息&\\
+    auth\_user\_user\_permissions&该表维护了用户权限信息和用户信息之间多对多关系&Django自动生成\\
+    django\_admin\_log&该表记录了用户在admin页面的操作日志&Django自动生成\\
+    django\_content\_type&该表记录了项目中所有app与model之间的对应关系&Django自动生成\\
+    django\_migrations&该表维护了Django项目所有的数据迁移记录信息&Django自动生成\\
+    django\_session&该表维护了所有session信息&Django自动生成\\
     pe\_analysis&该表维护了所有数据文件信息&本项目自定义，参见\autoref{tab:data_table_analysis}\\        
     pe\_feature&该表维护了所有数据特征信息&本项目自定义，参见\autoref{tab:data_table_feature}\\
     pe\_model&该表维护了所有分析模型信息&本项目子定义，参见\autoref{tab:data_table_model}\\
@@ -1231,12 +1262,15 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
     pe\_unit&该表维护了所有最小分析单位信息&本项目自定义，参见\autoref{tab:data_table_unit}\\
 \end{longtblr}
 
-
-DBeaver是一个免费开源的图形界面化的数据库管理软件。如\autoref{fig:feature_db}所示
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth]{software/feature_db}
+    \includegraphics[width=0.9\linewidth]{software/feature_db}
     \caption[Feature数据表的存储情况（局部）]{\label{fig:feature_db}Feature数据表的存储情况（局部）}
 \end{figure}
+
+在\autoref{fig:mysql_db}所示的查询结果的基础上，借助第三方数据库管理软件，可以进一步地直接观察各数据表的存储状态；
+而DBeaver就是一个知名的免费开源的图形界面化的数据库管理软件。
+借助DBeaver查询\autoref{fig:mysql_db}的Feature数据表结果如\autoref{fig:feature_db}所示，可以看到该数据表已按\autoref{tab:data_table_feature}的设计进行了
+多种PPG特征数据的有效存储。
 
 \section{小结}
