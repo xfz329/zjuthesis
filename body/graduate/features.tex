@@ -21,22 +21,14 @@
 \subsection{新型时域特征的设计基础}
 
 第二章已经介绍过，PPG的上升支是由于心脏收缩致使血液开始进入主动脉，并使血管壁扩张，最终导致动脉血压快速上升而形成的\cite{PPGYY}。该过程非常迅速，导致上升支大多较为陡峭，从形态上来看，PPG信号的上升支通常较下降支更为简单\cite{PPGYY,Chen2021}。
-因此，对PPG的描述可着重聚焦于PPG的下降支，如\autoref{fig:ppg_roads}所示。
+因此，对PPG的描述可着重聚焦于PPG的下降支，如\autoref{fig:pulsecontrast}所示。
 \begin{figure}[htbp]
     \centering
-    \subfigure[\label{fig:pulsecontrast}同一被试的PPG的原始波形对比图]{
-        \includegraphics[width=6cm]{features/pulsecontrast}
-    }
-    \quad
-    \subfigure[\label{fig:road}同一被试的PPG的下降支波形对比图]{
-        \includegraphics[width=6cm]{features/road}
-    }
-    \caption{\label{fig:ppg_roads}PPG波形及PPG下降支对比图}
+    \includegraphics[width=.6\linewidth]{features/pulsecontrast}
+    \caption{\label{fig:pulsecontrast}同一被试的PPG的原始波形对比图}
 \end{figure}
 
 在图\autoref{fig:pulsecontrast}中，同一被试的三个PPG波形用不同颜色进行了区分对比，可以发现三个波形在重博的显著程度、持续时长及幅值大小等方面均存在着差异。
-而图\autoref{fig:road}则对比了图\autoref{fig:pulsecontrast}中波形的下降支，其中，波形的下降支均进行了双向归一化处理。
-
 由信号的采样定理可知，对PPG波形下降支的描述可通过对下降支上一系列点的描述来完成。不失一般性，若将下降支的起点坐标与终点坐标分别设置为$S$$(0,1)$与$E$$(1,0)$，
 对于下降支上任意一点$P$，可以用原点$O$坐标$(0,0)$与路径始末点坐标$S$、$E$等为基本参照点，以及$P$
 在X轴、Y轴上的投射点$P_x$、$P_y$等衍生参照点对该点进行描述，如\autoref{fig:point}所示，而对PPG上升支的描述与此过程类似。
@@ -134,64 +126,14 @@ PPGFV最显著的特点在于用一组相互联系的数值来量化描述PPG波
 
 \autoref{fig:diff_in_pulse}对同一被试的所有PPG波形按起点进行了对齐，即使对同一被试而言，其波形的形态特征、波形时长同样存在一定的差异，而这些差异在不同的个体之间体现得更为明显。
 
-因此，本小节提出通过相关系数、弗朗明歇距离与包络面积等三种时域参数量化描述脉搏波波形间的差异性。
+因此，本小节提出通过相关系数、弗朗明歇距离与包络面积等三种时域参数量化描述脉搏波波形间的差异性。但上述三个描述波形间相似度（或差异度）的时域参数的计算开始前，
+都需要对PPG波形进行一定的前置处理。
 
-一、相关系数
+一、波形采样点对齐
 
-本研究将统计分析中衡量两个变量因素的密切程度的相关系数引入两个波形之间的“相似”程度的衡量中。
-
-第三章中介绍过具有代表性的皮尔逊相关系数与斯皮尔曼相关系数。但斯皮尔曼相关系数在计算时必须对原始数据排序，会直接破坏PPG波形数据的有序性。
-因此，本研究选取了皮尔逊相关系数$r_p$衡量波形间的相似性
-\begin{equation}
-    \label{equ:pearson2}
-    r_p=\frac{\sum_{i=1}^n{(x_i- \mathop{x} \limits^-)(y_i- \mathop{y} \limits^-)}}{\sqrt{{\sum_{i=1}^n}{{(x_i- \mathop{x} \limits^-)^2\sum_{i=1}^n}{(y_i- \mathop{y} \limits^-)^2}}}}
-\end{equation}
-
-波形间相关系数值越大，两个PPG波形越“相似”。
-
-二、弗朗明歇距离
-
-弗朗明歇距离（Fréchet distance，FD）是最早由法国数学家Maurice René Fréchet于1906年提出的一种路径空间相似形描述方法\cite{Wien1994,Kaveh2013,GN2017,derohde2022}。
-
-FD的完整数学定义如下，若将曲线视为其在定义域至度量空间的一种映射关系，即$[a,b]\rightarrow V$，
-那么对曲线$f:[a,b]\rightarrow V$与曲线$g:[a',b']\rightarrow V$，两者的弗朗明歇距离为
-\begin{equation}
-    \label{equ:frechet distance}
-    \delta_F(f,g)=\inf \max \limits_{\alpha,\beta \; t \in (0,1)} d(f(\alpha(t)), g(\beta(t)))
-\end{equation}
-其中，$\alpha$与$\beta$是满足能将$[0,1]$分别映射至$[a,b]$与$[a',b']$的任意连续非递减函数，$d$是$V$上的度量函数\cite{Wien1994}。
-二维空间上的FD如\autoref{fig:frechet distance}所示。
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.5\linewidth]{features/frechet_distance1}
-    \caption{\label{fig:frechet distance}二维空间上的弗朗明歇距离示意图}
-\end{figure}
-
-对于两个PPG波形而言，此时的FD已经退化成在相同采样点的采样幅值之差的最大值，波形间的弗朗明歇距离值越小，两者越“相似”。
-
-三、包络面积差
-
-包络面积差（difference of envelope area ，DEA）是本研究提出的用以描述脉搏波间差异的原创指标，两个PPG波形的幅值差值的积分结果，如\autoref{fig:dea}所示。
-\begin{equation}
-    \label{equ:dea}
-    \begin{aligned}
-        \text{EDA} &= \int_{t_0}^{t_n}|P_f(t)-P_g(t)|dt\\
-        &\approx \frac{\Delta t}{2} \sum_{i=0}^{n-1}{|(P_f(i)+P_f(i+1)-(P_g(i)+P_g(i+1))|}
-    \end{aligned}
-\end{equation}
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.6\linewidth]{features/dea0}
-    \caption[包络面积差示意图]{\label{fig:dea}包络面积差示意图}
-\end{figure}
-
-两个波形间包络面积差值越小，两者越“相似”。
-
-四、波形采样点对齐
-
-上述三个描述波形间相似度（或差异度）的时域参数的计算都包含了一个隐藏的前置条件，即参与计算的两个波形的时间序列有着相等的采样点数。
-而由于PPG信号本身的随机性，这样的条件在实际中几乎不可能被满足，如\autoref{fig:diff_in_pulse}与\autoref{fig:dea}所示\cite{Qiu2012,PPGYY,Ma2015}。
-这也要求在计算这些参数时必须考虑波形的采样点数对齐问题。
+通常而言，由于PPG信号本身的随机性，在实际中即使是来自同一被试的两个随机的PPG波形时长几乎不可能完全相同，如\autoref{fig:diff_in_pulse}所示\cite{Qiu2012,PPGYY,Ma2015}。
+而由于波形采样率固定，也就意味着PPG波形原始采样值的数目并不相同。而为使不同的PPG波形具有可比性，一种解决思路是，让参与比较的两个PPG波形进行“对齐”处理，
+保证波形具有数目相同的“描述点”数目。而这些描述点并不等同于原始采样值，是原始采样值某种意义上的映射。
 
 本研究提出了将PPG波形对齐的三种处理策略，分别为重采样策略（resampling strategy， RS）、补齐策略（complementary strategies，CS）
 与截取策略（interception strategy，IS）。为说明三种策略处理思路，下面以两个PPG波形的对齐处理过程为例，记这两个波形的原始采样数分别记为$m$、$n$且$m \neq n$，不失一般性，设$m>n$。
@@ -218,6 +160,57 @@ FD的完整数学定义如下，若将曲线视为其在定义域至度量空间
 \end{figure}
 
 从\autoref{fig:no_pe2}可以看到，三种策略均可以完成PPG波形的对齐处理。但按截取策略处理时，出现了不可忽视的数据损失，因此截取策略在后续处理中被暂时弃用。
+
+二、相关系数
+
+本研究将统计分析中衡量两个变量因素的密切程度的相关系数引入两个波形之间的“相似”程度的衡量中。
+
+第三章中介绍过具有代表性的皮尔逊相关系数与斯皮尔曼相关系数。但斯皮尔曼相关系数在计算时必须对原始数据排序，会直接破坏PPG波形数据的有序性。
+因此，本研究选取了皮尔逊相关系数$r_p$衡量波形间的相似性
+\begin{equation}
+    \label{equ:pearson2}
+    r_p=\frac{\sum_{i=1}^n{(x_i- \mathop{x} \limits^-)(y_i- \mathop{y} \limits^-)}}{\sqrt{{\sum_{i=1}^n}{{(x_i- \mathop{x} \limits^-)^2\sum_{i=1}^n}{(y_i- \mathop{y} \limits^-)^2}}}}
+\end{equation}
+
+波形间相关系数值越大，两个PPG波形越“相似”。
+
+三、弗朗明歇距离
+
+弗朗明歇距离（Fréchet distance，FD）是最早由法国数学家Maurice René Fréchet于1906年提出的一种路径空间相似形描述方法\cite{Wien1994,Kaveh2013,GN2017,derohde2022}。
+
+FD的完整数学定义如下，若将曲线视为其在定义域至度量空间的一种映射关系，即$[a,b]\rightarrow V$，
+那么对曲线$f:[a,b]\rightarrow V$与曲线$g:[a',b']\rightarrow V$，两者的弗朗明歇距离为
+\begin{equation}
+    \label{equ:frechet distance}
+    \delta_F(f,g)=\inf \max \limits_{\alpha,\beta \; t \in (0,1)} d(f(\alpha(t)), g(\beta(t)))
+\end{equation}
+其中，$\alpha$与$\beta$是满足能将$[0,1]$分别映射至$[a,b]$与$[a',b']$的任意连续非递减函数，$d$是$V$上的度量函数\cite{Wien1994}。
+二维空间上的FD如\autoref{fig:frechet distance}所示。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.5\linewidth]{features/frechet_distance1}
+    \caption{\label{fig:frechet distance}二维空间上的弗朗明歇距离示意图}
+\end{figure}
+
+对于两个PPG波形而言，此时的FD已经退化成在相同采样点的采样幅值之差的最大值，波形间的弗朗明歇距离值越小，两者越“相似”。
+
+四、包络面积差
+
+包络面积差（difference of envelope area ，DEA）是本研究提出的用以描述脉搏波间差异的原创指标，两个PPG波形的幅值差值的积分结果，如\autoref{fig:dea}所示。
+\begin{equation}
+    \label{equ:dea}
+    \begin{aligned}
+        \text{EDA} &= \int_{t_0}^{t_n}|P_f(t)-P_g(t)|dt\\
+        &\approx \frac{\Delta t}{2} \sum_{i=0}^{n-1}{|(P_f(i)+P_f(i+1)-(P_g(i)+P_g(i+1))|}
+    \end{aligned}
+\end{equation}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\linewidth]{features/dea0}
+    \caption[包络面积差示意图]{\label{fig:dea}包络面积差示意图}
+\end{figure}
+
+两个波形间包络面积差值越小，两者越“相似”。
 
 五、多个波形间的差异性描述
 
@@ -402,11 +395,17 @@ FD的完整数学定义如下，若将曲线视为其在定义域至度量空间
 在基于被试的研究（subject-based research，SR）方向下，本论文将单个被试的所有PPG波形整体作为分析识别PE的最小分析对象，并进行ML算法模型的研究。在此研究方向下，同一被试的PPG波形只会出现在训练集或测试集之中，
 在对PE识别判断时，需要进行一个类似“群体决策”的过程。此外，测试集中的数据样本对于训练得到的模型是完全陌生的未见示例，因此更考验ML模型的泛化能力。
 
+\subsection{数据集的构成}
+通常而言，对PPG信号进行分析可以采取时域频域联合分析方法，分别从时域及频域提取相关特征进行参数描述及后续分析工作。
+然而，如在第三章中所介绍，本研究的PPG数据信号经采集设备硬件滤波处理后，其频率成分构成相对简单，故不适用频域特征分析方法。
+与此同时，本研究的PPG数据信号时长有限，单条数据长度约1至3分钟，因此，另一类常见的非线性参数特征参数的分析也不适用。
+故本研究仅从\textbf{时域角度}对PPG进行特征提取与描述工作。而上小节提出的PPG多维度时域特征集（PPGMTFS）与PPG采样序列时域特征集（PPGSSTFS）分别作为两个独立的数据集参与后续所有模型的训练。
+
 \subsection{数据集的划分}
 数据集的划分是监督学习在开始模型训练前必不可少的重要步骤，是将原始数据集划分为训练集与测试集的过程。其中，训练集作为训练模型的输入数据，而测试集则是用来评估该模型在未见示例上的泛化能力。
 
 第三章已经介绍过，本论文共采集得到79例被试孕妇的有效PPG数据波形共计7864个，其中，实验组44名被试包含有效波形4683个，对照组35名被试包含波形3181个。
-由于本论文使用了PPG多维度时域特征集（PPGMTFS）与PPG采样序列时域特征集（PPGSSTFS）这两个数据集，并提出了基于波形（PR）与基于被试（SR）两个具体研究方向，
+由于本论文使用了PPGMTFS与PPGSSTFS这两个数据集，并提出了基于波形（PR）与基于被试（SR）两个具体研究方向，
 且在后续章节也使用了多种ML算法进行模型的构建，因此，数据集的合理划分显得尤为重要。
 本论文从以下方面进行了数据集的处理工作。
 
@@ -452,6 +451,12 @@ FD的完整数学定义如下，若将曲线视为其在定义域至度量空间
     2 & SR  & 79  & 35 & 28 & 9 & 7 \\     
 \end{longtblr}
 
+\subsection{数据集的标注}
+在上文完成数据集的构建与划分之后，另一个需要解释清楚的问题即为数据集的标准。由于PPG波形在基于波形（PR）与基于被试（SR）两个具体研究方向中均为最小的分析单位，
+这也需要对\autoref{tab:dataset}所示的数据集中的每个波形进行标注。
+
+在本研究中，对每名被试的波形的PE状态标注与这名被试本身的PE患病状态保持一致。这也就是说对于训练集中的数据而已，PE患者的所有PPG波形全部为PE阳性，而正常孕妇的所有波形为PE阴性。
+而对测试集中的数据而言，需要通过训练好的模型判断每个波形的PE阳性与否（对应PR）并进一步通过每名被试的所有PPG波形的PE阳性率判断这名被试的PE状态（对应SR）。
 \subsection{特征缩放}
 一般而言，原始数据的输入特征在数值属性出现较大的差异会导致机器学习模型的性能下降、表现欠佳\cite{Aurélien2018}。为保证这些输入特征能满足特定的机器学习算法的输入要求，通常还要对这些特征的数值分布进行一定的调整，这也就是特征缩放操作。
 
