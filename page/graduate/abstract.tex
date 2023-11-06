@@ -6,7 +6,7 @@
 PPG是心脏周期性搏动的体现，包含了人体血液微循环方面的丰富细节，具有无创、便捷等优点。
 
 本论文构建了包含PE孕妇与正常妊娠孕妇的PPG数据集，设计了PPG多维度时域特征集与PPG采样序列时域特征集，将
-被试PPG数据的单个波形与全波波形分别作为最小分析单位，使用决策树、K近邻与随机森林三种算法，进行了PE识别模型的研究工作。
+被试PPG数据的单个波形与全波波形分别作为最小分析单位，使用决策树、K近邻与随机森林三种算法，进行了PE识别模型的研究工作，设计并实现了基于PPG的PE识别分析软件系统。
 
 本论文的主要内容及创新点如下:
 
@@ -36,22 +36,21 @@ PPG是心脏周期性搏动的体现，包含了人体血液微循环方面的�
 
 四、设计并实现了基于PPG的PE识别分析软件系统
 
-由于PE的及早诊断可以有效确保母婴的生命健康安全，且国内目前缺乏可在实验室、医院、社区、家庭等多场景下使用的成熟的PE识别分析系统。
-鉴于此，在以上研究工作的基础上，本论文基于PPG信号的设计并实现了一款PE识别分析软件系统。软件系统具有完整可用的基于PPG信号的PE识别分析功能，
-可分为数据预处理、跨平台客户端、PE识别模型训练生成与云服务器程序等四个功能模块。
-除模块化设计外，软件系统同时也进行了多项兼容性设计，支持对核心处理算法、识别模型迭代等多种变化，这也进一步保证了软件系统的兼容性与拓展性。
-经测试验证，软件系统的各项功能均能按照设计预期正常工作，具有一定的临床实际意义与应用前景。
+基于PPG信号的设计并实现了一款PE识别分析软件系统，系统具有完整可用的基于PPG信号的PE识别分析功能，
+包括数据预处理、跨平台客户端、PE识别模型训练生成与云服务器程序等四个功能模块。
+软件系统同时也进行了多项兼容性设计，支持对核心处理算法、识别模型迭代等多种变化，进一步保证了软件系统的兼容性与拓展性。
+经测试验证，软件系统的各项功能均能按照设计预期正常工作。
 
 以上结果表明，本论文构建的PPG多维度时域特征集与PPG采样序列时域特征集可作为PE识别的数据基础，其中，各算法模型在PPG多维度时域特征集效果更好。
 对比各算法模型在测试集上的准确率表明，随机森林算法性能优于决策树与K近邻算法。对两个特征集中有效特征贡献度分析表明，与PPG波形形态的对应关系的研究表明，
 两类时域特征集中对随机森林模型贡献度高的特征所对应的PPG形态位置高度相似，且集中出现在PPG主波峰后与下降支末端附近，PPG波形在这些位置的具体形态可能是识别PE的关键。
 
 另一方面，作为以上研究工作的载体，本论文为PE的及早诊断与多使用场景而开发的一款模块化的基于PPG的PE识别分析软件系统。经测试验证，该软件系统
-在保证完整分析功能的基础上，采用了多平台客户端+云服务器端的设计，同时具备较好的兼容性与拓展性，具有一定的具有一定的临床实际意义与应用前景。
+在保证完整分析功能的基础上，采用了多平台客户端+云服务器端的设计，同时具备较好的兼容性与拓展性，具有一定的临床实际意义与应用前景。
 
 \vspace{2em}
 
-\textbf{关键词}: 子痫前期； 识别模型； 光电容积脉搏波； 波形检测算法； 随机森林；软件分析系统
+\textbf{关键词}: 子痫前期； 识别模型； 光电容积脉搏波； 波形检测算法； 随机森林；PE识别软件分析系统
 
 
 \cleardoublepage
@@ -66,7 +65,8 @@ of the heart and contains a wealth of details about the microcirculation of huma
 
 In this thesis we constructed a PPG dataset containing pregnant women with PE and normal pregnancy, designed a multidimensional time-domain feature set of PPG and 
 a time-domain feature set of PPG sampling sequence, and used three algorithms: decision tree (DT), K-nearest neighbor (KNN), and random forest (RF), 
-regarded the single waveform and all the waveforms of the subject PPG data as the minimum unit of analysis respectively.
+regarded the single waveform and all the waveforms of the subject PPG data as the minimum unit of analysis respectively， designs and implements a PE recognition and analysis software system 
+based on PPG signals. 
 
 The main contents and innovations of this thesis are as follows.
 
@@ -101,18 +101,11 @@ test set accuracy 87.5\%) for the PPG sampling sequence time-domain feature set 
 
 IV. Design and implementation of a PPG-based PE recognition and analysis software system
 
-Since early diagnosis of PE can effectively ensure the life and health safety of mothers and infants, and there is a lack of 
-mature PE identification and analysis systems that can be used in multiple scenarios such as laboratories, hospitals, communities, 
-and families in China.
-In view of this, based on the above research work, this thesis designs and implements a PE recognition and analysis software system 
-based on PPG signals. The software system has complete and usable functions for PE recognition and analysis based on PPG signals.
-It can be divided into four functional modules: data preprocessing, cross-platform client, PE recognition model training generation 
-and cloud server program.
-In addition to the modularized design, the software system also carries out a number of compatibility design, supporting a variety 
-of changes to the core processing algorithms, recognition model iteration, which further ensures the compatibility and expandability 
-of the software system.
-After testing and verification, all the functions of the software system can work normally according to the design expectations, 
-and it has certain clinical practical significance and application prospects.
+A PE recognition and analysis software system based on PPG signals is designed and implemented in this thesis, 
+which has a complete and usable PE recognition and analysis function based on PPG signals.
+The system has four functional modules, including data preprocessing, cross-platform client, PE recognition model training and cloud server program.
+The software system is also designed for compatibility, supporting multiple changes to the core processing algorithms, recognition model iterations, etc., which further ensures the compatibility and expandability of the software system.
+After testing and verification, all the functions of the software system can work normally according to the design expectations.
 
 The above results show that the PPG multi-dimensional time-domain feature set and the PPG sampling sequence time-domain feature set constructed in this thesis 
 can be used as the data basis for PE identification, among which, each algorithmic model works better in the PPG multidimensional time-domain feature set.
@@ -131,4 +124,4 @@ prospects.
 \vspace{2em}
 
 \textbf{Keywords}: preeclampsia; recognition model; photoplethysmography; waveform detection algorithm; random forest；
-software Analysis System
+PE recognition software analysis system

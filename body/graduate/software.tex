@@ -74,7 +74,7 @@ PC端与移动端均需开发对应的客户端。
 软件分析系统整体设计框图如\autoref{fig:scas}所示。上小节中提及的软件系统的核心分析功能被拆分为四个独立的功能模块分别实现，以下为具体介绍。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.6\linewidth]{software/scas}
+    \includegraphics[width=.75\linewidth]{software/scas}
     \caption{\label{fig:scas}软件分析系统的多模块设计框架图}
 \end{figure}
 
@@ -105,8 +105,7 @@ PC端与移动端均需开发对应的客户端。
 1、面向对象编程
 
 面对对象编程（Object Oriented Programming，OOP）是一种计算机编程架构，尽可能模拟人类的思维方式，使得软件的开发方法与过程尽可能接近人类认识世界、
-解决现实问题的方法和过程。OOP使得描述问题的问题空间与问题的解决方案空间在结构上尽可能一致，把客观世界中的实体抽象为问题域中的对象。
-借助OOP的抽象、继承、多态等特性，可以简化复杂的编程过程，使软件开发的逻辑更为简单。
+解决现实问题的方法和过程。OOP可以简化复杂的编程过程，使软件开发的逻辑更为简单。
 
 2、设计模式
 
@@ -115,7 +114,7 @@ PC端与移动端均需开发对应的客户端。
 
 三、编程语言与开发环境
 
-软件系统各模块所使用的编程语言与开发环境工具如\autoref{tab:ides}所示，模块所使用的一些重要组件或开源库也在表格中进行了说明。
+软件系统各模块所使用的编程语言与开发环境工具如\autoref{tab:ides}所示。各模块所使用的一些重要组件或开源库也在表格中进行了说明，这些组件的具体介绍可参见后续内容。
 
 \begin{longtblr}
     [
@@ -136,29 +135,29 @@ PC端与移动端均需开发对应的客户端。
         cell{3}{1-2}            = {r=2,c=1}{c,m},
     }
     序号 & 模块 & 平台 & 开发语言 & 版本 & 开发工具 & 其他组件或库 \\
-    1 & 数据预处理 & / & Java & OpenJDK(16.0.2) & VS Code & / \\
-    2 & 客户端 & PC & Java & OpenJDK(16.0.2) & VS Code & / \\
-    2 & 客户端 & Android & Java & Android Studio default JDK(11.0.12)  & Andoird Studio & / \\
+    1 & 数据预处理 & / & Java & OpenJDK(16.0.2)\cite{openjdk} & VS Code & Fastjson \\
+    2 & 客户端 & PC & Java & OpenJDK(16.0.2) \cite{openjdk}& VS Code & / \\
+    2 & 客户端 & Android\cite{android} & Java & Android Studio default JDK(11.0.12)  & Andoird Studio & / \\
     3 & 模型训练 & / & Python & 3.9.7 & PyCharm & Sklearn \\
     4 & 云服务器 & / & Python & 3.9.7 & PyCharm & Django、Sklearn \\
     
 \end{longtblr}
 
-软件系统的数据预处理模块与客户端模块使用Java语言开发完成。
-作为一种高级语言，Java兼具解释型编程语言与编译型编程语言的特性,是目前最流行的面向对象语言之一\cite{Li2015}。
-除一般面向对象编程语言的抽象继承等特性外，Java还支持抽象类、接口等设计，可以满足上述此前需求分析中的各项具体内容。
-Java具有出色的跨操作系统平台特性，可以实现一次编译、多处使用。除PC端外，Java同时也是移动操作系统Android的主力开发语言之一\cite{android}。
-鉴于Java的种种优点，因此，软件系统的数据预处理模块与PC客户端模块最终选择了Oracle开源版本的OpenJDK（16.0.2，GPLv2协议）\cite{openjdk}在VS Code集成开发环境
-（Integrated Development Environment，IDE）下开发完成；
-而Android客户端则选择了Android Studio作为IDE，使用Android Studio自带的Java版本（11.0.12，Apache协议）完成开发。
+% 软件系统的数据预处理模块与客户端模块使用Java语言开发完成。
+% 作为一种高级语言，Java兼具解释型编程语言与编译型编程语言的特性,是目前最流行的面向对象语言之一\cite{Li2015}。
+% 除一般面向对象编程语言的抽象继承等特性外，Java还支持抽象类、接口等设计，可以满足上述此前需求分析中的各项具体内容。
+% Java具有出色的跨操作系统平台特性，可以实现一次编译、多处使用。除PC端外，Java同时也是移动操作系统Android的主力开发语言之一\cite{android}。
+% 鉴于Java的种种优点，因此，软件系统的数据预处理模块与PC客户端模块最终选择了Oracle开源版本的OpenJDK（16.0.2，GPLv2协议）\cite{openjdk}在VS Code集成开发环境
+% （Integrated Development Environment，IDE）下开发完成；
+% 而Android客户端则选择了Android Studio作为IDE，使用Android Studio自带的Java版本（11.0.12，Apache协议）完成开发。
 
 
-软件系统的模型训练模块与云服务器模型使用Python语言开发完成。
-Python是一种高层次的结合了解释性、编译性、互动性和面向对象的脚本语言，是近年来最为流行的编程语言。
-Python开源、免费、易学，也具备极强的可移植性，可以非常方便地部署在不同的操作系统与平台下。
-此外，Python有着非常丰富的库组件，包括科学计算与人工智能领域极为有名的NumPy、SciPy、Sklearn与TensorFlow等组件。
-因此，软件系统的模型训练与云服务器模块均选择了开源的Python(3.9.7，GPL协议)在PyCharm IDE下开发完成。
-此外，云服务器模块还选取了基于Python的Django为Web框架完成服务器端相应功能的开发，选择了MySQL作为数据存储的数据库。
+% 软件系统的模型训练模块与云服务器模型使用Python语言开发完成。
+% Python是一种高层次的结合了解释性、编译性、互动性和面向对象的脚本语言，是近年来最为流行的编程语言。
+% Python开源、免费、易学，也具备极强的可移植性，可以非常方便地部署在不同的操作系统与平台下。
+% 此外，Python有着非常丰富的库组件，包括科学计算与人工智能领域极为有名的NumPy、SciPy、Sklearn与TensorFlow等组件。
+% 因此，软件系统的模型训练与云服务器模块均选择了开源的Python(3.9.7，GPL协议)在PyCharm IDE下开发完成。
+% 此外，云服务器模块还选取了基于Python的Django为Web框架完成服务器端相应功能的开发，选择了MySQL作为数据存储的数据库。
 
 \section{模块设计}
 
@@ -175,36 +174,32 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
 一、数据导入
 
 为保持对来自不同硬件设备采集的原始数据保持读取的兼容性，软件系统将数据读取过程进行了抽象，如\autoref{fig:template}所示。
-数据读取的过程被设计为一个抽象基类，其中的读取方法被设计为一个抽象方法，该方法只定义了函数名，而不进行具体实现。
-当需要读取具体来源的数据时，必须重新定义该基类的一个子类，并在子类中详细实现具体的读
+当需要读取具体来源或特定格式的数据时，必须重新定义实现抽象基类的一个子类，并在子类中详细实现具体的读取方法。
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.7\linewidth]{software/read}
+    \includegraphics[width=.5\linewidth]{software/read}
     \caption{\label{fig:template}数据导入的设计}
 \end{figure}
-\begin{figure}[htbp]
-    \centering
-    \subfigure[GE B650监护仪]{
-    \includegraphics[width=5.5cm]{pulse_preprocess/monitor1}
-    }
-    \quad
-    \subfigure[迈瑞ePM 15M生理信号监护仪]{
-    \includegraphics[width=5.5cm]{software/ep20}
-    }
-    \quad
-    \subfigure[研究团队自研的多生理参数采集设备]{
-    \includegraphics[width=5.5cm]{software/SystemCon}
-    }
-    \caption{\label{fig:data_sources}软件系统目前支持的几款硬件设备}
-\end{figure}
-\noindent
-取方法。
-此时，由硬件差异、数据格式等原因导致的读取方法的差异可以在该抽象基类的不同子类中实现。
+% \begin{figure}[htbp]
+%     \centering
+%     \subfigure[GE B650监护仪]{
+%     \includegraphics[width=5.5cm]{pulse_preprocess/monitor1}
+%     }
+%     \quad
+%     \subfigure[迈瑞ePM 15M生理信号监护仪]{
+%     \includegraphics[width=5.5cm]{software/ep20}
+%     }
+%     \quad
+%     \subfigure[研究团队自研的多生理参数采集设备]{
+%     \includegraphics[width=5.5cm]{software/SystemCon}
+%     }
+%     \caption{\label{fig:data_sources}软件系统目前支持的几款硬件设备}
+% \end{figure}
 
-以上机制延迟实现了读取的具体处理过程，隔离了数据读取功能对系统其他功能的影响，也保证了系统整体的灵活性。
+该机制延迟实现了读取的具体处理过程，隔离了硬件差异、数据格式等原因对系统其他功能的影响，也保证了系统整体的灵活性。
 在这种设计下，目前软件系统已经支持对GE、迈瑞ePM 15M生理信号监护仪等多种医用监护仪导出的数据的读取，
-同时也支持研究团队自研的多生理参数采集设备的数据读取，如\autoref{fig:data_sources}所示。
+同时也支持研究团队自研的多生理参数采集设备的数据读取。
 
 二、滤波处理
 
@@ -213,7 +208,7 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
 软件系统使用了DP中的模板方法（Template Method）对这一过程进行了设计\cite{Enrich2018}，这一过程如\autoref{fig:template2}所示。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.55\linewidth]{software/template}
+    \includegraphics[width=.5\linewidth]{software/template}
     \caption{\label{fig:template2}滤波处理的设计}
 \end{figure}
 
@@ -229,25 +224,26 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
 
 本研究对PPG波形的检测过程进行了模式设计，
 结合模板方法与工厂方法（Factory Method）\cite{Enrich2018}，提出了一种基于初筛—复核—决策（screening-checking-deciding，SCD）的新型算法，其处理流程如\autoref{fig:detect2}所示。
-由于特征点定位与波形检测的详细算法过程已经在第三章中详细介绍过，此处对其算法原理不再赘述。
+而关于SCD算法的详细介绍可参见论文第三章。
+% 由于特征点定位与波形检测的详细算法过程已经在第三章中详细介绍过，此处对其算法原理不再赘述。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\linewidth]{software/scd}
     \caption{\label{fig:detect2}SCD算法检测流程示意图}
 \end{figure}
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.55\linewidth]{software/factory}
-    \caption{\label{fig:factory}工厂方法的原理示意图}
-\end{figure}
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=.55\linewidth]{software/factory}
+%     \caption{\label{fig:factory}工厂方法的原理示意图}
+% \end{figure}
 
-工厂方法的原则是定义一个用于创建对象的接口，让子类决定实例化具体的类。对\autoref{fig:detect2}中的SCD波形检测算法而言，
-初筛、复核及决策阶段均按上述模板方法进行了设计，各阶段的具体业务方法均在对应的具体子类中得到实现。
-在SCD算法运行时，这些子类并不是直接被实例化，而是作为特殊的“产品”，由一个额外的工厂类完成生产，如\autoref{fig:factory}所示。
-该工厂类中定义了用于实例化、初始化这些产品的抽象生产方法，该抽象方法必须在工厂类的子类中实现。
-若需设置或改变所需产品，只需在工厂类的不同子类中调整生产过程。
-对SCD算法而言，在初筛及决策阶段对应的工厂类中，生产方法只返回一个产品对象；而在复核阶段对应的工厂类中，
-生产方法则以列表的形式同时返回了多个产品对象。
+% 工厂方法的原则是定义一个用于创建对象的接口，让子类决定实例化具体的类。对\autoref{fig:detect2}中的SCD波形检测算法而言，
+% 初筛、复核及决策阶段均按上述模板方法进行了设计，各阶段的具体业务方法均在对应的具体子类中得到实现。
+% 在SCD算法运行时，这些子类并不是直接被实例化，而是作为特殊的“产品”，由一个额外的工厂类完成生产，如\autoref{fig:factory}所示。
+% 该工厂类中定义了用于实例化、初始化这些产品的抽象生产方法，该抽象方法必须在工厂类的子类中实现。
+% 若需设置或改变所需产品，只需在工厂类的不同子类中调整生产过程。
+% 对SCD算法而言，在初筛及决策阶段对应的工厂类中，生产方法只返回一个产品对象；而在复核阶段对应的工厂类中，
+% 生产方法则以列表的形式同时返回了多个产品对象。
 
 四、特征计算
 
@@ -256,15 +252,14 @@ Python开源、免费、易学，也具备极强的可移植性，可以非常�
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.6\linewidth]{software/singleton}
+    \includegraphics[width=.8\linewidth]{software/singleton}
     \caption{\label{fig:singleton}单例程模式的原理示意图}
 \end{figure}
 
 单例程模式的原则是保证一个类仅有一个实例，并提供一个访问它的全局访问点。
 单例程模式在PPG形态特征计算模块得到了应用。由于PPG时域特征种类繁多，本研究在时域特征的抽象基类中定义了模板方法，
-由模板方法负责调用特征的计算方法。计算方法在基类中被定义为抽象方法，也必须在具体的特征子类中实现。
-而PPG时域特征的计算过程与其定义完全绑定，在处理不同PPG波形时创建不同特征实例是对内存资源的浪费。
-因此，本研究使用单例程模式该过程进行了设计，单例程类自身不提供显式的构造方法，
+由模板方法负责调用特征的计算方法。
+而对单例程方法而言，该类自身不提供显式的构造方法，
 此前所有可用特征的实例化过程被设计为单例程类的生产方法，且该方法只能作为类方法被调用。
 在初次被调用时，生产方法会创建并保存单例程类本身的一个全局对象，并由全局对象完成生产返回所需产品；
 此后的调用直接均由全局对象完成生产。单例程模式可以提升软件系统的工作效率、降低内存资源的消耗。
@@ -280,7 +275,6 @@ $Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子�
 导出的数据是以检测的PPG波形为基础，包含该波形所有形态特征。而在本研究中，多种新设计的特征参数往往是以向量的形式出现，
 因此最后导出的结果将会大量出现波形——特征——向量（pulse-feature-vector）这种二级树状结构。
 此外信号特征算法出现引入了新的信号特征、对已有特征值数值的保存形式进行更改等更迭将会直接引起数据存储格式的变化。
-而常见的基于列表式的csv、txt等对这种树状数据格式的支持较差，需要借助新的数据储存格式来实现。
 
 \begin{figure}[htbp]
     \centering
@@ -288,13 +282,10 @@ $Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子�
     \caption{\label{fig:json}软件系统按JSON格式保存的数据示意图}
 \end{figure}
 
-扩展标记语言(Extensible Markup Language，XML) \cite{xml,Li2016}与JavaScript对象标记法（JavaScript Object Notation，JSON）\cite{json,Crockford2006}
-是两种服务器端流行的数据交换格式。两者均可按照实际需求灵活定制存储规则，对较为复杂的数据结构
-支持性好、拓展性强。但由于XML是基于标签描述数据的，在描述数组类型数据时，引入了大量冗余信息。
-而JSON则对数组类数据有着更好的支持，有着更快的读写速度与更高的存储效率\cite{Nurseitov2009}。
-因此，软件分析系统最终使用JSON作为数据交换格式，
-而在具体实现时使用了中国阿里巴巴公司的开源JSON解析库fastjson\cite{fastjson}进行编码。
-最后的导出数据如\autoref{fig:json}所示。在\autoref{fig:json}中，除基本数据特征外，与数据相关的文件信息及孕妇人口统计学信息也被保存至JSON文件。
+常见的基于列表式的CSV、TXT等对上述树状数据格式的支持较差，因此，软件分析系统选用了JavaScript对象标记法（JavaScript Object Notation，JSON）\cite{json,Crockford2006}
+作为数据交换格式，并利用了中国阿里巴巴公司的开源JSON解析库fastjson\cite{fastjson}。JSON格式对数组类数据有着更好的支持，有着更快的读写速度与更高的存储效率\cite{Nurseitov2009}。
+软件系统最终的导出数据示例如\autoref{fig:json}所示。可以看到，除基本数据特征外，
+与数据相关的文件信息及孕妇人口统计学信息也同时被保存。
 
 六、多生理参数的兼容接口
 
@@ -309,7 +300,7 @@ $Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子�
 
 一、PC客户端
 
-软件系统借助VSCode在Windows系统下完成了PC客户端的开发。而由于Java本身的跨平台特性，该客户端也可方便在Linux等其他系统下进行编译运行。
+软件系统借助VS Code在Windows系统下完成了PC客户端的开发。而由于Java本身的跨平台特性，该客户端也可方便在Linux等其他系统下进行编译运行。
 
 1、功能与界面
 
@@ -318,11 +309,10 @@ PC客户端的交互界面如\autoref{fig:pc_ui}所示。\autoref{tab:pc_ui}对\
 批处理菜单提供了大量数据进行处理分析的便捷操作方式；而帮助菜单则给出软件开发单位、软件版本号等信息。这些功能的进一步说明可参考\autoref{tab:pc_ui_menu}。
 软件交互界面的波形显示区域可以展示当前打开数据文件的波形图，支持通过鼠标完成拖动、缩放等功能；对波形的波峰波谷等特征点的分析也在\autoref{fig:pc_ui}中有所标示。
 与此同时，PC端软件也提供了较为丰富的右键菜单功能，提供了修改绘图颜色字体属性，支持选中当前波形直接复制至文件及连接打印机打印等功能。
-由于这些右键功能意义明确，可直接通过菜单名理解，故不提供表格进行枚举解释。
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{software/pc}
+    \includegraphics[width=0.85\linewidth]{software/pc}
     \caption{\label{fig:pc_ui}PC端软件界面示意图}
 \end{figure}
 
@@ -366,7 +356,7 @@ PC客户端的交互界面如\autoref{fig:pc_ui}所示。\autoref{tab:pc_ui}对\
         row{5-10,14-15}         = {bg=\evencolor},
         row{1}                  = {font=\headfont,bg=\headcolor},
         row{2-Z}                = {font=\nonheadfont},
-        cell{2}{1}              = {r=3,c=1}{c,m},
+        cell{2}{1}              = {r=2,c=1}{c,m},
         cell{5}{1}              = {r=6,c=1}{c,m},
         cell{11}{1}             = {r=3,c=1}{c,m},
         cell{14}{1}             = {r=2,c=1}{c,m},
@@ -374,7 +364,7 @@ PC客户端的交互界面如\autoref{fig:pc_ui}所示。\autoref{tab:pc_ui}对\
     菜单 & 子菜单 & 功能说明 \\
     文件 & 打开 & 选择需要分析的PPG文件 \\
         & 上传单个文件 & 上传单个PPG文件的处理结果至云服务器\\
-        & 上传目录下文件 & 上传目录下多个PPG文件的处理值云服务器端\\
+    文件 & 上传目录下文件 & 上传目录下多个PPG文件的处理值云服务器端\\
     编辑 & 设置PE状态 & 标记当前PPG文件对应的孕妇的PE状态 \\
         & 波形校验 & 开启SCD算法自动校验波形 \\
         & 波形人工校验 & 启动人工校验波形功能\\
@@ -390,28 +380,26 @@ PC客户端的交互界面如\autoref{fig:pc_ui}所示。\autoref{tab:pc_ui}对\
 
 2、处理流程与逻辑
 
-PC端正常的处理流程如\autoref{fig:pc_process}所示。在选中需要分析的PPG文件后，软件系统会自动调用SCD算法的进行波形初筛，并将筛选结果在波形显示区域进行标注。
-此时，点击波形检验菜单，SCD算法的检查与投票功能会被调用，会对此前的检验结果进行调整修整。用户可以通过鼠标放大观察整段数据的检测结果，若对
-检测结果有异议，可以点击波形人工校验菜单进行校正。此时，用户可以选择导出波形的检测结果，将完整波形对应的数据段以及其相对原始数据的位置等信息导出。
-随后，点击特征分析可以计算PPG波形的时域特征，点击导出并上传会将波形检测结果与特征计算结果以JSON形式保存，同时这些数据也会被上传至云服务器进行后续分析。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.65\linewidth]{software/pc_process}
+    \includegraphics[width=.6\linewidth]{software/pc_process}
     \caption{\label{fig:pc_process}PC客户端程序的操作流程}
 \end{figure}
 
-除上述完整流程外，PC软件客户端也支持直接选择包含某次分析的生成结果的JSON文件上传至云服务器和对指定目录下的指定PPG文件进行批量处理操作，这部分的详细介绍见下文。
+PC端软件正常的处理流程如\autoref{fig:pc_process}所示。在选中需要分析的PPG文件后，软件系统会自动调用SCD算法的进行波形初筛，并将筛选结果在波形显示区域进行标注。
+此时，点击波形检验菜单，SCD算法的检查与投票功能会被调用，会对此前的检验结果进行调整修正。用户可以通过鼠标放大观察整段数据的检测结果，若对
+检测结果有异议，可以点击波形人工校验菜单进行校正。此时，用户可以选择导出波形的检测结果，将完整波形对应的数据段以及其相对原始数据的位置等信息导出。
+随后，点击特征分析可以计算PPG波形的时域特征，点击导出并上传会将波形检测结果与特征计算结果以JSON形式保存，同时这些数据也会被上传至云服务器进行后续分析。
 
 3、特色功能说明
 
 1）完善的日志记录
 
 PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件日志管理与输出，可将软件运行过程中的运行状态和中间变量等关键信息按级别
-输出到不同日志文件中，方便系统开发与调试维护，如\autoref{fig:logs}所示。其中，日志输出级别包括OFF、FATAL、ERROR、WARN、INFO、DEBUG、ALL等，
-其日志输出的重要性依次降低，但输出的详细程度递增。
+输出到不同日志文件中，方便系统开发与调试维护，如\autoref{fig:logs}所示。一般而言，不同的日志文件记录的信息重要性递减，但输出的详细程度递增。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\linewidth]{software/logs}
+    \includegraphics[width=0.75\linewidth]{software/logs}
     \caption{\label{fig:logs}PC客户端日志文件示意（局部）}
 \end{figure}
 
@@ -433,52 +421,51 @@ PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件�
 3）批处理
 
 在某些情景下，可能存在对已经分析过的PPG数据再次进行分析的情景，如PPG波形的特征算法得到更新、云服务器端的识别模型得到更新之后等。
-则此时按上述处理逻辑与流程重新人工手动处理每一条原始PPG数据无疑显得耗时、低效且繁琐，特别是需要分析处理的数据量较大时。
+此时按\autoref{fig:pc_process}中的处理逻辑与流程重新人工手动处理每一条原始PPG数据无疑显得耗时、低效且繁琐，特别是需要分析处理的数据量较大时。
 为简化上述繁琐耗时的操作流程，PC客户端软件还额外开发了批量处理的功能。
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.7\linewidth]{software/configure}
-    \caption{\label{fig:configure}PC客户端批处理配置文件示意}
-\end{figure}
 
 批量处理的核心思路是预先将多条PPG数据的处理过程中的各项人工操作写入配置文件中，随后按照该配置文件依次处理所有PPG数据原始记录文件。
 具体操作时，需选择\autoref{fig:pc_ui}中的批处理菜单，再从如\autoref{tab:pc_ui_menu}所示的子菜单中选中生成模板。生成模板操作会要求选择一个
 文件夹作为批处理的根目录，该根目录下所有的有效PPG原始文件会被记录，并在根目录下生成一个空白的配置文件模板。此时，需要用户
 根据实际需要，自定义每一个PPG数据文件的个性化的处理流程，包括波形的计算与调整等。当批处理配置文件由用户更新完成后，最后可点击
 从\autoref{tab:pc_ui_menu}所示的子菜单中选中开始批处理，选择打开该配置文件，等待PC客户端处理完成即可。
-这一过程中的使用的配置文件范例如\autoref{fig:configure}所示，而\autoref{tab:configure}也对\autoref{fig:configure}中内容进行了进一步的解释与说明。
+这一过程中的使用的配置文件范例如\autoref{fig:configure}所示。
+% ，而\autoref{tab:configure}也对\autoref{fig:configure}中内容进行了进一步的解释与说明
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.55\linewidth]{software/configure}
+    \caption{\label{fig:configure}PC客户端批处理配置文件示意}
+\end{figure}
+% \begin{longtblr}
+%     [
+%         theme                   = {zju},
+%         caption                 = {PC客户端批处理配置文件配置项说明},
+%         label                   = {tab:configure},
+%     ]
+%     {
+%         width                   = \linewidth,
+%         colspec                 = {X[1,c,m]X[3,c,m]X[5,c,m]},
+%         hline{1,Z}              = {\thickline},
+%         hline{2}                = {\thinline},
+%         rowhead                 = 1,
+%         row{odd}                = {bg=\oddcolor}, 
+%         row{even}               = {bg=\evencolor},
+%         row{1}                  = {font=\headfont,bg=\headcolor},
+%         row{2-Z}                = {font=\nonheadfont},
+%     }
+%     配置项 & 意义 & 说明 \\
+%     path & 文件夹路径 & 选择路径后会自动生成，不建议修改\\
+%     PEstate & PE状态 & 0 为正常，1为PE，其他值无效 \\
+%     mode & 功能选择 & 有效区间为0-63，具体含义参见后文 \\
+%     files & 需要批处理的所有文件 & 选择路径后会自动生成，支持修改部分配置项 \\
+%     files下的path & 需要处理的PPG文件名 & 选择路径后会自动生成，不建议修改\\
+%     skipped & 是否跳过处理该文件 & true跳过，false不跳过，默认不跳过\\
+%     pulses & 需要调整的PPG波形 & 默认为空，需要自定义修改 \\
+%     type & PPG波形调整类型 & R为移除，A为新增，其他值无效\\
+%     Points & PPG波形特征点坐标 & {需要波形起点、波峰、波谷等三个数值。\\可以不精确，可自动在邻域内精确调整}\\
+% \end{longtblr}
 
-\begin{longtblr}
-    [
-        theme                   = {zju},
-        caption                 = {PC客户端批处理配置文件配置项说明},
-        label                   = {tab:configure},
-    ]
-    {
-        width                   = \linewidth,
-        colspec                 = {X[1,c,m]X[3,c,m]X[5,c,m]},
-        hline{1,Z}              = {\thickline},
-        hline{2}                = {\thinline},
-        rowhead                 = 1,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
-        row{2-Z}                = {font=\nonheadfont},
-    }
-    配置项 & 意义 & 说明 \\
-    path & 文件夹路径 & 选择路径后会自动生成，不建议修改\\
-    PEstate & PE状态 & 0 为正常，1为PE，其他值无效 \\
-    mode & 功能选择 & 有效区间为0-63，具体含义参见后文 \\
-    files & 需要批处理的所有文件 & 选择路径后会自动生成，支持修改部分配置项 \\
-    files下的path & 需要处理的PPG文件名 & 选择路径后会自动生成，不建议修改\\
-    skipped & 是否跳过处理该文件 & true跳过，false不跳过，默认不跳过\\
-    pulses & 需要调整的PPG波形 & 默认为空，需要自定义修改 \\
-    type & PPG波形调整类型 & R为移除，A为新增，其他值无效\\
-    Points & PPG波形特征点坐标 & {需要波形起点、波峰、波谷等三个数值。\\可以不精确，可自动在邻域内精确调整}\\
-\end{longtblr}
-
-\autoref{fig:configure}所示的配置文件本质上仍是一个JSON文件，其中的大部分配置项的具体含义及可选数值范围已经在\autoref{tab:configure}进行了说明。
+\autoref{fig:configure}所示的配置文件本质上仍是一个JSON文件。%其中的大部分配置项的具体含义及可选数值范围已经在\autoref{tab:configure}进行了说明。
 对于\autoref{fig:configure}中的mode配置而言，其数值确定了所需要进行的批处理操作。
 目前mode支持\autoref{tab:pc_ui_menu}中波形校验、波形人工校验、导出检波结果、特征分析、导出并上传等6种操作，
 这些操作分别通过mode的1位来完成控制，其中波形校验对应mode的最低位。mode的默认值为31，即$0b011111$，即对当前文件进行除数据特征上传外的所有操作。
@@ -539,33 +526,33 @@ mode被配置为63，所有文件会完成全部6项批处理操作。而在对\
 \end{longtblr}
 
 \subsection{PE识别模型训练生成模块}
-PE识别模型训练生成模块是软件系统的核心，基于已经提取好的数据特征完成识别模型的训练生成任务。在对训练好的PE分类识别模型进行评估后，
-综合性能表现好的识别模型才会被部署至云服务端，供PC客户端与Android客户端调用，以识别预测新数据。而由于Python在机器学习领域的广泛普及应用，
-此模块的所有编程设计与实现全部基于Python完成，以下为具体介绍。
+PE识别模型训练生成模块是软件系统的核心，需要基于数据特征完成PE识别模型的训练。在进一步对得到的模型进行评估后，
+综合性能表现好的识别模型才会被部署至云服务端，供PC客户端与Android客户端调用，以识别预测新数据。由于Python在机器学习领域的广泛普及应用，
+此模块的所有编程设计与实现全部基于Python完成。
 
 一、数据合并
 
-如前文所述，软件系统的客户端程序最终会把检测得到PPG波形数据与PPG时域特征分别以JSON文件的形式保存至本地并上传至云服务器。而前文中已经介绍过，
-JSON文件的构成更符合一棵数据“树”的概念。为从多棵这样的数据树中构建出完整的特征数据集矩阵，显然需要一个数据合并的过程。
-这也即第四章中提及的的脉搏波多维度时域特征集（photoplethysmographic multidimensional
+软件系统的客户端程序最终会把检测得到PPG波形数据与PPG时域特征分别以JSON文件的形式保存至本地并上传至云服务器。由于JSON文件的构成更符合一棵数据“树”的概念，
+为从多棵这样的数据树中构建出完整的特征数据集矩阵，显然需要一个数据合并的过程。
+该过程即为第四章的脉搏波多维度时域特征集（photoplethysmographic multidimensional
 time-domain feature set，PPGMTFS）与脉搏波采样序列时域特征集（photoplethysmographic sampling series time-domain feature set，PPGSSTFS）的生成过程。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.65\linewidth]{software/mergedata}
+    \includegraphics[width=.55\linewidth]{software/mergedata}
     \caption{\label{fig:mergedata}数据合并流程图}
 \end{figure}
 
 模块对数据合并的处理流程如\autoref{fig:mergedata}所示。依次读取需要合并的数据特征文件，确定生成矩阵的标题栏，记录下包括软件版本号、原始PPG数据文件名、数据患者名、PE状态等基本信息，
 随后开始记录数据特征文件的所有特征数值，为了后续分析方便，PPG波形序号也被同时记录。而当生成PPGSSTFS时，需要根据PPG波形对齐策略的选择，将原始采样值量化至指定区间内。
-按此方式依次处理完所有文件即可得到最终的数据集矩阵，而考虑到数据格式的兼容性的需要，数据集矩阵最终会以csv格式进行保存。
+按此方式依次处理完所有文件即可得到包含最终的数据集矩阵的CSV格式文件。
 
 二、数据划分
 
-如第四章介绍过的，为使后续经由不同机器学习算法训练所得的PE识别模型的性能具有可比性，需要通过控制变量法，让所有的机器学习模型在相同的训练数据集上训练模型，并在相同测试
+为使后续经由不同机器学习算法训练所得的PE识别模型的性能具有可比性，需要通过控制变量法，让所有的机器学习模型在相同的训练数据集上训练模型，并在相同测试
 数据集上评估性能。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.65\linewidth]{software/loaddataset}
+    \includegraphics[width=.8\linewidth]{software/loaddataset}
     \caption{\label{fig:loaddataset}数据集划分创建过程示意图}
 \end{figure}
 
@@ -575,58 +562,57 @@ time-domain feature set，PPGMTFS）与脉搏波采样序列时域特征集（ph
 
 三、模型训练与保存
 
-软件系统所有的PE识别模型均是借助Python下Sklearn工具包完成的。而单个PE识别模型的具体构建过程通常涉及载入数据、在训练集上进行训练、考察训练集上的性能、在
-测试集上测试等等操作，且其中的某些步骤往往涉及到多个参数的计算与比较。当需要评估对比的机器模型过多时，这一些列的操作会给编程带来麻烦，且极易疏漏。
-另一方面，由于Python本身是一种动态类型的编程语言，强调在运行时确定对象的类型，而非在编译时确定其类型。这意味着Python不会检测变量的具体类型，而是关注变量
-是否具有特定的属性与方法。而Sklearn本身在设计过程中均遵循了统一规范，不同的机器学习算法均提供了相同的API函数。因此，软件系统在此基础上对不同机器学习算法进行了一层封装。
+机器学习的过程一般包括载入数据、在训练集上进行训练、考察训练集上的性能、在测试集上测试等操作，其中的某些步骤更涉及到多个参数的计算与比较。
+在PE识别模型的构建过程中，由于涉及多个模型的比较，需要不断重复上述操作。如果不对该过程进行设计，该过程不但繁琐且极易疏漏。
+另一方面，由于PE识别模型均是借助Python下Sklearn工具包完成的，而Sklearn本身在设计过程中均遵循了统一规范，不同的机器学习算法均提供了相同的API函数。
+而Python本身是一种动态类型的编程语言，并不再编译时确定对象类型，而是将类型检查延迟至运行时。换言之，Python不会检测变量的具体类型，而是关注变量
+是否具有特定的属性与方法。基于以上背景，软件系统对PE识别模型的构建过程额外进行了封装，在实现代码的最小化的同时，也避免了算法模型训练过程的代码遗漏等问题，同时也简化了模型训练过程。
 
-在本软件系统中，MyClasssifer是封装之后的类名，可直接用Sklearn工具包中的具体分类算法的实例初始化该类。除此之外，该类只有四个公共函数接口，
-第一个为设定MyClasssifer所使用的分类算法的实例的初始化函数$init()$，该函数要求初始实例必须为Sklearn工具包中有效算法实例；
-第二个为设定模型训练所需的训练集与测试集数据函数$load\_data()$；第三个为开始训练并评估的$fit\_predict()$函数，该函数封装了机器学习算法在训练集与测试集上的全部处理操作过程；
-最后一个为对模型进行超参数网格搜索的函数$grid\_search()$。特别地，在$fit\_predict()$函数中集成封装了Sklearn工具包中各算法模型的多项重要函数，其处理流程如\autoref{fig:fit_predict}所示。
-注意在\autoref{fig:fit_predict}中，为使训练好的机器学习模型供后续上传至云服务器使用，MyClasssifer的$fit\_predict()$函数也将生成的最终模型与训练模型的超参数进行了保存。
-除以随机森林为代表的部分随机性强的机器学习算法外，保存模型生成的超参数可确保只要给定相同的数据集，使用相同的算法在相同的超参数的条件下，就可以复现出完全相同的机器学习模型。
+软件系统中将模型训练过程封装成了MyClasssifer类，可直接用Sklearn中的机器学习算法实例进行初始化。MyClasssifer类一共包含四个可调用的公开函数：
+$init()$、$load\_data()$、$fit\_predict()$与$grid\_search()$。其中，$init()$函数为MyClasssifer新建实例初始化函数；
+$load\_data()$函数负责载入训练集与测试集数据；$fit\_predict()$函数封装了机器学习算法在训练集与测试集上的全部处理操作；而
+$grid\_search()$为模型超参数探索时的网格化搜索函数。
+特别地，在$fit\_predict()$函数中集成封装了Sklearn工具包中各算法模型的多项重要函数，其处理流程如\autoref{fig:fit_predict}所示。
+在\autoref{fig:fit_predict}中，为使模型可复现，$fit\_predict()$函数在保存生成的模型的同时也将训练该模型的所需的超参数进行了保存。
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
-    \includegraphics[width=.38\linewidth]{software/fit_predict}
+    \includegraphics[width=\linewidth]{software/fit_predict}
     \caption{\label{fig:fit_predict}封装后的$fit\_predict()$函数处理流程图}
 \end{figure}
-
-综上，借助封装后MyClasssifer类，评估不同的机器学习方法在同一批数据集上的表现的过程将得到进一步地简化，在实现代码的最小化的同时，也避免了算法模型训练过程的代码遗漏等问题，从而简化了模型训练过程。
 
 四、日志记录
 
 与此前的客户端程序类似，为方便调试与记录模型训练模块在训练生成PE识别模型过程中的各项参数与中间变量等信息，模型训练模块也开发了程序日志记录功能。
 而这一功能的开发基于Python下的logging包。
 
-日志记录logging包中也支持设置日志等级，可在不同的版本（如开发环境、生产环境）上通过设置不同的输出等级来记录对应的日志，非常灵活。
-其中，日志输出级别包括DEBUG、INFO、NOTICE、WARNING、ERROR、CRITICAL、ALERT、EMERGENCY等。而在具体使用logging包时需要通过一个JSON文件进行
-相关功能的配置，具体配置过程可参见logging包官方文档，这里不再赘述。\autoref{fig:clflog}给出了模型训练生成模型最终的日志记录示意。
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.8\linewidth]{software/clflog}
-    \caption{\label{fig:clflog}PE识别模型训练模块的日志记录示意}
-\end{figure}
+% 日志记录logging包中也支持设置日志等级，可在不同的版本（如开发环境、生产环境）上通过设置不同的输出等级来记录对应的日志，非常灵活。
+% 其中，日志输出级别包括DEBUG、INFO、NOTICE、WARNING、ERROR、CRITICAL、ALERT、EMERGENCY等。而在具体使用logging包时需要通过一个JSON文件进行
+% 相关功能的配置，具体配置过程可参见logging包官方文档，这里不再赘述。\autoref{fig:clflog}给出了模型训练生成模型最终的日志记录示意。
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=.8\linewidth]{software/clflog}
+%     \caption{\label{fig:clflog}PE识别模型训练模块的日志记录示意}
+% \end{figure}
 
 \subsection{云服务器模块}
 云服务器模块在某种意义上可以看作为客户端软件与PE识别模型训练生成模块的中间件。云服务器端接收来自客户端的特征数据，在一定的校验确认数据无误后，
 根据客户端具体请求内容，选择一个或多个已经训练好的机器学习模型进行新数据的识别预测，并将结果返回至客户端。为方便后续可能的二次开发，所有客户端的
 发送来的原始数据都会被保存至数据库中。
 
-需要注意的是，云服务器模块在设计时是可以直接使用第三方商业公司提供的具有公网IP地址的云服务器等业务。但在本软件系统的研发过程中，出于方便开发的角度，暂时仅使用了
-局域网进行环境搭建模拟与后续测试。以下为云服务器模块的具体介绍。
+% 需要注意的是，云服务器模块在设计时是可以直接使用第三方商业公司提供的具有公网IP地址的云服务器等业务。但在本软件系统的研发过程中，出于方便开发的角度，暂时仅使用了
+% 局域网进行环境搭建模拟与后续测试。
 
 一、网络协议选择与数据接口设计
 
-为使客户端软件与云服务器端能够进行数据通信与数据交换，显然需要借助一定的网络协议。本软件系统最终选择了最为常见的超文本传输协议（Hypertext Transfer Protocol，HTTP）进行
-两者间的数据通信。HTTP是一种简单的请求——响应协议，它通常运行在TCP之上，同时，HTTP也指定了客户端可能发送给服务器的消息类型以及能得到何种响应。
+为使客户端软件与云服务器端能够进行数据通信与数据交换，软件系统选择了最为常见的超文本传输协议（Hypertext Transfer Protocol，HTTP）。
+HTTP是一种简单的请求——响应协议，它指定了客户端可能发送给服务器的消息类型以及能得到何种响应，通常运行在TCP协议之上。
 
 1、POST与GET
 
-HTTP协议中定义了很多与服务器的交互的方法，而PUT、DELETE、POST与GET则是其中最基本的四种。一般而言，一个URL地址描述了一个互联网上的资源，而HTTP协议中的
-PUT、DELETE、POST与GET等方法则对应着对这个资源的增、删、改、查等基本操作。其中，GET方法与POST方法最为常见，在互联网应用中使用的最为广泛。
-GET方法与POST方法均能向服务器端传递数据，但两者之间也存在着一定的差异，如\autoref{tab:get_post}所示。
+一般而言，一个URL地址描述了一个网络资源。而HTTP协议中定义的PUT、DELETE、POST与GET等与服务器进行交互的基本方法，对应着对该网络资源的增、删、改、查等基本操作。
+其中，GET方法与POST方法均能向服务器端传递数据，在互联网应用中使用的最为广泛。
+由于POST方法较GET方法功能更为强大，能够同时传递文本数据与二进制文件数据，因而被选为软件系统的客户端与云服务器端的默认通讯方法，如\autoref{tab:get_post}所示。
 
 \begin{longtblr}
     [
@@ -651,16 +637,13 @@ GET方法与POST方法均能向服务器端传递数据，但两者之间也存�
     传递数据量&受限，一般为1024个字符&无限制\\
     编码方式&只允许ASCII字符&没有限制，也允许二进制数据\\
     安全性&较差，数据是URL的一部分&较安全，参数不会被记录保存\\
-
 \end{longtblr}
-
-鉴于\autoref{tab:get_post}所示，POST方法较GET方法功能更为强大，能够同时传递文本数据与二进制文件数据，因而被选为软件系统的客户端与云服务器端的通讯方式。
 
 2、POST方法的参数设计
 
-客户端在将需要上传的参数、数据进行POST封装时，所有的数据都会以键值对的形式进行映射。而为了方便服务器端的解析，将数据的键是否以“file”结尾作为区分文件数据与文本数据的标志，
-并据此选择将与键对应的值以文件形式封装或文本形式封装，这一过程如所示。而服务器端在接受到POST请求后，在解析时数据时，会首先检查数据的键是否以“file”结尾，随后
-选择对应的解析处理方式。截止目前，客户端程序通过POST方法向云服务器端提交数据的通讯过程中涉及到的所有参数如\autoref{tab:post_paras}所示，其中文件类数据在表格中用粉红色底色
+客户端在将需要上传的参数、数据进行POST封装时，所有的数据都会以键值对的形式进行映射。
+客户端通过POST方法可同时传递文本数据与二进制文件数据，这两种类型的数据会自动被服务器端程序区分并解析。
+截止目前，客户端程序通过POST方法向云服务器端提交数据的通讯过程中涉及到的所有参数如\autoref{tab:post_paras}所示，其中文件类数据在表格中用粉红色底色
 进行了突出显示。
 \begin{longtblr}
     [
@@ -700,82 +683,82 @@ GET方法与POST方法均能向服务器端传递数据，但两者之间也存�
 
 3、客户端的网络组件
 
-在上述过程中，为实现与云服务器端进行正常通讯，PC客户端与Android客户端程序在实际开发时，使用的组件库各不相同，这些组件库的具体使用方式也有所差异。下面分别进行简单介绍。
+在上述过程中，为实现与云服务器端进行正常通讯，PC客户端选择了HttpClient这一组件进行网络功能的开发，
+Android客户端选择了Retrofit这一组件进行网络功能的开发，如\autoref{tab:platform}所示。
 
-1）PC客户端
+% 在上述过程中，为实现与云服务器端进行正常通讯，PC客户端与Android客户端程序在实际开发时，使用的组件库各不相同，这些组件库的具体使用方式也有所差异。下面分别进行简单介绍。
 
-PC客户端选择了HttpClient这一组件进行网络功能的开发。HttpClient是Apache Jakarta Common下的子项目，用来提供高效的、最新的、更能丰富的支持HTTP协议的客户端编程工具包，
-HttpClient基于标准、纯净的Java语言实现，完全实现了HTTP1.0和HTTP1.1的内容与功能。
+% 1）PC客户端
 
-2）Android客户端
+% PC客户端选择了HttpClient这一组件进行网络功能的开发。HttpClient是Apache Jakarta Common下的子项目，用来提供高效的、最新的、更能丰富的支持HTTP协议的客户端编程工具包，
+% HttpClient基于标准、纯净的Java语言实现，完全实现了HTTP1.0和HTTP1.1的内容与功能。
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.9\linewidth]{/software/retrofit}
-    \caption{\label{fig:Retrofit}Retrofit的工作原理}
-\end{figure}
-Android客户端选择了Retrofit这一组件进行网络功能的开发。Retrofit是目前Android系统下最流行、应用最广的一个RESTful的HTTP网络请求框架的封装。
-网络请求的工作本质上是OkHttp完成，而Retrofit仅负责网络请求接口的封装。
-App应用程序通过Retrofit请求网络，实际上是使用Retrofit接口层封装请求参数、Header、URL等信息，之后由OkHttp完成后续的请求操作
-在服务端返回数据之后，OkHttp将原始的结果交给Retrofit，Retrofit根据用户的需求对结果进行解析，这一过程如\autoref{fig:Retrofit}所示。
+% 2）Android客户端
+
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=.9\linewidth]{/software/retrofit}
+%     \caption{\label{fig:Retrofit}Retrofit的工作原理}
+% \end{figure}
+% Android客户端选择了Retrofit这一组件进行网络功能的开发。Retrofit是目前Android系统下最流行、应用最广的一个RESTful的HTTP网络请求框架的封装。
+% 网络请求的工作本质上是OkHttp完成，而Retrofit仅负责网络请求接口的封装。
+% App应用程序通过Retrofit请求网络，实际上是使用Retrofit接口层封装请求参数、Header、URL等信息，之后由OkHttp完成后续的请求操作
+% 在服务端返回数据之后，OkHttp将原始的结果交给Retrofit，Retrofit根据用户的需求对结果进行解析，这一过程如\autoref{fig:Retrofit}所示。
 
 二、模型的上传
 
 在前文中提及过的PE识别模型训练完成之后，得到的各机器学习模型也需要被上传部署在云服务器端。为使机器学习的部署更为便捷、清晰，软件系统也基于Python的图形界面PyQt额外开发了
-机器学习模型上传程序，如\autoref{fig:upload_model}所示。而各机器学习模型在上传时，本质上仍使用了HTTP协议的POST方法。除\autoref{fig:upload_model}中已展示的外，
-该POST方法在与云服务器端进行通讯时携带的全部参数及含义如\autoref{tab:post_paras2}所示，
-其中文件类数据在表格中用粉红色底色进行了突出显示。
+机器学习模型上传程序，如\autoref{fig:upload_model}所示。模型在上传时需将包括使用的算法、训练集、版本号等信息一并提交。
+%而各机器学习模型在上传时，本质上仍使用了HTTP协议的POST方法。%除\autoref{fig:upload_model}中已展示的外，
+% 该POST方法在与云服务器端进行通讯时携带的全部参数及含义如\autoref{tab:post_paras2}所示，
+% 其中文件类数据在表格中用粉红色底色进行了突出显示。
+
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.6\linewidth]{software/upload_model}
+    \includegraphics[width=.65\linewidth]{software/upload_model}
     \caption{\label{fig:upload_model}模型上传软件操作界面示意}
 \end{figure}
-\begin{longtblr}
-    [
-        theme                   = {zju},
-        caption                 = {客户端在POST方法中上传的所有参数},
-        label                   = {tab:post_paras2},
-    ]
-    {
-        width                   = \linewidth,
-        colspec                 = {X[1.5,c,m]X[3,c,m]X[1,c,m]X[1,c,m]X[2.5,c,m]},
-        hline{1,Z}              = {\thickline},
-        hline{2}                = {\thinline},
-        rowhead                 = 1,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
-        row{2-Z}                = {font=\nonheadfont},
-        cell{6}{3,4}            = {bg=\emphacolor},
-    }
-    参数的键名&参数值的含义&{数据流\\类型}&数据类型&备注\\
-    project&上传的模型归属的具体项目&文本&字符串&{值固定为PE，代表数据隶属本论文基于PE的研究}\\
-    data\_type&上传的模型所属生理信号类别&文本&字符串&{值固定为PPG}\\
-    client&上传模型的客户端类型&文本&字符串&值固定为PC\\
-    version&上传模型的客户端程序版本号&文本&字符串&\\
-    model&训练生成得到的机器学习模型文件&文件&文件数据&模型导出为具体文件，按二进制编码成数据流发送\\
-    model\_algorithm&模型训练生成所使用的机器学习算法&文本&字符串&包括KNN、RF等算法\\
-    model\_version&使用特定机器学习算法生成的模型版本号&文本&字符串&\\
-    train\_set&训练模型所使用的所有孕妇姓名&文本&字符串&{遵循医学伦理学相关标准,省略孕妇具体姓名，仅以拼音缩写代替}\\
-    train\_time&模型训练生成时间&文本&字符串&\\
-    upload\_time&本次通信上传时间&文本&字符串&\\
-\end{longtblr}
+% \begin{longtblr}
+%     [
+%         theme                   = {zju},
+%         caption                 = {客户端在POST方法中上传的所有参数},
+%         label                   = {tab:post_paras2},
+%     ]
+%     {
+%         width                   = \linewidth,
+%         colspec                 = {X[1.5,c,m]X[3,c,m]X[1,c,m]X[1,c,m]X[2.5,c,m]},
+%         hline{1,Z}              = {\thickline},
+%         hline{2}                = {\thinline},
+%         rowhead                 = 1,
+%         row{odd}                = {bg=\oddcolor}, 
+%         row{even}               = {bg=\evencolor},
+%         row{1}                  = {font=\headfont,bg=\headcolor},
+%         row{2-Z}                = {font=\nonheadfont},
+%         cell{6}{3,4}            = {bg=\emphacolor},
+%     }
+%     参数的键名&参数值的含义&{数据流\\类型}&数据类型&备注\\
+%     project&上传的模型归属的具体项目&文本&字符串&{值固定为PE，代表数据隶属本论文基于PE的研究}\\
+%     data\_type&上传的模型所属生理信号类别&文本&字符串&{值固定为PPG}\\
+%     client&上传模型的客户端类型&文本&字符串&值固定为PC\\
+%     version&上传模型的客户端程序版本号&文本&字符串&\\
+%     model&训练生成得到的机器学习模型文件&文件&文件数据&模型导出为具体文件，按二进制编码成数据流发送\\
+%     model\_algorithm&模型训练生成所使用的机器学习算法&文本&字符串&包括KNN、RF等算法\\
+%     model\_version&使用特定机器学习算法生成的模型版本号&文本&字符串&\\
+%     train\_set&训练模型所使用的所有孕妇姓名&文本&字符串&{遵循医学伦理学相关标准,省略孕妇具体姓名，仅以拼音缩写代替}\\
+%     train\_time&模型训练生成时间&文本&字符串&\\
+%     upload\_time&本次通信上传时间&文本&字符串&\\
+% \end{longtblr}
 
 三、基于Django的服务器端程序设计
 
-为使云服务器端能对跨平台客户端的网络请求进行数据处理并作出响应，显然也需要进行云服务端程序的设计与开发。
-而本研究涉及的所有机器学习模型均是通过Python下的Sklearn包生成，需要云服务器端也能处理、操作、使用这些经由互联网上传的机器学习模型。
-因此，选用基于Python的Web框架进行云服务端程序的开发无疑是最为便捷的。
-
+由于本研究涉及的所有机器学习模型均是通过Python下的Sklearn包生成，为方便云服务器端调用，软件系统最终选取了同样基于Python的开源通用Web框架Django进行相关云服务器端的功能开发。
+如\autoref{fig:django}所示\cite{django,djangosq}，Django按模型-模版-视图（Model-Template-View，MTV）设计模式的进行了整体结构设计，MTV各自的职责与功能
+如\autoref{tab:django_func}所示。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.8\linewidth]{software/django}
+    \includegraphics[width=.75\linewidth]{software/django}
     \caption{\label{fig:django}Django框架结构示意\cite{djangosq}}
 \end{figure}
-Django就是这样一个符合上述需求的、基于Python的开源通用Web框架，其整体结构如\autoref{fig:django}所示\cite{django,djangosq}。
-Django免费开源，有活跃繁荣的社区以及丰富的文档，加上其本身由经验丰富的开发者构建，使得开发人员只需专注于编写应用程序，无需关注具体底层事务，从而可以快速开发安全和可维护的网站。
-Django按模型-模版-视图（Model-Template-View，MTV）设计模式的进行了设计，MTV各自的职责与功能
-如\autoref{tab:django_func}所示。
 \begin{longtblr}
     [
         theme                   = {zju},
@@ -802,33 +785,28 @@ Django按模型-模版-视图（Model-Template-View，MTV）设计模式的进�
 
 1、处理流程
 
-云服务器端的程序处理流程实际上对应着\autoref{tab:django_func}中的视图，即业务逻辑层。如\autoref{fig:url}所示，此前介绍过的\autoref{tab:post_paras}中的跨平台客户端的数据请求与\autoref{tab:post_paras2}中的
-模型上传请求分别对应云服务器端的两个路由地址，即两个URL地址。对模型上传请求而言，云服务器端程序会在检查各项参数后，会在确认当前并无重复的算法及其版本后，将新的
-模型存入数据库中供后续调用。而在处理跨平台客户端的数据请求时，程序也会进行参数检查，检查无误也会将所有数据进行存储。随后，依据数据请求中的是否需要进行数据预测参数，
-数据请求中指定的需要使用的机器学习模型等参数，程序开始进行数据预测。由于本论文目前使用采集的数据量较小，当指定的机器学习模型被载入后，
-程序会进一步检查，当前数据是否已经在模型训练阶段使用过，即当前数据是否在模型的训练集中。只有机器学习的未见数据实例才会被最终预测，同时，预测结果会被
-返回至客户端。
+云服务器端的程序处理流程实际上对应着\autoref{tab:django_func}中的视图，即业务逻辑层。当云服务器端接收到客户端的数据请求或模型上传请求时，云服务器端程序会依据请求对应的不同
+URL路由地址，选择对应的处理流程，这一过程如\autoref{fig:url}所示。
+% ，此前介绍过的\autoref{tab:post_paras}中的跨平台客户端的数据请求与\autoref{tab:post_paras2}中的
+% 模型上传请求分别对应云服务器端的两个路由地址，即两个URL地址。对模型上传请求而言，，会在确认当前并无重复的算法及其版本后，将新的
+% 模型存入数据库中供后续调用。而在处理跨平台客户端的数据请求时，程序也会进行参数检查，检查无误也会将所有数据进行存储。随后，依据数据请求中的是否需要进行数据预测参数，
+% 数据请求中指定的需要使用的机器学习模型等参数，程序开始进行数据预测。由于本论文目前使用采集的数据量较小，当指定的机器学习模型被载入后，
+% 程序会进一步检查，当前数据是否已经在模型训练阶段使用过，即当前数据是否在模型的训练集中。只有机器学习的未见数据实例才会被最终预测，同时，预测结果会被
+% 返回至客户端。
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\linewidth]{software/url}
+    \includegraphics[width=\linewidth]{software/url}
     \caption{\label{fig:url}云服务器响应URL请求过程流程图}
 \end{figure}
 
 2、请求响应
 
-在\autoref{fig:url}中，当云服务器接收到客户端传来的有效数据，在进行一定的操作处理后，需要将处理结果返回。这一过程即为请求响应过程，
-对应着\autoref{tab:django_func}中的模板表现层。一般而言，请求响应的内容可不限于文字的形式，可包括音视频文件、HTML网页文件等。
-但在本软件系统的当前版本中，请求响应的内容仅为文本字符内容，暂未进行专门的网页UI设计。
+请求响应是云服务器端程序完成\autoref{fig:url}中的处理后对客户端的答复信息，对应着\autoref{tab:django_func}中的模板表现层。一般而言，请求响应可包含文本、音视频文件与HTML网页文件等多种形式的内容。Django网络框架中默认支持的请求响应包括两种，一种为普遍通用的HttpResponse，可在其中传达文本消息及文件等；另一种为功能更专一化的JSONResponse，可在其中按JSON数据格式传递键值对。考虑到客户端程序解析与后续调整的方便，云服务器端程序的请求响应采用了JSONResponse的格式，传递内容仅为文本字符，暂未进行专门的网页UI设计。
 
-Django网络框架中默认支持的请求响应包括两种，一种为普遍通用的HttpResponse，可在其中传达文本消息及文件等；另一种为功能更专一化的JSONResponse，可在其中按JSON数据格式传递键值对。
-考虑到客户端程序解析的方便与方便后续调整，最终的请求响应采用了JSONResponse的格式。
-而由于客户端发送的数据默认是以被试为单位的，因此，云服务器在进行处理分析时，只返回本论文第五章中基于被试的PE识别模型的相应处理结果。
-云服务器端请求响应的JSON格式的具体内容如\autoref{tab:json_response}所示。
-由于云服务器可能存在多个已训练好的模型，故在一起请求中可能返回多个模型的分析结果。返回模型的总数由\autoref{tab:json_response}中的model\_num记录；
+以\autoref{fig:url}中数据请求的响应为例，云服务器端返回的具体内容如\autoref{tab:json_response}所示。
+由于数据请求可能同时请求调用多个训练好的模型，故其请求响应中可能返回多个模型的分析结果。其中，返回模型的总数由model\_num记录；
 而不同模型的分析结果通过的model\_index与model\_data\_type字段区分。
-同时，需要注意，尽管请求响应是以JSON格式返回内容，但客户端程序仍可以根据具体需求进行解析
-与一定的美化处理等操作。
 
 \begin{longtblr}
     [
@@ -869,37 +847,29 @@ Django网络框架中默认支持的请求响应包括两种，一种为普遍�
 
 4、日志
 
-为方便调试，云服务端在使用Django进行开发时，也启用了日志记录功能。由于这部分的程序功能也是基于Python下的logging包开发，具体过程与此前模型训练模块的类似，故不再单独赘述。
+为方便调试，云服务端在使用Django进行开发时，也使用了Python下的logging包进行日志记录功能开发。
 
 四、数据库设计
 
-数据库（DataBase， DB）是按照数据结构来组织、存储和管理数据的仓库，也是一个长期存储在计算机内的、有组织的、可共享的、统一管理的大量数据的集合。
-经过多年的发展，数据库技术已经是现代互联网数据管理的基本方法和技术，在组织数据、维护数据、控制数据和利用数据等方面发挥着不可替代的重要作用，
-是计算机领域最重要的基础软件之一，也是确保计算机系统稳定运行的基石。
+数据库（DataBase， DB）技术是现代互联网数据管理的基本方法，可有效组织、存储和管理大量数据。其中，数据一词指数据库可以储存多种信息，这些信息一般被称为字段。
+而为了从包含多条数据记录的集合中获取特定记录，还必须从这些字段中定义主键（primary key）。
+主键通常可以是一个字段或多个字段的组合，其值能唯一地标识表中的每一行，在与其他表的外键关联以及数据记录的修改与删除中具有重要作用。
+% 而关系型数据库是对存储的格式能够直观地反映实体间的关系的一类数据库的统称。关系型数据库和常见的表格比较相似，数据库的表与表之间是有很多复杂的关联关系。
 
-数据库中的数据一词指数据库可以储存多种信息，这些信息一般被称为字段。而为了从包含多条数据记录的集合中获取特定记录，还必须从这些字段中定义主键（PRIMARY KEY）。
-主键通常可以是一个字段或多个字段的组合，其值能唯一地标识表中的每一行，通过它可强制表的实体完整性。主键在与其他表的外键关联以及数据记录的修改与删除中具有重要作用。
+另一方面，如\autoref{fig:url}所示，云服务器端程序在处理客户端请求时，需要对请求中包含的大量参数信息进行处理与储存。
+而这些请求中的参数种类常常会随着软件系统的迭代而发生较大的改变，比如数据信号种类的变更、PPG特征的增改等。这也要求软件系统使用数据库进行数据的基本管理时，还必须同时
+进行一定的兼容性设计。
 
-与此同时，关系型数据库是对存储的格式能够直观地反映实体间的关系的一类数据库的统称。关系型数据库和常见的表格比较相似，数据库的表与表之间是有很多复杂的关联关系。
-而MySQL就是一种最为常见、也最具代表性的关系型数据库，也是目前流行的主流关系数据库之一。
-MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，支持查询、新增、更新、删除、求和、排序等基本操作。
-为使云服务器端的数据管理更为便捷有效，同时应对后续可能的大量数据管理，综合软件系统的开发过程中也基于MySQL进行了简单的数据库设计。
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=.8\linewidth]{software/data_table_relationship}
+%     \caption{\label{fig:data_table_relationship}软件系统的数据表及数据关系示意图}
+% \end{figure}
 
-另一方面，不论是如\autoref{tab:post_paras}上传的数据请求还是如\autoref{tab:post_paras2}上传的模型请求，都包含了大量参数信息，这些信息必须进行高效、有序的完整储存。
-与此同时，相比模型请求而言，数据请求中的参数种类常常会随着软件系统的迭代而发生较大的改变，比如数据信号种类的变更，PPG特征的增改等。这也要求软件系统在进行数据库设计时，必须同时
-保持一定的兼容性设计。
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.8\linewidth]{software/data_table_relationship}
-    \caption{\label{fig:data_table_relationship}软件系统的数据表及数据关系示意图}
-\end{figure}
-
-基于以上考虑，为便捷高效地存储本研究中涉及的PPG相关数据，同时保持由于新的数据类型引入、算法更新导致的特征增删等多种变化的兼容性，
-软件系统一共设计了五张数据表（Table）来解决这一问题。这些数据表之间的相互关联关系如\autoref{fig:data_table_relationship}所示。
-可以看到，模型的存储过程较为简单；而相对地，为保证兼容性，生理信号数据及其衍生特征的存储较为复杂，需要多张数据表级联并相互配合。
-需要注意的是，为简明扼要，\autoref{fig:data_table_relationship}中仅显示了各数据表的重要的外部键，这些数据表的详细设计可参见
-\autoref{tab:data_table_record}至\autoref{tab:data_table_model}，其中数据表的主键与外部键用粉色进行了突出显示。
+在以上背景下，软件系统选择了目前流行的主流关系数据库之一的MySQL进行相关数据的存储。MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，支持查询、新增、更新、删除、求和、排序等基本操作。与此同时，软件系统一共设计了五张数据表（Table）来解决上述问题。%这些数据表之间的相互关联关系如\autoref{fig:data_table_relationship}所示。
+其中，模型的存储过程较为简单，只需一张数据表；而生理信号数据及其衍生特征的存储较为复杂，需要四张数据表级联并相互配合。
+%需要注意的是，为简明扼要，\autoref{fig:data_table_relationship}中仅显示了各数据表的重要的外部键，
+这些数据表的详细设计可参见\autoref{tab:data_table_record}至\autoref{tab:data_table_model}，其中数据表的主键与外部键用粉色进行了突出显示。
 \begin{longtblr}
     [
         theme                   = {zju},
@@ -919,7 +889,7 @@ MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，�
         cell{2}{4}              = {bg=\emphacolor},
     }
     字段&数据类型&意义&备注\\
-    AutoField&32位整型&自增字段&Django默认主键，随记录存储自动增加\\
+    id&32位整型&自增字段&主键，随记录存储自动增加\\
     project&字符串&数据归属项目&兼容性设计，默认值为PE\\
     sourceFileName&字符串&上传的原始数据文件名&\\
     sourceFile&字符串&上传的原始数据文件&Django会自动管理文件名与文件的映射关系\\
@@ -930,8 +900,7 @@ MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，�
     isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
 \end{longtblr}
 
-Record数据表是\autoref{fig:data_table_relationship}中四张数据表中最为底层的，
-它采用Django默认的AutoField字段作为主键，主要用来记录存储数据请求中的最原始数据文件，如\autoref{tab:data_table_record}所示。
+Record数据表是存储特征时使用到的最为底层的数据表，主要用来记录存储数据请求中的最原始数据文件，而id字段为其主键，如\autoref{tab:data_table_record}所示。
 Record数据表中的project字段与state字段是一定程度上的冗余设计，前者目前固定表征PE，后者固定表征PE患病状态。
 以后可能涉及的其他项目的存储可以根据需要调整这两个字段意义。值得一提的是，数据表中额外增加了isDeleted字段用以处理数据记录的删除，当需要删除
 数据时，只需更改该字段的布尔值，避免了物理删除彻底丢失对数据后续管理的可能。
@@ -954,7 +923,7 @@ Record数据表中的project字段与state字段是一定程度上的冗余设�
         cell{2-3}{4}            = {bg=\emphacolor},
     }
     字段&数据类型&意义&备注\\
-    AutoField&32位整型&自增字段&Django默认主键，随记录存储自动增加\\
+    id&32位整型&自增字段&主键，随记录存储自动增加\\
     bindRecord&\autoref{tab:data_table_record}中定义的Record记录&当前记录绑定的Record数据表记录ID&关联到Record数据表的外部键\\
     dataType&字符串&数据记录所属类别&兼容性设计，在PE项目中，可选值包括指代特征的feature与指代原始采用点的point\\
     dataVersion&字符串&上传的数据特征文件版本号&兼容性设计，保持软件系统对因算法迭代导致的数据调整的兼容\\
@@ -987,7 +956,7 @@ Analysis数据表存储了对Record数据表的进行了初步处理的文件信
         cell{2-3}{4}            = {bg=\emphacolor},
     }
     字段&数据类型&意义&备注\\
-    AutoField&32位整型&自增字段&Django默认主键，随记录存储自动增加\\
+    id&32位整型&自增字段&主键，随记录存储自动增加\\
     bindAnalysis&\autoref{tab:data_table_analysis}中定义的Analysis记录&当前记录绑定的Analysis数据表记录ID&关联到Analysis数据表的外部键\\
     signalType&字符串&数据类型&兼容性设计，在PE项目中，目前该值仅为PPG\\
     index&整型&最小分析单位编号&兼容性设计，在PE项目中，该值指代PPG原始记录中的完整波形序号\\
@@ -1018,7 +987,7 @@ Unit数据表存储了对Analysis数据表的进行分析处理的最小单位�
         cell{2-3}{4}            = {bg=\emphacolor},
     }
     字段&数据类型&意义&备注\\
-    AutoField&32位整型&自增字段&Django默认主键，随记录存储自动增加\\
+    id&32位整型&自增字段&主键，随记录存储自动增加\\
     bindUnit&\autoref{tab:data_table_unit}中定义的Unit记录&当前记录绑定的Unit数据表记录ID&关联到Unit数据表的外部键\\
     type&字符串&操作标记&兼容性设计，在PE项目组，对PPG的特征类数值无意义；对PPG的采样点数据记录的均一化等特性\\
     name&字符串&特征数据名称&兼容性设计，特征名。在PE项目组，特征类数据该值为具体特征缩写；对采样点数据该值固定为point\\
@@ -1050,7 +1019,7 @@ Feature数据表存储了对PPG记录的单个波形的所有特征，而bindUni
         cell{2}{4}              = {bg=\emphacolor},
     }
     字段&数据类型&意义&备注\\
-    AutoField&32位整型&自增字段&Django默认主键，随记录存储自动增加\\
+    id&32位整型&自增字段&主键，随记录存储自动增加\\
     model&字符串&机器学习模型文件&Django会自动管理文件名与文件的映射关系\\
     algorithm&字符串&机器学习训练使用的算法名称&\\
     version&字符串&模型的版本号&兼容性设计，支持模型版本更迭\\
@@ -1071,8 +1040,8 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
 数据预处理模块的验证主要集中在对本研究设计提出的SCD波形检测算法的验证与测试上。
 本论文基于自采实验数据与标准数据库数据，对SCD算法进行了测试验证。与此同时，本论文也选取了两种有代表性的PPG检测算法与SCD算法进行了对比验证。
 
-由于上述多种PPG检测算法之间的介绍及对比过程已将在本论文第三章介绍过，具体可参考本论文\autoref{fig:scd_detect1}至\autoref{fig:ucibp_abnormal}及52页至55页内容，
-这里不再赘述。而\autoref{tab:scd_6}则展示了上述算法在不同数据集上的具体对比结果，可以看到本研究提出的SCD算法对PPG波形的识别准确率高、抗干扰能力强，与其他算法相比也具有一定的优势。
+上述多种PPG检测算法之间的对比过程可参见本论文第三章，具体对比结果如\autoref{tab:scd_6}所示。
+可以看到本研究提出的SCD算法对PPG波形的识别准确率高、抗干扰能力强，与其他算法相比也具有一定的优势。
 \begin{longtblr}
     [
         theme          = {zju},
@@ -1100,28 +1069,38 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
 
 \subsection{多平台客户端的测试与验证}
 软件系统的多平台客户端程序主要包括PC客户端（Windows平台）与Android客户端，两者的整体操作流程如\autoref{fig:pc_process}所示。
-
-为测试验证两个平台下的客户端软件，分别用客户端软件选中相同的PPG数据，两个平台下的检波效果完全一致，如\autoref{fig:pc_demo}与\autoref{fig:android_demo}所示。
-而进一步比较两个平台下的文件输出结果，得到的处理结果也相同。这表明软件系统的多平台客户端程序具有一致性。
-
-另外，关于不同客户端程序的网络通讯部分功能的测试与验证参见下一小节。
-
+% \begin{figure}[htbp]
+%     \centering
+%     \subfigure[PC客户端]{
+%     \includegraphics[width=10cm]{software/pc_demo}
+%     }
+%     \quad
+%     \subfigure[Android客户端]{
+%     \includegraphics[width=10cm]{software/android_demo}
+%     }
+%     \caption{\label{fig:pc_android_demos}不同客户端对被试dmq的PPG数据检测结果}
+% \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\linewidth]{software/pc_demo}
-    \caption{\label{fig:pc_demo}PC客户端对被试dmq的PPG数据检测结果}
-\end{figure}
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\linewidth]{software/android_demo}
+    \includegraphics[width=0.75\linewidth]{software/android_demo}
     \caption{\label{fig:android_demo}Android客户端对被试dmq的PPG数据检测结果}
 \end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\linewidth]{software/pc_demo}
+    \caption{\label{fig:pc_demo}PC客户端对被试dmq的PPG数据检测结果}
+\end{figure}
+
+为测试验证两个平台下的客户端软件，分别用客户端软件选中相同的PPG数据，两个平台下的检波效果完全一致，如\autoref{fig:android_demo}与\autoref{fig:pc_demo}所示。
+而进一步比较两个平台下的文件输出结果，得到的处理结果也相同。这表明软件系统的多平台客户端程序的处理结果具有一致性。而关于客户端网络通讯功能的测试与验证可参见下一小节。
 
 \subsection{云服务器端程序的测试与验证}
 云服务器端程序的测试主要包括两方面，首先为不同客户端软件与云服务器的网络连接测试；其次为不同客户端软件与云服务器的整体功能性测试，即接收数据并调用模型进行识别预测的
 完整功能性测试。
 
-需要注意的是，云服务器模块在设计时是可以直接使用第三方商业公司提供的具有公网IP地址的云服务器等业务。但在本软件系统的研发过程中，出于方便开发的角度，暂时仅使用了
+一、测试环境与设备
+
+云服务器模块在设计时是可以直接使用第三方商业公司提供的具有公网IP地址的云服务器等业务。但在本软件系统的研发过程中，出于方便开发的角度，暂时仅使用了
 局域网进行环境搭建模拟与后续测试。在此条件下，软件系统的整体物理设备组成架构如\autoref{fig:system_net}所示。
 
 在\autoref{fig:system_net}中，笔记本A作为局域网内的主机服务器，运行着软件系统的云服务器端程序；笔记本B与平板电脑分别作为PC客户端与Android端的运行平台;
@@ -1156,15 +1135,14 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
     平板电脑&中国小米&Redmi Pad SE&Android 12\\
 \end{longtblr}
 
-一、网络连接的测试与验证
+二、网络连接的测试与验证
 
-在前文中已经介绍过，当客户端通过POST方法与云服务器端进行通讯时，传递的参数信息中包含了此次由客户端程序发起通讯的时间，如\autoref{tab:post_paras}所示。
-因此，云服务器只需要记录下接收到数据信息的时间即可验证此次网络通讯连接成功，同时也可以利用这两个时间的间隔评估网络延迟等信息。
+如\autoref{tab:post_paras}所示，当客户端通过POST方法与云服务器端进行通讯时，传递的参数信息中包含了此次由客户端程序发起通讯的时间。
+因此，云服务器只需要记录下接收到数据信息的时间即可验证此次网络通讯连接成功，同时也可以利用这两个时间的间隔评估网络延迟等信息。需要注意，各网络设备均需提前与标准网络时间服务器进行过校正对齐。
 
-在上述基础上，针对本论文数据采集得到的79例被试人员的PPG数据，分别在测试这些数据经由PC客户端与Android客户端的延迟后，可得到所有数据文件在与云服务器端通讯的平均延时。其中，计算延迟前，各网络设备
-已经提前与标准网络时间服务器进行过校正对齐。
-如\autoref{tab:time_delay}所示，可以看到在\autoref{fig:system_net}所示的测试环境下，PC客户端与Android客户端与云服务器均能进行有效通讯，没有出现数据丢失等现象，同时
-具有较小的网络延迟。而这可能与数据通讯在局域网内进行、且数据传输量较小有关。若云服务器部署在商用云服务端，则数据延迟可能有一定程度的增加。
+按上述步骤，即可得到本论文采集得到的79名被试数据经客户端与云服务器端的网络连接延时后，并可进一步得到所有数据文件平均延时，其结果如\autoref{tab:time_delay}所示。
+可以看到，上述数据经由PC客户端与Android客户端与云服务器均能进行有效通讯，没有出现数据丢失等现象，同时
+具有较小的网络延迟。这可能与测试环境在局域网内搭建、测试数据整体传输量较小等因素有关。
 
 \begin{longtblr}
     [
@@ -1188,20 +1166,16 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
     Android&0.517\\
 \end{longtblr}
 
+三、预测模型的测试与验证
 
-二、预测模型的测试与验证
+在客户端软件中选择打开原始PPG数据文件后，当客户端完成了预处理后，处理结果会被上传至云服务器端。
+云服务器端调用PE识别模型并返回结果，不同平台下的返回结果如\autoref{fig:pc_response}与\autoref{fig:android_response}所示。
 
-在不同平台下的客户端软件中，在选择打开了原始PPG数据文件并进行了一定的预处理后，即可将相关数据上传至云服务器端，让部署在云服务器端的模型对其进行一定的分析识别，
-分析的结果也会返回至客户端，其中的具体流程如\autoref{fig:pc_process}所示。
-
-如\autoref{tab:dataset}所示，将本论文采集的原始数据进行数据集划分后，对测试集中的所有被试数据，即可按照\autoref{fig:pc_process}所示的流程进行识别。
-以已在第五章的\autoref{tab:model_detail}与\autoref{tab:model_detail2}介绍过的被试cmf的数据为例，在PC客户端与Android客户端下的请求响应结果分别如
-\autoref{fig:pc_response}与\autoref{fig:android_response}所示。
-其中，来自云服务端的响应结果分别在\autoref{fig:pc_response}与\autoref{fig:android_response}用表格的形式进行了呈现，表格中具体参数的意义
-可参考\autoref{tab:json_response}。另外，在本论文中，对于基于被试的研究而言，PPG的分析数据包括时域特征与原始采样值两大类；
+\autoref{fig:pc_response}与\autoref{fig:android_response}分别对应着被试cmf的原始数据在PC客户端与Android客户端的响应结果，而
+被试cmf数据的数据结果分别对应着\autoref{tab:model_detail}与\autoref{tab:model_detail2}的相关内容。
+云服务端的响应结果分别在\autoref{fig:pc_response}与\autoref{fig:android_response}以表格的形式进行了呈现，相关参数的意义可参考\autoref{tab:json_response}。
+特别地，由于对于基于被试的研究而言，PPG的分析数据包括时域特征与原始采样值两大类；
 而对于原始采样值而言，又使用了两种PPG波形的对齐策略。因此，\autoref{fig:pc_response}与\autoref{fig:android_response}中的模型总数的这一参数值均为3。
-
-综上，软件系统的预测模型功能能够按照设计正常运行。
 
 \begin{figure}[htbp]
     \centering
@@ -1269,13 +1243,12 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
     \caption[Feature数据表的存储情况（局部）]{\label{fig:feature_db}Feature数据表的存储情况（局部）}
 \end{figure}
 
-在\autoref{fig:mysql_db}所示的查询结果的基础上，借助第三方数据库管理软件，可以进一步地直接观察各数据表的存储状态；
-而DBeaver就是一个知名的免费开源的图形界面化的数据库管理软件。
-借助DBeaver查询\autoref{fig:mysql_db}的Feature数据表结果如\autoref{fig:feature_db}所示，可以看到该数据表已按\autoref{tab:data_table_feature}的设计进行了
+在\autoref{fig:mysql_db}的查询结果的基础上，借助开源图形界面化的数据库管理软件DBeaver可以进一步地直接观察各数据表的存储状态。
+查询\autoref{fig:mysql_db}的Feature数据表结果如\autoref{fig:feature_db}所示，可以看到该数据表已按\autoref{tab:data_table_feature}的设计进行了
 多种PPG特征数据的有效存储。
 
 \section{小结}
-本论文此前各章研究内容的基础上，基于PPG信号的设计并实现了一款具有较强的兼容性与拓展性的PE识别分析软件系统，该软件系统具有完整可用的基于PPG信号的PE识别分析功能。
-在详细分析了软件系统的研发需求之后，介绍了软件系统的整体性多模块化设计，即数据预处理、跨平台客户端、PE识别模型训练生成与云服务器程序等四个功能模块。
-随后，针对各个模块的设计需求，结合实际开发中遇见的问题，对各模块的实现工作进行了介绍。最后，针对软件系统的各模块进行了一定的测试。
+本章基于PPG信号的设计并实现了一款具有较强的兼容性与拓展性的PE识别分析软件系统，该软件系统具有完整可用的基于PPG信号的PE识别分析功能。
+首先，详细分析了软件系统的研发需求。其次，介绍了软件系统的整体性多模块化设计。
+随后，针对各个模块的设计需求，结合实际开发中遇见的问题，对各模块的实现工作进行了介绍。最后，对各模块进行了一定的测试。
 结果表明，软件系统的各项功能均能按照设计预期正常工作，具有一定的临床实际意义与应用前景。
