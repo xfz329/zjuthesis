@@ -1,8 +1,8 @@
 \chapter{基于脉搏波的子痫前期识别分析软件系统的设计与实现}
 \section{引言}
-本研究此前各章中均涉及了一定的软件设计与算法设计，在这些工作的基础上，本章介绍了一款基于PPG信号的PE识别分析软件系统的设计与实现过程。在分析具体功能需求后，
+本研究此前各章中均涉及了软件与算法设计，在这些工作的基础上，本章介绍了一款基于PPG信号的PE识别分析软件系统的设计与实现过程。在分析具体功能需求后，
 选取跨平台客户端+云服务器的方案进行整体设计，以期完成以下四部分内容：PPG信号的预处理与特征计算生成；PE识别模型的本地化训练与生成；跨平台的多客户端软件设计；
-云服务器端软件设计与PE识别模型的部署。本章对其中涉及的软件与算法开发设计进行了详细的介绍，同时也展示了各工作内容的实现效果，
+云服务器端软件设计与PE识别模型的部署。对其中涉及的软件与算法开发设计进行了详细的介绍，同时也展示了各工作内容的实现效果，
 并对软件系统简单地进行了功能性的验证与测试。
 
 本章研究内容的框架图如\autoref{fig:frameworks6}所示。
@@ -109,7 +109,7 @@ PC端与移动端均需开发对应的客户端。
 
 2、设计模式
 
-设计模式(Design Pattern，DP)是计算机软件设计中对某些特定问题的优化解决方案的总结。DP是一套被反复使用、多数人知晓的、经过分类编目的、代码设计经验的总结。
+设计模式(Design Pattern，DP)是计算机软件设计中对某些特定问题的优化解决方案的总结。
 在程序开发过程中使用设计模式，可重用代码、让代码更容易被他人理解，保证代码可靠性的同时也增加了程序的重用性。
 
 三、编程语言与开发环境
@@ -212,10 +212,10 @@ PC端与移动端均需开发对应的客户端。
     \caption{\label{fig:template2}滤波处理的设计}
 \end{figure}
 
-模板方法的基本原则是预定义一个操作中算法的骨架,而将延迟实现其中的关键步骤。
-软件系统在数据读取过程所对应的抽象基类中定义了模板方法，并在模板方法中定义了数据读取过程的操作骨架。
-基类中的读取方法被定义为抽象方法，真正的业务方法必须在基类的具体子类中实现。
-当主程序需要进行滤波处理时，只需实例化特定子类后，在子类中调用上述模板方法。
+% 模板方法的基本原则是预定义一个操作中算法的骨架,而将延迟实现其中的关键步骤。
+% 软件系统在数据读取过程所对应的抽象基类中定义了模板方法，并在模板方法中定义了数据读取过程的操作骨架。
+% 基类中的读取方法被定义为抽象方法，真正的业务方法必须在基类的具体子类中实现。
+% 当主程序需要进行滤波处理时，只需实例化特定子类后，在子类中调用上述模板方法。
 
 与\autoref{fig:template}不同的是，在\autoref{fig:template2}中，滤波过程所对应的抽象基类中除定义了模板方法外，还定义了其他评价滤波效果的相关方法等。
 而常用于评价滤波效果的均方误差与信噪比等指标可以设计为滤波基类的业务方法；而带通滤波器、小波滤波器等多种经典滤波算法可以在不同的滤波子类滤波方法中实现。
@@ -257,41 +257,39 @@ PC端与移动端均需开发对应的客户端。
 \end{figure}
 
 单例程模式的原则是保证一个类仅有一个实例，并提供一个访问它的全局访问点。
-单例程模式在PPG形态特征计算模块得到了应用。由于PPG时域特征种类繁多，本研究在时域特征的抽象基类中定义了模板方法，
-由模板方法负责调用特征的计算方法。
-而对单例程方法而言，该类自身不提供显式的构造方法，
-此前所有可用特征的实例化过程被设计为单例程类的生产方法，且该方法只能作为类方法被调用。
+由于PPG时域特征种类繁多，本研究在时域特征的抽象基类中定义了模板方法，
+由该模板负责调用特征的计算方法。
+% 而对单例程方法而言，该类自身不提供显式的构造方法，
+% 此前所有可用特征的实例化过程被设计为单例程类的生产方法，且该方法只能作为类方法被调用。
 在初次被调用时，生产方法会创建并保存单例程类本身的一个全局对象，并由全局对象完成生产返回所需产品；
 此后的调用直接均由全局对象完成生产。单例程模式可以提升软件系统的工作效率、降低内存资源的消耗。
 
 另外，预处理模块在时域特征的抽象基类额外定了两个属性$Order$与$Prefixes$。
-这是因为某些特定的特征在计算时，可能需要一定的先导条件，需要预先计算好一定的先导特征。
+这是因为某些特定的特征在计算时，需要一定的先导条件，即预先计算好某些先导特征。
 因此，按照先导条件从无到有、从少到多、从简单到复杂的原则，在初始化特征时，给每个具体实现子类设置好其计算顺序
 $Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子类的计算次序$Order$遍历，即可保证所有特征均按指定顺序全部计算完毕。
 
 五、数据导出
 
-当对生理信号的预处理分析完成后，如何将分析处理结果进行保存是软件系统最后需要解决的问题。
-导出的数据是以检测的PPG波形为基础，包含该波形所有形态特征。而在本研究中，多种新设计的特征参数往往是以向量的形式出现，
-因此最后导出的结果将会大量出现波形——特征——向量（pulse-feature-vector）这种二级树状结构。
+当对生理信号的预处理分析完成后，导出的数据是以检测的PPG波形为基础，包含该波形所有形态特征。在本研究中，多种新设计的特征参数往往是以向量的形式出现，
+导出的结果包含了大量波形——特征——向量（pulse-feature-vector）的二级树状结构。
 此外信号特征算法出现引入了新的信号特征、对已有特征值数值的保存形式进行更改等更迭将会直接引起数据存储格式的变化。
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=\linewidth]{software/json}
-    \caption{\label{fig:json}软件系统按JSON格式保存的数据示意图}
-\end{figure}
-
 常见的基于列表式的CSV、TXT等对上述树状数据格式的支持较差，因此，软件分析系统选用了JavaScript对象标记法（JavaScript Object Notation，JSON）\cite{json,Crockford2006}
 作为数据交换格式，并利用了中国阿里巴巴公司的开源JSON解析库fastjson\cite{fastjson}。JSON格式对数组类数据有着更好的支持，有着更快的读写速度与更高的存储效率\cite{Nurseitov2009}。
-软件系统最终的导出数据示例如\autoref{fig:json}所示。可以看到，除基本数据特征外，
-与数据相关的文件信息及孕妇人口统计学信息也同时被保存。
+
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=\linewidth]{software/json}
+%     \caption{\label{fig:json}软件系统按JSON格式保存的数据示意图}
+% \end{figure}
+% 软件系统最终的导出数据示例如\autoref{fig:json}所示。可以看到，除基本数据特征外，
+% 与数据相关的文件信息及孕妇人口统计学信息也同时被保存。
 
 六、多生理参数的兼容接口
 
-尽管现阶段针对PE的研究主要基于PPG这种单一生理信号，但这并不排除以后的研究会引入更多人体生理信号进行分析的可能。
-鉴于此，软件系统进一步设计了表征一般生理信号的抽象基类$AbstractBMESignal.class$，数据读取、预处理及信号特征计算过程均设计成抽象方法，
-而PPG信号作为上述抽象生理信号的具体基类被设计为$Pulse.class$，而上文中介绍的具体处理过程均是对抽象基类中各抽象方法的实现。后续若有其他生理信号的分析需求，可以视情况
+为保留后续研究会引入更多人体生理信号进行分析的可能，
+软件系统进一步设计了表征一般生理信号的抽象基类$AbstractBMESignal.class$。
+PPG信号作为上述抽象生理信号的具体基类被设计为$Pulse.class$，而上文中介绍的具体处理过程均是对抽象基类中各抽象方法的实现。后续若有其他生理信号的分析需求，可以视情况
 拓展实现心电$ECG.class$、脑电$EEG.class$等。由于这些子类都继承自$AbstractBMESignal.class$，因此可以确保这些子类具有相同的函数接口，方便将来可能的拓展。
 
 \subsection{跨平台客户端模块}
@@ -304,11 +302,11 @@ $Order$及保存着其先导特征$Order$的$Prefixes$，最后按照所有子�
 
 1、功能与界面
 
-PC客户端的交互界面如\autoref{fig:pc_ui}所示。\autoref{tab:pc_ui}对\autoref{fig:pc_ui}中软件界面的相关功能进行了进一步的说明。
+PC客户端的交互界面如\autoref{fig:pc_ui}所示。%\autoref{tab:pc_ui}对\autoref{fig:pc_ui}中软件界面的相关功能进行了进一步的说明。
 其中，文件菜单选择对原始数据的打开及经分析后特征数据的导出；编辑菜单可以完成数据的预处理、分析等功能；
 批处理菜单提供了大量数据进行处理分析的便捷操作方式；而帮助菜单则给出软件开发单位、软件版本号等信息。这些功能的进一步说明可参考\autoref{tab:pc_ui_menu}。
-软件交互界面的波形显示区域可以展示当前打开数据文件的波形图，支持通过鼠标完成拖动、缩放等功能；对波形的波峰波谷等特征点的分析也在\autoref{fig:pc_ui}中有所标示。
-与此同时，PC端软件也提供了较为丰富的右键菜单功能，提供了修改绘图颜色字体属性，支持选中当前波形直接复制至文件及连接打印机打印等功能。
+% 软件交互界面的波形显示区域可以展示当前打开数据文件的波形图，支持通过鼠标完成拖动、缩放等功能；对波形的波峰波谷等特征点的分析也在\autoref{fig:pc_ui}中有所标示。
+% 与此同时，PC端软件也提供了较为丰富的右键菜单功能，提供了修改绘图颜色字体属性，支持选中当前波形直接复制至文件及连接打印机打印等功能。
 
 \begin{figure}[h]
     \centering
@@ -316,29 +314,29 @@ PC客户端的交互界面如\autoref{fig:pc_ui}所示。\autoref{tab:pc_ui}对\
     \caption{\label{fig:pc_ui}PC端软件界面示意图}
 \end{figure}
 
-\begin{longtblr}
-    [
-        theme                   = {zju},
-        caption                 = {PC端软件界面功能说明},
-        label                   = {tab:pc_ui},
-    ]
-    {
-        width                   = \linewidth,
-        colspec                 = {X[1,c,m]X[3,c,m]X[1,c,m]X[3,c,m]},
-        hline{1,Z}              = {\thickline},
-        hline{2}                = {\thinline},
-        rowhead                 = 1,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
-        row{2-Z}                = {font=\nonheadfont},
-    }
-    编号 & 功能 & 编号 & 功能 \\
-    1 & 菜单栏 & 5 & 波形起点标记 \\
-    2 & 文件路径及PE状态说明 & 6 & 波形终点标记 \\
-    3 & 波形显示区域 & 7 & 右键功能菜单 \\
-    4 & 波形峰值标记 & 8 & 图例 \\
-\end{longtblr}
+% \begin{longtblr}
+%     [
+%         theme                   = {zju},
+%         caption                 = {PC端软件界面功能说明},
+%         label                   = {tab:pc_ui},
+%     ]
+%     {
+%         width                   = \linewidth,
+%         colspec                 = {X[1,c,m]X[3,c,m]X[1,c,m]X[3,c,m]},
+%         hline{1,Z}              = {\thickline},
+%         hline{2}                = {\thinline},
+%         rowhead                 = 1,
+%         row{odd}                = {bg=\oddcolor}, 
+%         row{even}               = {bg=\evencolor},
+%         row{1}                  = {font=\headfont,bg=\headcolor},
+%         row{2-Z}                = {font=\nonheadfont},
+%     }
+%     编号 & 功能 & 编号 & 功能 \\
+%     1 & 菜单栏 & 5 & 波形起点标记 \\
+%     2 & 文件路径及PE状态说明 & 6 & 波形终点标记 \\
+%     3 & 波形显示区域 & 7 & 右键功能菜单 \\
+%     4 & 波形峰值标记 & 8 & 图例 \\
+% \end{longtblr}
 
 \begin{longtblr}
     [
@@ -356,8 +354,9 @@ PC客户端的交互界面如\autoref{fig:pc_ui}所示。\autoref{tab:pc_ui}对\
         row{5-10,14-15}         = {bg=\evencolor},
         row{1}                  = {font=\headfont,bg=\headcolor},
         row{2-Z}                = {font=\nonheadfont},
-        cell{2}{1}              = {r=2,c=1}{c,m},
-        cell{5}{1}              = {r=6,c=1}{c,m},
+        cell{2}{1}              = {r=3,c=1}{c,m},
+        cell{5}{1}              = {r=4,c=1}{c,m},
+        cell{9}{1}              = {r=2,c=1}{c,m},
         cell{11}{1}             = {r=3,c=1}{c,m},
         cell{14}{1}             = {r=2,c=1}{c,m},
     }
@@ -369,7 +368,7 @@ PC客户端的交互界面如\autoref{fig:pc_ui}所示。\autoref{tab:pc_ui}对\
         & 波形校验 & 开启SCD算法自动校验波形 \\
         & 波形人工校验 & 启动人工校验波形功能\\
         & 导出检波结果 & 将检测到的PPG波形数据以JSON形式保存至硬盘\\
-        & 特征分析 & 开始计算检测PPG波形的特征参数 \\
+    编辑 & 特征分析 & 开始计算检测PPG波形的特征参数 \\
         & 导出并上传 & 导出当前分析的所有分析结果，并将结果上传至云服务器 \\
     批处理 & 操作说明 & 显示批处理操作的帮助文档\\
         & 生成模板 & 选择要批处理分析的文件夹路径，并在目录下生成批处理模板\\
@@ -396,12 +395,12 @@ PC端软件正常的处理流程如\autoref{fig:pc_process}所示。在选中需
 1）完善的日志记录
 
 PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件日志管理与输出，可将软件运行过程中的运行状态和中间变量等关键信息按级别
-输出到不同日志文件中，方便系统开发与调试维护，如\autoref{fig:logs}所示。一般而言，不同的日志文件记录的信息重要性递减，但输出的详细程度递增。
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.75\linewidth]{software/logs}
-    \caption{\label{fig:logs}PC客户端日志文件示意（局部）}
-\end{figure}
+输出到不同日志文件中，方便系统开发与调试维护。%，如\autoref{fig:logs}所示。一般而言，不同的日志文件记录的信息重要性递减，但输出的详细程度递增。
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=0.75\linewidth]{software/logs}
+%     \caption{\label{fig:logs}PC客户端日志文件示意（局部）}
+% \end{figure}
 
 2）人工校验波形
 
@@ -429,13 +428,13 @@ PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件�
 文件夹作为批处理的根目录，该根目录下所有的有效PPG原始文件会被记录，并在根目录下生成一个空白的配置文件模板。此时，需要用户
 根据实际需要，自定义每一个PPG数据文件的个性化的处理流程，包括波形的计算与调整等。当批处理配置文件由用户更新完成后，最后可点击
 从\autoref{tab:pc_ui_menu}所示的子菜单中选中开始批处理，选择打开该配置文件，等待PC客户端处理完成即可。
-这一过程中的使用的配置文件范例如\autoref{fig:configure}所示。
+% 这一过程中的使用的配置文件范例如\autoref{fig:configure}所示。
 % ，而\autoref{tab:configure}也对\autoref{fig:configure}中内容进行了进一步的解释与说明
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.55\linewidth]{software/configure}
-    \caption{\label{fig:configure}PC客户端批处理配置文件示意}
-\end{figure}
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=0.55\linewidth]{software/configure}
+%     \caption{\label{fig:configure}PC客户端批处理配置文件示意}
+% \end{figure}
 % \begin{longtblr}
 %     [
 %         theme                   = {zju},
@@ -465,23 +464,25 @@ PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件�
 %     Points & PPG波形特征点坐标 & {需要波形起点、波峰、波谷等三个数值。\\可以不精确，可自动在邻域内精确调整}\\
 % \end{longtblr}
 
-\autoref{fig:configure}所示的配置文件本质上仍是一个JSON文件。%其中的大部分配置项的具体含义及可选数值范围已经在\autoref{tab:configure}进行了说明。
-对于\autoref{fig:configure}中的mode配置而言，其数值确定了所需要进行的批处理操作。
-目前mode支持\autoref{tab:pc_ui_menu}中波形校验、波形人工校验、导出检波结果、特征分析、导出并上传等6种操作，
-这些操作分别通过mode的1位来完成控制，其中波形校验对应mode的最低位。mode的默认值为31，即$0b011111$，即对当前文件进行除数据特征上传外的所有操作。
-需要注意的是，尽管mode的可选值域是0-63，但由于可配置的6个操作有着逻辑上的依赖关系，某些配置可能会导致程序无法运行。
-因此，\autoref{fig:configure}所示的配置文件可对\path{D:/UrgeData/Documents/ppgdata/No}文件夹下的\path{by_wavePLETH_2017080113.csv}等文件进行批处理。其中，PEstate被设置为0，表示当前目录下全为健康人群数据文件。
-mode被配置为63，所有文件会完成全部6项批处理操作。而在对\path{by_wavePLETH_2017080113.csv}文件处理时，
-不需跳过该文件，对算法的自动检测结果需先移除$(91,105,177)$处的PPG波形，再在$(91,105,177)$处新增一个PPG波形。
+% \autoref{fig:configure}所示的配置文件本质上仍是一个JSON文件。%其中的大部分配置项的具体含义及可选数值范围已经在\autoref{tab:configure}进行了说明。
+% 对于\autoref{fig:configure}中的mode配置而言，其数值确定了所需要进行的批处理操作。
+% 目前mode支持\autoref{tab:pc_ui_menu}中波形校验、波形人工校验、导出检波结果、特征分析、导出并上传等6种操作，
+% 这些操作分别通过mode的1位来完成控制，其中波形校验对应mode的最低位。mode的默认值为31，即$0b011111$，即对当前文件进行除数据特征上传外的所有操作。
+% 需要注意的是，尽管mode的可选值域是0-63，但由于可配置的6个操作有着逻辑上的依赖关系，某些配置可能会导致程序无法运行。
+% 因此，\autoref{fig:configure}所示的配置文件可对\path{D:/UrgeData/Documents/ppgdata/No}文件夹下的\path{by_wavePLETH_2017080113.csv}等文件进行批处理。其中，PEstate被设置为0，表示当前目录下全为健康人群数据文件。
+% mode被配置为63，所有文件会完成全部6项批处理操作。而在对\path{by_wavePLETH_2017080113.csv}文件处理时，
+% 不需跳过该文件，对算法的自动检测结果需先移除$(91,105,177)$处的PPG波形，再在$(91,105,177)$处新增一个PPG波形。
 
 二、Android客户端
 
 软件系统借助Android Studio在Windows系统下完成了Android客户端的开发，并在中国小米公司生产的Redmi Pad SE上测试通过。
 其中，Redmi Pad SE的Linux内核版本为5.10.101，Android版本为12。
 
-1、功能与界面
+% 1、功能与界面
 
 \autoref{fig:android_ui}展示了软件分析系统在Redmi Pad SE上运行效果。为充分利用Pad显示界面，菜单栏默认隐藏，需要使用时可点击按钮唤出。
+考虑到Android客户端的实际使用场景，上文介绍的PC客户端特色功能目前未在Android客户端下实现。
+但除此之外，Android客户端与PC客户端整体功能相近、操作类似，故在此处不再进行相关赘述。
 \begin{figure}[htbp]
     \centering
     \subfigure[默认界面]{
@@ -494,36 +495,33 @@ mode被配置为63，所有文件会完成全部6项批处理操作。而在对\
     \caption{\label{fig:android_ui}Android客户端运行界面}
 \end{figure}
 
-另一方面，考虑到Android客户端的实际使用场景，上文介绍的PC客户端特色功能目前未在Android客户端下实现。
-但除此之外，Android客户端与PC客户端整体功能相近、操作类似，故在此处不再进行相关赘述。
+% 2、组件区别
 
-2、组件区别
+% 由于Android系统独立于Java社区，主要由美国Google公司负责维护及更新，因此经常会出现某些Java组件在PC端与Android端的生命周期不一致的现象。
+% 这也导致部分PC端可用的Java组件在新版本的Android系统下不被支持。因此，软件系统的特定功能需要针对具体操作系统平台选取恰当的组件完成功能开发。
+% 图\autoref{tab:platform}展示了PC端与Android移动端相同软件功能在具体实现组件上的差异。
 
-由于Android系统独立于Java社区，主要由美国Google公司负责维护及更新，因此经常会出现某些Java组件在PC端与Android端的生命周期不一致的现象。
-这也导致部分PC端可用的Java组件在新版本的Android系统下不被支持。因此，软件系统的特定功能需要针对具体操作系统平台选取恰当的组件完成功能开发。
-图\autoref{tab:platform}展示了PC端与Android移动端相同软件功能在具体实现组件上的差异。
-
-\begin{longtblr}
-    [
-        theme                   = {zju},
-        caption                 = {PC端与Android移动端部分软件开发组件对比},
-        label                   = {tab:platform},
-    ]
-    {
-        width                   = \linewidth,
-        colspec                 = {X[1,c,m]X[1,c,m]X[1,c,m]},
-        hline{1,Z}              = {\thickline},
-        hline{2}                = {\thinline},
-        rowhead                 = 1,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
-        row{2-Z}                = {font=\nonheadfont},
-    }
-    功能特征&PC&Android\\
-    数据上传&HttpClient\cite{HttpClient}&Retrofit\cite{Retrofit}\\
-    数据图表显示&JFreeChart\cite{JFreeChart}&MPAndroidChart\cite{MPAndroidChart}\\
-\end{longtblr}
+% \begin{longtblr}
+%     [
+%         theme                   = {zju},
+%         caption                 = {PC端与Android移动端部分软件开发组件对比},
+%         label                   = {tab:platform},
+%     ]
+%     {
+%         width                   = \linewidth,
+%         colspec                 = {X[1,c,m]X[1,c,m]X[1,c,m]},
+%         hline{1,Z}              = {\thickline},
+%         hline{2}                = {\thinline},
+%         rowhead                 = 1,
+%         row{odd}                = {bg=\oddcolor}, 
+%         row{even}               = {bg=\evencolor},
+%         row{1}                  = {font=\headfont,bg=\headcolor},
+%         row{2-Z}                = {font=\nonheadfont},
+%     }
+%     功能特征&PC&Android\\
+%     数据上传&HttpClient\cite{HttpClient}&Retrofit\cite{Retrofit}\\
+%     数据图表显示&JFreeChart\cite{JFreeChart}&MPAndroidChart\cite{MPAndroidChart}\\
+% \end{longtblr}
 
 \subsection{PE识别模型训练生成模块}
 PE识别模型训练生成模块是软件系统的核心，需要基于数据特征完成PE识别模型的训练。在进一步对得到的模型进行评估后，
@@ -534,8 +532,7 @@ PE识别模型训练生成模块是软件系统的核心，需要基于数据特
 
 软件系统的客户端程序最终会把检测得到PPG波形数据与PPG时域特征分别以JSON文件的形式保存至本地并上传至云服务器。由于JSON文件的构成更符合一棵数据“树”的概念，
 为从多棵这样的数据树中构建出完整的特征数据集矩阵，显然需要一个数据合并的过程。
-该过程即为第四章的脉搏波多维度时域特征集（photoplethysmographic multidimensional
-time-domain feature set，PPGMTFS）与脉搏波采样序列时域特征集（photoplethysmographic sampling series time-domain feature set，PPGSSTFS）的生成过程。
+该过程即为第四章的脉搏波多维度时域特征集（PPGMTFS）与脉搏波采样序列时域特征集（PPGSSTFS）的生成过程。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.55\linewidth]{software/mergedata}
@@ -563,10 +560,9 @@ time-domain feature set，PPGMTFS）与脉搏波采样序列时域特征集（ph
 三、模型训练与保存
 
 机器学习的过程一般包括载入数据、在训练集上进行训练、考察训练集上的性能、在测试集上测试等操作，其中的某些步骤更涉及到多个参数的计算与比较。
-在PE识别模型的构建过程中，由于涉及多个模型的比较，需要不断重复上述操作。如果不对该过程进行设计，该过程不但繁琐且极易疏漏。
+在PE识别模型的构建过程中，由于涉及多个模型的比较，需要不断重复上述操作，该过程繁琐且极易疏漏。
 另一方面，由于PE识别模型均是借助Python下Sklearn工具包完成的，而Sklearn本身在设计过程中均遵循了统一规范，不同的机器学习算法均提供了相同的API函数。
-而Python本身是一种动态类型的编程语言，并不再编译时确定对象类型，而是将类型检查延迟至运行时。换言之，Python不会检测变量的具体类型，而是关注变量
-是否具有特定的属性与方法。基于以上背景，软件系统对PE识别模型的构建过程额外进行了封装，在实现代码的最小化的同时，也避免了算法模型训练过程的代码遗漏等问题，同时也简化了模型训练过程。
+软件系统对PE识别模型的构建过程额外进行了封装，在实现代码的最小化的同时，也避免了算法模型训练过程的代码遗漏等问题，同时也简化了模型训练过程。
 
 软件系统中将模型训练过程封装成了MyClasssifer类，可直接用Sklearn中的机器学习算法实例进行初始化。MyClasssifer类一共包含四个可调用的公开函数：
 $init()$、$load\_data()$、$fit\_predict()$与$grid\_search()$。其中，$init()$函数为MyClasssifer新建实例初始化函数；
@@ -596,7 +592,7 @@ $grid\_search()$为模型超参数探索时的网格化搜索函数。
 % \end{figure}
 
 \subsection{云服务器模块}
-云服务器模块在某种意义上可以看作为客户端软件与PE识别模型训练生成模块的中间件。云服务器端接收来自客户端的特征数据，在一定的校验确认数据无误后，
+云服务器端接收来自客户端的特征数据，在一定的校验确认数据无误后，
 根据客户端具体请求内容，选择一个或多个已经训练好的机器学习模型进行新数据的识别预测，并将结果返回至客户端。为方便后续可能的二次开发，所有客户端的
 发送来的原始数据都会被保存至数据库中。
 
@@ -641,9 +637,9 @@ HTTP是一种简单的请求——响应协议，它指定了客户端可能发�
 
 2、POST方法的参数设计
 
-客户端在将需要上传的参数、数据进行POST封装时，所有的数据都会以键值对的形式进行映射。
-客户端通过POST方法可同时传递文本数据与二进制文件数据，这两种类型的数据会自动被服务器端程序区分并解析。
-截止目前，客户端程序通过POST方法向云服务器端提交数据的通讯过程中涉及到的所有参数如\autoref{tab:post_paras}所示，其中文件类数据在表格中用粉红色底色
+% 客户端在将需要上传的参数、数据进行POST封装时，所有的数据都会以键值对的形式进行映射。
+% 客户端通过POST方法可同时传递文本数据与二进制文件数据，这两种类型的数据会自动被服务器端程序区分并解析。
+客户端程序通过POST方法向云服务器端提交数据的通讯过程中涉及到的所有参数如\autoref{tab:post_paras}所示，其中文件类数据在表格中用粉红色底色
 进行了突出显示。
 \begin{longtblr}
     [
@@ -681,10 +677,10 @@ HTTP是一种简单的请求——响应协议，它指定了客户端可能发�
     upload\_time&本次通信上传时间&文本&字符串&\\
 \end{longtblr}
 
-3、客户端的网络组件
+% 3、客户端的网络组件
 
-在上述过程中，为实现与云服务器端进行正常通讯，PC客户端选择了HttpClient这一组件进行网络功能的开发，
-Android客户端选择了Retrofit这一组件进行网络功能的开发，如\autoref{tab:platform}所示。
+% 在上述过程中，为实现与云服务器端进行正常通讯，PC客户端选择了HttpClient这一组件进行网络功能的开发，
+% Android客户端选择了Retrofit这一组件进行网络功能的开发，如\autoref{tab:platform}所示。
 
 % 在上述过程中，为实现与云服务器端进行正常通讯，PC客户端与Android客户端程序在实际开发时，使用的组件库各不相同，这些组件库的具体使用方式也有所差异。下面分别进行简单介绍。
 
@@ -708,66 +704,23 @@ Android客户端选择了Retrofit这一组件进行网络功能的开发，如\a
 二、模型的上传
 
 在前文中提及过的PE识别模型训练完成之后，得到的各机器学习模型也需要被上传部署在云服务器端。为使机器学习的部署更为便捷、清晰，软件系统也基于Python的图形界面PyQt额外开发了
-机器学习模型上传程序，如\autoref{fig:upload_model}所示。模型在上传时需将包括使用的算法、训练集、版本号等信息一并提交。
-%而各机器学习模型在上传时，本质上仍使用了HTTP协议的POST方法。%除\autoref{fig:upload_model}中已展示的外，
-% 该POST方法在与云服务器端进行通讯时携带的全部参数及含义如\autoref{tab:post_paras2}所示，
-% 其中文件类数据在表格中用粉红色底色进行了突出显示。
+机器学习模型上传程序，在上传时需将包括使用的算法、训练集、版本号等信息一并提交，如\autoref{fig:upload_model}所示。
+在该通讯过程中，POST方法携带的全部参数及含义如\autoref{tab:post_paras2}所示，其中文件类数据在表格中用粉红色底色进行了突出显示。
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.65\linewidth]{software/upload_model}
     \caption{\label{fig:upload_model}模型上传软件操作界面示意}
 \end{figure}
-% \begin{longtblr}
-%     [
-%         theme                   = {zju},
-%         caption                 = {客户端在POST方法中上传的所有参数},
-%         label                   = {tab:post_paras2},
-%     ]
-%     {
-%         width                   = \linewidth,
-%         colspec                 = {X[1.5,c,m]X[3,c,m]X[1,c,m]X[1,c,m]X[2.5,c,m]},
-%         hline{1,Z}              = {\thickline},
-%         hline{2}                = {\thinline},
-%         rowhead                 = 1,
-%         row{odd}                = {bg=\oddcolor}, 
-%         row{even}               = {bg=\evencolor},
-%         row{1}                  = {font=\headfont,bg=\headcolor},
-%         row{2-Z}                = {font=\nonheadfont},
-%         cell{6}{3,4}            = {bg=\emphacolor},
-%     }
-%     参数的键名&参数值的含义&{数据流\\类型}&数据类型&备注\\
-%     project&上传的模型归属的具体项目&文本&字符串&{值固定为PE，代表数据隶属本论文基于PE的研究}\\
-%     data\_type&上传的模型所属生理信号类别&文本&字符串&{值固定为PPG}\\
-%     client&上传模型的客户端类型&文本&字符串&值固定为PC\\
-%     version&上传模型的客户端程序版本号&文本&字符串&\\
-%     model&训练生成得到的机器学习模型文件&文件&文件数据&模型导出为具体文件，按二进制编码成数据流发送\\
-%     model\_algorithm&模型训练生成所使用的机器学习算法&文本&字符串&包括KNN、RF等算法\\
-%     model\_version&使用特定机器学习算法生成的模型版本号&文本&字符串&\\
-%     train\_set&训练模型所使用的所有孕妇姓名&文本&字符串&{遵循医学伦理学相关标准,省略孕妇具体姓名，仅以拼音缩写代替}\\
-%     train\_time&模型训练生成时间&文本&字符串&\\
-%     upload\_time&本次通信上传时间&文本&字符串&\\
-% \end{longtblr}
-
-三、基于Django的服务器端程序设计
-
-由于本研究涉及的所有机器学习模型均是通过Python下的Sklearn包生成，为方便云服务器端调用，软件系统最终选取了同样基于Python的开源通用Web框架Django进行相关云服务器端的功能开发。
-如\autoref{fig:django}所示\cite{django,djangosq}，Django按模型-模版-视图（Model-Template-View，MTV）设计模式的进行了整体结构设计，MTV各自的职责与功能
-如\autoref{tab:django_func}所示。
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.75\linewidth]{software/django}
-    \caption{\label{fig:django}Django框架结构示意\cite{djangosq}}
-\end{figure}
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {Django框架的组成与功能},
-        label                   = {tab:django_func},
+        caption                 = {客户端在POST方法中上传的所有参数},
+        label                   = {tab:post_paras2},
     ]
     {
         width                   = \linewidth,
-        colspec                 = {X[1,c,m]X[1,c,m]X[4,c,m]},
+        colspec                 = {X[1.5,c,m]X[3,c,m]X[1,c,m]X[1,c,m]X[2.5,c,m]},
         hline{1,Z}              = {\thickline},
         hline{2}                = {\thinline},
         rowhead                 = 1,
@@ -777,15 +730,56 @@ Android客户端选择了Retrofit这一组件进行网络功能的开发，如\a
         row{2-Z}                = {font=\nonheadfont},
         cell{6}{3,4}            = {bg=\emphacolor},
     }
-    名称&层次&功能职责\\
-    模型&数据存取层&处理与数据相关的所有事务：如何存取、如何验证有效性、包含哪些行为以及数据之间的关系等\\
-    模板&表现层&处理与表现相关的决定：如何在页面或其他类型文档中进行显示\\
-    视图&业务逻辑层&存取模型及调取恰当模板的相关逻辑。模型与模板的桥梁\\
+    参数的键名&参数值的含义&{数据流\\类型}&数据类型&备注\\
+    project&上传的模型归属的具体项目&文本&字符串&{值固定为PE，代表数据隶属本论文基于PE的研究}\\
+    data\_type&上传的模型所属生理信号类别&文本&字符串&{值固定为PPG}\\
+    client&上传模型的客户端类型&文本&字符串&值固定为PC\\
+    version&上传模型的客户端程序版本号&文本&字符串&\\
+    model&训练生成得到的机器学习模型文件&文件&文件数据&模型导出为具体文件，按二进制编码成数据流发送\\
+    model\_algorithm&模型训练生成所使用的机器学习算法&文本&字符串&包括KNN、RF等算法\\
+    model\_version&使用特定机器学习算法生成的模型版本号&文本&字符串&\\
+    train\_set&训练模型所使用的所有孕妇姓名&文本&字符串&{遵循医学伦理学相关标准,省略孕妇具体姓名，仅以拼音缩写代替}\\
+    train\_time&模型训练生成时间&文本&字符串&\\
+    upload\_time&本次通信上传时间&文本&字符串&\\
 \end{longtblr}
+
+三、基于Django的服务器端程序设计
+
+由于本研究涉及的所有机器学习模型均是通过Python下的Sklearn包生成，为方便云服务器端调用，软件系统最终选取了同样基于Python的开源通用Web框架Django进行相关云服务器端的功能开发。
+如\autoref{fig:django}所示\cite{django,djangosq}，Django按模型-模版-视图（Model-Template-View，MTV）设计模式的进行了整体结构设计。
+%MTV各自的职责与功能如\autoref{tab:django_func}所示。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.75\linewidth]{software/django}
+    \caption{\label{fig:django}Django框架结构示意\cite{djangosq}}
+\end{figure}
+% \begin{longtblr}
+%     [
+%         theme                   = {zju},
+%         caption                 = {Django框架的组成与功能},
+%         label                   = {tab:django_func},
+%     ]
+%     {
+%         width                   = \linewidth,
+%         colspec                 = {X[1,c,m]X[1,c,m]X[4,c,m]},
+%         hline{1,Z}              = {\thickline},
+%         hline{2}                = {\thinline},
+%         rowhead                 = 1,
+%         row{odd}                = {bg=\oddcolor}, 
+%         row{even}               = {bg=\evencolor},
+%         row{1}                  = {font=\headfont,bg=\headcolor},
+%         row{2-Z}                = {font=\nonheadfont},
+%         cell{6}{3,4}            = {bg=\emphacolor},
+%     }
+%     名称&层次&功能职责\\
+%     模型&数据存取层&处理与数据相关的所有事务：如何存取、如何验证有效性、包含哪些行为以及数据之间的关系等\\
+%     模板&表现层&处理与表现相关的决定：如何在页面或其他类型文档中进行显示\\
+%     视图&业务逻辑层&存取模型及调取恰当模板的相关逻辑。模型与模板的桥梁\\
+% \end{longtblr}
 
 1、处理流程
 
-云服务器端的程序处理流程实际上对应着\autoref{tab:django_func}中的视图，即业务逻辑层。当云服务器端接收到客户端的数据请求或模型上传请求时，云服务器端程序会依据请求对应的不同
+云服务器端的程序处理流程实际上对应着\autoref{fig:django}中的视图，即业务逻辑层。当云服务器端接收到客户端的数据请求或模型上传请求时，云服务器端程序会依据请求对应的不同
 URL路由地址，选择对应的处理流程，这一过程如\autoref{fig:url}所示。
 % ，此前介绍过的\autoref{tab:post_paras}中的跨平台客户端的数据请求与\autoref{tab:post_paras2}中的
 % 模型上传请求分别对应云服务器端的两个路由地址，即两个URL地址。对模型上传请求而言，，会在确认当前并无重复的算法及其版本后，将新的
@@ -800,173 +794,202 @@ URL路由地址，选择对应的处理流程，这一过程如\autoref{fig:url}
     \caption{\label{fig:url}云服务器响应URL请求过程流程图}
 \end{figure}
 
-2、请求响应
+% 2、请求响应
 
-请求响应是云服务器端程序完成\autoref{fig:url}中的处理后对客户端的答复信息，对应着\autoref{tab:django_func}中的模板表现层。一般而言，请求响应可包含文本、音视频文件与HTML网页文件等多种形式的内容。Django网络框架中默认支持的请求响应包括两种，一种为普遍通用的HttpResponse，可在其中传达文本消息及文件等；另一种为功能更专一化的JSONResponse，可在其中按JSON数据格式传递键值对。考虑到客户端程序解析与后续调整的方便，云服务器端程序的请求响应采用了JSONResponse的格式，传递内容仅为文本字符，暂未进行专门的网页UI设计。
+% 请求响应是云服务器端程序完成\autoref{fig:url}中的处理后对客户端的答复信息，对应着\autoref{tab:django_func}中的模板表现层。一般而言，请求响应可包含文本、音视频文件与HTML网页文件等多种形式的内容。Django网络框架中默认支持的请求响应包括两种，一种为普遍通用的HttpResponse，可在其中传达文本消息及文件等；另一种为功能更专一化的JSONResponse，可在其中按JSON数据格式传递键值对。考虑到客户端程序解析与后续调整的方便，云服务器端程序的请求响应采用了JSONResponse的格式，传递内容仅为文本字符，暂未进行专门的网页UI设计。
 
-以\autoref{fig:url}中数据请求的响应为例，云服务器端返回的具体内容如\autoref{tab:json_response}所示。
-由于数据请求可能同时请求调用多个训练好的模型，故其请求响应中可能返回多个模型的分析结果。其中，返回模型的总数由model\_num记录；
-而不同模型的分析结果通过的model\_index与model\_data\_type字段区分。
+% 以\autoref{fig:url}中数据请求的响应为例，云服务器端返回的具体内容如\autoref{tab:json_response}所示。
+% 由于数据请求可能同时请求调用多个训练好的模型，故其请求响应中可能返回多个模型的分析结果。其中，返回模型的总数由model\_num记录；
+% 而不同模型的分析结果通过的model\_index与model\_data\_type字段区分。
 
-\begin{longtblr}
-    [
-        theme                   = {zju},
-        caption                 = {云服务器端相应请求的具体内容},
-        label                   = {tab:json_response},
-    ]
-    {
-        width                   = \linewidth,
-        colspec                 = {X[2,c,m]X[7,c,m]X[1,c,m]X[2.5,c,m]},
-        hline{1,Z}              = {\thickline},
-        hline{2}                = {\thinline},
-        rowhead                 = 1,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
-        row{2-Z}                = {font=\nonheadfont},
-    }
-    参数的键名&参数值的含义&数据类型&备注\\
-    project&上传的模型归属的具体项目&字符串&值固定为PE\\
-    data\_type&上传的模型所属生理信号类别&字符串&{值固定为PPG}\\
-    model\_num&此次分析过程使用的模型总数&数字&一次分析可返回多个模型的结果\\
-    model\_index&返回模型编号&数字&区分多个模型的结果\\
-    model\_data\_type&训练模型基于训练数据类型&字符串&值为基于时域特征feature或采样值point，同时也会标记PPG波形的对齐策略\\
-    model\_algorithm&模型训练生成所使用的机器学习算法&字符串&包括KNN、RF等\\
-    model\_version&使用特定机器学习算法生成的模型版本号&字符串&\\
-    train\_set&训练模型所使用的所有孕妇姓名&字符串&姓名以拼音缩写代替\\
-    train\_time&模型训练生成时间&字符串&\\
-    ppg\_num&客户端发送的原始数据中有效PPG波形总数&数字&\\
-    positive\_num&模型预测为PE阳性的PPG波形总数&数字&\\
-    negative\_num&模型预测为PE阴性的PPG波形总数&数字&\\
-    ratio&positive\_num与ppg\_num的比值&数字&\\
-\end{longtblr}
+% \begin{longtblr}
+%     [
+%         theme                   = {zju},
+%         caption                 = {云服务器端相应请求的具体内容},
+%         label                   = {tab:json_response},
+%     ]
+%     {
+%         width                   = \linewidth,
+%         colspec                 = {X[2,c,m]X[7,c,m]X[1,c,m]X[2.5,c,m]},
+%         hline{1,Z}              = {\thickline},
+%         hline{2}                = {\thinline},
+%         rowhead                 = 1,
+%         row{odd}                = {bg=\oddcolor}, 
+%         row{even}               = {bg=\evencolor},
+%         row{1}                  = {font=\headfont,bg=\headcolor},
+%         row{2-Z}                = {font=\nonheadfont},
+%     }
+%     参数的键名&参数值的含义&数据类型&备注\\
+%     project&上传的模型归属的具体项目&字符串&值固定为PE\\
+%     data\_type&上传的模型所属生理信号类别&字符串&{值固定为PPG}\\
+%     model\_num&此次分析过程使用的模型总数&数字&一次分析可返回多个模型的结果\\
+%     model\_index&返回模型编号&数字&区分多个模型的结果\\
+%     model\_data\_type&训练模型基于训练数据类型&字符串&值为基于时域特征feature或采样值point，同时也会标记PPG波形的对齐策略\\
+%     model\_algorithm&模型训练生成所使用的机器学习算法&字符串&包括KNN、RF等\\
+%     model\_version&使用特定机器学习算法生成的模型版本号&字符串&\\
+%     train\_set&训练模型所使用的所有孕妇姓名&字符串&姓名以拼音缩写代替\\
+%     train\_time&模型训练生成时间&字符串&\\
+%     ppg\_num&客户端发送的原始数据中有效PPG波形总数&数字&\\
+%     positive\_num&模型预测为PE阳性的PPG波形总数&数字&\\
+%     negative\_num&模型预测为PE阴性的PPG波形总数&数字&\\
+%     ratio&positive\_num与ppg\_num的比值&数字&\\
+% \end{longtblr}
 
-3、模型与数据库
+2、模型与数据库
 
-\autoref{tab:django_func}中的模型涉及了数据库的处理操作，这部分的程序设计会在后续进行介绍。
+\autoref{fig:django}中的模型涉及了数据库的处理操作，这部分的程序设计会在后续进行介绍。
 
-4、日志
+3、日志
 
 为方便调试，云服务端在使用Django进行开发时，也使用了Python下的logging包进行日志记录功能开发。
 
 四、数据库设计
 
-数据库（DataBase， DB）技术是现代互联网数据管理的基本方法，可有效组织、存储和管理大量数据。其中，数据一词指数据库可以储存多种信息，这些信息一般被称为字段。
-而为了从包含多条数据记录的集合中获取特定记录，还必须从这些字段中定义主键（primary key）。
-主键通常可以是一个字段或多个字段的组合，其值能唯一地标识表中的每一行，在与其他表的外键关联以及数据记录的修改与删除中具有重要作用。
-% 而关系型数据库是对存储的格式能够直观地反映实体间的关系的一类数据库的统称。关系型数据库和常见的表格比较相似，数据库的表与表之间是有很多复杂的关联关系。
+% 数据库（DataBase， DB）技术是现代互联网数据管理的基本方法，可有效组织、存储和管理大量数据。其中，数据一词指数据库可以储存多种信息，这些信息一般被称为字段。
+% 而为了从包含多条数据记录的集合中获取特定记录，还必须从这些字段中定义主键（primary key）。
+% 主键通常可以是一个字段或多个字段的组合，其值能唯一地标识表中的每一行，在与其他表的外键关联以及数据记录的修改与删除中具有重要作用。
+% % 而关系型数据库是对存储的格式能够直观地反映实体间的关系的一类数据库的统称。关系型数据库和常见的表格比较相似，数据库的表与表之间是有很多复杂的关联关系。
 
-另一方面，如\autoref{fig:url}所示，云服务器端程序在处理客户端请求时，需要对请求中包含的大量参数信息进行处理与储存。
-而这些请求中的参数种类常常会随着软件系统的迭代而发生较大的改变，比如数据信号种类的变更、PPG特征的增改等。这也要求软件系统使用数据库进行数据的基本管理时，还必须同时
-进行一定的兼容性设计。
+% 另一方面，如\autoref{fig:url}所示，云服务器端程序在处理客户端请求时，需要对请求中包含的大量参数信息进行处理与储存。
+% 而这些请求中的参数种类常常会随着软件系统的迭代而发生较大的改变，比如数据信号种类的变更、PPG特征的增改等。这也要求软件系统使用数据库进行数据的基本管理时，还必须同时
+% 进行一定的兼容性设计。
 
-% \begin{figure}[htbp]
-%     \centering
-%     \includegraphics[width=.8\linewidth]{software/data_table_relationship}
-%     \caption{\label{fig:data_table_relationship}软件系统的数据表及数据关系示意图}
-% \end{figure}
+软件系统选择了目前流行的主流关系数据库之一的MySQL进行相关数据的存储。MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，支持查询、新增、更新、删除、求和、排序等基本操作。与此同时，软件系统一共设计了五张数据表（Table）来解决上述问题。这些数据表之间的相互关联关系如\autoref{fig:data_table_relationship}所示，各数据表的重要的外部键也在图中进行了标注。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.75\linewidth]{software/data_table_relationship}
+    \caption{\label{fig:data_table_relationship}软件系统的数据表及数据关系示意图}
+\end{figure}
 
-在以上背景下，软件系统选择了目前流行的主流关系数据库之一的MySQL进行相关数据的存储。MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，支持查询、新增、更新、删除、求和、排序等基本操作。与此同时，软件系统一共设计了五张数据表（Table）来解决上述问题。%这些数据表之间的相互关联关系如\autoref{fig:data_table_relationship}所示。
-其中，模型的存储过程较为简单，只需一张数据表；而生理信号数据及其衍生特征的存储较为复杂，需要四张数据表级联并相互配合。
-%需要注意的是，为简明扼要，\autoref{fig:data_table_relationship}中仅显示了各数据表的重要的外部键，
-这些数据表的详细设计可参见\autoref{tab:data_table_record}至\autoref{tab:data_table_model}，其中数据表的主键与外部键用粉色进行了突出显示。
-\begin{longtblr}
-    [
-        theme                   = {zju},
-        caption                 = {Record数据表的字段设计},
-        label                   = {tab:data_table_record},
-    ]
-    {
-        width                   = \linewidth,
-        colspec                 = {X[1,c,m]X[1,c,m]X[2,c,m]X[2,c,m]},
-        hline{1,Z}              = {\thickline},
-        hline{2}                = {\thinline},
-        rowhead                 = 1,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
-        row{2-Z}                = {font=\nonheadfont},
-        cell{2}{4}              = {bg=\emphacolor},
-    }
-    字段&数据类型&意义&备注\\
-    id&32位整型&自增字段&主键，随记录存储自动增加\\
-    project&字符串&数据归属项目&兼容性设计，默认值为PE\\
-    sourceFileName&字符串&上传的原始数据文件名&\\
-    sourceFile&字符串&上传的原始数据文件&Django会自动管理文件名与文件的映射关系\\
-    person&字符串&原始数据文件来源的人名&\\
-    state&状态变量&整型&兼容性设计，在PE项目中指代用户PE患病状态，0为健康，1为PE，2为PE待定；其他项目中state意义可根据需要自定义\\
-    sampleTime&字符串&数据采集时间&\\
-    createTime&时间日期&当前Record存储时间&时间日期为Django自定义的数据类型\\
-    isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
-\end{longtblr}
+从\autoref{fig:data_table_relationship}可以看到，软件系统中PE识别模型的存储过程较为简单，只需一张数据表；而生理信号数据及其衍生特征的存储较为复杂，需要四张数据表级联并相互配合。
+其中，Model数据表维护了所有分析模型信息；Record数据表维护了所有数据记录信息；Analysis数据表维护了所有数据文件信息；Unit数据表维护了所有最小分析单位信息；而
+Feature数据表维护了所有PPG特征信息。下面以Feature数据表为代表详细介绍数据表的设计，如\autoref{tab:data_table_feature}所示。
+% 以上数据表的具体作用如\autoref{tab:data_tables}所示。
+% \begin{longtblr}
+%     [
+%         theme                   = {zju},
+%         caption                 = {软件系统中数据表及其作用},
+%         label                   = {tab:data_tables},
+%     ]
+%     {
+%         width                   = \linewidth,
+%         colspec                 = {X[1,c,m]X[2,c,m]},
+%         hline{1,Z}              = {\thickline},
+%         hline{2}                = {\thinline},
+%         rowhead                 = 1,
+%         row{odd}                = {bg=\oddcolor}, 
+%         row{even}               = {bg=\evencolor},
+%         row{1}                  = {font=\headfont,bg=\headcolor},
+%         row{2-Z}                = {font=\nonheadfont},
+%     }
+%     数据表名称&作用\\
+%     model&该表维护了所有分析模型信息\\
+%     record&该表维护了所有数据记录信息\\
+%     analysis&该表维护了所有数据文件信息\\        
+%     unit&该表维护了所有最小分析单位信息\\
+%     feature&该表维护了所有数据特征信息\\
+% \end{longtblr}
 
-Record数据表是存储特征时使用到的最为底层的数据表，主要用来记录存储数据请求中的最原始数据文件，而id字段为其主键，如\autoref{tab:data_table_record}所示。
-Record数据表中的project字段与state字段是一定程度上的冗余设计，前者目前固定表征PE，后者固定表征PE患病状态。
-以后可能涉及的其他项目的存储可以根据需要调整这两个字段意义。值得一提的是，数据表中额外增加了isDeleted字段用以处理数据记录的删除，当需要删除
-数据时，只需更改该字段的布尔值，避免了物理删除彻底丢失对数据后续管理的可能。
-\begin{longtblr}
-    [
-        theme                   = {zju},
-        caption                 = {Analysis数据表的字段设计},
-        label                   = {tab:data_table_analysis},
-    ]
-    {
-        width                   = \linewidth,
-        colspec                 = {X[1,c,m]X[2,c,m]X[3,c,m]X[4,c,m]},
-        hline{1,Z}              = {\thickline},
-        hline{2}                = {\thinline},
-        rowhead                 = 1,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
-        row{2-Z}                = {font=\nonheadfont},
-        cell{2-3}{4}            = {bg=\emphacolor},
-    }
-    字段&数据类型&意义&备注\\
-    id&32位整型&自增字段&主键，随记录存储自动增加\\
-    bindRecord&\autoref{tab:data_table_record}中定义的Record记录&当前记录绑定的Record数据表记录ID&关联到Record数据表的外部键\\
-    dataType&字符串&数据记录所属类别&兼容性设计，在PE项目中，可选值包括指代特征的feature与指代原始采用点的point\\
-    dataVersion&字符串&上传的数据特征文件版本号&兼容性设计，保持软件系统对因算法迭代导致的数据调整的兼容\\
-    jsonFile&字符串&上传的数据特征文件&Django会自动管理文件名与文件的映射关系\\
-    createTime&时间日期&当前Record存储时间&时间日期为Django自定义的数据类型\\
-    isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
-\end{longtblr}
+%需要注意的是，为简明扼要，\autoref{fig:data_table_relationship}中仅显示了，
+% 这些数据表的详细设计可参见\autoref{tab:data_table_record}至\autoref{tab:data_table_model}，其中数据表的主键与外部键用粉色进行了突出显示。
 
-Analysis数据表存储了对Record数据表的进行了初步处理的文件信息，如\autoref{tab:data_table_analysis}所示。
-而在本研究中，这些文件包括存储PPG时域特征的JSON文件与PPG原始采样值的JSON文件。
-该表通过bindRecord字段绑定Record数据表的外部键，通过jsonFile字段存储初步处理的文件信息。此外，该表通过dataType与dataVersion两个字段来保证
-后续可能引入的多生理信号类型与数据版本更迭的兼容适配。
+% \begin{longtblr}
+%     [
+%         theme                   = {zju},
+%         caption                 = {Record数据表的字段设计},
+%         label                   = {tab:data_table_record},
+%     ]
+%     {
+%         width                   = \linewidth,
+%         colspec                 = {X[1,c,m]X[1,c,m]X[2,c,m]X[2,c,m]},
+%         hline{1,Z}              = {\thickline},
+%         hline{2}                = {\thinline},
+%         rowhead                 = 1,
+%         row{odd}                = {bg=\oddcolor}, 
+%         row{even}               = {bg=\evencolor},
+%         row{1}                  = {font=\headfont,bg=\headcolor},
+%         row{2-Z}                = {font=\nonheadfont},
+%         cell{2}{4}              = {bg=\emphacolor},
+%     }
+%     字段&数据类型&意义&备注\\
+%     id&32位整型&自增字段&主键，随记录存储自动增加\\
+%     project&字符串&数据归属项目&兼容性设计，默认值为PE\\
+%     sourceFileName&字符串&上传的原始数据文件名&\\
+%     sourceFile&字符串&上传的原始数据文件&Django会自动管理文件名与文件的映射关系\\
+%     person&字符串&原始数据文件来源的人名&\\
+%     state&状态变量&整型&兼容性设计，在PE项目中指代用户PE患病状态，0为健康，1为PE，2为PE待定；其他项目中state意义可根据需要自定义\\
+%     sampleTime&字符串&数据采集时间&\\
+%     createTime&时间日期&当前Record存储时间&时间日期为Django自定义的数据类型\\
+%     isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
+% \end{longtblr}
 
-\begin{longtblr}
-    [
-        theme                   = {zju},
-        caption                 = {Unit数据表的字段设计},
-        label                   = {tab:data_table_unit},
-    ]
-    {
-        width                   = \linewidth,
-        colspec                 = {X[1,c,m]X[2,c,m]X[3,c,m]X[4,c,m]},
-        hline{1,Z}              = {\thickline},
-        hline{2}                = {\thinline},
-        rowhead                 = 1,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
-        row{2-Z}                = {font=\nonheadfont},
-        cell{2-3}{4}            = {bg=\emphacolor},
-    }
-    字段&数据类型&意义&备注\\
-    id&32位整型&自增字段&主键，随记录存储自动增加\\
-    bindAnalysis&\autoref{tab:data_table_analysis}中定义的Analysis记录&当前记录绑定的Analysis数据表记录ID&关联到Analysis数据表的外部键\\
-    signalType&字符串&数据类型&兼容性设计，在PE项目中，目前该值仅为PPG\\
-    index&整型&最小分析单位编号&兼容性设计，在PE项目中，该值指代PPG原始记录中的完整波形序号\\
-    isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
-\end{longtblr}
+% Record数据表是存储特征时使用到的最为底层的数据表，主要用来记录存储数据请求中的最原始数据文件，而id字段为其主键，如\autoref{tab:data_table_record}所示。
+% Record数据表中的project字段与state字段是一定程度上的冗余设计，前者目前固定表征PE，后者固定表征PE患病状态。
+% 以后可能涉及的其他项目的存储可以根据需要调整这两个字段意义。值得一提的是，数据表中额外增加了isDeleted字段用以处理数据记录的删除，当需要删除
+% 数据时，只需更改该字段的布尔值，避免了物理删除彻底丢失对数据后续管理的可能。
+% \begin{longtblr}
+%     [
+%         theme                   = {zju},
+%         caption                 = {Analysis数据表的字段设计},
+%         label                   = {tab:data_table_analysis},
+%     ]
+%     {
+%         width                   = \linewidth,
+%         colspec                 = {X[1,c,m]X[2,c,m]X[3,c,m]X[4,c,m]},
+%         hline{1,Z}              = {\thickline},
+%         hline{2}                = {\thinline},
+%         rowhead                 = 1,
+%         row{odd}                = {bg=\oddcolor}, 
+%         row{even}               = {bg=\evencolor},
+%         row{1}                  = {font=\headfont,bg=\headcolor},
+%         row{2-Z}                = {font=\nonheadfont},
+%         cell{2-3}{4}            = {bg=\emphacolor},
+%     }
+%     字段&数据类型&意义&备注\\
+%     id&32位整型&自增字段&主键，随记录存储自动增加\\
+%     bindRecord&\autoref{tab:data_table_record}中定义的Record记录&当前记录绑定的Record数据表记录ID&关联到Record数据表的外部键\\
+%     dataType&字符串&数据记录所属类别&兼容性设计，在PE项目中，可选值包括指代特征的feature与指代原始采用点的point\\
+%     dataVersion&字符串&上传的数据特征文件版本号&兼容性设计，保持软件系统对因算法迭代导致的数据调整的兼容\\
+%     jsonFile&字符串&上传的数据特征文件&Django会自动管理文件名与文件的映射关系\\
+%     createTime&时间日期&当前Record存储时间&时间日期为Django自定义的数据类型\\
+%     isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
+% \end{longtblr}
 
-Unit数据表存储了对Analysis数据表的进行分析处理的最小单位，如\autoref{tab:data_table_unit}所示。
-在本研究中，显然最小分析单位是PPG数据的单个波形数据。
-该表通过bindAnalysis字段绑定Analysis数据表的外部键，通过index字段存储最小单位信息。此外，该表通过signalType字段来保证
-后续引入的多种类型的生理信号的可能。
+% Analysis数据表存储了对Record数据表的进行了初步处理的文件信息，如\autoref{tab:data_table_analysis}所示。
+% 而在本研究中，这些文件包括存储PPG时域特征的JSON文件与PPG原始采样值的JSON文件。
+% 该表通过bindRecord字段绑定Record数据表的外部键，通过jsonFile字段存储初步处理的文件信息。此外，该表通过dataType与dataVersion两个字段来保证
+% 后续可能引入的多生理信号类型与数据版本更迭的兼容适配。
+
+% \begin{longtblr}
+%     [
+%         theme                   = {zju},
+%         caption                 = {Unit数据表的字段设计},
+%         label                   = {tab:data_table_unit},
+%     ]
+%     {
+%         width                   = \linewidth,
+%         colspec                 = {X[1,c,m]X[2,c,m]X[3,c,m]X[4,c,m]},
+%         hline{1,Z}              = {\thickline},
+%         hline{2}                = {\thinline},
+%         rowhead                 = 1,
+%         row{odd}                = {bg=\oddcolor}, 
+%         row{even}               = {bg=\evencolor},
+%         row{1}                  = {font=\headfont,bg=\headcolor},
+%         row{2-Z}                = {font=\nonheadfont},
+%         cell{2-3}{4}            = {bg=\emphacolor},
+%     }
+%     字段&数据类型&意义&备注\\
+%     id&32位整型&自增字段&主键，随记录存储自动增加\\
+%     bindAnalysis&\autoref{tab:data_table_analysis}中定义的Analysis记录&当前记录绑定的Analysis数据表记录ID&关联到Analysis数据表的外部键\\
+%     signalType&字符串&数据类型&兼容性设计，在PE项目中，目前该值仅为PPG\\
+%     index&整型&最小分析单位编号&兼容性设计，在PE项目中，该值指代PPG原始记录中的完整波形序号\\
+%     isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
+% \end{longtblr}
+
+% Unit数据表存储了对Analysis数据表的进行分析处理的最小单位，如\autoref{tab:data_table_unit}所示。
+% 在本研究中，显然最小分析单位是PPG数据的单个波形数据。
+% 该表通过bindAnalysis字段绑定Analysis数据表的外部键，通过index字段存储最小单位信息。此外，该表通过signalType字段来保证
+% 后续引入的多种类型的生理信号的可能。
 
 \begin{longtblr}
     [
@@ -988,7 +1011,7 @@ Unit数据表存储了对Analysis数据表的进行分析处理的最小单位�
     }
     字段&数据类型&意义&备注\\
     id&32位整型&自增字段&主键，随记录存储自动增加\\
-    bindUnit&\autoref{tab:data_table_unit}中定义的Unit记录&当前记录绑定的Unit数据表记录ID&关联到Unit数据表的外部键\\
+    bindUnit&Analysis数据表中的Unit记录&当前记录绑定的Unit数据表记录ID&关联到Unit数据表的外部键\\
     type&字符串&操作标记&兼容性设计，在PE项目组，对PPG的特征类数值无意义；对PPG的采样点数据记录的均一化等特性\\
     name&字符串&特征数据名称&兼容性设计，特征名。在PE项目组，特征类数据该值为具体特征缩写；对采样点数据该值固定为point\\
     value&JSON&具体特征值&兼容性设计，Django支持直接以JSON形式存储字段信息\\
@@ -996,41 +1019,41 @@ Unit数据表存储了对Analysis数据表的进行分析处理的最小单位�
 \end{longtblr}
 
 Feature数据表存储了对PPG记录的单个波形的所有特征，而bindUnit字段是关联到Unit数据表的外部键，如\autoref{tab:data_table_feature}所示。
-特别地，本论文中介绍过的波形时域特征与其原始采样值序列都可以在该数据表中存储，只需通过name字段进行区分即可，其中前者的name字段数值
-多变，而后者固定为point。这种广义上的特征具体数值直接以JSON格式存储在value字段中。此外，对原始采样值而言，可能存在均一化、滤波等操作，这些操作也
-会产生新的数据，这些操作引起的差异被存储入type字段。
+特别地，PPG时域特征与原始采样值序列都可以直接以JSON格式存储在value字段中，只需通过name字段进行区分即可，其中前者的name字段数值
+多变，而后者固定为point。另外，对原始采样值而言，可能存在均一化、滤波等操作，这些操作的差异被存储入type字段。最后，数据表中额外增加了isDeleted字段用以处理数据记录的删除，当需要删除
+数据时，只需更改该字段的布尔值，避免了物理删除彻底丢失对数据后续管理的可能。
 
-\begin{longtblr}
-    [
-        theme                   = {zju},
-        caption                 = {Model数据表的字段设计},
-        label                   = {tab:data_table_model},
-    ]
-    {
-        width                   = \linewidth,
-        colspec                 = {X[1,c,m]X[2,c,m]X[3,c,m]X[4,c,m]},
-        hline{1,Z}              = {\thickline},
-        hline{2}                = {\thinline},
-        rowhead                 = 1,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
-        row{2-Z}                = {font=\nonheadfont},
-        cell{2}{4}              = {bg=\emphacolor},
-    }
-    字段&数据类型&意义&备注\\
-    id&32位整型&自增字段&主键，随记录存储自动增加\\
-    model&字符串&机器学习模型文件&Django会自动管理文件名与文件的映射关系\\
-    algorithm&字符串&机器学习训练使用的算法名称&\\
-    version&字符串&模型的版本号&兼容性设计，支持模型版本更迭\\
-    trainSet&JSON&记录当前模型训练所使用的用户数据&\\
-    trainTime&字符串&记录模型训练时间&\\
-    uploadTime&字符串&记录模型上传时间&\\
-    isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
-\end{longtblr}
+% \begin{longtblr}
+%     [
+%         theme                   = {zju},
+%         caption                 = {Model数据表的字段设计},
+%         label                   = {tab:data_table_model},
+%     ]
+%     {
+%         width                   = \linewidth,
+%         colspec                 = {X[1,c,m]X[2,c,m]X[3,c,m]X[4,c,m]},
+%         hline{1,Z}              = {\thickline},
+%         hline{2}                = {\thinline},
+%         rowhead                 = 1,
+%         row{odd}                = {bg=\oddcolor}, 
+%         row{even}               = {bg=\evencolor},
+%         row{1}                  = {font=\headfont,bg=\headcolor},
+%         row{2-Z}                = {font=\nonheadfont},
+%         cell{2}{4}              = {bg=\emphacolor},
+%     }
+%     字段&数据类型&意义&备注\\
+%     id&32位整型&自增字段&主键，随记录存储自动增加\\
+%     model&字符串&机器学习模型文件&Django会自动管理文件名与文件的映射关系\\
+%     algorithm&字符串&机器学习训练使用的算法名称&\\
+%     version&字符串&模型的版本号&兼容性设计，支持模型版本更迭\\
+%     trainSet&JSON&记录当前模型训练所使用的用户数据&\\
+%     trainTime&字符串&记录模型训练时间&\\
+%     uploadTime&字符串&记录模型上传时间&\\
+%     isDeleted&布尔量&当前记录是否被逻辑“删除”&为避免记录被直接物理删除，额外增加的布尔变量指代是否被删除状态\\
+% \end{longtblr}
 
-Model数据表主要存储云服务端的机器学习模型，该表结构单一，\autoref{tab:data_table_model}中的字段信息意义也较为简单。其中，version字段
-用于保留对模型更新迭代的可能，而trainSet字段则是在目前数据量较小的情况下的一种折中，避免模型处理在训练过程中的已见示例。
+% Model数据表主要存储云服务端的机器学习模型，该表结构单一，\autoref{tab:data_table_model}中的字段信息意义也较为简单。其中，version字段
+% 用于保留对模型更新迭代的可能，而trainSet字段则是在目前数据量较小的情况下的一种折中，避免模型处理在训练过程中的已见示例。
 
 \section{测试与验证}
 上文对\autoref{fig:scas}中展示的软件框架的设计与实现细节进行了全面详细的说明。而按照这些设计完成软件系统的整体开发后，
@@ -1038,7 +1061,7 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
 
 \subsection{数据预处理的测试与验证}
 数据预处理模块的验证主要集中在对本研究设计提出的SCD波形检测算法的验证与测试上。
-本论文基于自采实验数据与标准数据库数据，对SCD算法进行了测试验证。与此同时，本论文也选取了两种有代表性的PPG检测算法与SCD算法进行了对比验证。
+基于自采实验数据与标准数据库数据，对SCD算法进行了测试验证。同时，也选取了两种有代表性的PPG检测算法与SCD算法进行了对比验证。
 
 上述多种PPG检测算法之间的对比过程可参见本论文第三章，具体对比结果如\autoref{tab:scd_6}所示。
 可以看到本研究提出的SCD算法对PPG波形的识别准确率高、抗干扰能力强，与其他算法相比也具有一定的优势。
@@ -1082,12 +1105,12 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
 % \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.75\linewidth]{software/android_demo}
+    \includegraphics[width=0.9\linewidth]{software/android_demo}
     \caption{\label{fig:android_demo}Android客户端对被试dmq的PPG数据检测结果}
 \end{figure}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.75\linewidth]{software/pc_demo}
+    \includegraphics[width=0.9\linewidth]{software/pc_demo}
     \caption{\label{fig:pc_demo}PC客户端对被试dmq的PPG数据检测结果}
 \end{figure}
 
@@ -1171,12 +1194,7 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
 在客户端软件中选择打开原始PPG数据文件后，当客户端完成了预处理后，处理结果会被上传至云服务器端。
 云服务器端调用PE识别模型并返回结果，不同平台下的返回结果如\autoref{fig:pc_response}与\autoref{fig:android_response}所示。
 
-\autoref{fig:pc_response}与\autoref{fig:android_response}分别对应着被试cmf的原始数据在PC客户端与Android客户端的响应结果，而
-被试cmf数据的数据结果分别对应着\autoref{tab:model_detail}与\autoref{tab:model_detail2}的相关内容。
-云服务端的响应结果分别在\autoref{fig:pc_response}与\autoref{fig:android_response}以表格的形式进行了呈现，相关参数的意义可参考\autoref{tab:json_response}。
-特别地，由于对于基于被试的研究而言，PPG的分析数据包括时域特征与原始采样值两大类；
-而对于原始采样值而言，又使用了两种PPG波形的对齐策略。因此，\autoref{fig:pc_response}与\autoref{fig:android_response}中的模型总数的这一参数值均为3。
-
+\autoref{fig:pc_response}与\autoref{fig:android_response}分别对应着被试cmf的原始数据在PC客户端与Android客户端
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.9\linewidth]{software/pc_response}
@@ -1187,13 +1205,20 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
     \includegraphics[width=.9\linewidth]{software/android_response}
     \caption{\label{fig:android_response}Android客户端接收到的请求响应}
 \end{figure}
+\noindent
+的响应结果，而
+被试cmf数据的数据结果分别对应着\autoref{tab:model_detail}与\autoref{tab:model_detail2}的相关内容。
+云服务端的响应结果分别在\autoref{fig:pc_response}与\autoref{fig:android_response}以表格的形式进行了呈现。%相关参数的意义可参考\autoref{tab:json_response}。
+特别地，由于对于基于被试的研究而言，PPG的分析数据包括时域特征与原始采样值两大类；
+而对于原始采样值而言，又使用了两种PPG波形的对齐策略。因此，\autoref{fig:pc_response}与\autoref{fig:android_response}中的模型总数的这一参数值均为3。
+
 \subsection{数据库的测试与验证}
 由于软件系统使用了MySQL数据库作为后台，因此，当软件系统正常运后，可直接在命令行下连接至数据库，查询数据库的存储状态。
 在命令行下模式下，键入命令$mysql\ -u\ root\ -p$后，输入数据库密码，即可登陆数据库；随后使用SQL语言$use\ bme207$即可选中软件系统在MySQL软件中使用的数据库；
 最后，使用SQL语言$show\ Tables$即可查询数据库bme207下所有数据表的状态，得到的结果如\autoref{fig:mysql_db}所示。
 
 从\autoref{fig:mysql_db}中可以发现，上节中介绍的5张自定义数据表均已按预期生成。与此同时，\autoref{fig:mysql_db}也存在着Django框架自动生成的一些数据表。而这些数据表的详细
-作用如\autoref{tab:mysql_db}所示。
+作用如\autoref{tab:django_db}所示。
 
 \begin{figure}[htbp]
     \centering
@@ -1204,12 +1229,12 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {软件系统中所有涉及的数据表及其作用一览},
-        label                   = {tab:mysql_db},
+        caption                 = {Django框架自动生成的数据表及其作用},
+        label                   = {tab:django_db},
     ]
     {
         width                   = \linewidth,
-        colspec                 = {X[3,c,m]X[5,c,m]X[2,c,m]},
+        colspec                 = {X[1,c,m]X[3,c,m]},
         hline{1,Z}              = {\thickline},
         hline{2}                = {\thinline},
         rowhead                 = 1,
@@ -1217,24 +1242,18 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
         row{even}               = {bg=\evencolor},
         row{1}                  = {font=\headfont,bg=\headcolor},
         row{2-Z}                = {font=\nonheadfont},
-        cell{2}{3}              = {r=10,c=1}{c,m},
     }
-    数据表名称&作用&备注\\
-    auth\_group&该表维护用户组信息&Django自动生成\\
-    auth\_group\_permissions&该表维护了用户权限和用户组别之间的多对多关系&Django自动生成\\
-    auth\_permission&该表维护了用户权限信息&Django自动生成\\
-    auth\_user&该表维护了用户信息&Django自动生成\\
-    auth\_user\_groups&该表维护了用户组信息与用户信息之间的多对多关系&Django自动生成\\
-    auth\_user\_user\_permissions&该表维护了用户权限信息和用户信息之间多对多关系&Django自动生成\\
-    django\_admin\_log&该表记录了用户在admin页面的操作日志&Django自动生成\\
-    django\_content\_type&该表记录了项目中所有app与model之间的对应关系&Django自动生成\\
-    django\_migrations&该表维护了Django项目所有的数据迁移记录信息&Django自动生成\\
-    django\_session&该表维护了所有session信息&Django自动生成\\
-    pe\_analysis&该表维护了所有数据文件信息&本项目自定义，参见\autoref{tab:data_table_analysis}\\        
-    pe\_feature&该表维护了所有数据特征信息&本项目自定义，参见\autoref{tab:data_table_feature}\\
-    pe\_model&该表维护了所有分析模型信息&本项目子定义，参见\autoref{tab:data_table_model}\\
-    pe\_record&该表维护了所有数据记录信息&本项目自定义，参见\autoref{tab:data_table_record}\\
-    pe\_unit&该表维护了所有最小分析单位信息&本项目自定义，参见\autoref{tab:data_table_unit}\\
+    数据表名称&作用\\
+    auth\_group&该表维护用户组信息\\
+    auth\_group\_permissions&该表维护了用户权限和用户组别之间的多对多关系\\
+    auth\_permission&该表维护了用户权限信息\\
+    auth\_user&该表维护了用户信息\\
+    auth\_user\_groups&该表维护了用户组信息与用户信息之间的多对多关系\\
+    auth\_user\_user\_permissions&该表维护了用户权限信息和用户信息之间多对多关系\\
+    django\_admin\_log&该表记录了用户在admin页面的操作日志\\
+    django\_content\_type&该表记录了项目中所有app与model之间的对应关系\\
+    django\_migrations&该表维护了Django项目所有的数据迁移记录信息\\
+    django\_session&该表维护了所有session信息\\
 \end{longtblr}
 
 \begin{figure}[htbp]
@@ -1249,6 +1268,5 @@ Model数据表主要存储云服务端的机器学习模型，该表结构单一
 
 \section{小结}
 本章基于PPG信号的设计并实现了一款具有较强的兼容性与拓展性的PE识别分析软件系统，该软件系统具有完整可用的基于PPG信号的PE识别分析功能。
-首先，详细分析了软件系统的研发需求。其次，介绍了软件系统的整体性多模块化设计。
-随后，针对各个模块的设计需求，结合实际开发中遇见的问题，对各模块的实现工作进行了介绍。最后，对各模块进行了一定的测试。
-结果表明，软件系统的各项功能均能按照设计预期正常工作，具有一定的临床实际意义与应用前景。
+首先，详细分析了软件系统的研发需求。其次，介绍了软件系统的整体性多模块化设计。随后，针对各个模块的设计需求，结合实际开发中遇见的问题，
+对各模块的实现工作进行了介绍。对各模块进行了一定的测试后，结果表明，软件系统的各项功能均能按照设计预期正常工作，具有一定的临床实际意义与应用前景。
