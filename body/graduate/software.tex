@@ -1,8 +1,8 @@
 \chapter{基于脉搏波的子痫前期识别分析软件系统的设计与实现}
 \section{引言}
-本研究此前各章中均涉及了软件与算法设计，在这些工作的基础上，本章介绍了一款基于PPG信号的PE识别分析软件系统的设计与实现过程。在分析具体功能需求后，
+本研究此前各章中均涉及了软件与算法设计，在这些工作的基础上，本章介绍了一款基于PPG信号的子痫前期（PE）识别分析软件系统的设计与实现过程。在分析具体功能需求后，
 选取跨平台客户端+云服务器的方案进行整体设计，以期完成以下四部分内容：PPG信号的预处理与特征计算生成；PE识别模型的本地化训练与生成；跨平台的多客户端软件设计；
-云服务器端软件设计与PE识别模型的部署。对其中涉及的软件与算法开发设计进行了详细的介绍，同时也展示了各工作内容的实现效果，
+云服务器端软件设计与PE识别模型的部署。对其中涉及的软件与算法开发设计进行详细的介绍，展示各工作内容的实现效果，
 并对软件系统简单地进行了功能性的验证与测试。
 
 本章研究内容的框架图如\autoref{fig:frameworks6}所示。
@@ -14,11 +14,11 @@
 \end{figure}
 
 \section{需求分析}
-如本研究中绪论中所介绍的，尽管移动智能医疗与可穿戴式设备已经取得了长足的发展，但现阶段PE的微型化智能化检测技术仍处于起步阶段，国内外相关研究匮乏。
-而由于PE的高危害性，实现PE的早期检测识别诊断无疑可以极大地保证孕妇及婴儿的生命健康安全。因此，设计实现一款可以满足实验室研究、医院监护、社区检查、
-居家监护的多应用场景的PE识别诊断软件综合系统无疑有着巨大的市场前景，具有极大的临床意义。另一方面，上述软件系统在保证完整分析功能的基础上，
+%如本研究中绪论中所介绍的，尽管移动智能医疗与可穿戴式设备已经取得了长足的发展，但现阶段PE的微型化智能化检测技术仍处于起步阶段，国内外相关研究匮乏。
+由于PE的高危害性，实现PE的早期检测识别诊断无疑可以极大地保证孕妇及婴儿的生命健康安全。因此，设计实现一款可以满足实验室研究、医院监护、社区检查、
+居家监护的多应用场景的PE识别诊断软件综合系统具有重要的临床意义和市场前景。另一方面，上述软件系统在保证完整分析功能的基础上，
 应支持软件自身更新迭代导致的各种变化。这要求软件系统在开发伊始就需要进行考虑不同的开发与应用情景，引入软件开发的
-代码复用与模式设计等技术，增加软件系统的健壮性与复用性\cite{Enrich2018,CJ2020}。
+代码复用与模式设计等技术，增加软件系统的健壮性与复用性\cite{Enrich2018,CJ2020,Gamma1993}。
 
 因此，软件系统需要满足以下具体需求，并根据实际需要，进行一定的兼容性设计：
 
@@ -61,7 +61,7 @@ PC端与移动端均需开发对应的客户端。
 八、其他拓展性
 
 基于本研究此前章节相关内容，软件分析系统使用PPG信号作为原始数据输入。但随着高性能的数据采集设备的普及，同时使用多通道多参数生理信号（如ECG、BCG、EEG）
-也存在着联合分析的可能，需要软件分析系统进行一定的兼容性设计。此外，尽管软件分析系统是为PE的识别分析为初衷进行设计，其核心分析功能可作为类似研究的参考模板，
+也存在着联合分析的可能\cite{Chen2021,Kachuee2015,LMX2019}，需要软件分析系统进行一定的兼容性设计。此外，尽管软件分析系统是为PE的识别分析为初衷进行设计，其核心分析功能可作为类似研究的参考模板，
 软件分析系统在进行设计时也可以考虑整体的移植性。
 
 \section{总体设计}
@@ -109,7 +109,7 @@ PC端与移动端均需开发对应的客户端。
 
 2、设计模式
 
-设计模式(Design Pattern，DP)是计算机软件设计中对某些特定问题的优化解决方案的总结。
+设计模式(Design Pattern，DP)是计算机软件设计中对某些特定问题的优化解决方案的总结\cite{Gamma1993,Enrich2018}。
 在程序开发过程中使用设计模式，可重用代码、让代码更容易被他人理解，保证代码可靠性的同时也增加了程序的重用性。
 
 三、编程语言与开发环境
@@ -119,27 +119,29 @@ PC端与移动端均需开发对应的客户端。
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {不同模块使用的编程语言与开发环境汇总},
+        caption                 = {不同模块使用的编程语言与开发环境汇总表},
         label                   = {tab:ides},
     ]
     {
         width                   = \linewidth,
-        colspec                 = {X[1,c,m]X[1.8,c,m]X[1,c,m]X[1,c,m]X[2,c,m]X[1.5,c,m]X[1.5,c,m]},
+        colspec                 = {X[0.5,c,m]X[1.5,c,m]X[1,c,m]X[1,c,m]X[2.8,c,m]X[1.5,c,m]X[1.5,c,m]},
         hline{1,Z}              = {\thickline},
         hline{2}                = {\thinline},
         rowhead                 = 1,
-        row{3,4,6}              = {bg=\oddcolor}, 
-        row{2,5}                = {bg=\evencolor},
+        row{2-6}                = {bg=\evencolor},
         row{1}                  = {font=\headfont,bg=\headcolor},
         row{2-Z}                = {font=\nonheadfont},
         cell{3}{1-2}            = {r=2,c=1}{c,m},
+        cell{2}{4}              = {r=3,c=1}{c,m},
+        cell{2}{5-6}            = {r=2,c=1}{c,m},
+        cell{5}{3-6}            = {r=2,c=1}{c,m},
     }
     序号 & 模块 & 平台 & 开发语言 & 版本 & 开发工具 & 其他组件或库 \\
-    1 & 数据预处理 & / & Java & OpenJDK(16.0.2)\cite{openjdk} & VS Code & Fastjson \\
-    2 & 客户端 & PC & Java & OpenJDK(16.0.2) \cite{openjdk}& VS Code & / \\
-    2 & 客户端 & Android\cite{android} & Java & Android Studio default JDK(11.0.12)  & Andoird Studio & / \\
-    3 & 模型训练 & / & Python & 3.9.7 & PyCharm & Sklearn \\
-    4 & 云服务器 & / & Python & 3.9.7 & PyCharm & Django、Sklearn \\
+    1 & 数据预处理 & / & Java & OpenJDK(16.0.2)\cite{openjdk} & VS Code & fastjson\cite{fastjson} \\
+    2 & 客户端 & PC & Java & OpenJDK(16.0.2) \cite{openjdk}& VS Code & httpClient\cite{httpClient}、JFreeChart\cite{JFreeChart}、log4j\cite{log4j} \\
+    2 & 客户端 & Android\cite{android} & Java & Android Studio default JDK(11.0.12)  & Andoird Studio & retrofit\cite{retrofit}、MPAndroidChart\cite{MPAndroidChart} \\
+    3 & 模型训练 & / & Python & 3.9.7 & PyCharm & Sklearn\cite{scikit-learn}、logging\cite{logging} \\
+    4 & 云服务器 & / & Python & 3.9.7 & PyCharm & Sklearn\cite{scikit-learn}、Django\cite{django}、logging\cite{logging} \\
     
 \end{longtblr}
 
@@ -179,7 +181,7 @@ PC端与移动端均需开发对应的客户端。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.5\linewidth]{software/read}
-    \caption{\label{fig:template}数据导入的设计}
+    \caption{\label{fig:template}数据导入设计示意图}
 \end{figure}
 % \begin{figure}[htbp]
 %     \centering
@@ -209,7 +211,7 @@ PC端与移动端均需开发对应的客户端。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.5\linewidth]{software/template}
-    \caption{\label{fig:template2}滤波处理的设计}
+    \caption{\label{fig:template2}滤波处理设计示意图}
 \end{figure}
 
 % 模板方法的基本原则是预定义一个操作中算法的骨架,而将延迟实现其中的关键步骤。
@@ -223,8 +225,8 @@ PC端与移动端均需开发对应的客户端。
 三、特征点定位与波形检测
 
 本研究对PPG波形的检测过程进行了模式设计，
-结合模板方法与工厂方法（Factory Method）\cite{Enrich2018}，提出了一种基于初筛—复核—决策（screening-checking-deciding，SCD）的新型算法，其处理流程如\autoref{fig:detect2}所示。
-而关于SCD算法的详细介绍可参见论文第三章。
+结合模板方法与工厂方法（Factory Method）\cite{Enrich2018}，提出了一种基于初筛—复核—决策（screening-checking-deciding，SCD）的新型算法，其处理流程如\autoref{fig:detect2}所示，
+，关于SCD算法的详细介绍可参见论文第三章。
 % 由于特征点定位与波形检测的详细算法过程已经在第三章中详细介绍过，此处对其算法原理不再赘述。
 \begin{figure}[htbp]
     \centering
@@ -247,13 +249,13 @@ PC端与移动端均需开发对应的客户端。
 
 四、特征计算
 
-在第四章中，本论文定义了大量基于PPG形态学的特征参数。软件系统使用单例程模式（Singlon）对这些特征参数的计算过程进行了模式设计\cite{Li2015,Enrich2018}，
+在第四章中，本论文定义了大量基于PPG形态学的特征参数。软件系统使用单例程模式（Singlon）对这些特征参数的计算过程进行了模式设计\cite{Enrich2018}，
 这一过程如\autoref{fig:singleton}所示。
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.8\linewidth]{software/singleton}
-    \caption{\label{fig:singleton}单例程模式的原理示意图}
+    \caption{\label{fig:singleton}单例程模式原理示意图}
 \end{figure}
 
 单例程模式的原则是保证一个类仅有一个实例，并提供一个访问它的全局访问点。
@@ -298,7 +300,7 @@ PPG信号作为上述抽象生理信号的具体基类被设计为$Pulse.class$�
 
 一、PC客户端
 
-软件系统借助VS Code在Windows系统下完成了PC客户端的开发。而由于Java本身的跨平台特性，该客户端也可方便在Linux等其他系统下进行编译运行。
+软件系统借助VS Code在Windows系统下完成了PC客户端的开发。而由于Java本身的跨平台特性\cite{openjdk}，该客户端也可方便在Linux等其他系统下进行编译运行。
 
 1、功能与界面
 
@@ -307,12 +309,6 @@ PC客户端的交互界面如\autoref{fig:pc_ui}所示。%\autoref{tab:pc_ui}对
 批处理菜单提供了大量数据进行处理分析的便捷操作方式；而帮助菜单则给出软件开发单位、软件版本号等信息。这些功能的进一步说明可参考\autoref{tab:pc_ui_menu}。
 % 软件交互界面的波形显示区域可以展示当前打开数据文件的波形图，支持通过鼠标完成拖动、缩放等功能；对波形的波峰波谷等特征点的分析也在\autoref{fig:pc_ui}中有所标示。
 % 与此同时，PC端软件也提供了较为丰富的右键菜单功能，提供了修改绘图颜色字体属性，支持选中当前波形直接复制至文件及连接打印机打印等功能。
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.85\linewidth]{software/pc}
-    \caption{\label{fig:pc_ui}PC端软件界面示意图}
-\end{figure}
 
 % \begin{longtblr}
 %     [
@@ -341,7 +337,7 @@ PC客户端的交互界面如\autoref{fig:pc_ui}所示。%\autoref{tab:pc_ui}对
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {PC端软件主菜单功能说明},
+        caption                 = {PC端软件主菜单功能说明表},
         label                   = {tab:pc_ui_menu},
     ]
     {
@@ -376,13 +372,18 @@ PC客户端的交互界面如\autoref{fig:pc_ui}所示。%\autoref{tab:pc_ui}对
     帮助 & 更新日志 & 显示软件的更新日志信息\\
         & 关于 & 显示软件的开发团队、版本信息等 \\
 \end{longtblr}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.85\linewidth]{software/pc}
+    \caption{\label{fig:pc_ui}PC端软件界面示意图}
+\end{figure}
 
 2、处理流程与逻辑
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{software/pc_process}
-    \caption{\label{fig:pc_process}PC客户端程序的操作流程}
+    \caption{\label{fig:pc_process}PC客户端程序的操作流程图}
 \end{figure}
 
 PC端软件正常的处理流程如\autoref{fig:pc_process}所示。在选中需要分析的PPG文件后，软件系统会自动调用SCD算法的进行波形初筛，并将筛选结果在波形显示区域进行标注。
@@ -394,7 +395,7 @@ PC端软件正常的处理流程如\autoref{fig:pc_process}所示。在选中需
 
 1）完善的日志记录
 
-PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件日志管理与输出，可将软件运行过程中的运行状态和中间变量等关键信息按级别
+PC端软件借助Apache公司的log4j（log for Java）开源项目\cite{log4j}进行软件日志管理与输出，可将软件运行过程中的运行状态和中间变量等关键信息按级别
 输出到不同日志文件中，方便系统开发与调试维护。%，如\autoref{fig:logs}所示。一般而言，不同的日志文件记录的信息重要性递减，但输出的详细程度递增。
 % \begin{figure}[htbp]
 %     \centering
@@ -414,7 +415,7 @@ PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件�
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\linewidth]{software/manal_check}
-    \caption{\label{fig:manal_check}PC客户端人工校验波形操作界面}
+    \caption{\label{fig:manal_check}PC客户端人工校验波形操作界面图}
 \end{figure}
 
 3）批处理
@@ -492,7 +493,7 @@ PC端软件借助Apache公司的log4j（log for Java）开源项目进行软件�
     \subfigure[菜单唤出界面]{
     \includegraphics[width=11cm]{software/android_menu}
     }
-    \caption{\label{fig:android_ui}Android客户端运行界面}
+    \caption{\label{fig:android_ui}Android客户端运行界面图}
 \end{figure}
 
 % 2、组件区别
@@ -561,11 +562,11 @@ PE识别模型训练生成模块是软件系统的核心，需要基于数据特
 
 机器学习的过程一般包括载入数据、在训练集上进行训练、考察训练集上的性能、在测试集上测试等操作，其中的某些步骤更涉及到多个参数的计算与比较。
 在PE识别模型的构建过程中，由于涉及多个模型的比较，需要不断重复上述操作，该过程繁琐且极易疏漏。
-另一方面，由于PE识别模型均是借助Python下Sklearn工具包完成的，而Sklearn本身在设计过程中均遵循了统一规范，不同的机器学习算法均提供了相同的API函数。
+另一方面，由于PE识别模型均是借助Python下Sklearn工具包完成的\cite{scikit-learn}，而Sklearn本身在设计过程中均遵循了统一规范，不同的机器学习算法均提供了相同的API函数。
 软件系统对PE识别模型的构建过程额外进行了封装，在实现代码的最小化的同时，也避免了算法模型训练过程的代码遗漏等问题，同时也简化了模型训练过程。
 
-软件系统中将模型训练过程封装成了MyClasssifer类，可直接用Sklearn中的机器学习算法实例进行初始化。MyClasssifer类一共包含四个可调用的公开函数：
-$init()$、$load\_data()$、$fit\_predict()$与$grid\_search()$。其中，$init()$函数为MyClasssifer新建实例初始化函数；
+软件系统中将模型训练过程封装成了MyClasssifer类，该类一共包含四个可调用的公开函数：
+$init()$、$load\_data()$、$fit\_predict()$与$grid\_search()$。其中，$init()$函数为MyClasssifer类新建实例初始化函数，入口参数为Sklearn中的机器学习算法实例；
 $load\_data()$函数负责载入训练集与测试集数据；$fit\_predict()$函数封装了机器学习算法在训练集与测试集上的全部处理操作；而
 $grid\_search()$为模型超参数探索时的网格化搜索函数。
 特别地，在$fit\_predict()$函数中集成封装了Sklearn工具包中各算法模型的多项重要函数，其处理流程如\autoref{fig:fit_predict}所示。
@@ -580,7 +581,7 @@ $grid\_search()$为模型超参数探索时的网格化搜索函数。
 四、日志记录
 
 与此前的客户端程序类似，为方便调试与记录模型训练模块在训练生成PE识别模型过程中的各项参数与中间变量等信息，模型训练模块也开发了程序日志记录功能。
-而这一功能的开发基于Python下的logging包。
+而这一功能的开发基于Python下的logging包\cite{logging}。
 
 % 日志记录logging包中也支持设置日志等级，可在不同的版本（如开发环境、生产环境）上通过设置不同的输出等级来记录对应的日志，非常灵活。
 % 其中，日志输出级别包括DEBUG、INFO、NOTICE、WARNING、ERROR、CRITICAL、ALERT、EMERGENCY等。而在具体使用logging包时需要通过一个JSON文件进行
@@ -601,19 +602,19 @@ $grid\_search()$为模型超参数探索时的网格化搜索函数。
 
 一、网络协议选择与数据接口设计
 
-为使客户端软件与云服务器端能够进行数据通信与数据交换，软件系统选择了最为常见的超文本传输协议（Hypertext Transfer Protocol，HTTP）。
+为使客户端软件与云服务器端能够进行数据通信与数据交换，软件系统选择了最为常见的超文本传输协议（Hypertext Transfer Protocol，HTTP）\cite{http}。
 HTTP是一种简单的请求——响应协议，它指定了客户端可能发送给服务器的消息类型以及能得到何种响应，通常运行在TCP协议之上。
 
 1、POST与GET
 
-一般而言，一个URL地址描述了一个网络资源。而HTTP协议中定义的PUT、DELETE、POST与GET等与服务器进行交互的基本方法，对应着对该网络资源的增、删、改、查等基本操作。
+一般而言，一个URL地址描述了一个网络资源。而HTTP协议中定义的PUT、DELETE、POST与GET等与服务器进行交互的基本方法，对应着对该网络资源的增、删、改、查等基本操作\cite{http}。
 其中，GET方法与POST方法均能向服务器端传递数据，在互联网应用中使用的最为广泛。
 由于POST方法较GET方法功能更为强大，能够同时传递文本数据与二进制文件数据，因而被选为软件系统的客户端与云服务器端的默认通讯方法，如\autoref{tab:get_post}所示。
 
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {GET方法与POST方法对比},
+        caption                 = {GET方法与POST方法对比表},
         label                   = {tab:get_post},
     ]
     {
@@ -641,10 +642,11 @@ HTTP是一种简单的请求——响应协议，它指定了客户端可能发�
 % 客户端通过POST方法可同时传递文本数据与二进制文件数据，这两种类型的数据会自动被服务器端程序区分并解析。
 客户端程序通过POST方法向云服务器端提交数据的通讯过程中涉及到的所有参数如\autoref{tab:post_paras}所示，其中文件类数据在表格中用粉红色底色
 进行了突出显示。
+\vskip 20pt
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {客户端在POST方法中上传的所有参数},
+        caption                 = {客户端在POST方法中上传参数说明表},
         label                   = {tab:post_paras},
     ]
     {
@@ -704,54 +706,54 @@ HTTP是一种简单的请求——响应协议，它指定了客户端可能发�
 二、模型的上传
 
 在前文中提及过的PE识别模型训练完成之后，得到的各机器学习模型也需要被上传部署在云服务器端。为使机器学习的部署更为便捷、清晰，软件系统也基于Python的图形界面PyQt额外开发了
-机器学习模型上传程序，在上传时需将包括使用的算法、训练集、版本号等信息一并提交，如\autoref{fig:upload_model}所示。
-在该通讯过程中，POST方法携带的全部参数及含义如\autoref{tab:post_paras2}所示，其中文件类数据在表格中用粉红色底色进行了突出显示。
+机器学习模型上传程序\cite{pyqt,zhiyiYo2023}，在上传时需将包括使用的算法、训练集、版本号等信息一并提交。%，如\autoref{fig:upload_model}所示。
+%在该通讯过程中，POST方法携带的全部参数及含义如\autoref{tab:post_paras2}所示，其中文件类数据在表格中用粉红色底色进行了突出显示。
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.65\linewidth]{software/upload_model}
-    \caption{\label{fig:upload_model}模型上传软件操作界面示意}
-\end{figure}
-\begin{longtblr}
-    [
-        theme                   = {zju},
-        caption                 = {客户端在POST方法中上传的所有参数},
-        label                   = {tab:post_paras2},
-    ]
-    {
-        width                   = \linewidth,
-        colspec                 = {X[1.5,c,m]X[3,c,m]X[1,c,m]X[1,c,m]X[2.5,c,m]},
-        hline{1,Z}              = {\thickline},
-        hline{2}                = {\thinline},
-        rowhead                 = 1,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
-        row{2-Z}                = {font=\nonheadfont},
-        cell{6}{3,4}            = {bg=\emphacolor},
-    }
-    参数的键名&参数值的含义&{数据流\\类型}&数据类型&备注\\
-    project&上传的模型归属的具体项目&文本&字符串&{值固定为PE，代表数据隶属本论文基于PE的研究}\\
-    data\_type&上传的模型所属生理信号类别&文本&字符串&{值固定为PPG}\\
-    client&上传模型的客户端类型&文本&字符串&值固定为PC\\
-    version&上传模型的客户端程序版本号&文本&字符串&\\
-    model&训练生成得到的机器学习模型文件&文件&文件数据&模型导出为具体文件，按二进制编码成数据流发送\\
-    model\_algorithm&模型训练生成所使用的机器学习算法&文本&字符串&包括KNN、RF等算法\\
-    model\_version&使用特定机器学习算法生成的模型版本号&文本&字符串&\\
-    train\_set&训练模型所使用的所有孕妇姓名&文本&字符串&{遵循医学伦理学相关标准,省略孕妇具体姓名，仅以拼音缩写代替}\\
-    train\_time&模型训练生成时间&文本&字符串&\\
-    upload\_time&本次通信上传时间&文本&字符串&\\
-\end{longtblr}
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=.65\linewidth]{software/upload_model}
+%     \caption{\label{fig:upload_model}模型上传软件操作界面示意}
+% \end{figure}
+% \begin{longtblr}
+%     [
+%         theme                   = {zju},
+%         caption                 = {客户端在POST方法中上传的所有参数},
+%         label                   = {tab:post_paras2},
+%     ]
+%     {
+%         width                   = \linewidth,
+%         colspec                 = {X[1.5,c,m]X[3,c,m]X[1,c,m]X[1,c,m]X[2.5,c,m]},
+%         hline{1,Z}              = {\thickline},
+%         hline{2}                = {\thinline},
+%         rowhead                 = 1,
+%         row{odd}                = {bg=\oddcolor}, 
+%         row{even}               = {bg=\evencolor},
+%         row{1}                  = {font=\headfont,bg=\headcolor},
+%         row{2-Z}                = {font=\nonheadfont},
+%         cell{6}{3,4}            = {bg=\emphacolor},
+%     }
+%     参数的键名&参数值的含义&{数据流\\类型}&数据类型&备注\\
+%     project&上传的模型归属的具体项目&文本&字符串&{值固定为PE，代表数据隶属本论文基于PE的研究}\\
+%     data\_type&上传的模型所属生理信号类别&文本&字符串&{值固定为PPG}\\
+%     client&上传模型的客户端类型&文本&字符串&值固定为PC\\
+%     version&上传模型的客户端程序版本号&文本&字符串&\\
+%     model&训练生成得到的机器学习模型文件&文件&文件数据&模型导出为具体文件，按二进制编码成数据流发送\\
+%     model\_algorithm&模型训练生成所使用的机器学习算法&文本&字符串&包括KNN、RF等算法\\
+%     model\_version&使用特定机器学习算法生成的模型版本号&文本&字符串&\\
+%     train\_set&训练模型所使用的所有孕妇姓名&文本&字符串&{遵循医学伦理学相关标准,省略孕妇具体姓名，仅以拼音缩写代替}\\
+%     train\_time&模型训练生成时间&文本&字符串&\\
+%     upload\_time&本次通信上传时间&文本&字符串&\\
+% \end{longtblr}
 
 三、基于Django的服务器端程序设计
 
-由于本研究涉及的所有机器学习模型均是通过Python下的Sklearn包生成，为方便云服务器端调用，软件系统最终选取了同样基于Python的开源通用Web框架Django进行相关云服务器端的功能开发。
-如\autoref{fig:django}所示\cite{django,djangosq}，Django按模型-模版-视图（Model-Template-View，MTV）设计模式的进行了整体结构设计。
+由于本研究涉及的所有机器学习模型均是通过Python下的Sklearn包生成，为方便云服务器端调用，软件系统最终选取了同样基于Python的开源通用Web框架Django进行相关云服务器端的功能开发\cite{django}。
+如\autoref{fig:django}所示\cite{djangosq}，Django按模型-模版-视图（Model-Template-View，MTV）设计模式的进行了整体结构设计\cite{django}。
 %MTV各自的职责与功能如\autoref{tab:django_func}所示。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.75\linewidth]{software/django}
-    \caption{\label{fig:django}Django框架结构示意\cite{djangosq}}
+    \caption[Django框架结构示意图]{\label{fig:django}Django框架结构示意图\cite{djangosq}}
 \end{figure}
 % \begin{longtblr}
 %     [
@@ -841,7 +843,7 @@ URL路由地址，选择对应的处理流程，这一过程如\autoref{fig:url}
 
 3、日志
 
-为方便调试，云服务端在使用Django进行开发时，也使用了Python下的logging包进行日志记录功能开发。
+为方便调试，云服务端在使用Django进行开发时，也使用了Python下的logging包进行日志记录功能开发\cite{logging}。
 
 四、数据库设计
 
@@ -854,7 +856,7 @@ URL路由地址，选择对应的处理流程，这一过程如\autoref{fig:url}
 % 而这些请求中的参数种类常常会随着软件系统的迭代而发生较大的改变，比如数据信号种类的变更、PPG特征的增改等。这也要求软件系统使用数据库进行数据的基本管理时，还必须同时
 % 进行一定的兼容性设计。
 
-软件系统选择了目前流行的主流关系数据库之一的MySQL进行相关数据的存储。MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，支持查询、新增、更新、删除、求和、排序等基本操作。与此同时，软件系统一共设计了五张数据表（Table）来解决上述问题。这些数据表之间的相互关联关系如\autoref{fig:data_table_relationship}所示，各数据表的重要的外部键也在图中进行了标注。
+软件系统选择了目前流行的主流关系数据库之一的MySQL进行相关数据的存储\cite{mysql}。MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，支持查询、新增、更新、删除、求和、排序等基本操作。与此同时，软件系统一共设计了五张数据表（Table）来解决上述问题。这些数据表之间的相互关联关系如\autoref{fig:data_table_relationship}所示，各数据表的重要的外部键也在图中进行了标注。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.75\linewidth]{software/data_table_relationship}
@@ -863,7 +865,7 @@ URL路由地址，选择对应的处理流程，这一过程如\autoref{fig:url}
 
 从\autoref{fig:data_table_relationship}可以看到，软件系统中PE识别模型的存储过程较为简单，只需一张数据表；而生理信号数据及其衍生特征的存储较为复杂，需要四张数据表级联并相互配合。
 其中，Model数据表维护了所有分析模型信息；Record数据表维护了所有数据记录信息；Analysis数据表维护了所有数据文件信息；Unit数据表维护了所有最小分析单位信息；而
-Feature数据表维护了所有PPG特征信息。下面以Feature数据表为代表详细介绍数据表的设计，如\autoref{tab:data_table_feature}所示。
+Feature数据表维护了所有PPG特征信息。下面以Feature数据表为代表详细介绍数据表的设计。
 % 以上数据表的具体作用如\autoref{tab:data_tables}所示。
 % \begin{longtblr}
 %     [
@@ -994,7 +996,7 @@ Feature数据表维护了所有PPG特征信息。下面以Feature数据表为代
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {Feature数据表的字段设计},
+        caption                 = {Feature数据表的字段设计表},
         label                   = {tab:data_table_feature},
     ]
     {
@@ -1061,14 +1063,14 @@ Feature数据表存储了对PPG记录的单个波形的所有特征，而bindUni
 
 \subsection{数据预处理的测试与验证}
 数据预处理模块的验证主要集中在对本研究设计提出的SCD波形检测算法的验证与测试上。
-基于自采实验数据与标准数据库数据，对SCD算法进行了测试验证。同时，也选取了两种有代表性的PPG检测算法与SCD算法进行了对比验证。
+基于自采实验数据与标准数据库数据\cite{Kachuee2015,ucibp2022}，对SCD算法进行了测试验证。同时，也选取了两种有代表性的PPG检测算法与SCD算法进行了对比验证\cite{Chen2019,cwl,van2019,van20192}。
 
 上述多种PPG检测算法之间的对比过程可参见本论文第三章，具体对比结果如\autoref{tab:scd_6}所示。
 可以看到本研究提出的SCD算法对PPG波形的识别准确率高、抗干扰能力强，与其他算法相比也具有一定的优势。
 \begin{longtblr}
     [
         theme          = {zju},
-        caption        = {三种PPG检波算法性能对比统计明细},
+        caption        = {三种PPG检波算法性能对比统计明细表},
         label          = {tab:scd_6},
     ]
     {
@@ -1084,10 +1086,10 @@ Feature数据表存储了对PPG记录的单个波形的所有特征，而bindUni
         cell{1}{4,6,8} = {r=1,c=2}{c,m},
         cell{3-4}{4-5} = {font=\headfont,bg=\emphacolor}
     }
-    序号 & 数据源 & 波形总数/个 & SCD算法 & & DMTW算法 & & HeartPy算法 & \\
+    序号 & 数据源 & 波形总数/个 & SCD算法 & & DMTW算法\cite{Chen2019,cwl} & & HeartPy算法\cite{van2019,van20192} & \\
     &  &  & 错检数/个 & 准确率 & 错检数/个 & 准确率 & 错检数/个 & 准确率  \\
     1 & 自主实验数据 & 7864 & 26 &  99.6\% & 112 & 98.6\% & 97 & 98.7\% \\
-    2 & CBPEDS & 17562 &  50 &  99.7\% & 182 & 99.0\% & 168 & 99.0\% \\
+    2 & CBPEDS\cite{Kachuee2015,ucibp2022} & 17562 &  50 &  99.7\% & 182 & 99.0\% & 168 & 99.0\% \\
 \end{longtblr}
 
 \subsection{多平台客户端的测试与验证}
@@ -1106,12 +1108,12 @@ Feature数据表存储了对PPG记录的单个波形的所有特征，而bindUni
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\linewidth]{software/android_demo}
-    \caption{\label{fig:android_demo}Android客户端对被试dmq的PPG数据检测结果}
+    \caption{\label{fig:android_demo}Android客户端对被试dmq的PPG数据检测结果图}
 \end{figure}
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\linewidth]{software/pc_demo}
-    \caption{\label{fig:pc_demo}PC客户端对被试dmq的PPG数据检测结果}
+    \caption{\label{fig:pc_demo}PC客户端对被试dmq的PPG数据检测结果图}
 \end{figure}
 
 为测试验证两个平台下的客户端软件，分别用客户端软件选中相同的PPG数据，两个平台下的检波效果完全一致，如\autoref{fig:android_demo}与\autoref{fig:pc_demo}所示。
@@ -1131,13 +1133,13 @@ Feature数据表存储了对PPG记录的单个波形的所有特征，而bindUni
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.6\linewidth]{software/system}
-    \caption{\label{fig:system_net}软件系统在局域网下的部署示意}
+    \caption{\label{fig:system_net}软件系统在局域网下的部署示意图}
 \end{figure}
 
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {软件系统所使用的各网络设备型号明细},
+        caption                 = {软件系统所使用的各网络设备型号明细表},
         label                   = {tab:system_devices},
     ]
     {
@@ -1170,7 +1172,7 @@ Feature数据表存储了对PPG记录的单个波形的所有特征，而bindUni
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {不同客户端上传文件的平均网络连接延迟对比},
+        caption                 = {不同客户端上传文件的平均网络连接延迟对比表},
         label                   = {tab:time_delay},
     ]
     {
@@ -1198,12 +1200,12 @@ Feature数据表存储了对PPG记录的单个波形的所有特征，而bindUni
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.9\linewidth]{software/pc_response}
-    \caption{\label{fig:pc_response}PC客户端接收到的请求响应}
+    \caption{\label{fig:pc_response}PC客户端接收到的请求响应示意图}
 \end{figure}
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.9\linewidth]{software/android_response}
-    \caption{\label{fig:android_response}Android客户端接收到的请求响应}
+    \caption{\label{fig:android_response}Android客户端接收到的请求响应示意图}
 \end{figure}
 \noindent
 的响应结果，而
@@ -1223,13 +1225,13 @@ Feature数据表存储了对PPG记录的单个波形的所有特征，而bindUni
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.6\linewidth]{software/mysql}
-    \caption{\label{fig:mysql_db}命令行下查询得到的本项目MySQL数据库结构}
+    \caption{\label{fig:mysql_db}命令行下查询MySQL数据库结构示意图}
 \end{figure}
 
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {Django框架自动生成的数据表及其作用},
+        caption                 = {Django框架自动生成的数据表及其作用表},
         label                   = {tab:django_db},
     ]
     {
@@ -1259,10 +1261,10 @@ Feature数据表存储了对PPG记录的单个波形的所有特征，而bindUni
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\linewidth]{software/feature_db}
-    \caption[Feature数据表的存储情况（局部）]{\label{fig:feature_db}Feature数据表的存储情况（局部）}
+    \caption[Feature数据表的存储情况（局部）]{\label{fig:feature_db}Feature数据表的存储情况示意图}
 \end{figure}
 
-在\autoref{fig:mysql_db}的查询结果的基础上，借助开源图形界面化的数据库管理软件DBeaver可以进一步地直接观察各数据表的存储状态。
+在\autoref{fig:mysql_db}的查询结果的基础上，借助开源图形界面化的数据库管理软件DBeaver可以进一步地直接观察各数据表的存储状态\cite{dbeaver}。
 查询\autoref{fig:mysql_db}的Feature数据表结果如\autoref{fig:feature_db}所示，可以看到该数据表已按\autoref{tab:data_table_feature}的设计进行了
 多种PPG特征数据的有效存储。
 
