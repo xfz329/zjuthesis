@@ -1,0 +1,41 @@
+
+% \newcommand{\colorbibs}[2][red]%
+% {%
+% \DeclareBibliographyCategory{ColoredBiblist#1}%
+% \addtocategory{ColoredBiblist#1}{#2}%
+% \AtEveryBibitem{\ifcategory{ColoredBiblist#1}{%
+% \renewcommand{\bibtitlefont}{\color{#1}}%
+% \renewcommand{\bibpubfont}{\color{#1}}}{}}
+% }
+\DefineBibliographyStrings{english}{in={}}
+\newcommand{\colorbibs}[2][red]%
+{%
+\DeclareBibliographyCategory{ColoredBiblist#1}%
+\addtocategory{ColoredBiblist#1}{#2}%
+\AtEveryBibitem{\ifcategory{ColoredBiblist#1}{\color{#1}}{}}
+}
+
+\colorbibs{
+HDASOM,FIGO,DAM2015,LCT2006,nbs2022,zjtjj2022,Duckitt2005,Yogev2010,Poon2010,Lee2000,Coonrod1995,Robillard1993,
+Duvekot2010,Ix2009,Sibai2005,Moffett2002,BJOG2016,Magee2008,Lowe2015,Heazell2010,Sonia2009,
+Rousso2002,Conde2007,Mignini2016,Rolv2002,risks,
+Jackson2004,Trogstad2009,Martin2016,
+ARNGRIMSSON1990,Williams2011,Cincotta1998,Zintzaras2006,Sebire2001,Ghosh2014,Khalil2013
+Ray2016,Garner1990,Martinell1990,Stamilio2000,Dreyfus2001,Marchetti2016,
+Rene2008,Zhong2015,Zeisler2016,Rana2012,
+Poon2008,Sotiriadis2019,Cnossen2008,Plasencia2008,Smith2002,Poon2009,Tan2018,Ray2018,
+Levine2004,Ahmad2004,Chau2017,Duhig2019,B·R·A·H·M·S2023,Marin2019,Marin2020,
+Mehta2016,Han2006,Kenny2005,Neocleous2009,Moreira2016,Villa2017,Tahir2018,Tahir2018-2,
+Yoffe2018,Martinez2018,Jhee2019,Carreno2020,Maric2020,Simbolon2020,Sufriyana2020-1,Sufriyana2020,
+Guo2021,LI2021102,SCHMIDT202277,Ansbacher2022,HW2023,
+Allen2007,THOCBPM,KARLIJN2008,Tomsin2012,Franz2013,Ira2014,Katsipi2014,Han2014,Su2014,
+VivianaIvan2018,Euliano2018,Feng2018,Chen2019,
+Hertzman1937,1980Spectrophotometric,4122392,Naraharisetti2011,
+Abraham2011,John2004,Alan2019,Goldwyn1967,Shannon1948,
+GE2021,Michard1999,IXL2022,malp2011,malp2022,FengJiang2018,Levin1975,mit2022,Goldberger2000,johnson2018mimic,mimic4,
+Kachuee2015,ucibp2022,ChenH2019,van2019,van20192,Timothy2018,Carl2008,
+Brumfield2005,Elgendi2012,Luo1988,Millasseau2002,Van2012,
+Wien1994,Kaveh2013,GN2017,derohde2022,Gholamy2018Why7O,Aurélien2018,
+mitchell1997,quinlan1986,quinlan1993,breiman1984,breiman2001,scikit-learn,
+Enrich2018,Gamma1993,fastjson,JFreeChart,MPAndroidChart,django,json,dbeaver,
+}

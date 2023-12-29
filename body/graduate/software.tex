@@ -1,9 +1,8 @@
 \chapter{基于脉搏波的子痫前期识别分析软件系统的设计与实现}
 \section{引言}
-本研究此前各章中均涉及了软件与算法设计，在这些工作的基础上，本章介绍了一款基于PPG信号的子痫前期（PE）识别分析软件系统的设计与实现过程。在分析具体功能需求后，
+\textcolor{red}{此前各章中均涉及了一定的软件与算法设计}，在这些工作的基础上，本章介绍了一款基于PPG信号的子痫前期（PE）识别分析软件系统的设计与实现过程。在分析具体功能需求后，
 选取跨平台客户端+云服务器的方案进行整体设计，以期完成以下四部分内容：PPG信号的预处理与特征计算生成；PE识别模型的本地化训练与生成；跨平台的多客户端软件设计；
-云服务器端软件设计与PE识别模型的部署。对其中涉及的软件与算法开发设计进行详细的介绍，展示各工作内容的实现效果，
-并对软件系统简单地进行了功能性的验证与测试。
+云服务器端软件设计与PE识别模型的部署。对其中涉及的\textcolor{red}{算法设计与软件开发进行详细的介绍，并对软件系统简单地进行了功能性的验证与测试。}
 
 本章研究内容的框架图如\autoref{fig:frameworks6}所示。
 
@@ -16,9 +15,9 @@
 \section{需求分析}
 %如本研究中绪论中所介绍的，尽管移动智能医疗与可穿戴式设备已经取得了长足的发展，但现阶段PE的微型化智能化检测技术仍处于起步阶段，国内外相关研究匮乏。
 由于PE的高危害性，实现PE的早期检测识别诊断无疑可以极大地保证孕妇及婴儿的生命健康安全。因此，设计实现一款可以满足实验室研究、医院监护、社区检查、
-居家监护等多应用场景的PE识别诊断软件综合系统具有重要的临床意义和市场前景。另一方面，上述软件系统在保证完整分析功能的基础上，
+居家监护等多应用场景的PE识别诊断软件综合系统具有重要的临床意义和\textcolor{red}{广阔的}市场前景。另一方面，上述软件系统在保证完整分析功能的基础上，
 应支持软件自身更新迭代导致的各种变化。这要求软件系统在开发伊始就需要考虑不同的升级需求与应用情景，进行一定的兼容性设计，通过引入软件开发的
-代码复用与模式设计等技术，增加软件系统的健壮性与复用性\cite{Enrich2018,CJ2020,Gamma1993}。
+代码复用与模式设计等技术，增加软件系统的健壮性与复用性\cite{CJ2020,Enrich2018,Gamma1993}。
 
 因此，软件系统需要满足以下具体需求：
 
@@ -50,7 +49,7 @@ PC端与移动端均需开发对应的客户端。
 六、完备的日志记录
 
 由于软件系统模块繁多、功能齐全，为方便开发过程中的调试、测试，同时方便部署到生产环境之后评估软件系统的运行状态，软件系统也需要具有完备的日志记录功能，
-随时定位、复现、调试可能出现的问题。
+\textcolor{red}{以便能够}随时定位、复现、调试可能出现的问题。
 
 七、数据源兼容性
 
@@ -65,7 +64,7 @@ PC端与移动端均需开发对应的客户端。
 
 \section{总体设计}
 
-为实现上小节中具体的开发需求，软件分析系统按照低耦合、高拓展的原则进行了模块化、功能化的设计，其中，
+为实现上小节中具体的开发需求，软件分析系统按照低耦合、高拓展的原则进行了模块化、功能化的设计\textcolor{red}{。}其中，
 每一模块只处理某一类特定任务，在实现模块功能高内聚性的同时保持模块间的松耦合性。
 
 一、模块化设计
@@ -73,7 +72,7 @@ PC端与移动端均需开发对应的客户端。
 软件系统的核心分析功能被拆分为四个独立的功能模块分别实现，整体设计框图如\autoref{fig:scas}所示。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.75\linewidth]{software/scas}
+    \includegraphics[width=.65\linewidth]{software/scas}
     \caption{\label{fig:scas}软件分析系统的多模块设计框架图}
 \end{figure}
 
@@ -90,7 +89,7 @@ PC端与移动端均需开发对应的客户端。
 3、PE识别模型训练生成模块
 
 在获取客户端传输的数据后，PE识别模型训练生成模块需要负责原始数据特征的整理与数据集划分。
-在此基础航，完成PE识别模型的训练生成与评估、识别模型的超参数优化等工作。此外，识别模型本身及其训练所需的超参数也需被保存并上传至云服务端，方便后续新数据进行预测分析。
+在此基础\textcolor{red}{上}，完成PE识别模型的训练生成与评估、识别模型的超参数优化等工作。此外，识别模型本身及其训练所需的超参数也需被保存并上传至云服务端，方便后续新数据进行预测分析。
 
 4、云服务器模块
 
@@ -103,12 +102,12 @@ PC端与移动端均需开发对应的客户端。
 
 1、面向对象编程
 
-面对对象编程（Object Oriented Programming，OOP）是一种普及的计算机编程架构，通过尽可能模拟人类的思维方式，OOP使得软件的开发方法与过程尽可能接近人类认识世界、
+面对对象编程（\textcolor{red}{o}bject \textcolor{red}{o}riented \textcolor{red}{p}rogramming，OOP）是一种普及的计算机编程架构，通过尽可能模拟人类的思维方式，OOP使得软件的开发方法与过程尽可能接近人类认识世界、
 解决现实问题的方法和过程。OOP可以简化复杂的编程过程，使软件开发的逻辑更为简单。
 
 2、设计模式
 
-设计模式(Design Pattern，DP)是计算机软件设计中对某些特定问题的优化解决方案的总结\cite{Gamma1993,Enrich2018}。
+设计模式\textcolor{red}{（design pattern，DP）}是计算机软件设计中对某些特定问题的优化解决方案的总结\cite{Gamma1993,Enrich2018}。
 在程序开发过程中使用设计模式，可提高代码可读性并方便重用代码，在一定程度上避免了代码重构。
 
 三、编程语言与开发环境
@@ -168,20 +167,19 @@ PC端与移动端均需开发对应的客户端。
 数据预处理模块整体的处理流程如\autoref{fig:preprocess2}所示。下面依次介绍\autoref{fig:preprocess2}中各步骤的详细设计。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.65\linewidth]{software/preprocess}
+    \includegraphics[width=.6\linewidth]{software/preprocess}
     \caption{\label{fig:preprocess2}数据预处理模块流程图}
 \end{figure}
-
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.55\linewidth]{software/read}
+    \caption{\label{fig:template}数据导入设计示意图}
+\end{figure}
 一、数据导入
 
 为兼容读取由不同硬件设备采集得到的原始数据，软件系统将数据读取过程进行了抽象，如\autoref{fig:template}所示。
 当需要读取具体来源或特定格式的数据时，必须重新定义实现抽象基类的一个子类，并在子类中详细实现具体的读取方法。
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.6\linewidth]{software/read}
-    \caption{\label{fig:template}数据导入设计示意图}
-\end{figure}
 % \begin{figure}[htbp]
 %     \centering
 %     \subfigure[GE B650监护仪]{
@@ -228,7 +226,7 @@ SCD算法的处理流程如\autoref{fig:detect2}所示，其详细介绍可参�
 % 由于特征点定位与波形检测的详细算法过程已经在第三章中详细介绍过，此处对其算法原理不再赘述。
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.78\linewidth]{software/scd}
+    \includegraphics[width=0.7\linewidth]{software/scd}
     \caption{\label{fig:detect2}SCD算法检测流程示意图}
 \end{figure}
 % \begin{figure}[htbp]
@@ -274,7 +272,7 @@ SCD算法的处理流程如\autoref{fig:detect2}所示，其详细介绍可参�
 当PPG信号的预处理分析完成后，由于采取了OOP设计，此时内存中的PPG特征是以PPG波形为单位存在的。而在本研究中，多种新设计的特征参数往往是以向量的形式出现，
 因此，内存中的PPG特征数据实际存在着波形——特征——向量（pulse-feature-vector）的二级树状结构。
 % 此外信号特征算法出现引入了新的信号特征、对已有特征值数值的保存形式进行更改等更迭将会直接引起数据存储格式的变化。
-常见的基于列表式的CSV、TXT等格式对这种树状数据格式的支持较差，因此，软件分析系统选用了JavaScript对象标记法（JavaScript Object Notation，JSON）\cite{json}
+常见的基于列表式的CSV、TXT等格式对这种树状数据格式的支持较差，因此，软件分析系统选用了JavaScript对象标记法（JavaScript \textcolor{red}{o}bject \textcolor{red}{n}otation，JSON）\cite{json}
 作为数据交换格式，并利用了中国阿里巴巴公司的开源JSON解析库fastjson\cite{fastjson}进行相关功能开发。
 JSON格式对数组类数据有着更好的支持，有着更快的读写速度与更高的存储效率。
 
@@ -298,7 +296,19 @@ PPG信号作为上述抽象生理信号的具体子类被设计为$Pulse.class$�
 
 在数据与处理模块的基础上，软件系统利用Java编程语言分别完成了PC客户端与Android客户端的设计开发，以下为具体介绍。
 
-一、PC客户端
+\textcolor{red}{一、预期用户与使用场景}
+
+\textcolor{red}{
+为满足需求分析中所期的实验室研究、医院监护、社区检查及居家监护等多种不同的使用场景，软件系统基于Java语言完成了跨平台客户端设计与研发以满足
+科研人员、临床医生及普通用户等不同身份的使用者的不同使用需求。其中，PC端的主要使用用户为实验室分析研究人员与临床医生；
+后者的使用人群包括不限于临床医生、社区工作人员及普通居家人群。}
+
+\textcolor{red}{跨平台客户端核心功能相同，但不同平台下的功能也略有区别：PC客户端的软件功能更精细，还提供了
+包括为实验室研究人员设计的更精细化的、可提高SCD算法检波效果的人工波形校验功能、提供了一定意义上的多段数据的自动化分析功能与详细的操作日志记录等功能；
+而Android客户端则更加聚焦移动端操作的便携性与使用流程的简化，更聚焦于软件核心功能的操作与处理结果的展示。
+}
+
+\textcolor{red}{二}、PC客户端
 
 软件系统借助VS Code在Windows系统下完成了PC客户端的开发。而由于Java本身的跨平台特性\cite{openjdk}，该客户端也可方便在Linux等其他系统下进行编译运行。
 
@@ -351,7 +361,8 @@ PC客户端的交互界面如\autoref{fig:pc_ui}所示。%\autoref{tab:pc_ui}对
         row{1}                  = {font=\headfont,bg=\headcolor},
         row{2-Z}                = {font=\nonheadfont},
         cell{2}{1}              = {r=3,c=1}{c,m},
-        cell{5}{1}              = {r=5,c=1}{c,m},
+        cell{5}{1}              = {r=2,c=1}{c,m},
+        cell{7}{1}              = {r=4,c=1}{c,m},
         cell{11}{1}             = {r=3,c=1}{c,m},
         cell{14}{1}             = {r=2,c=1}{c,m},
     }
@@ -473,27 +484,28 @@ PC客户端软件的批处理功能就是为简化上述繁琐耗时的操作流
 % mode被配置为63，所有文件会完成全部6项批处理操作。而在对\path{by_wavePLETH_2017080113.csv}文件处理时，
 % 不需跳过该文件，对算法的自动检测结果需先移除$(91,105,177)$处的PPG波形，再在$(91,105,177)$处新增一个PPG波形。
 
-二、Android客户端
+\textcolor{red}{三}、Android客户端
 
 软件系统借助Android Studio在Windows系统下完成了Android客户端的开发，并在中国小米公司生产的Redmi Pad SE上测试通过。
 其中，Redmi Pad SE的Linux内核版本为5.10.101，Android版本为12。
+\begin{figure}[htbp]
+    \centering
+    \subfigure[默认界面]{
+    \includegraphics[width=12.65cm]{software/android}
+    }
+    \quad
+    \subfigure[菜单唤出界面]{
+    \includegraphics[width=12.65cm]{software/android_menu}
+    }
+    \caption{\label{fig:android_ui}Android客户端运行界面图}
+\end{figure}
 
 % 1、功能与界面
 
 \autoref{fig:android_ui}展示了软件分析系统在Redmi Pad SE上运行效果。为充分利用Pad显示界面，菜单栏默认隐藏，需要使用时可点击按钮唤出。
 考虑到Android客户端的实际使用场景的差异，上文介绍的PC客户端特色功能暂时未在Android客户端下实现。
 但除此之外，Android客户端与PC客户端整体功能相近、操作类似，故此处不再赘述。
-\begin{figure}[htbp]
-    \centering
-    \subfigure[默认界面]{
-    \includegraphics[width=12.5cm]{software/android}
-    }
-    \quad
-    \subfigure[菜单唤出界面]{
-    \includegraphics[width=12.5cm]{software/android_menu}
-    }
-    \caption{\label{fig:android_ui}Android客户端运行界面图}
-\end{figure}
+
 
 % 2、组件区别
 
@@ -524,15 +536,15 @@ PC客户端软件的批处理功能就是为简化上述繁琐耗时的操作流
 % \end{longtblr}
 
 \subsection{PE识别模型训练生成模块}
-PE识别模型训练生成模块是软件系统的算法核心，负责利用多种机器学习算法基于数据特征完成PE识别模型的训。在对模型进行一定的评估后，
-综合性能表现好的模型才会被部署至云服务端，供PC客户端与Android客户端调用、识别预测新数据。由于Python在机器学习领域的广泛普及应用，
+PE识别模型训练生成模块是软件系统的算法核心，负责利用多种机器学习算法基于数据特征完成PE识别模型的\textcolor{red}{训练}。在对模型进行一定的评估后，
+综合性能表现好的模型才会被部署至云服务端，供PC客户端与Android客户端调用\textcolor{red}{并进行新数据的识别预测}。由于Python在机器学习领域的广泛普及应用，
 此模块的编程设计全部基于Python实现。
 
 一、数据合并
 
 跨平台客户端程序会把检测得到PPG波形数据与PPG时域特征分别以JSON文件的形式保存至本地并上传至云服务器。此前已经介绍过，JSON文件对数据特征的存储是逻辑上的“树”，
 为从多棵这样的数据树中构建出完整的特征数据集矩阵，显然需要一个数据合并的过程。
-这就是第四章的脉搏波多维度时域特征集（PPGMTFS）与脉搏波采样序列时域特征集（PPGSSTFS）的生成过程。
+这就是第四章的脉搏波多维度时域特征集（\textcolor{red}{PMTFS}）与脉搏波采样序列时域特征集（\textcolor{red}{PSTFS}）的生成过程。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.55\linewidth]{software/mergedata}
@@ -540,7 +552,7 @@ PE识别模型训练生成模块是软件系统的算法核心，负责利用多
 \end{figure}
 
 模块对数据合并的处理流程如\autoref{fig:mergedata}所示。依次读取需要合并的数据特征文件，确定生成矩阵的标题栏，记录下包括软件版本号、原始PPG数据文件名、数据患者名、PE状态等基本信息，
-随后开始记录数据特征文件的所有特征数值，PPG波形序号也被同时记录。而当生成PPGSSTFS时，需要根据PPG波形对齐策略的选择，将原始采样值量化至指定区间内。
+随后开始记录数据特征文件的所有特征数值，PPG波形序号也被同时记录。而当生成\textcolor{red}{PSTFS}时，需要根据PPG波形对齐策略的选择，将原始采样值量化至指定区间内。
 按此方式依次处理完所有文件即可得到包含最终的数据集矩阵的CSV格式文件。
 
 二、数据划分
@@ -580,7 +592,7 @@ $grid\_search()$为模型超参数探索时的网格化搜索函数。
 
 四、日志记录
 
-与此前的客户端程序类似，为方便调试与记录模型训练模块在训练生成PE识别模型过程中的各项参数与中间变量等信息，模型训练模块也利用Python下的logging包\cite{logging}开发了程序日志记录功能。
+与此前的客户端程序类似，为方便调试与记录\textcolor{red}{模型训练过程中}的各项参数与中间变量等信息，模型训练模块也利用Python下的logging包\cite{logging}开发了程序日志记录功能。
 
 % 日志记录logging包中也支持设置日志等级，可在不同的版本（如开发环境、生产环境）上通过设置不同的输出等级来记录对应的日志，非常灵活。
 % 其中，日志输出级别包括DEBUG、INFO、NOTICE、WARNING、ERROR、CRITICAL、ALERT、EMERGENCY等。而在具体使用logging包时需要通过一个JSON文件进行
@@ -600,12 +612,12 @@ $grid\_search()$为模型超参数探索时的网格化搜索函数。
 
 一、网络协议选择与数据接口设计
 
-为使客户端软件与云服务器端能够进行数据通信与数据交换，软件系统选择了最为常见的超文本传输协议（Hypertext Transfer Protocol，HTTP）\cite{http}。
+为使客户端软件与云服务器端能够进行数据通信与数据交换，软件系统选择了最为常见的超文本传输协议（\textcolor{red}{h}ypertext \textcolor{red}{t}ransfer \textcolor{red}{p}rotocol，HTTP）\cite{http}。
 HTTP是一种简单的请求——响应协议，它指定了客户端可能发送给服务器的消息类型以及能得到何种响应，通常运行在TCP协议之上。
 
 1、POST与GET
 
-一般而言，一个统一资源定位器（Uniform Resource Locator，URL）地址描述了一个网络资源。而HTTP协议中定义的PUT、DELETE、POST与GET等与服务器进行交互的基本方法，
+一般而言，一个统一资源定位器（\textcolor{red}{u}niform \textcolor{red}{r}esource \textcolor{red}{l}ocator，URL）地址描述了一个网络资源。而HTTP协议中定义的PUT、DELETE、POST与GET等与服务器进行交互的基本方法，
 对应着对该网络资源的增、删、改、查等基本操作\cite{http}。
 其中，GET方法与POST方法均能向服务器端传递数据，在互联网应用中使用的最为广泛。
 由于POST方法较GET方法功能更为强大，能够同时传递文本数据与二进制文件数据，因而被选为软件系统的客户端与云服务器端的默认通讯方法，如\autoref{tab:get_post}所示。
@@ -747,7 +759,7 @@ HTTP是一种简单的请求——响应协议，它指定了客户端可能发�
 三、基于Django的服务器端程序设计
 
 由于本研究涉及的所有机器学习模型均是通过Python下的Sklearn包生成，为方便调用，软件系统最终选取了同样基于Python的开源通用Web框架Django进行相关云服务器端的功能开发\cite{django}。
-Django按模型-模版-视图（Model-Template-View，MTV）设计模式的进行了整体结构设计\cite{django}，如\autoref{fig:django}所示。
+Django按模型-模版-视图（\textcolor{red}{model template view}，MTV）设计模式的进行了整体结构设计\cite{django}，如\autoref{fig:django}所示。
 %MTV各自的职责与功能如\autoref{tab:django_func}所示。
 \begin{figure}[htbp]
     \centering
@@ -855,7 +867,7 @@ URL路由地址，选择对应的处理流程，这一过程如\autoref{fig:url}
 % 而这些请求中的参数种类常常会随着软件系统的迭代而发生较大的改变，比如数据信号种类的变更、PPG特征的增改等。这也要求软件系统使用数据库进行数据的基本管理时，还必须同时
 % 进行一定的兼容性设计。
 
-软件系统选择了目前流行的主流关系数据库之一的MySQL进行相关数据的存储\cite{mysql}。MySQL遵循结构化查询语言（Structured Query Language，SQL）标准，支持查询、新增、更新、删除、求和、排序等基本操作。与此同时，软件系统一共设计了五张数据表（Table）来解决上述问题。这些数据表之间的相互关联关系如\autoref{fig:data_table_relationship}所示，各数据表的重要的外部键也在图中进行了标注。
+软件系统选择了目前流行的主流关系数据库之一的MySQL进行相关数据的存储\cite{mysql}。MySQL遵循结构化查询语言（\textcolor{red}{s}tructured \textcolor{red}{q}uery \textcolor{red}{l}anguage，SQL）标准，支持查询、新增、更新、删除、求和、排序等基本操作。与此同时，软件系统一共设计了五张数据表（Table）来解决上述问题。这些数据表之间的相互关联关系如\autoref{fig:data_table_relationship}所示，各数据表的重要的外部键也在图中进行了标注。
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.75\linewidth]{software/data_table_relationship}
@@ -1261,7 +1273,7 @@ Feature数据表存储了对PPG记录的单个波形的所有特征，而bindUni
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\linewidth]{software/feature_db}
-    \caption[Feature数据表的存储情况（局部）]{\label{fig:feature_db}Feature数据表的存储情况示意图}
+    \caption[Feature数据表的存储情况\textcolor{red}{示意图}]{\label{fig:feature_db}Feature数据表的存储情况示意图}
 \end{figure}
 
 在\autoref{fig:mysql_db}的查询结果的基础上，借助开源图形界面化的数据库管理软件DBeaver可以进一步地直接观察各数据表的存储状态\cite{dbeaver}。
