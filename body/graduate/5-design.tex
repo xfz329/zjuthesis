@@ -59,8 +59,8 @@ View 以自定义绘图操作\cite{27}。当绘画二维图形时，Android 提�
 
 （1）	在布局文件里定义的 View 对象上绘画图形或动画。在这种方式下，图形绘画过程由系统的正常 View 层级绘画过程处理完成。开发者仅需定义要在 View 对象上所需的图形即可。 
 
-（2）	直接在一个 Canvas 对象上绘制图形。在这种方式下，开发者需要预先定义合适的图形绘制的 onDraw()方法（用以控制在 Canvas 的绘图方法）
-或 Canvas 的其中一个 draw...()方法（如 drawPicture()等）。此外，在此方法下，开发者还可以控制绘制动画，实现动态绘图功能。  
+（2）	直接在一个 Canvas 对象上绘制图形。在这种方式下，开发者需要预先定义合适的图形绘制的$onDraw()$方法（用以控制在 Canvas 的绘图方法）
+或 Canvas 的其中一个 $draw...()$方法（如 $drawPicture()$等）。此外，在此方法下，开发者还可以控制绘制动画，实现动态绘图功能。  
 
 由于在绘图过程中需根据数据点绘制所需波形，因此，本系统的设计过程中选取了后一种方法。同时为满足波形动态绘制的需要，我们需要在布局文件中创建一个 SurfaceView 
 以进行相应的绘图。SurfaceView 是一个特殊的 View 子类，它提供 View 层级内的一个专用绘画表面。该绘画表面可以供应用程序的第二线程调用绘图，使应用程序不需要等待
@@ -69,31 +69,42 @@ View 以自定义绘图操作\cite{27}。当绘画二维图形时，Android 提�
 画布(Canvas)是图形编程中一个最基本概念，通常由两个基本的绘图组件组成： 
 
 （1）	Canvas  
-Canvas 类封装了用作绘图表面的位图，可以向底层的位图绘制基本图形。此外它还提供了 draw*方法来实现设计。\autoref{tab:501}对 Canvas 提供了绘图方法进行了简要说明。 
+Canvas 类封装了用作绘图表面的位图，可以向底层的位图绘制基本图形。此外它还提供了 $draw...()$方法来实现设计。\autoref{tab:501}对 Canvas 提供了绘图方法进行了简要说明。 
 
-\begin{table}[htbp]
-    \caption{\label{tab:501}Canvas 的常用绘图方法}
-    \begin{tabularx}{\linewidth}{cX<{\centering}}
-        \hline
-        方法函数 &  功能\\
-        drawARGB/drawRGB/drawColor 	&   使用单一的颜色填充画布。 \\
-        drawArc 	&   在一个矩形区域的两个角之间绘制一个弧。  \\
-        drawBitmap 	&   在画布上绘制一个位图。                   \\
-        drawBitmapMesh 	&   使用一个 mesh(网)来绘制一个位图。  \\
-        drawCircle 	&   以给定的点为圆心，绘制一个指定半径的圆。  \\
-        drawLine(s) 	&   在两个点之间画一条(多条)直线。  \\
-        drawOval 	&   以指定的矩形为边界，画一个椭圆。  \\
-        drawPaint 	&   使用指定的 Paint 填充整个 Canvas。  \\
-        drawPath 	&   绘制指定的 Path。  \\
-        drawPicture 	&   在指定的矩形中绘制一个 Picture 对象。  \\
-        drawPosText 	&   绘制指定了每一个字符的偏移量的文本字符串。  \\
-        drawRect 	&   绘制一个矩形。  \\
-        drawRoundRect 	&   绘制一个圆角矩形。  \\
-        drawText 	&   在 Canvas 上绘制一个文本串。  \\
-        drawTextOnPath 	&   在一个指定的 path 上绘制文本。  \\
-        drawVertices 	&   绘制一系列三角形面片，通过一系列顶点来指定它们。  \\
-    \end{tabularx}
-\end{table}
+\begin{longtblr}
+    [
+        theme          = {dut},
+        caption        = {Canvas 的常用绘图方法},
+        label          = {tab:501},
+    ]
+    {
+        colspec        = {X[1,c,m]X[1,c,m]},
+        hline{1,Z}     = {\thickline},
+        hline{2}       = {\thinline},
+        rowhead        = 1,
+        row{odd}       = {bg=\oddcolor}, 
+        row{even}      = {bg=\evencolor},
+        row{1}         = {font=\headfont,bg=\headcolor},
+        row{2-Z}       = {font=\nonheadfont},
+    }
+    方法函数 &  功能\\
+    drawARGB/drawRGB/drawColor 	&   使用单一的颜色填充画布。 \\
+    drawArc 	&   在一个矩形区域的两个角之间绘制一个弧。  \\
+    drawBitmap 	&   在画布上绘制一个位图。                   \\
+    drawBitmapMesh 	&   使用一个 mesh(网)来绘制一个位图。  \\
+    drawCircle 	&   以给定的点为圆心，绘制一个指定半径的圆。  \\
+    drawLine(s) 	&   在两个点之间画一条(多条)直线。  \\
+    drawOval 	&   以指定的矩形为边界，画一个椭圆。  \\
+    drawPaint 	&   使用指定的 Paint 填充整个 Canvas。  \\
+    drawPath 	&   绘制指定的 Path。  \\
+    drawPicture 	&   在指定的矩形中绘制一个 Picture 对象。  \\
+    drawPosText 	&   绘制指定了每一个字符的偏移量的文本字符串。  \\
+    drawRect 	&   绘制一个矩形。  \\
+    drawRoundRect 	&   绘制一个圆角矩形。  \\
+    drawText 	&   在 Canvas 上绘制一个文本串。  \\
+    drawTextOnPath 	&   在一个指定的 path 上绘制文本。  \\
+    drawVertices 	&   绘制一系列三角形面片，通过一系列顶点来指定它们。  \\
+\end{longtblr}
 
 （2）	Paint  
 
@@ -110,15 +121,15 @@ Canvas 的各种方法进行绘图。如图\autoref{fig:504}所示，由于 Andr
 同时解决上述图像倒置与图像不够清楚的问题，在本文的实际绘图之前，需要对所需绘制的数据进行一次映射，映射关系如所示。 
 \begin{equation}
     \label{equ:501}
-    x[i]= i \text{mod} width
+    x[i]= i \mathop{mod} width
 \end{equation}
 \begin{equation}
     \label{equ:502}
     y[i]= k * data[i] + b
 \end{equation}
 
-其中 data 为所需绘制的数据点所存的数据，i 为其下标，x[i]与 y[i]是其对应 Surfaceview 上的横纵坐标值，k 为调幅因子，作用是调整图像方向及实现放大图像，其值为负，具 
-体值的大小需要视与 Surfaceview 的高度与数据点幅值关系确定，b 为位移因子，作用是使图像居中显示，其值为正，与 Surfaceview 的高度处于同一数量级。 
+其中 $data$ 为所需绘制的数据点所存的数据，$i$ 为其下标，$x[i]$与 $y[i]$是其对应 Surfaceview 上的横纵坐标值，$k$ 为调幅因子，作用是调整图像方向及实现放大图像，其值为负，具 
+体值的大小需要视与 Surfaceview 的高度与数据点幅值关系确定，$b$ 为位移因子，作用是使图像居中显示，其值为正，与 Surfaceview 的高度处于同一数量级。 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.8\linewidth]{504}
@@ -129,5 +140,104 @@ Canvas 的各种方法进行绘图。如图\autoref{fig:504}所示，由于 Andr
 
 （1）	单点绘图与一次性绘制图形 
 
-在数据的绘图过程中，本文最开始的思路是外层嵌套循环，每次取出数据的两个点，使用 Cavnas 的 drawline()函数进行绘制。事实证明这样的思路的确是可行的，在智能手机上的执行效果如图 5.5（a）所示，但绘制的波形效率低下，绘制完 3000 个点的数据时间将近 10s。分析造成这种情况的原因主要体现在两个方面，首先数据是按每两点取出的并绘制从而导致外层的循环次数过多。其次，绘图时反复锁定提交 Cavnas、绘制、提交 Cavnas 造成了大量的时间浪费。 
-解决优化方案是考察了 Cavnas 提供的 drawlines( )函数，在调用之前直接将所需绘制的直线的起始点坐标依次保存在一维数组里，绘制时只需一次锁定 Canvas、一次性绘制完所有直线、一次性提交 Cavnas 并显示。如图 5.5（b）所示，优化后的方法极大的提高了时间效率， 对 3000 点的绘制基本上实现了 ms 级别的绘图速度。作为效率对比，图中暂时没有考虑清屏及首尾点之间横线的处理问题。
+在数据的绘图过程中，本文最开始的思路是外层嵌套循环，每次取出数据的两个点，使用 Canvas 的 $drawline()$函数进行绘制。事实证明这样的思路的确是可行的，
+在智能手机上的执行效果如图\autoref{fig:5051}所示，但绘制的波形效率低下，绘制完 3000 个点的数据时间将近 10s。分析造成这种情况的原因主要体现在两个方面，
+首先数据是按每两点取出的并绘制从而导致外层的循环次数过多。其次，绘图时反复锁定提交 Canvas、绘制、提交 Canvas 造成了大量的时间浪费。 
+\begin{figure}[htbp]
+    \centering
+    \subfigure[\label{fig:5051}$drawline()$函数绘图效果]{
+    \includegraphics[width=7cm]{5051}
+    }
+    \quad
+    \subfigure[\label{fig:5052}$drawlines()$函数绘图效果]{
+    \includegraphics[width=7cm]{5052}
+    }
+    \caption{\label{fig:505}单点绘图与多点绘图效果对比}
+\end{figure}
+
+解决优化方案是考察了 Canvas 提供的 $drawlines()$函数，在调用之前直接将所需绘制的直线的起始点坐标依次保存在一维数组里，绘制时只需一次锁定 Canvas、
+一次性绘制完所有直线、一次性提交 Canvas 并显示。如图\autoref{fig:5052}所示，优化后的方法极大的提高了时间效率， 对 3000 点的绘制基本上实现了ms级别的绘图速度。
+作为效率对比，图中暂时没有考虑清屏及首尾点之间横线的处理问题。
+
+（2）	波形的单屏满显示与动态显示 
+
+如图\autoref{fig:5052}所示，调用 $drawlines()$函数一次性计算所有需绘制的直线时，会出现单屏重复显示及多余的的首尾点之间横线。解决方法是，每次绘制图形时，
+仅按当面屏幕的横向像素值从原始数据中取数计算出相应的直线将其坐标保存在 $drawlines()$函数的入口参数数组中，处理好当前屏幕的所需绘制的斜线。如图\autoref{fig:5061}
+所示，这样就可以完美解决单屏满显示。 
+\begin{figure}[htbp]
+    \centering
+    \subfigure[\label{fig:5061}单屏显示的波形]{
+    \includegraphics[width=7cm]{5061}
+    }
+    \quad
+    \subfigure[\label{fig:5062}左图波形数据左移若干数值后的波形图]{
+    \includegraphics[width=7cm]{5062}
+    }
+    \caption{\label{fig:506}单屏满显示与动态绘图的实现}
+\end{figure}
+
+为了能让绘制的图像“运动”起来，这里我们运用了人体视觉的暂留效应。暂留效应，也称视觉惰性，是指光象一旦在视网膜上形成，视觉将会对这个光象的感觉维持一个有限的时间，
+对于中等亮度的光刺激，视觉暂留时间约为 0.05 至 0.2 秒。因此在图像的绘制过程中，如果我们对每次绘制的一屏的数据的起始点做一定步进，但保证绝大多数点依然与
+上一屏绘制的数据点相同，只是在屏幕上的位置关系发生变化。这样在视觉暂留效应下，整体的图像就会看起来从右向左开始“运动”起来，如\autoref{fig:506}所示。 
+
+（3）	网格与坐标轴 
+
+为使波形图像有更直观的显示，我们给显示的曲线增加了网格线及坐标轴。实现的具体方法是，在绘制完图像点之后并不直接提交图像，而是每次固定的进行
+绘制坐标轴及网格线后再进行图像的提交。也就是说，在整个绘图过程中，坐标轴与网格线是不停地在固定位置反复绘制的。最后实现的效果如\autoref{fig:507}所示。 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.7\linewidth]{507}
+    \caption{\label{fig:507}网格线与坐标轴实现 }
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.7\linewidth]{508}
+    \caption{\label{fig:508}双屏显示的实现}
+\end{figure}
+
+（4）	双屏显示 
+
+在程序最开始的设计中，我们是按先显示原始数据再显示滤波后数据的顺序进行的，但这样无法直观了观测到滤波的实际效果。为了有更直观的对比，
+我们需要将两者按照相同的时间步进进行显示。具体实现的过程中考察了多种方法的效果，包括创建两个 Surfaceview 同时引入线程的概念，
+不停的在两个线程间切换，交替绘图，但实际运行时效果较差出现了闪屏现象。最终采用的方法是调整 5.1 小节中提及的映射关系式，使滤波前后的
+两组数据分别映射在屏幕的上下部，并各自以上下部的中心为水平轴绘图。此方法能很好的解决闪屏现象，\autoref{fig:508}展示了最终实际的效果。 
+
+（5）	特征标注 
+
+为对程序中涉及的心电特征检测程序的准确率进行直观的评价，我们需要在图中进行相应的标注工作。由于相关检测算法已将相关特征值在滤波后
+的数组中下标值记录，在绘制图形当前一屏的数据时，对数据点进行一遍遍历，比照绘制的点下标与特征值是否相同，如果相同，则在该点处绘制
+标记特定的符号，并按照波形动态显示的类似方法实现随图像动态“运动”。 
+
+但在实现时最开始会出现所有特征点均能显示一次，无法随波形运动，如\autoref{fig:509}所示。检查程序发现，这是由于遍历当前屏幕点的时候对特征点的遍历
+只进行了一次，修改成遍历当前屏幕点时每次均从头遍历相关特征值数组，即可实现特征点的动态标注，如\autoref{fig:510}所示。 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.7\linewidth]{509}
+    \caption{\label{fig:509}特征标注时仅在第一次标注（在下方波形的R峰第一次出现时有标记点）}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.7\linewidth]{510}
+    \caption{\label{fig:510}动态标注特征的实现（在下方波形的每个R峰均有标记点）}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.55\linewidth]{511}
+    \caption{\label{fig:511}系统运行数据显示的效果}
+\end{figure}
+\section{系统运行效果}
+运行程序后，点击本地检测按钮，即可开始数据分析功能，系统将对原始数据滤波前后的波形进行对比显示，
+同时在滤波后的波形图中动态标注检测出的特征值。在显示完所有数据后将对相关特征值及计算得到心律数据进行文本显示，
+整个过程如\autoref{fig:511}、\autoref{fig:512}所示。 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.55\linewidth]{512}
+    \caption{\label{fig:512}系统运行后结果显示效果 }
+\end{figure}
+
+\section{本章小结}
+本章介绍了基于智能手机的心电监护系统的具体实现过程，首先从设计要求、预期的功能开始，对系统做出了简单的概要。随后从具体的开发过程入手，从界面设计、系统流程等环节，详细介绍了系统的整体设计思路并绘图功能一项的具体实现及改进优化过程为例，有代表性的介绍了软件开发过程中具体实现时遇到的技术问题及解决方案。
+最后给出了系统运行的效果示意。 

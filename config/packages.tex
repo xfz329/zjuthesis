@@ -13,8 +13,9 @@
 \usepackage{pdfpages}
 \usepackage[
     style=gb7714-2015,
-    % gbpub=false,         % Uncomment if you do NOT want '[S.l. : s.n.]' in reference entries, GitHub Issue (#47)
-    % gbnamefmt=lowercase, % Uncomment if you do NOT want uppercase author names in reference entries, GitHub Issue (#23)
+    gbpub=false,         % Uncomment if you do NOT want '[S.l. : s.n.]' in reference entries, GitHub Issue (#47)
+    gbpunctin=false,
+    gbnamefmt=lowercase, % Uncomment if you do NOT want uppercase author names in reference entries, GitHub Issue (#23)
 ]{biblatex}
 \usepackage{siunitx}
 \usepackage{caption}
@@ -32,3 +33,11 @@
 \usepackage{booktabs}
 \usepackage[chapter]{algorithm}
 \usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{pifont}
+\makeatletter
+\let\c@lofdepth\relax
+\let\c@lotdepth\relax
+\makeatother
+\usepackage{subfigure}
+\usepackage{tabularray}

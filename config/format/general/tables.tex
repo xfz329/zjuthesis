@@ -13,3 +13,59 @@
 \appto{\@floatboxreset}{\special{pdf:code q}}
 \preto{\@endfloatbox}{\special{pdf:code Q}}
 \makeatother
+
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newcommand{\topline}{\hline\hline}
+\newcommand{\midline}{\hline}
+\newcommand{\bottomline}{\hline\hline}
+
+\newcommand{\headcolor}{lightgray}
+\newcommand{\oddcolor}{cyan!50}
+\newcommand{\evencolor}{cyan!20}
+\newcommand{\emphacolor}{pink}
+
+\newcommand{\headfont}{\bfseries\zihao{-5}}
+\newcommand{\nonheadfont}{\zihao{-5}}
+
+\newcommand{\thickline}{0.08em}
+\newcommand{\thinline}{0.05em}
+
+\newcommand{\colora}{cyan!50}
+\newcommand{\colorb}{pink}
+\newcommand{\colorc}{cyan!20}
+
+
+\newcommand{\colorcella}{\cellcolor{\colora}}
+\newcommand{\colorcellb}{\cellcolor{\colorb}}
+\newcommand{\colorcellc}{\cellcolor{\colorc}}
+
+\newcommand{\colorhead}{\rowcolor{\headcolor}}
+\newcommand{\colorrowa}{\rowcolor{\colora}}
+\newcommand{\colorrowb}{\rowcolor{\colorb}}
+\newcommand{\colorrowc}{\rowcolor{\colorc}}
+
+\NewTblrTheme{dut}{
+	\DefTblrTemplate{contfoot-text}{default}{接续表}
+	\DefTblrTemplate{conthead-text}{default}{（续）}
+    \DefTblrTemplate{caption-sep}{default}{\space}
+	%
+    \SetTblrStyle{caption}{font=\fangsong\zihao{-5}}
+    \SetTblrStyle{caption-tag}{font=\fangsong\zihao{-5}}
+	\SetTblrStyle{conthead}{c,font=\fangsong\zihao{-5}}
+    \SetTblrStyle{contfoot-text}{font=\fangsong\zihao{-5}}
+    \SetTblrStyle{contfoot}{font=\fangsong\zihao{-5}}
+    \SetTblrStyle{remark}{font=\fangsong\zihao{-5}}
+    \SetTblrStyle{note}{font=\fangsong\zihao{-5}}
+	\DefTblrTemplate{middlehead,lasthead}{default}{%
+        \UseTblrTemplate{caption-tag}{default} %
+		\UseTblrTemplate{conthead}{default}%
+	}
+}
+
+\NewTblrTheme{no-caption}{
+    \SetTblrTemplate{head}{empty}
+    \SetTblrTemplate{foot}{empty}
+    \SetTblrTemplate{caption}{empty}
+}

@@ -143,17 +143,16 @@ Content Provider、Broadcast Receiver\cite{6}。
 个图标并读取通知信息。
 
 \section{Android 平台应用开发环境}
-如\autoref{fig:202}，Eclipse 是一个开放源代码的、基于 Java 的可扩展开发平台。就其本身而
-言，它只是一个框架和一组服务，用于通过插件组件构建开发环境。Eclipse 附带了一
-个标准的插件集，包括 Java 开发工具（Java Development Kit，JDK）。在本文的研究与
-开发中选择了 Windows7 系统下的 Eclipse 软件作为开发环境。其开发环境搭建步骤可分
-为以下几个步骤\cite{7}。
-
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=.7\linewidth]{202}
     \caption{\label{fig:202}Eclipse 启动界面}
 \end{figure}
+如\autoref{fig:202}，Eclipse 是一个开放源代码的、基于 Java 的可扩展开发平台。就其本身而
+言，它只是一个框架和一组服务，用于通过插件组件构建开发环境。Eclipse 附带了一
+个标准的插件集，包括 Java 开发工具（Java Development Kit，JDK）。在本文的研究与
+开发中选择了 Windows7 系统下的 Eclipse 软件作为开发环境。其开发环境搭建步骤可分
+为以下几个步骤\cite{7}。
 
 （1）Java 环境的搭建
 
@@ -164,7 +163,7 @@ Content Provider、Broadcast Receiver\cite{6}。
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.7\linewidth]{203}
+    \includegraphics[width=.8\linewidth]{203}
     \caption{\label{fig:203}测试 Java 环境是否搭建完成}
 \end{figure}
 
@@ -173,12 +172,15 @@ Content Provider、Broadcast Receiver\cite{6}。
 在官网上下载 Android SDK，默认方式安装即可。安装成功之后自动打开 Android
 SDK Manager 更新相关 packages 即可，如\autoref{fig:204}所示。
 
+\newpage
+
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.8\linewidth]{204}
+    \includegraphics[width=.65\linewidth]{204}
     \caption{\label{fig:204}更新 packages}
 \end{figure}
 
+% \vspace{-10pt}
 （3）安装并配置 Eclipse
 
 将下载的 eclipse-jee-indigo-SR1-win32.zip 解压缩至任一路径，打开 eclipse.exe，启
@@ -186,19 +188,19 @@ SDK Manager 更新相关 packages 即可，如\autoref{fig:204}所示。
 出对话框，在 Location 栏输入：http://dl-ssl.google.com/android/eclipse。按照提示说明，
 选择同意协议进行相关软件的安装。
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.65\linewidth]{205}
+    \caption{\label{fig:205}选择 SDK 安装路径}
+\end{figure}
+
 安装完毕重启 Eclipse 后点击 Windows->Preferences->Android->Browse，选择 SDK
 Location 为前述 SDK 安装路径，如\autoref{fig:205}所示。选择路径后重新打开上述页面，若出现
 \autoref{fig:206}所示的结果，则此步搭建工作完成。
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=.8\linewidth]{205}
-    \caption{\label{fig:205}选择 SDK 安装路径}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.8\linewidth]{206}
+    \includegraphics[width=.7\linewidth]{206}
     \caption{\label{fig:206}配置完成的信息界面}
 \end{figure}
 
