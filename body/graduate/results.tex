@@ -183,7 +183,7 @@ CM是评估分类器分类效果优劣的常用工具\cite{Zhou2016,Aurélien201
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {二分类任务的混淆矩阵明细表},
+        caption                 = {二分类任务的混淆矩阵},
         label                   = {tab:cm},
     ]
     {
@@ -192,9 +192,7 @@ CM是评估分类器分类效果优劣的常用工具\cite{Zhou2016,Aurélien201
         hline{1,Z}              = {\thickline},
         hline{2}                = {\thinline},
         rowhead                 = 1,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{1}                  = {font=\headfont},
         row{2-Z}                = {font=\nonheadfont},
     }
     \diagbox{真实结果}{预测结果} & 阳性（1） & 阴性（0） \\
@@ -284,7 +282,7 @@ C-支持向量机（C-support vector machines，CSVM）及多层感知机（mult
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {基于PPG多维度时域特征集的PE识别模型初筛结果明细表},
+        caption                 = {基于PPG多维度时域特征集的PE识别模型初筛结果},
         label                   = {tab:model_screen},
     ]
     {
@@ -293,9 +291,7 @@ C-支持向量机（C-support vector machines，CSVM）及多层感知机（mult
         hline{1,Z}              = {\thickline},
         hline{3}                = {\thinline},
         rowhead                 = 2,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1-2}                = {font=\headfonttiny,bg=\headcolor},
+        row{1-2}                = {font=\headfonttiny},
         row{3-Z}                = {font=\nonheadfont},
         cell{1}{1-3}            = {r=2,c=1}{c,m},
         cell{1}{4}              = {r=1,c=5}{c,m},
@@ -366,7 +362,7 @@ C-支持向量机等算法得到的模型在精确率与召回率可以达到90.
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {基于PPG多维度时域特征集的PE识别模型的超参数优化明细表},
+        caption                 = {基于PPG多维度时域特征集的PE识别模型的超参数优化},
         label                   = {tab:super_para},
         note{*}                 = {由于篇幅所限，本论文不对这些超参数名称及取值具体含义进行介绍，请参阅scikit-learn官方网站及文档\cite{scikit-learn}。},
     ]
@@ -376,9 +372,7 @@ C-支持向量机等算法得到的模型在精确率与召回率可以达到90.
         hline{1,Z}              = {\thickline},
         hline{3}                = {\thinline},
         rowhead                 = 2,
-        row{3-5,7-10}           = {bg=\oddcolor}, 
-        row{6,11-12}            = {bg=\evencolor},
-        row{1-2}                = {font=\headfont,bg=\headcolor},
+        row{1-2}                = {font=\headfont},
         row{3-Z}                = {font=\nonheadfont},
         cell{1}{1-2}            = {r=2,c=1}{c,m},
         cell{1}{3}              = {r=1,c=4}{c,m},
@@ -428,7 +422,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {参与构建随机森林的特征贡献度明细表（部分）},
+        caption                 = {参与构建随机森林的特征贡献度（部分）},
         label                   = {tab:rf_dr_1},
     ]
     {
@@ -437,8 +431,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
         hline{1,Z}              = {\thickline},
         hline{2}                = {\thinline},
         rowhead                 = 1,
-        row{2-Z}                = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{1}                  = {font=\headfont},
         row{2-Z}                = {font=\nonheadfont},
         cell{2-3,5-6}{2-3}      = {bg=\contrastcolor},
         cell{8,11-12}{2-3}      = {bg=\contrastcolor},
@@ -489,7 +482,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {随机森林对PPG多维度时域特征集的降维效果明细表},
+        caption                 = {随机森林对PPG多维度时域特征集的降维效果},
         label                   = {tab:rf_dr_2},
     ]
     {
@@ -498,9 +491,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
         hline{1,Z}              = {\thickline},
         hline{3}                = {\thinline},
         rowhead                 = 2,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1-2}                = {font=\headfonttiny,bg=\headcolor},
+        row{1-2}                = {font=\headfonttiny},
         row{3-Z}                = {font=\nonheadfont},
         cell{1}{1}              = {r=2,c=1}{c,m},
         cell{1}{5-6}            = {r=2,c=1}{c,m},
@@ -536,7 +527,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {几种机器学习模型在被试人员分层抽样的数据集上的表现明细表},
+        caption                 = {几种机器学习模型在被试人员分层抽样的数据集上的表现},
         label                   = {tab:model_screen2},
     ]
     {
@@ -545,9 +536,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
         hline{1,Z}              = {\thickline},
         hline{3}                = {\thinline},
         rowhead                 = 2,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1-2}                = {font=\headfonttiny,bg=\headcolor},
+        row{1-2}                = {font=\headfonttiny},
         row{3-Z}                = {font=\nonheadfont},
         cell{1}{1-3}            = {r=2,c=1}{c,m},
         cell{1}{4}              = {r=1,c=5}{c,m},
@@ -573,7 +562,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {几种机器学习模型按被试统计后的性能表现明细表},
+        caption                 = {几种机器学习模型按被试统计后的性能表现},
         label                   = {tab:model_detail},
     ]
     {
@@ -582,9 +571,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
         hline{1,Z}              = {\thickline},
         hline{3}                = {\thinline},
         rowhead                 = 2,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1-2}                = {font=\headfont,bg=\headcolor},
+        row{1-2}                = {font=\headfont},
         row{3-Z}                = {font=\nonheadfont},
         cell{1}{1-4}            = {r=2,c=1}{c,m},
         cell{1}{5,7,9}          = {r=1,c=2}{c,m},
@@ -638,7 +625,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {三种模型在最佳分割阈值下的混淆矩阵明细表},
+        caption                 = {三种模型在最佳分割阈值下的混淆矩阵},
         label                   = {tab:cm_on_best},
     ]
     {
@@ -647,9 +634,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
         hline{1,Z}              = {\thickline},
         hline{2}                = {\thinline},
         rowhead                 = 1,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{1}                  = {font=\headfont},
         row{2-Z}                = {font=\nonheadfont},
     }
     序号 & 机器学习算法 & 最佳分割阈值 & 混淆矩阵 & 准确率 & AUC \\
@@ -683,7 +668,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {基于脉搏波原始采样点的识别模型的初筛结果明细表},
+        caption                 = {基于脉搏波原始采样点的识别模型的初筛结果},
         label                   = {tab:model_screen3},
     ]
     {
@@ -692,9 +677,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
         hline{1,Z}              = {\thickline},
         hline{3}                = {\thinline},
         rowhead                 = 2,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1-2}                = {font=\headfonttiny,bg=\headcolor},
+        row{1-2}                = {font=\headfonttiny},
         row{3-Z}                = {font=\nonheadfont},
         cell{1}{1-4}            = {r=2,c=1}{c,m},
         cell{1}{5}              = {r=1,c=5}{c,m},
@@ -761,7 +744,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {几种机器学习模型在被试人员分层抽样的数据集上的表现明细表},
+        caption                 = {几种机器学习模型在被试人员分层抽样的数据集上的表现},
         label                   = {tab:model_screen4},
     ]
     {
@@ -770,9 +753,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
         hline{1,Z}              = {\thickline},
         hline{3}                = {\thinline},
         rowhead                 = 2,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1-2}                = {font=\headfonttiny,bg=\headcolor},
+        row{1-2}                = {font=\headfonttiny},
         row{3-Z}                = {font=\nonheadfont},
         cell{1}{1-4}            = {r=2,c=1}{c,m},
         cell{1}{5}              = {r=1,c=5}{c,m},
@@ -808,7 +789,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {几种机器学习模型按被试统计后的性能表现明细表},
+        caption                 = {几种机器学习模型按被试统计后的性能表现},
         label                   = {tab:model_detail2},
     ]
     {
@@ -817,9 +798,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
         hline{1,Z}              = {\thickline},
         hline{3}                = {\thinline},
         rowhead                 = 2,
-        row{odd}                = {bg=\oddcolor}, 
-        row{even}               = {bg=\evencolor},
-        row{1-2}                = {font=\headfont,bg=\headcolor},
+        row{1-2}                = {font=\headfont},
         row{3-Z}                = {font=\nonheadfont},
         cell{1}{1-4}            = {r=2,c=1}{c,m},
         cell{1}{5,7,9}          = {r=1,c=2}{c,m},
@@ -858,7 +837,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {三种模型在最佳分割阈值下的混淆矩阵明细表},
+        caption                 = {三种模型在最佳分割阈值下的混淆矩阵},
         label                   = {tab:cm_on_best2},
     ]
     {
@@ -867,9 +846,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
         hline{1,Z}              = {\thickline},
         hline{2}                = {\thinline},
         rowhead                 = 1,
-        row{2-3,6-7}            = {bg=\oddcolor}, 
-        row{4-5}                = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{1}                  = {font=\headfont},
         row{2-Z}                = {font=\nonheadfont},
         cell{2,4,6}{2}          = {r=2,c=1}{c,m},
     }
@@ -937,7 +914,7 @@ AUC数值最大（0.905与0.929）。
 \begin{longtblr}
     [
         theme                   = {zju},
-        caption                 = {不同分析场景下通过三种算法模型在测试集上准确率对比明细表},
+        caption                 = {不同分析场景下通过三种算法模型在测试集上准确率对比},
         label                   = {tab:accuracy},
     ]
     {
@@ -946,9 +923,7 @@ AUC数值最大（0.905与0.929）。
         hline{1,Z}              = {\thickline},
         hline{2}                = {\thinline},
         rowhead                 = 1,
-        row{2-4}                = {bg=\oddcolor}, 
-        row{5-Z}                = {bg=\evencolor},
-        row{1}                  = {font=\headfont,bg=\headcolor},
+        row{1}                  = {font=\headfont},
         row{2-Z}                = {font=\nonheadfont},
         cell{2}{2}              = {r=3,c=1}{c,m},
         cell{6}{2}              = {r=5,c=1}{c,m},
