@@ -24,7 +24,7 @@
 目前，ML技术在模式识别、数据挖掘、自然语言处理、语言识别、图像识别、芯片设计、信息检索及生物信息学等学科领域得到广泛应用，
 尤其为交叉学科的发展提供了新的技术支撑与突破点\cite{Zhou2016,Aurélien2018,Li2017}。   
 
-本小节后续使用了9种ML算法构建了PE识别模型，本小节将以其中综合性能较好的决策树(decision tree，DT)算法与随机森林(random forest，RF)算法为代表进行原理介绍，并介绍了常用于评价模型的性能相关指标。
+本小节介绍了ML中有代表性的决策树(decision tree，DT)算法与随机森林(random forest，RF)算法原理，并介绍了常用于评价模型的性能相关指标。
 
 \subsection{决策树与随机森林的算法原理}
 监督学习是ML的重要研究方向，主要用于推断观察数据与目标变量之间的潜在关系。其中，观察输入也被称为输入数据，而目标变量也被称为因变量或数据标签。
@@ -409,7 +409,8 @@ PPG多维度时域特征集中各特征的进行了贡献度分析。
 GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测类别C，节点的深浅颜色也代表了实际所属类别的比值大小。
 对统计随机森林中所有决策树的特征及其相对深度进行统计，可得各特征在随机森林中的平均深度，该值可应用于各特征对最终PE识别模型的贡献度的分析，其结果如\autoref{tab:rf_dr_1}。
 
-\autoref{tab:rf_dr_1}列举了\autoref{equ:fn2}所示的PPG多维度时域特征集的286个时域特征对随机森林累计贡献度排名靠前的36个特征，这些特征的累计贡献度为51.9\%。其中，基于PPG上
+\autoref{tab:rf_dr_1}列举了\autoref{equ:fn2}所示的PPG多维度时域特征集的286个时域特征对随机森林累计贡献度排名靠前的36个特征，这些特征的累计贡献度为51.9\%。
+若以\autoref{tab:rf_dr_1}中贡献度
 
 \begin{figure}[htbp]
     \centering
@@ -424,6 +425,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
         label                   = {tab:rf_dr_1},
         note{r}                 = {基于PPG上升支的形态学特征参数。},
         note{f}                 = {基于PPG下降支的形态学特征参数。},
+        remark{注}              = {特征名后的数字下标代表了特征所对应的PPG位置，越靠近峰值的位置下标值越小。}
     ]
     {
         width                   = \linewidth,
@@ -457,8 +459,7 @@ GI数值、样本总数N、实际所属类别TC（有无PE的病发）与预测�
 \end{figure}
 
 \noindent
-升支的特征使用了粉红色背景填充，基于PPG下降支的特征为蓝色背景填充；特征名后的数字下标代表了特征所对应的PPG位置，越靠近峰值的位置下标值越小。
-若以\autoref{tab:rf_dr_1}中的贡献度最大的特征CVALF\_9（4.6\%）为基准，可以得到所有特征对RF模型的相对贡献度如\autoref{fig:rf_importance_pulse}所示。
+最大的特征CVALF\_9（4.6\%）为基准，可以得到所有特征对RF模型的相对贡献度如\autoref{fig:rf_importance_pulse}所示。
 
 另一方面，在获取各特征对PE识别模型的贡献度后，可按照贡献度按从高到低的顺序进行特征筛选。
 本研究按10\%为梯度，完成了从贡献度100\%到40\%的特征筛选过程，基于每个梯度下筛选出的特征子集也使用随机森林算法
@@ -861,11 +862,11 @@ AUC数值最大（0.905与0.929）。
 \begin{figure}[htbp]
     \centering
     \subfigure[\label{fig:roc_31}补齐策略下模型得到的PE预测比例的ROC示意图]{
-    \includegraphics[width=5.5cm]{results/roc_31}
+    \includegraphics[width=7cm]{results/roc_31}
     }
     \quad
     \subfigure[\label{fig:roc_32}重采样策略下模型得到的PE预测比例的ROC示意图]{
-    \includegraphics[width=5.5cm]{results/roc_32}
+    \includegraphics[width=7cm]{results/roc_32}
     }
     \caption{\label{fig:model_roc2}基于三种算法模型得到的PE预测比例的ROC示意图}
 \end{figure}
@@ -873,19 +874,19 @@ AUC数值最大（0.905与0.929）。
 \begin{figure}[htbp]
     \centering
     \subfigure[\label{fig:detail_31}补齐策略下基于三种算法得到的PE预测比例散点图]{
-        \includegraphics[width=6cm]{results/detail_31}
+        \includegraphics[width=7cm]{results/detail_31}
         }
     \quad
     \subfigure[\label{fig:pr_model_split1}补齐策略下由随机森林算法得到的PE预测比例散点与最佳分割阈值示意图]{
-    \includegraphics[width=6cm]{results/split1}
+    \includegraphics[width=7cm]{results/split1}
     }
     \quad
     \subfigure[\label{fig:detail_32}重采样策略下基于三种算法得到的PE预测比例散点图]{
-    \includegraphics[width=6cm]{results/detail_32}
+    \includegraphics[width=7cm]{results/detail_32}
     }
     \quad
     \subfigure[\label{fig:pr_model_split2}重采样策略下由随机森林算法得到的PE预测比例散点与最佳分割阈值示意图]{
-    \includegraphics[width=6cm]{results/split2}
+    \includegraphics[width=7cm]{results/split2}
     }
     \caption{\label{fig:pr_model2}基于三种算法得到的PE预测比例散点与最佳分割阈值示意图}
 \end{figure}

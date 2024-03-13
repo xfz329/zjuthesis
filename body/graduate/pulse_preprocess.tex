@@ -1,6 +1,6 @@
 \chapter{脉搏波的预处理与特征参数提取}
 \section{引言}
-本研究使用的PPG数据来源自自主进行的临床实验，本章从实验设备、实验流程与数据导出等方面对其进行介绍。
+本研究使用的PPG数据来源自自主进行的临床实验，本章从研究对象筛选、实验设备、实验场地、实验流程与数据导出等方面对其进行介绍。
 利用常用的统计分析方法，对临床实验被试的人口统计学特征进行分析。
 介绍PPG的预处理涉及的信号滤波、波形检测、切迹检测、基线漂移处理、信号重采样与数据标准化等过程。
 提出一种可应用于多平台、多研究背景的基于初筛—复核—决策的新型PPG波形检测算法。
@@ -19,43 +19,60 @@
 其中，实验组为确诊PE的孕妇，对照组为正常妊娠孕妇。
 由于实验组孕妇均已确诊PE，不同程度地出现了血压升高等症状，因此实验组孕妇均已接受过药物治疗等临床干预。
 
+\subsection{研究对象筛选}
+在浙江大学医学院附属妇产科医院，随机选择孕妇进行数据采集。
+
+病例纳入标准为：美国麻醉协会（American Society of Anesthesiologists，ASA）Ⅱ 级；
+年龄18-40岁的PE患病孕妇；在两次间隔4h或4h以上的血压测定中，收缩压测量≥140 mmHg，和（或）舒张压≥90 mmHg；
+24h尿蛋白总量≥300mg或≥1+；孕周≥20w。任一纳入标准不符，此孕妇无法参与研究。
+
+病例排除标准为：椎管内麻醉禁忌；产程活跃期；前置胎盘或其他胎盘异常；多胎妊娠；肺水肿；脐带脱垂；慢性高血压；
+拒绝签署知情同意书。任一排除标准符合，此孕妇无法参与研究。
+
 \subsection{实验设备}
-本研究对PPG数据采集仪器的专业性、可靠性有较高要求，最终选择了美国GE公司生产的Healthcare CARESCAPE B650型麻醉监护仪进行数据采集，如\autoref{fig:monitor}所示。
+本研究对PPG数据采集仪器的专业性、可靠性有较高要求，最终选择的硬件设备如\autoref{fig:hd_devices}所示。
+其中，选用了美国GE公司生产的Healthcare CARESCAPE B650型麻醉监护仪进行数据采集，如图\autoref{fig:monitor}所示;
+选择了美国Tyco公司的Nellcor DS-100A型透射式血氧传感器作为B650型的配套组件，如图\autoref{fig:ds100a}所示。
 B650型监护仪可对包括12导联心电、脑电、心输出量、血氧饱和度、血压、呼出气体中气体成份及熵指数等专业参数进行监测，并提供了表征PPG动脉血压变化的
 收缩压变化度（systolic pressure variation，SPV）和脉压变化度（pulse pressure variation，PPV）的参数监测\cite{GE2021,Michard1999}。
 \begin{figure}[htbp]
     \centering
-    \subfigure[B650监护仪及其配件]{
+    \subfigure[\label{fig:monitor}B650监护仪及其配件]{
     \includegraphics[width=7cm]{pulse_preprocess/monitor1}
     }
     \quad
-    \subfigure[B650监护界面]{
-    \includegraphics[width=5.5cm]{pulse_preprocess/monitor2}
+    \subfigure[\label{fig:ds100a}DS-100A型血氧传感器]{
+    \includegraphics[width=5.5cm]{pulse_preprocess/ds100a}
     }
-    \caption{\label{fig:monitor}美国GE公司的Healthcare CARESCAPE B650监护仪示意图}
+    \caption{\label{fig:hd_devices}数据实验选用的硬件设备}
 \end{figure}
 
-此外，本研究选择了美国Tyco公司的Nellcor DS-100A型透射式血氧传感器作为B650型的配套组件，如\autoref{fig:ds100a}所示。
-该传感器一般佩戴在被试左手食指上，若被试的左手食指有损伤，则将测量部位替换为左手中指。
-在测量时，手指需放入传感器指套内部，使指甲与传感器表面有指甲标记的部位正对，指尖触及但不超出指套顶端，以确保发光管发出的所有光线全部通过被试的组织。
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.4\linewidth]{pulse_preprocess/ds100a}
-    \caption{\label{fig:ds100a}美国Tyco公司的Nellcor DS-100A型血氧传感器示意图}
-\end{figure}
+\subsection{实验场地}
+实验场地设置在浙江大学医学院附属妇产科医院的产科检查室。场地内保持正常室内照明灯光，预先布置好检测用床，供被试实验期间以舒适的姿势平躺并安放好手臂。
+实验设备由额外的的装置固定安放在床边。
 
 \subsection{实验流程}
-被试到达实验场地后，由实验人员登记其PE风险因子信息，包括姓名、年龄、孕产史等。接着实验人员会告知被试本实验的研究目的与具体实验流程。
-在征得被试同意后，实验人员按操作规范为被试佩戴血氧采集探头。
-在被试休息至少5min后，开始进行PPG数据采集，单次采集时长不少于1min。被试需在实验全程中保持坐姿，禁止说话发声或产生较大的肢体动作。
+实验开始前，实验人员会对实验场地及设备进行必要的消毒处理。
+被试到达实验场地后，首先会有实验人员告知其实验的研究目的与具体实验流程。
+在征得被试同意后，实验人员会为被试登记姓名、年龄、孕产史等基本信息，相关PE风险因子信息也会一并记录。
+随后，实验人员会协助被试躺在检测用床上，并按操作规范为被试左手食指佩戴血氧采集探头，若被试的左手食指有损伤，则将测量部位替换为左手中指。
+被试手指需放入传感器指套内部，使指甲与传感器表面有指甲标记的部位正对，指尖触及但不超出指套顶端，以确保发光管发出的所有光线全部通过被试的组织。
+被试需要保持平卧姿势，禁止说话发声或产生较大的肢体动作。
+在被试休息至少5min后，由实验人员开始PPG数据采集，单次采集时长不少于1min。
 
 \subsection{数据导出及复核}
 由于美国GE公司未公开B650型监护仪的数据通讯协议，本研究无法直接获取该设备全部生理参数的原始数据。最后通过技术产商提供的第三方软件，将PPG原始数据以
 （时间，相对幅值）的键值对的形式以逗号分隔值（comma-separated values，CSV）文件格式导出，导出的PPG信号采样率为100Hz。
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{pulse_preprocess/pe_healthy}
+    \caption{\label{fig:pe_healthy}实验采集得到的健康孕妇与子痫患者的脉搏波波形对比}
+\end{figure}
+
 本研究共采集得到了80例被试的PPG原始数据。经复核校验，1例正常妊娠的被试数据因采集时间过短、信号质量过低被剔除，
-剩余79例为有效数据，包括44例实验组数据和35例对照组数据。
+剩余79例为有效数据，包括44例实验组数据和35例对照组数据。\autoref{fig:pe_healthy}给出了实验采集得到的健康孕妇与子痫患者的脉搏波波形对比，
+从中可以发现两者的幅值大小、周期长短及重搏波明显程度等方面均存在一定的差异。
 
 \section{被试孕妇人口统计学特征分析}
 本节使用统计分析方法对上述实验中被试的年龄、孕周、身高、体重、BMI指数、血压及心率等人口统计学特征进行了相关性分析。
@@ -115,6 +132,15 @@ B650型监护仪可对包括12导联心电、脑电、心输出量、血氧饱�
         rowhead        = 1,
         row{1}         = {font=\headfont},
         row{2-Z}       = {font=\nonheadfont},
+        cell{2}{2}     = {r=5,c=1}{c,m},
+        cell{7}{2}     = {r=5,c=1}{c,m},
+        cell{12}{2}    = {r=3,c=1}{c,m},
+        cell{15}{2}    = {r=6,c=1}{c,m},
+        cell{2}{3}     = {r=5,c=1}{c,m},
+        cell{7}{3}     = {r=4,c=1}{c,m},
+        cell{12}{3}    = {r=3,c=1}{c,m},
+        cell{15}{3}    = {r=3,c=1}{c,m},
+        cell{18}{3}    = {r=3,c=1}{c,m},
     }
     序号 & 样本数目 & 样本相关性 & 检验方法 & 检验方法英文名 \\
     1  & 单样本   & /     & 卡方检验  & Chi-Squared Test \\
@@ -174,7 +200,12 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
 \end{longtblr}
 
 从\autoref{tab:factors_res}可以发现，实验组与对照组的被试孕妇在年龄、孕周、身高、心率等风险因子
-上均无明显统计意义上的差别（$p$>0.05），但在收缩压与舒张压的数值上有显著差异（$p$<0.001），这也与被试孕妇的PE病发状态一致，符合预期。
+上均无明显统计意义上的差别（$p$>0.05），但在体重、BMI、收缩压与舒张压的数值上有显著差异（$p$<0.001）。
+其中，收缩压与舒张压本身就是PE病发的标致性特点\cite{OAG9,FIGO}，\autoref{tab:factors_res}中结果与被试孕妇的PE病发状态一致，符合预期。
+而对同样有显著性差异的体重与BMI，在本论文的前期研究中，已经将其作为协变量进行PE识别的分析研究，结果表明这些参数的贡献度较低，
+对识别PE的作用有限\cite{Feng2023}。
+
+综上，本论文将研究的重点聚焦在对被试人员的PPG信号的分析研究上\cite{ChenH2019,Feng2023,FengJiang2018,Jiang2023}。
 
 \section{脉搏波的预处理}
 不同硬件设备采集的PPG数据在采样率、采样精度及导出的数据格式等方面存在着一定的差异，同时这些设备对数据采集过程中出现的人体肌电、呼吸与体动以及环境工频等噪声干扰的软硬件滤波处理能力也不尽相同。
@@ -245,7 +276,7 @@ U检验的基本思想是将全部样本混合后一起求秩，然后根据两�
 准确地检测PPG波形是分析研究的前提。多数PPG波形检测算法一般会一次性完成PPG波形的分析与检测，而对检测结果的校验需全部由人工完成\cite{Zhang2010,Allen2007,Feng2018,FengJiang2018}。
 在处理受到干扰或存在畸变的PPG数据时，此类算法的检测性能通常也会下降。
 为改进这些问题，在借鉴计算机科学领域的策略与机制分离思想的基础上\cite{Levin1975}，本研究对PPG波形的检测过程进行了模式设计，
-提出一种基于初筛—复核—决策（screening-checking-deciding，SCD）的新型算法，其处理流程如\autoref{fig:detect}所示。
+提出一种基于初筛—复核—决策（screening-checking-deciding，SCD）的新型算法\cite{Jiang2023}，其处理流程如\autoref{fig:detect}所示。
 
 \begin{figure}[htbp]
     \centering
@@ -487,14 +518,27 @@ CBPEDS一共包含1.2万条数据记录，每条记录包含PPG、有创动脉�
 PPG检波算法与SCD算法进行对比分析，包括陈婉琳等\cite{Chen2019}此前提出的双移动时间窗算法（dual moving time-window, DMTW）
 与Paul van Gent等\cite{van2019,van20192}提出的一种基于数字滤波器与离群点检测的PPG检波算法HeartPy。
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{pulse_preprocess/scd1}
+    \caption{\label{fig:scd_detect1}三种PPG检波算法对自主实验数据的检测效果对比图}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{pulse_preprocess/scd2}
+    \caption{\label{fig:scd_detect2}三种PPG检波算法对CBPEDS中数据的检测效果对比图}
+\end{figure}
+
 4、对比与分析
 
 SCD算法较DMTW算法与HeartPy算法的优势主要体现在对包含噪声干扰与畸变的PPG信号的准确识别上。使用这三种算法检测自主实验数据与CBPEDS数据的结果存在一定的差异，如\autoref{fig:scd_detect1}与\autoref{fig:scd_detect2}所示。
 由于HeartPy算法的本身输出限制，\autoref{fig:scd_detect1}与\autoref{fig:scd_detect2}只标注了HeartPy算法检测出的PPG波形的波峰位置，有效波峰与异常波峰分别用黑色与红色进行了标注。
-而SCD算法与DMTW算法检测出的有效PPG波形均在\autoref{fig:scd_detect1}与\autoref{fig:scd_detect2}中用虚线进行了框选，其中黑色虚线表示两种算法对PPG波形的识别判断完全一致，红色虚线表示两种算法的检测结果出现了分歧。
+而SCD算法与DMTW算法检测出的有效PPG波形均在\autoref{fig:scd_detect1}与\autoref{fig:scd_detect2}中用虚线进行了框选，其中黑色虚线表示两种算法对PPG波形的
+识别判断完全一致，红色虚线表示两种算法的检测结果出现了分歧。
 
-从整体检测准确率来看，SCD算法较另外两种算法也具有一定的性能优势。统计三种算法在自主实验数据与CBPEDS数据上的错检波形数目，可得到对应算法的整体检测准确率，如\autoref{tab:scd}所示，其中需要注意的信息
-已用粉红色底色、黑色字体加粗突出显示。从\autoref{tab:scd}可以发现，三种算法中，SCD算法的错检波形数目最少，识别的准确率最高。
+从整体检测准确率来看，SCD算法较另外两种算法也具有一定的性能优势。统计三种算法在自主实验数据与CBPEDS数据上的错检波形数目，可得到对应算法的整体检测准确率，如\autoref{tab:scd}所示。
+可以发现，三种算法中，SCD算法的错检波形数目最少，识别的准确率最高。
 
 \begin{longtblr}
     [
@@ -520,29 +564,10 @@ SCD算法较DMTW算法与HeartPy算法的优势主要体现在对包含噪声干
 \end{longtblr}
 
 此外，由于CBPEDS本身是重症监护患者的临床医学数据记录，部分患者的PPG
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\linewidth]{pulse_preprocess/scd1}
-    \caption{\label{fig:scd_detect1}三种PPG检波算法对自主实验数据的检测效果对比图}
-\end{figure}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\linewidth]{pulse_preprocess/scd2}
-    \caption{\label{fig:scd_detect2}三种PPG检波算法对CBPEDS中数据的检测效果对比图}
-\end{figure}
-\noindent
 数据波形畸变严重，显著异于常人，如\autoref{fig:ucibp_abnormal}所示。
 SCD算法可以准确地识别这些异常波形，不进行波形标注。由于如\autoref{fig:ucibp_abnormal}所示的异常数据不在本研究选作算法性能评估的50条数据内，SCD算法的检测结果未能在\autoref{tab:scd}所示的统计值中得以体现。
 
-五、讨论
-
-本研究对PPG波形的检测过程进行了模式设计，提出了一种新型SCD算法，算法由初筛、复核与决策等三部分组成。
-在初筛时，通过搜索窗的方法确定波形；在复核时，通过功率、标准差、波峰相对位置与基线漂移程度等PPG形态学特征，区分有效波形与异常干扰
-；在决策时，通过加权投票的策略确定PPG波形是否为有效波形。SCD算法可根据使用场景进行二次开发，支持更改初筛算法、增删复核标准与切换决策策略等设置。
-经验证，该算法各模块设计合理，与其他算法对比结果表明，对PPG波形的识别准确率高、抗干扰能力强。SCD算法为多平台、多研究应用下的PPG分析检测的不同场景提供了一定的参考。
-
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \subfigure[\label{fig:c_0179}畸变信号示意图（一）]{
         \includegraphics[width=7.5cm]{pulse_preprocess/0179}
@@ -555,17 +580,25 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
     \caption{\label{fig:ucibp_abnormal}CBPEDS中畸变信号示意图}
 \end{figure}
 
-\subsection{重搏波与切迹检测}
-重搏波是PPG最具标志性的波形特征之一，其波峰与切迹的检测是一个完整的PPG检测算法必不可少的定位项之一\cite{Wang2012}。但在实际应用中，并不是每个人的PPG信号都有着明显的重搏波，特别是当被试出现外周阻力增加、血管壁弹性下降的情况后\cite{mmt}。
-此时，随着PPG波形向外周传播，尖锐的重搏波切迹（incisura）常会变形甚至丢失，退变成一简单拐点，甚至重搏波波峰都会在下降支中不显著，导致最后无法从采集得到的信号中对两者直接进行精准定位，如\autoref{fig:incisura}所示。
+六、讨论
 
-本研究借鉴了王选等\cite{Wang2012}于2012年提出的一种基于曲率$K$（curvature）的定位算法对切迹进行检测，该算法的核心思想是PPG信号在切迹退化成的变形点的邻域内具有最大的曲率值，如\autoref{alg:incisuras_detect}所示。
-数学中，将一般曲线函数在点$(x,y)$处的曲率$K$定义为
+本研究对PPG波形的检测过程进行了模式设计，提出了一种新型SCD算法，算法由初筛、复核与决策等三部分组成。
+在初筛时，通过搜索窗的方法确定波形；在复核时，通过功率、标准差、波峰相对位置与基线漂移程度等PPG形态学特征，区分有效波形与异常干扰
+；在决策时，通过加权投票的策略确定PPG波形是否为有效波形。SCD算法可根据使用场景进行二次开发，支持更改初筛算法、增删复核标准与切换决策策略等设置。
+经验证，该算法各模块设计合理，与其他算法对比结果表明，对PPG波形的识别准确率高、抗干扰能力强。SCD算法为多平台、多研究应用下的PPG分析检测的不同场景提供了一定的参考。
+
+\subsection{重搏波与切迹检测}
+重搏波是PPG最具标志性的波形特征之一，其波峰与切迹的检测是一个完整的PPG检测算法必不可少的定位项之一\cite{Wang2012}。
+如\autoref{fig:incisura}所示，当被试出现外周阻力增加、血管壁弹性下降的情况后，尖锐的重搏波切迹（incisura）常会变形甚至丢失，退变成一简单拐点\cite{Wang2012,mmt}。
+
+为保证切迹的准确检测，本研究借鉴了王选等于2012年提出的一种基于曲率$K$（curvature）的定位算法进行处理\cite{Wang2012}。
+该算法的核心思想是PPG信号在切迹退化成的变形点的邻域内具有最大的曲率值，如\autoref{alg:incisuras_detect}所示。
+若点$P(x,y)$为一般曲线函数上一点，则曲线在$P$点的曲率$K$为
 \begin{equation}
     \label{equ:curvature}
     K=\frac{|y^{''}|}{{(1+{y^{'}}^2)}^{3/2}}
 \end{equation}
-其中，$y^{'}$与$y^{''}$分别是曲线函数在该点的一阶导数与二阶导数。
+其中，$y^{'}$与$y^{''}$分别是曲线函数在$P$点的一阶导数与二阶导数。
 
 \begin{figure}[htbp]
     \centering
@@ -605,45 +638,34 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
     \end{algorithmic}
 \end{breakablealgorithm}
 
-\subsection{信号的重采样}
-通常而言，在一项具体的应用研究中，PPG数据的采样率维持不变的。但在某些情况下，原始数据采样率不能满足实际需求，需要进行采样率调整才能满足特定的数值计算需求。
-其中，减少抽样率的过程称为信号的抽取，也称抽样率压缩；增加抽样率的过程则称之为信号的插值，也即抽样率扩张\cite{Cheng2008}。信号的抽取与插值都会导致原始信号出现频谱迁移，即改变信号的频率成份\cite{Cheng2008}。
+\subsection{脉搏波的插值处理}
+由于此前数据实验采集得到的PPG信号采样率仅为100Hz，为保证后续章节对PPG波形时域特征的计算，
+本论文还额外通过基于自然边界条件的三次样条插值算法对PPG数据进行了均匀插值处理\cite{Cheng2008,Timothy2018,Carl2008,ttk2023}。
+样条插值使用多个公式来通过所有数据点并得到得到光滑的拟合插值曲线\cite{Timothy2018,Carl2008,ttk2023}。
+插值处理后的PPG数据采样率被提高至2000Hz，插值前后效果对比如\autoref{fig:spline}所示。
 
-相对而言，信号的抽取过程更容易理解。若需要用整数$D$对$x(n)$进行抽取，以使抽样率降低到原始值的$1/D$，可按照每连贯的$D$个抽样中取出一个信号值。这样的处理称为整数$D$抽取\cite{Cheng2008}。
-插值是抽取的逆过程，通过某些已知的数据点去推断一个（系列）特定的函数，使得所有已知数据点均在该函数图像上，从而去推断更多未知数据点，这一过程如\autoref{fig:spline}所示。若不考虑可能出现的信号失真，理论上
-可以通过调整抽取与插值的数值对原始信号的采样率进行任意的调整。
 \begin{figure}[htbp]
     \centering
-    \subfigure[经过点(1,2)，(2,1)，(4,4)和(5,3)的线性样条示意图]{
-    \includegraphics[width=5.5cm]{pulse_preprocess/spline1}
+    \subfigure[插值前采样率为100Hz]{
+    \includegraphics[width=7.5cm]{pulse_preprocess/100}
     }
     \quad
-    \subfigure[经过相同点的一种可能的三次样条插值示意图]{
-    \includegraphics[width=5.5cm]{pulse_preprocess/spline2}
+    \subfigure[插值后采样率为2000Hz]{
+    \includegraphics[width=7.5cm]{pulse_preprocess/2000}
     }
-    \caption{\label{fig:spline}两种样条插值方法示意图}
+    \caption{\label{fig:spline}插值前后的PPG波形散点图对比}
 \end{figure}
 
-本论文采用了三次样条插值算法进行插值\cite{Timothy2018,Carl2008}。样条插值是在工业领域应用最广泛的算法之一，它使用多个公式来通过所有数据点并得到得到光滑的拟合插值曲线，
-其中每个公式均为低阶多项式。
-
-对原始数据点$(x_1,y_1),(x_1,y_1),\cdots,(x_n,y_n)$，三次样条的插值曲线$S(x)$在每两个数据分段区间$[x_i,x_{i+1}]$内均使用三阶多项式
-\begin{equation}
-    \label{equ:spline}
-    S_{i}=y_{i}+b_{i}(x-x_{i})+c_{i}{(x-x_{i})}^2+d_{i}{(x-x_{i})}^3
-\end{equation}
-并保证每两个多项式在端点（即原始数据点）处不仅数值相等，相应的斜率与曲率均相等。
-仅基于以上条件得到的方程组具有无穷多组解，即可以构造处无穷多条通过所有数据点$(x_i,y_i)$的样条曲线。
-为使其存在唯一解，需要添加额外的方程对样条曲线进行约束，一般的约束条件都是对样条左右端点处进行限定。
-依据附加边界条件的不同，可进一步将三次样条算法分为自然三次样条、曲率调整三次样条、钳制三次样条、抛物线端点三次样条与非纽结三次样条等\cite{Timothy2018}。
-
-为计算本研究后续章节提出的多种PPG时域特征，本研究使用了基于自然边界条件的三次样条算法对PPG信号进行均匀插值。
-3.1节中数据实验所采用的设备GE B450设备的采样率仅为100Hz，重采样处理后的PPG数据采样率被提高至2000Hz。
-
 \subsection{去除基线漂移}
-由于呼吸干扰等原因，实际得到的PPG波形的起始点幅值（即连续两个波形的波谷幅值）很难保持一致。这种差异最终会导致PPG信号的基线出现波动漂移，如\autoref{fig:drift}所示。为满足后续特定PPG形态特征计算需求，
-需要消除基线漂移的影响。
-本研究借助一种基于线性变换的思路完成了基线漂移处理。将一个包含$n$个采样点的PPG波形的幅值表示为序列$x_i$，其中$0 \le i \le n-1$。
+为消除由于呼吸干扰等原因导致的PPG信号的基线漂移，本研究借助一种基于线性变换的方法进行了处理，这一过程如\autoref{fig:drift}所示。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\linewidth]{pulse_preprocess/baselineadjust}
+    \caption{\label{fig:drift}基线漂移去除原理示意图}
+\end{figure}
+
+将一个包含$n$个采样点的PPG波形的幅值表示为序列$x_i$，其中$0 \le i \le n-1$。
 由于始末位置脉搏波幅值不等，则明显两者之间存在一条斜率$k \ne 0$的直线，其中
 \begin{equation}
     \label{equ:linek}
@@ -660,27 +682,11 @@ SCD算法可以准确地识别这些异常波形，不进行波形标注。由�
     y_i=x_i-\Delta_i
 \end{equation}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.6\linewidth]{pulse_preprocess/baselineadjust}
-    \caption{\label{fig:drift}基线漂移去除原理示意图}
-\end{figure}
-
 \subsection{数据标准化}
-在上述各项预处理过程完成后，PPG波形在幅值上仍然有很大的个体差异，即使对同一被试对象，其波形在幅值上也会有一定的波动，如\autoref{fig:pulses_of_person}所示。为消除个体差异对特定波形特征计算的影响，需要对PPG波形进行归一化处理。
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=.6\linewidth]{pulse_preprocess/pulses_of_person}
-    \caption{\label{fig:pulses_of_person}临床实验采集得到的不同个体的PPG波形幅值对比图}
-\end{figure}
-
-时间标准化与幅值标准化是PPG标准化两类常见的方式\cite{mmt}。时间标准化的基本原理是将PPG信号进行分组并计算每组信号的平均心动周期，随后对每组内的PPG信号进行时间尺度上的缩放，使最终的总平均心动周期保持一致。
-由于不同个体的时间尺度上的缩放比例不一致，很容易导致PPG信号波形发生畸变失真，严重影响后续特征计算。
-第二章已经介绍过，PPG本身是人体指端血液容积变化率的体现，且由于人体指端血液容积因人而异，故PPG信号的波形幅值对不同个体而言并无实际的生理意义。因此，本研究采取了幅值标准化的处理方式对PPG信号进行处理。
-
-与去除基线漂移过程类似，为使幅值标准化，只需对PPG波形内所有采样点进行一次线性变换
-，使单个波形内所有数据点按同一尺度缩放映射到[0,1]区间内。
-所有波形的标准化系数即缩放比例也同时被保存记录下来。
+在上述各项预处理过程完成后，PPG波形在幅值上仍然有很大的个体差异，即使对同一被试对象，其波形在幅值上也会有一定的波动，如\autoref{fig:pe_healthy}所示。
+为消除个体差异对特定波形特征计算的影响，需要对PPG波形进行归一化处理。
+与去除基线漂移过程类似，只需对PPG波形内所有采样点进行一次线性变换，使单个波形内所有数据点按同一尺度缩放映射到[0,1]区间内。
+该过程中的标准化系数也同时被保存记录下来。
 
 \section{脉搏波的时域特征}
 PPG信号本身蕴含着丰富的血液动力学信息，其形态、强度、速率、节律等特征可以反映心脏的功能与状态，也可以反映出各级动脉及分支中血管壁弹性、血管阻力、血液黏度等信息，是评价人体心血管系统生理病理状态的重要依据\cite{PPGYY}。
@@ -916,7 +922,10 @@ PWV已被证实与动脉扩张性、僵硬度、管壁厚度和血液黏稠度�
 但由于PWV的测量依赖于在人体不同部位测量脉搏波，且测量多利用压力传感器完成，故\textbf{不适用}单点测量的光电容积脉搏波研究。
 
 \section{小结}
-本章主要对PPG的信号预处理过程与时域参数描述进行了详细的介绍说明。针对PPG的预处理，对信号滤波、波型检测、重搏波检测、基线漂移去除、重采样及标准化过程进行了介绍，并重点介绍
-了一种新型模块化PPG波形检测的SCD算法，该算法具有检测准确度高、抗干扰能力强、可拓展性强等优点。
-针对PPG的时域特征参数，从时间类参数、幅度类参数、面积类参数与斜率类参数等方面分别介绍了这些特征参数的定义过程与其可能的生理学意义。
-本章的研究内容是后续研究的准备与铺垫。
+本章首先介绍了临床实验方案，阐述了实验被试人员的筛选标准、实验设备、实验场地与实验流程等信息，初步验证了PE患者与健康孕妇的PPG波形存在形态差异，
+完成了论文所需的PPG数据的获取工作。
+其次，对被试人员的人口统计学特征进行了统计分析，排除了年龄、孕周等风险因子对孕妇PE病发的影响。借助此前的预研究也排除了体重及BMI的影响，将
+研究重点聚焦于PPG之上。
+随后，分析了实验获取的PPG信号特点，通过一种新型SCD算法完成了高准确率的波形检测处理，同时也完成了信号滤波、重搏波检测、基线漂移去除、重采样及标准化在内的预处理过程，
+完成了后续PPG时域特征提取的数据准备工作。
+最后，从时间类参数、幅度类参数、面积类参数与斜率类参数等方面对现有的PPG时域特征进行了介绍，方便后续PPG的形态学特征提取工作的开展。
