@@ -1,0 +1,4 @@
+1. Feng Jiang,Wanlin Chen,Xinzhong Chen,Ying Feng,Jiajun Miao,Cuicui Jiao,Hang Chen. The Research of Photoplethysmography Morphology: Distincting Preeclampsia with Hierarchical Area Ratio[C]. 2018 IEEE 3rd International Conference on Signal and Image Processing, 202-206.
+2. Hang Chen,Feng Jiang,Dan Drzymalski,Wanlin Chen,Ying Feng,Jiajun Miao,Cuicui Jiao,Xinzhong Chen. A novel parameter derived from photoplethysmographic pulse wave to distinguish preeclampsia from non-preeclampsia[J]. Pregnancy Hypertension, 2019, 15: 166-170.
+3. 江锋,朱志斌,张梦鸽,冯静雯,徐艺菲,陈杭. 一种基于新型检测算法的模块化的脉搏波预处理分析系统的设计与实现[J]. 生物医学工程学杂志, 2023, 40(3): 529-535.
+4. Hang Chen,Feng Jiang,Wanlin Chen,Ying Feng,Shali Chen,Jiajun Miao,Cuicui Jiao,Xinzhong Chen. Distinguishing preeclampsia using the falling scaled slope (FSS) --- a novel photoplethysmographic morphological parameter[J]. Hypertension in Pregnancy, 2023, 42(1): 1-10.
